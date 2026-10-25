@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Luk",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Flyt listen til venstre",
+        "loading": "",
         "mainContent": "hovedindhold",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Flyt listen til højre",
         "skipLink": "Spring til indholdet",
         "toolbar": "værktøjslinje"
@@ -78,7 +95,7 @@
         "deleteBook": "Slet",
         "deleteTag": "Slet tag",
         "description": "Beskrivelse",
-        "downloaded": "",
+        "downloaded": "Downloadet",
         "emptyTagList": "Du har ingen taggede bøger.",
         "entry": {
             "continueReading": "Genoptag læsning",
@@ -142,7 +159,19 @@
         "sort": "Sortér efter",
         "tag": "Tag",
         "tags": "Tags",
-        "update": "Rediger"
+        "update": "Rediger",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -240,16 +269,17 @@
         "annotations": {
             "alreadyImported": "Alle noter eksisterer i forvejen, afslutter import.",
             "emptyFile": "Ingen noter blev fundet i filen.",
-            "errorParsing": "Fejl under læsning af filen: ",
             "nothing": "Ingen noter kunne importeres, afslutter import",
             "success": "Import færdig."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Download annulleret.",
-            "error": "Download af {{- title}} er stødt på en fejl: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Den downloadede fil kunne ikke valideres: Forventet SHA-256 hash: {{- expected}}, fik i stedet {{- actual}}.",
                 "httpGet": "HTTP download mislykkedes: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Det midlertidige filnavn til downloaden er ugyldigt.",
                 "invalidLink": "Download linket er ugyldigt.",
                 "invalidTempDirectory": "Den midlertidige mappe til downloads er ugyldig.",
@@ -262,6 +292,31 @@
             "alreadyImport": "{{- title}} er allerede importeret.",
             "fail": "Import af {{- path}} fejlede. {{- err}}",
             "success": "{{- title}} er nu importeret."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Bogen kan ikke åbnes: {{- err}}",
@@ -311,10 +366,13 @@
         "menu": {
             "aboutBook": "Om denne bog",
             "addExtract": "Importér uddraget",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Køb denne bog",
             "goLoanBook": "Lån denne bog",
             "goRevokeLoanBook": "Tilbagekald lån",
-            "goSubBook": "Abonnér"
+            "goSubBook": "Abonnér",
+            "placeHold": ""
         },
         "network": {
             "error": "Fejl ved hentning af feed",
@@ -325,6 +383,12 @@
         },
         "next": "Næste",
         "previous": "Forrige",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Genoptag browsing",
         "shelf": "Boghylde",
         "updateForm": {
@@ -666,7 +730,8 @@
         "certificateRevoked": "LCP-licensens certifikat er blevet annuleret.",
         "certificateSignatureInvalid": "Ugyldig certifikat-signatur på LCP-licensen.",
         "cover": {
-            "img": "forsidebillede"
+            "img": "forsidebillede",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dage",
@@ -691,10 +756,22 @@
         "notStarted": "Ikke læst",
         "onGoing": "I gang",
         "progression": {
-            "title": "Læst"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Læst",
+            "useRemote": ""
         },
         "read": "Læst færdig",
         "remainingTime": "Lån (dage tilbage)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Forny",
         "returnButton": "Aflevér",
         "returnedLcp": "Denne bog kan ikke åbnes, da LCP-licensen er leveret tilbage.",
@@ -884,7 +961,6 @@
             },
             "customFontSelected": "Du har valgt en personlig skrifttype",
             "customizeReader": "Tilpas tekstformatering",
-            "defaultValue": "standard værdi",
             "disabled": "slået fra",
             "display": "Visning",
             "disposition": {
@@ -1342,7 +1418,7 @@
             }
         },
         "tabs": {
-            "advanced": "",
+            "advanced": "Avanceret",
             "general": "Generelt",
             "keyboardShortcuts": "Tastaturgenveje",
             "profiles": "Profiler",

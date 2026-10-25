@@ -98,6 +98,7 @@ export function* recover(identifiers?: string[]): SagaGenerator<PublicationView[
 
     const publicationViewConverter = diMainGet("publication-view-converter");
     const publicationViews: PublicationView[] = [];
+    let failed = 0;
 
     for (const publication of publicationsToRecover) {
         try {
@@ -115,16 +116,22 @@ export function* recover(identifiers?: string[]): SagaGenerator<PublicationView[
             const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
             publicationViews.push(publicationView);
         } catch (e) {
+            failed++;
             debug("Publication recovery failed", publication.identifier, publication.filePath, e);
         }
     }
 
-    if (publicationViews.length) {
+    if (failed && publicationViews.length) {
+        yield* putTyped(toastActions.openRequest.build(
+            ToastType.Info,
+            getTranslator().translate("message.notifications.recoveryPartialFailure", { recovered: publicationViews.length, failed }),
+        ));
+    } else if (publicationViews.length) {
         yield* putTyped(toastActions.openRequest.build(
             ToastType.Success,
             getTranslator().translate("message.storage.recovery.success", { count: publicationViews.length }),
         ));
-    } else if (publicationsToRecover.length) {
+    } else if (failed) {
         yield* putTyped(toastActions.openRequest.build(
             ToastType.Error,
             getTranslator().translate("message.storage.recovery.failure"),

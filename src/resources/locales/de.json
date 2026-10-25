@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menü",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Schließen",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Scrolle nach links",
+        "loading": "",
         "mainContent": "Hauptinhalt",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Scrolle nach rechts",
         "skipLink": "Gehe zum Inhalt",
         "toolbar": "Symbolleiste"
@@ -142,7 +159,19 @@
         "sort": "Sortieren nach",
         "tag": "Tag",
         "tags": "Tags",
-        "update": "Bearbeiten"
+        "update": "Bearbeiten",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -240,16 +269,17 @@
         "annotations": {
             "alreadyImported": "Alle Notizen wurden bereits importiert.",
             "emptyFile": "Keine Notizen in der Datei vorhanden.",
-            "errorParsing": "Fehler beim Einlesen der Datei: ",
             "nothing": "Keine Notizen sind für den Import bereit. Import wird abgebrochen.",
             "success": "Import vollständig abgeschlossen."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "",
-            "error": "Der Download von [{{- title}}] ist fehlgeschlagen: {{- err}}",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -262,6 +292,31 @@
             "alreadyImport": "Es scheint, dass Sie die Publikation [{{- title}}] bereits in Ihren Katalog aufgenommen haben.",
             "fail": "Der Import von {{- path}} ist fehlgeschlagen. {{- err}}",
             "success": "Der Import von {{- title}} ist abgeschlossen."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Die Publikation kann nicht geöffnet werden: {{- err}}",
@@ -311,10 +366,13 @@
         "menu": {
             "aboutBook": "Über dieses Buch",
             "addExtract": "Zur Bibliothek hinzufügen",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Dieses Buch kaufen",
             "goLoanBook": "Dieses Buch ausleihen",
             "goRevokeLoanBook": "Ausleihe widerrufen",
-            "goSubBook": "Abonnieren"
+            "goSubBook": "Abonnieren",
+            "placeHold": ""
         },
         "network": {
             "error": "Ein Fehler ist aufgetreten",
@@ -325,6 +383,12 @@
         },
         "next": "Nächster",
         "previous": "Vorheriger",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Weiter stöbern",
         "shelf": "Bücherregal",
         "updateForm": {
@@ -666,7 +730,8 @@
         "certificateRevoked": "LCP-Lizenzzertifikat wurde widerrufen.",
         "certificateSignatureInvalid": "Ungültige LCP-Lizenzzertifikatssignatur.",
         "cover": {
-            "img": "Titelbild"
+            "img": "Titelbild",
+            "zoom": ""
         },
         "day": "Tag",
         "days": "Tage",
@@ -691,10 +756,22 @@
         "notStarted": "Nicht begonnen",
         "onGoing": "Im Gange",
         "progression": {
-            "title": "Fortschritt"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Fortschritt",
+            "useRemote": ""
         },
         "read": "Fertig gelesen",
         "remainingTime": "Ausleihe (verbleibende Tage)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",
         "returnedLcp": "Diese LCP-geschützte Veröffentlichung wird zurückgegeben.",
@@ -884,7 +961,6 @@
             },
             "customFontSelected": "Sie haben eine persönliche Schriftart gewählt",
             "customizeReader": "Anpassen der Textformatierung",
-            "defaultValue": "Standardwert",
             "disabled": "deaktiviert",
             "display": "Lesefluss",
             "disposition": {

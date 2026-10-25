@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "菜单",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "关闭",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "将列表划至左侧",
+        "loading": "",
         "mainContent": "主要内容",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "将列表划至右侧",
         "skipLink": "跳转至内容",
         "toolbar": "工具栏"
@@ -142,7 +159,19 @@
         "sort": "排序方式",
         "tag": "标签",
         "tags": "标签",
-        "update": "编辑"
+        "update": "编辑",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -235,16 +264,17 @@
         "annotations": {
             "alreadyImported": "所有笔记已经导入。",
             "emptyFile": "文件中没有可用的笔记。",
-            "errorParsing": "文件解析时发生错误： ",
             "nothing": "没有可导入的笔记，导入已终止",
             "success": "导入已成功完成。"
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "下载已取消。",
-            "error": "下载{{- title}}失败: [{{- err}}]",
             "errors": {
                 "hashMismatch": "下载文件完整性检查失败：预期SHA-256哈希值为 {{- expected}}，实际为 {{- actual}}。",
                 "httpGet": "HTTP协议下载失败： {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "当前下载文件的文件名无效。",
                 "invalidLink": "下载链接无效。",
                 "invalidTempDirectory": "当前下载文件的路径无效。",
@@ -257,6 +287,31 @@
             "alreadyImport": "[{{- title}}] 已被导入。",
             "fail": "导入{{- path}}失败。{{- err}}",
             "success": "导入{{- title}}完成。"
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "无法打开出版物: {{- err}}",
@@ -304,10 +359,13 @@
         "menu": {
             "aboutBook": "关于此书",
             "addExtract": "导入摘录",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "购买此书",
             "goLoanBook": "借阅此书",
             "goRevokeLoanBook": "归还此书",
-            "goSubBook": "订阅"
+            "goSubBook": "订阅",
+            "placeHold": ""
         },
         "network": {
             "error": "无法访问 OPDS 订阅源",
@@ -318,6 +376,12 @@
         },
         "next": "下一个",
         "previous": "上一个",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "继续浏览",
         "shelf": "书架",
         "updateForm": {
@@ -659,7 +723,8 @@
         "certificateRevoked": "LCP 授权已被撤销。",
         "certificateSignatureInvalid": "无效的 LCP 许可证证书签名。",
         "cover": {
-            "img": "封面图像"
+            "img": "封面图像",
+            "zoom": ""
         },
         "day": "天",
         "days": "天",
@@ -684,10 +749,22 @@
         "notStarted": "尚未开始",
         "onGoing": "进行中",
         "progression": {
-            "title": "进度"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "进度",
+            "useRemote": ""
         },
         "read": "完成",
         "remainingTime": "借阅（剩余时间）",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "更新",
         "returnButton": "归还",
         "returnedLcp": "此书无法阅读，因为LCP许可证已被归还。",
@@ -876,7 +953,6 @@
             },
             "customFontSelected": "您已选择自定义字体",
             "customizeReader": "自定义文本格式",
-            "defaultValue": "默认值",
             "disabled": "已禁用",
             "display": "显示",
             "disposition": {

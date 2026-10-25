@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "選單",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "關閉",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "將列表移至左側",
+        "loading": "",
         "mainContent": "主要內容",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "將列表移至右側",
         "skipLink": "跳轉至內容",
         "toolbar": "工具欄"
@@ -142,7 +159,19 @@
         "sort": "排序方式",
         "tag": "標籤",
         "tags": "標籤",
-        "update": "編輯"
+        "update": "編輯",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -235,16 +264,17 @@
         "annotations": {
             "alreadyImported": "所有註解均已匯入。",
             "emptyFile": "文件中沒有可用的註解。",
-            "errorParsing": "文件解析時發生錯誤： ",
             "nothing": "沒有可供匯入的註解，正在中止匯入",
             "success": "匯入已成功完成。"
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "下載已取消。",
-            "error": "下載 [{{- title}}] 失敗：[{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -257,6 +287,31 @@
             "alreadyImport": "{{- title}} 已被匯入。",
             "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
             "success": "匯入 [{{- title}}] 完成。"
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "無法打開出版物：[{{- err}}]",
@@ -304,10 +359,13 @@
         "menu": {
             "aboutBook": "關於此書",
             "addExtract": "匯入摘錄",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "購買此書",
             "goLoanBook": "借閱此書",
             "goRevokeLoanBook": "歸還此書",
-            "goSubBook": "訂閱"
+            "goSubBook": "訂閱",
+            "placeHold": ""
         },
         "network": {
             "error": "存取訂閱源時出錯",
@@ -318,6 +376,12 @@
         },
         "next": "下一個",
         "previous": "上一個",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "書架",
         "updateForm": {
@@ -659,7 +723,8 @@
         "certificateRevoked": "LCP 授權已被撤銷。",
         "certificateSignatureInvalid": "LCP 授權憑證簽章無效。",
         "cover": {
-            "img": "封面圖像"
+            "img": "封面圖像",
+            "zoom": ""
         },
         "day": "天",
         "days": "天",
@@ -684,10 +749,22 @@
         "notStarted": "未讀",
         "onGoing": "正在閱讀",
         "progression": {
-            "title": "進度"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "進度",
+            "useRemote": ""
         },
         "read": "已讀",
         "remainingTime": "借出（剩餘天數）",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "更新",
         "returnButton": "歸還",
         "returnedLcp": "該受 LCP 保護的書籍已被歸還。",
@@ -876,7 +953,6 @@
             },
             "customFontSelected": "您已選擇個人字體",
             "customizeReader": "自訂文字格式",
-            "defaultValue": "",
             "disabled": "停用",
             "display": "顯示",
             "disposition": {

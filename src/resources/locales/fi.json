@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Valikko",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Sulje",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Siirry listalla vasemmalle",
+        "loading": "",
         "mainContent": "Pääsisältö",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Siirry listalla oikealle",
         "skipLink": "Hyppää sisältöön",
         "toolbar": "Työkalurivi"
@@ -142,7 +159,19 @@
         "sort": "Lajittele",
         "tag": "Tunniste",
         "tags": "Tunnisteet",
-        "update": "Muokkaa"
+        "update": "Muokkaa",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -240,16 +269,17 @@
         "annotations": {
             "alreadyImported": "Kaikki muistiinpanot on jo tuotu.",
             "emptyFile": "Tiedostossa ei ole muistiinpanoja.",
-            "errorParsing": "Virhe tiedoston jäsentämisessä: ",
             "nothing": "Yhtään muistiinpanoa ei ole valmiina tuontiin, tuonti keskeytetty.",
             "success": "Tuonti onnistui."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Lataus peruttu.",
-            "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",
                 "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Väliaikaisen lataustiedoston nimi ei kelpaa.",
                 "invalidLink": "Latauslinkki ei kelpaa.",
                 "invalidTempDirectory": "Väliaikainen lataushakemisto ei kelpaa.",
@@ -262,6 +292,31 @@
             "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
             "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
             "success": "Julkaisun {{- title}} tuonti on valmis."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}",
@@ -311,10 +366,13 @@
         "menu": {
             "aboutBook": "Tietoja tästä kirjasta",
             "addExtract": "Tuo näyte",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Osta kirja",
             "goLoanBook": "Lainaa kirja",
             "goRevokeLoanBook": "Peruuta laina",
-            "goSubBook": "Tilaa"
+            "goSubBook": "Tilaa",
+            "placeHold": ""
         },
         "network": {
             "error": "OPDS-syöte ei ole saatavilla",
@@ -325,6 +383,12 @@
         },
         "next": "Seuraava",
         "previous": "Edellinen",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Palaa selailuun",
         "shelf": "Hylly",
         "updateForm": {
@@ -666,7 +730,8 @@
         "certificateRevoked": "Varmenne on kumottu.",
         "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa.",
         "cover": {
-            "img": "kansikuva"
+            "img": "kansikuva",
+            "zoom": ""
         },
         "day": "päivä",
         "days": "päivää",
@@ -691,10 +756,22 @@
         "notStarted": "Ei ole aloitettu",
         "onGoing": "Luettavana",
         "progression": {
-            "title": "Eteneminen"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Eteneminen",
+            "useRemote": ""
         },
         "read": "Luettu",
         "remainingTime": "Laina (aikaa jäljellä)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Uudista",
         "returnButton": "Palauta",
         "returnedLcp": "Tämä LCP-suojattu julkaisu on palautettu.",
@@ -884,7 +961,6 @@
             },
             "customFontSelected": "Olet valinnut oman fontin",
             "customizeReader": "Mukauta tekstin ulkoasua",
-            "defaultValue": "oletusarvo",
             "disabled": "ei käytössä",
             "display": "Näyttöasetukset",
             "disposition": {

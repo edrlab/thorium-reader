@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "メニュー",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "閉じる",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "左にスライド",
+        "loading": "",
         "mainContent": "メインコンテンツ",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "右にスライド",
         "skipLink": "コンテンツに移動",
         "toolbar": "ツールバー"
@@ -142,7 +159,19 @@
         "sort": "並び替え",
         "tag": "タグ",
         "tags": "タグ",
-        "update": "編集"
+        "update": "編集",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -234,16 +263,17 @@
         "annotations": {
             "alreadyImported": "すべてのメモがすでに取り込まれています。",
             "emptyFile": "ファイル内にメモはありません。",
-            "errorParsing": "ファイル解析中にエラーが発生しました： ",
             "nothing": "取りこめる状態のメモがないため、取りこみを中止します",
             "success": "取り込みが正常に完了しました。"
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "",
-            "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -256,6 +286,31 @@
             "alreadyImport": "『{{- title}}』はすでに追加されています。",
             "fail": "『{{- path}}』の追加に失敗しました：{{- err}}",
             "success": "『{{- title}}』の追加が完了しました。"
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "本を開けません：{{- err}}",
@@ -303,10 +358,13 @@
         "menu": {
             "aboutBook": "本の情報",
             "addExtract": "抜粋して取りこむ",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "本を購入する",
             "goLoanBook": "本を借りる",
             "goRevokeLoanBook": "返却する",
-            "goSubBook": "購読する"
+            "goSubBook": "購読する",
+            "placeHold": ""
         },
         "network": {
             "error": "OPDSフィードにアクセスできません",
@@ -317,6 +375,12 @@
         },
         "next": "次へ",
         "previous": "前へ",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "本棚",
         "updateForm": {
@@ -658,7 +722,8 @@
         "certificateRevoked": "LCPライセンス証明書が取り消されています。",
         "certificateSignatureInvalid": "LCPライセンス証明書の署名が無効です。",
         "cover": {
-            "img": "カバー画像"
+            "img": "カバー画像",
+            "zoom": ""
         },
         "day": "日",
         "days": "日中",
@@ -683,10 +748,22 @@
         "notStarted": "まだ開いていません",
         "onGoing": "進行中",
         "progression": {
-            "title": "進行度"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "進行度",
+            "useRemote": ""
         },
         "read": "既読",
         "remainingTime": "借受中（残り日数）",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "更新",
         "returnButton": "返却",
         "returnedLcp": "このLCPライセンスは返却されました。",
@@ -875,7 +952,6 @@
             },
             "customFontSelected": "利用するフォントを選択しました",
             "customizeReader": "本文のスタイル",
-            "defaultValue": "",
             "disabled": "無効",
             "display": "画面表示",
             "disposition": {

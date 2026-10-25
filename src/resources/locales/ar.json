@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "قائمة",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "إغلاق",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "سحب إلى اليسار",
+        "loading": "",
         "mainContent": "المحتوى الرئيسي",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "سحب إلى اليمين",
         "skipLink": "تخطَّ إلى المحتوى",
         "toolbar": "شريط الأدوات"
@@ -142,30 +159,42 @@
         "sort": "فرز حسب",
         "tag": "الوسم",
         "tags": "الوسوم",
-        "update": "تحرير"
+        "update": "تحرير",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "تأليف '{{- author}}'",
             "descCreator": "أنشأه",
+            "descList_zero": "سيتم استيراد {{- count}} ملاحظة من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
+            "descList_one": "سيتم استيراد {{- count}} ملاحظةمن {{- creator}} إلى '{{- title}}' لـ {{- author}}",
+            "descList_two": "سيتم استيراد ملاحظتان من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
             "descList_few": "سيتم استيراد {{- count}} ملاحظات من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
             "descList_many": "سيتم استيراد {{- count}} ملاحظة من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
-            "descList_one": "سيتم استيراد {{- count}} ملاحظةمن {{- creator}} إلى '{{- title}}' لـ {{- author}}",
             "descList_other": "سيتم استيراد {{- count}} ملاحظة من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
-            "descList_two": "سيتم استيراد ملاحظتان من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
-            "descList_zero": "سيتم استيراد {{- count}} ملاحظة من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
+            "descNewer_zero": "تعارض: {{- count}} أحدث ملاحظة",
+            "descNewer_one": "تعارض: {{- count}} أحدث ملاحظة",
+            "descNewer_two": "تعارض:أحدث(ملاحظتان",
             "descNewer_few": "تعارض: {{- count}} أحدث ملاحظات",
             "descNewer_many": "تعارض: {{- count}} أحدث ملاحظة",
-            "descNewer_one": "تعارض: {{- count}} أحدث ملاحظة",
             "descNewer_other": "تعارض: {{- count}} أحدث ملاحظة",
-            "descNewer_two": "تعارض:أحدث(ملاحظتان",
-            "descNewer_zero": "تعارض: {{- count}} أحدث ملاحظة",
+            "descOlder_zero": "لا يوجد تعارض",
+            "descOlder_one": "تعارض: ملاحظة واحدة أقدم",
+            "descOlder_two": "تعارض: ملاحظتان أقدم",
             "descOlder_few": "تعارض: {{- count}} ملاحظات أقدم",
             "descOlder_many": "تعارض: {{- count}} ملاحظة أقدم",
-            "descOlder_one": "تعارض: ملاحظة واحدة أقدم",
             "descOlder_other": "تعارض: {{- count}} ملاحظة أقدم",
-            "descOlder_two": "تعارض: ملاحظتان أقدم",
-            "descOlder_zero": "لا يوجد تعارض",
             "descTitle": "عنوان التعليقات: ",
             "importAll": "استيراد كل الملاحظات",
             "importWithoutConflict": "استيراد الملاحظات غير المتعارضة فقط",
@@ -182,19 +211,19 @@
             }
         },
         "deleteAnnotations": "حذف التعليقات؟",
+        "deleteAnnotationsText_zero": "هل أنت متأكد من حذف {{- count}} ملاحظة؟",
+        "deleteAnnotationsText_one": "هل أنت متأكد من حذف {{- count}} ملاحظة؟",
+        "deleteAnnotationsText_two": "هل أنت متأكد من حذف ملاحظتان؟",
         "deleteAnnotationsText_few": "هل أنت متأكد من حذف {{- count}} ملاحظات؟",
         "deleteAnnotationsText_many": "هل أنت متأكد من حذف {{- count}} ملاحظة؟",
-        "deleteAnnotationsText_one": "هل أنت متأكد من حذف {{- count}} ملاحظة؟",
         "deleteAnnotationsText_other": "هل أنت متأكد من حذف {{- count}} ملاحظة؟",
-        "deleteAnnotationsText_two": "هل أنت متأكد من حذف ملاحظتان؟",
-        "deleteAnnotationsText_zero": "هل أنت متأكد من حذف {{- count}} ملاحظة؟",
         "deleteBookmarks": "حذف الإشارات المرجعية؟",
+        "deleteBookmarksText_zero": "هل أنت متأكد من حذف {{- count}} إشارة مرجعية؟",
+        "deleteBookmarksText_one": "هل أنت متأكد من حذف {{- count}} إشارة مرجعية؟",
+        "deleteBookmarksText_two": "هل أنت متأكد من حذف إشارتان مرجعيتان؟",
         "deleteBookmarksText_few": "هل أنت متأكد من حذف {{- count}} إشارات مرجعية؟",
         "deleteBookmarksText_many": "هل أنت متأكد من حذف {{- count}} إشارة مرجعية؟",
-        "deleteBookmarksText_one": "هل أنت متأكد من حذف {{- count}} إشارة مرجعية؟",
         "deleteBookmarksText_other": "هل أنت متأكد من حذف {{- count}} إشارة مرجعية؟",
-        "deleteBookmarksText_two": "هل أنت متأكد من حذف إشارتان مرجعيتان؟",
-        "deleteBookmarksText_zero": "هل أنت متأكد من حذف {{- count}} إشارة مرجعية؟",
         "deleteFeed": "حذف الفهرس؟",
         "deletePublication": "حذف المنشور؟",
         "deletePublicationWithNotes": "تحذير: يحتوي هذا المنشور على تعليقات و/أو إشارات مرجعية، سيتم حذفها أيضًا! (إذا كنت ترغب في الاحتفاظ بها، تأكد من تصدير الملاحظات قبل إزالة المنشور)",
@@ -260,16 +289,17 @@
         "annotations": {
             "alreadyImported": "تم استيراد جميع الملاحظات مسبقاً.",
             "emptyFile": "لا توجد ملاحظات جاهزة للاستيراد، سيتم إلغاء العملية.",
-            "errorParsing": "حدث خطأ أثناء تحليل الملف: ",
             "nothing": "لا توجد أي ملاحظة جاهزة للاستيراد، جاري إلغاء عملية الاستيراد",
             "success": "اكتمل الاستيراد بنجاح."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "تم إلغاء التحميل.",
-            "error": "فشل تنزيل [{{- title}}]: [{{- err}}]",
             "errors": {
                 "hashMismatch": "فشل التحقق من الملف المحمَّل: شفرة SHA-256 المتوقعة هي: {{- expected}}، لكن الفعلية: {{- actual}}.",
                 "httpGet": "فشل التحميل عبر HTTP: [{{- statusMessage}}] ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "الاسم المؤلف للملف المحمل غير صحيح.",
                 "invalidLink": "رابط التحميل غير صالح.",
                 "invalidTempDirectory": "مجلد التحميل المؤقت غير صالح.",
@@ -283,6 +313,31 @@
             "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
             "success": "اكتمل استيراد [{{- title}}]."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
+        },
         "open": {
             "error": "فشل تحميل المنشور: [{{- err}}]",
             "folderNotFound": "لم نتمكن من العثور على مجلد الكتاب. أعد جلبه أو عدل إعدادات ذاكرة التخزين الإضافية في الإعدادات > التخزين."
@@ -290,12 +345,12 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success_zero": "",
+                "success_one": "",
+                "success_two": "",
                 "success_few": "",
                 "success_many": "",
-                "success_one": "",
-                "success_other": "",
-                "success_two": "",
-                "success_zero": ""
+                "success_other": ""
             },
             "removed": "مجلد الكتاب تم حذفه.",
             "updateFailed": "فشل تحديث مجلد الكتاب: {{- message}}",
@@ -335,10 +390,13 @@
         "menu": {
             "aboutBook": "حول المنشور",
             "addExtract": "استيراد مقطع",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "شراء المنشور",
             "goLoanBook": "استعارة المنشور",
             "goRevokeLoanBook": "إلغاء الاستعارة",
-            "goSubBook": "اشتراك"
+            "goSubBook": "اشتراك",
+            "placeHold": ""
         },
         "network": {
             "error": "خطأ في الوصول إلى المصدر",
@@ -349,6 +407,12 @@
         },
         "next": "التالي",
         "previous": "السابق",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "استئناف التصفح",
         "shelf": "الرف",
         "updateForm": {
@@ -690,7 +754,8 @@
         "certificateRevoked": "تم إبطال شهادة ترخيص LCP.",
         "certificateSignatureInvalid": "توقيع شهادة ترخيص LCP غير صالح.",
         "cover": {
-            "img": "صورة الغلاف"
+            "img": "صورة الغلاف",
+            "zoom": ""
         },
         "day": "يوم",
         "days": "أيام",
@@ -715,10 +780,22 @@
         "notStarted": "لم يبدأ",
         "onGoing": "جارٍ التنفيذ",
         "progression": {
-            "title": "التقدّم في القراءة"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "التقدّم في القراءة",
+            "useRemote": ""
         },
         "read": "انتهى",
         "remainingTime": "الاستعارة (الوقت المتبقي)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "تجديد",
         "returnButton": "إرجاع",
         "returnedLcp": "تم إرجاع هذا المنشور المحمي بـ LCP.",
@@ -870,12 +947,12 @@
         },
         "picker": {
             "search": {
+                "founds_zero": "تم العثور على {{- count}} تطابقات",
+                "founds_one": "تم العثور على {{- count}} تطابق",
+                "founds_two": "تم العثور على {{- count}} تطابقات",
                 "founds_few": "تم العثور على {{- count}} تطابقات",
                 "founds_many": "تم العثور على {{- count}} تطابق",
-                "founds_one": "تم العثور على {{- count}} تطابق",
                 "founds_other": "تم العثور على {{- count}} تطابق",
-                "founds_two": "تم العثور على {{- count}} تطابقات",
-                "founds_zero": "تم العثور على {{- count}} تطابقات",
                 "input": "النص المطلوب مطابقته",
                 "next": "التالي",
                 "notFound": "لم يتم العثور على تطابقات",
@@ -912,7 +989,6 @@
             },
             "customFontSelected": "لقد اخترت خطاً شخصياً",
             "customizeReader": "تخصيص تنسيق النص",
-            "defaultValue": "الوضع الافتراضي",
             "disabled": "تم تعطيله",
             "display": "العرض",
             "disposition": {
@@ -1359,21 +1435,21 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description_zero": "",
+                    "description_one": "",
+                    "description_two": "",
                     "description_few": "",
                     "description_many": "",
-                    "description_one": "",
                     "description_other": "",
-                    "description_two": "",
-                    "description_zero": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount_zero": "",
+                "recoverableCount_one": "",
+                "recoverableCount_two": "",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
-                "recoverableCount_one": "",
                 "recoverableCount_other": "",
-                "recoverableCount_two": "",
-                "recoverableCount_zero": "",
                 "title": ""
             }
         },

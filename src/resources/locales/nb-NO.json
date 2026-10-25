@@ -1,6 +1,7 @@
 {
     "accessibility": {
         "bookMenu": "Meny",
+        "cancelDownload": "",
         "closeDialog": "Lukk",
         "leftSlideButton": "Flytt til venstre",
         "mainContent": "Hovedinnhold",
@@ -132,7 +133,11 @@
         "sort": "Sorter etter",
         "tag": "Tagg",
         "tags": "Tagger",
-        "update": "Rediger"
+        "update": "Rediger",
+        "userProfile": {
+            "holds": "",
+            "loans": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -234,7 +239,8 @@
             "success": "Importen er fullført."
         },
         "download": {
-            "error": "Nedlasting av {{- title}} mislyktes: [{{- err}}]"
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} er allerede importert",

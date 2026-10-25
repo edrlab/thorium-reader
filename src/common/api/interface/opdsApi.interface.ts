@@ -10,12 +10,22 @@ import { TCatalogAddAnalyticsOrigin } from "readium-desktop/common/analytics/cat
 import {
     IOpdsFeedView, IOpdsLinkView,
 } from "readium-desktop/common/views/opds";
+import { TOpdsProgressionServiceStatus } from "readium-desktop/common/models/opdsProgression";
+import { availableLanguages } from "readium-desktop/common/services/translator";
 import { SagaGenerator } from "typed-redux-saga";
+import type { IOpdsUserProfile } from "readium-desktop/common/models/opdsUserProfile";
+import { RegistrySearchResult } from "readium-desktop/common/models/registry";
 
 // quite useless
 export type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url">>;
 
 export interface IOpdsApi {
+    getUserProfile: (identifier: string) => SagaGenerator<IOpdsUserProfile | undefined>;
+    searchRegistry: (query: string, page?: number) => SagaGenerator<RegistrySearchResult>;
+    getProgressionServiceStatus: (
+        url: string,
+        locale?: keyof typeof availableLanguages,
+    ) => SagaGenerator<TOpdsProgressionServiceStatus>;
     getFeed: (
         identifier: string,
     ) => SagaGenerator<IOpdsFeedView>;
@@ -23,10 +33,12 @@ export interface IOpdsApi {
         identifier: string,
     ) => SagaGenerator<void>;
     findAllFeeds: (
+        refreshAuthentication?: boolean,
     ) => SagaGenerator<IOpdsFeedView[]>;
     addFeed: (
         data: OpdsFeed,
         origin?: TCatalogAddAnalyticsOrigin,
+        iconUrl?: string,
     ) => SagaGenerator<IOpdsFeedView>;
     updateFeed: (
         identifier: string,
@@ -42,6 +54,9 @@ export interface IOpdsApi {
 }
 
 export interface IOpdsModuleApi {
+    "opds/getUserProfile": IOpdsApi["getUserProfile"];
+    "opds/searchRegistry": IOpdsApi["searchRegistry"];
+    "opds/getProgressionServiceStatus": IOpdsApi["getProgressionServiceStatus"];
     "opds/getFeed": IOpdsApi["getFeed"];
     "opds/deleteFeed": IOpdsApi["deleteFeed"];
     "opds/findAllFeeds": IOpdsApi["findAllFeeds"];

@@ -39,6 +39,7 @@ import {
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { createOpdsPkceRefreshTokenRequest } from "readium-desktop/main/network/opdsPkce";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
+import { contentTypeisApiProblem, parseContentType } from "readium-desktop/utils/contentType";
 
 import { diMainGet, opdsAuthFilePath } from "../di";
 import { fetchWithCookie } from "./fetch";
@@ -514,6 +515,24 @@ async function httpFetchFormattedResponse<TData = undefined>(
         debug({ ...response.headers.raw() });
         debug("###");
 
+        let statusMessage = response.statusText;
+        if ((!response.ok || debug.enabled) && contentTypeisApiProblem(parseContentType(response.headers.get("Content-Type")))) {
+            try {
+                const problem = await response.clone().json();
+                debug("Problem Details response JSON:", problem);
+                const title = problem && typeof problem === "object" && "title" in problem ? problem.title : undefined;
+                const detail = problem && typeof problem === "object" && "detail" in problem ? problem.detail : undefined;
+                const messages = [title, detail]
+                    .filter((value): value is string => typeof value === "string" && !!value.trim())
+                    .map((value) => value.trim());
+                if (!response.ok && messages.length) {
+                    statusMessage = [...new Set(messages)].join(": ");
+                }
+            } catch (error) {
+                debug("Unable to parse Problem Details response JSON:", error);
+            }
+        }
+
         result = {
             isAbort: false,
             isNetworkError: false,
@@ -523,7 +542,7 @@ async function httpFetchFormattedResponse<TData = undefined>(
             url,
             responseUrl: response.url,
             statusCode: response.status,
-            statusMessage: response.statusText,
+            statusMessage,
             body: response.body,
             response,
             data: undefined,
@@ -538,7 +557,10 @@ async function httpFetchFormattedResponse<TData = undefined>(
         // debug(errStr);
         debug(err);
         debug("url: ", url);
-        debug("options: ", options);
+        debug("options: ", {
+            ...options,
+            agent: options.agent?.constructor.name,
+        });
 
         if (errStr.includes("timeout") || (options?.signal as any)?.__abortReasonTimeout) { // err.name === "FetchError"
             result = {
@@ -766,18 +788,18 @@ export const httpPost: typeof httpFetchFormattedResponse =
         return httpFetchFormattedResponse(...arg);
     };
 
-const httpPutWithAuthInternal =
+const httpWriteWithAuthInternal =
     (enableAuth: boolean): typeof httpFetchFormattedResponse =>
         async (...arg) => {
             const [_url, _options, _callback, ..._arg] = arg;
             const url = _url instanceof URL ? _url : new URL(_url);
             const options = _options || {};
-            options.method = "put";
+            options.method = options.method === "delete" ? "delete" : "put";
 
             if (enableAuth) {
-                const auth = await getAuthenticationToken(url, "PUT");
+                const auth = await getAuthenticationToken(url, options.method.toUpperCase());
                 if (auth?.accessToken) {
-                    return httpPutUnauthorized(auth, true)(url, options, _callback, ..._arg);
+                    return httpWriteUnauthorized(auth, true)(url, options, _callback, ..._arg);
                 }
             }
 
@@ -786,19 +808,19 @@ const httpPutWithAuthInternal =
             const responseUrl = response.responseUrl ? new URL(response.responseUrl) : url;
             if (response.statusCode === 401 && responseUrl.href !== url.href &&
                 !(url.protocol === "https:" && responseUrl.protocol === "http:") &&
-                (await getAuthenticationToken(responseUrl, "PUT"))?.accessToken) {
+                (await getAuthenticationToken(responseUrl, options.method.toUpperCase()))?.accessToken) {
                 options.headers = new Headers(options.headers || {});
                 if (responseUrl.origin !== url.origin) {
                     for (const header of ["Authorization", "Cookie", "Cookie2", "Host", "Proxy-Authorization"]) {
                         (options.headers as Headers).delete(header);
                     }
                 }
-                return httpPutWithAuthInternal(true)(responseUrl, options, _callback, ..._arg);
+                return httpWriteWithAuthInternal(true)(responseUrl, options, _callback, ..._arg);
             }
             return handleCallback(response, _callback);
         };
 
-const httpPutUnauthorized =
+const httpWriteUnauthorized =
     (
         auth: IOpdsAuthenticationToken,
         enableRefresh: boolean,
@@ -819,7 +841,7 @@ const httpPutUnauthorized =
                 httpSetHeaderAuthorization(tokenType || "Bearer", accessToken),
             );
 
-            const response = await httpPutWithAuthInternal(false)(
+            const response = await httpWriteWithAuthInternal(false)(
                 url,
                 options,
                 enableRefresh ? undefined : _callback,
@@ -837,7 +859,7 @@ const httpPutUnauthorized =
                         return handleCallback(response, _callback);
                     }
                     if (auth.refreshUrl && auth.refreshToken) {
-                        const responseAfterRefresh = await httpPutUnauthorizedRefresh(
+                        const responseAfterRefresh = await httpWriteUnauthorizedRefresh(
                             auth,
                         )(response.url, options, _callback, ..._arg);
                         if (responseAfterRefresh) {
@@ -847,7 +869,7 @@ const httpPutUnauthorized =
 
                     await deleteAuthenticationToken(url.host);
                     (options.headers as Headers).delete("Authorization");
-                    return httpPutWithAuthInternal(false)(
+                    return httpWriteWithAuthInternal(false)(
                         response.url,
                         options,
                         _callback,
@@ -859,7 +881,7 @@ const httpPutUnauthorized =
             return response;
         };
 
-const httpPutUnauthorizedRefresh =
+const httpWriteUnauthorizedRefresh =
     (
         auth: IOpdsAuthenticationToken,
     ): typeof httpFetchFormattedResponse | undefined =>
@@ -903,7 +925,7 @@ const httpPutUnauthorizedRefresh =
                 : undefined;
             auth.accessToken = newAccessToken || auth.accessToken;
 
-            const httpPutResponse = await httpPutUnauthorized(
+            const httpPutResponse = await httpWriteUnauthorized(
                 auth,
                 false,
             )(...arg);
@@ -919,7 +941,11 @@ const httpPutUnauthorizedRefresh =
  * Keep this separate from httpPut: the latter is also used by LCP/LSD endpoints,
  * where OPDS authentication-token lookup and refresh must not be applied.
  */
-export const httpPutWithAuth: typeof httpFetchFormattedResponse = httpPutWithAuthInternal(true);
+export const httpPutWithAuth: typeof httpFetchFormattedResponse = (url, options, ...args) =>
+    httpWriteWithAuthInternal(true)(url, { ...options, method: "put" }, ...args);
+
+export const httpDeleteWithAuth: typeof httpFetchFormattedResponse = (url, options, ...args) =>
+    httpWriteWithAuthInternal(true)(url, { ...options, method: "delete" }, ...args);
 
 export const httpPut: typeof httpFetchFormattedResponse =
     async (...arg) => {

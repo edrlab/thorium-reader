@@ -12,6 +12,9 @@ import * as stylesTags from "readium-desktop/renderer/assets/styles/components/t
 import * as stylesMarkdown from "readium-desktop/renderer/assets/styles/github-markdown.scss";
 import classNames from "classnames";
 import * as React from "react";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { FocusScope } from "react-aria";
+import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button } from "react-aria-components";
 import FocusLock from "react-focus-lock";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -21,7 +24,6 @@ import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as BookOpenIcon from "readium-desktop/renderer/assets/icons/bookOpen-icon.svg";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
-import * as Popover from "@radix-ui/react-popover";
 import { AnnotationEdit } from "../AnnotationEdit";
 
 import { IReaderMenuProps } from "../options-values";
@@ -180,14 +182,12 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                         }
                         // dispatch(readerLocalActionAnnotations.focus.build(annotation));
                     }}
-
                     // does not work on button (works on 'a' link)
                     // onDoubleClick={(_e) => {
                     //     e.preventDefault();
                     //     goToLocator(annotation.locatorExtended.locator, false);
                     //     dispatch(readerLocalActionAnnotations.focus.build(annotation));
                     // }}
-
                     // not necessary (onClick works)
                     // onKeyUp=
                     // {
@@ -231,7 +231,6 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                         {tagName ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tagName)}
-
                                     onKeyDown={(e) => {
                                         // if (e.code === "Space") {
                                         if (e.key === " " || e.altKey || e.ctrlKey) {
@@ -273,7 +272,6 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                     <div>
                         <SVG ariaHidden svg={AvatarIcon} />
                         <a onClick={() => setCreatorFilter(creatorName)}
-
                             onKeyDown={(e) => {
                                 // if (e.code === "Space") {
                                 if (e.key === " " || e.altKey || e.ctrlKey) {
@@ -318,31 +316,37 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                     <SVG ariaHidden={true} svg={DeleteIcon} />
                     { !dockedMode ? __("reader.marks.delete") : undefined}
                 </button> :
-                canDeleteAnnotation ? <Popover.Root modal>
-                    <Popover.Trigger asChild>
-                        <button
-                        title={__("reader.marks.delete")}
-                        >
+                canDeleteAnnotation ? <DialogTrigger>
+                    <Pressable>
+                        <button title={__("reader.marks.delete")}>
                             <SVG ariaHidden={true} svg={DeleteIcon} />
                         </button>
-                    </Popover.Trigger>
-                    <Popover.Portal>
-                        <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
-                            <Popover.Close
-                                onClick={() => {
-                                    triggerEdition(false);
-                                    dispatch(readerActions.note.remove.build(annotation));
-                                }}
-                                title={__("reader.marks.delete")}
-                            >
-                                <SVG ariaHidden={true} svg={DeleteIcon} />
-                                {__("reader.marks.delete")}
-                            </Popover.Close>
-                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                        </Popover.Content>
-                    </Popover.Portal>
-
-                </Popover.Root> : <></>
+                    </Pressable>
+                    <Popover
+                        placement="bottom"
+                        offset={5}
+                        crossOffset={-10}
+                        className={stylesPopoverDialog.delete_item}
+                        style={{ zIndex: OVERLAY_Z_INDEX }}
+                    >
+                        <PopoverDialog>
+                            <FocusScope autoFocus>
+                                <Button
+                                    slot="close"
+                                    onPress={() => {
+                                        triggerEdition(false);
+                                        dispatch(readerActions.note.remove.build(annotation));
+                                    }}
+                                    render={(buttonProps) => <button {...buttonProps} title={__("reader.marks.delete")} />}
+                                >
+                                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                                    {__("reader.marks.delete")}
+                                </Button>
+                                <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                            </FocusScope>
+                        </PopoverDialog>
+                    </Popover>
+                </DialogTrigger> : <></>
                 }
             </div> : <></> }
         </div>

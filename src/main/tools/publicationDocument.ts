@@ -58,5 +58,6 @@ export const buildOpdsPublicationDocumentPatch = (
         type: link.type,
         selfLinkUrl: publication?.selfLink?.url,
         identifier: publication?.workIdentifier,
+        progressionLink: publication?.progressionLink,
     },
 });

@@ -19,8 +19,9 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
 import classNames from "classnames";
 import * as React from "react";
-import * as Popover from "@radix-ui/react-popover";
-import {Button, OverlayArrow, Tooltip, TooltipTrigger} from "react-aria-components";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { FocusScope } from "react-aria";
+import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
 import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
 import {
@@ -109,35 +110,42 @@ export const AdvancedTrigger = () => {
     };
 
     return (
-        <Popover.Root modal>
-            <Popover.Trigger asChild>
+        <DialogTrigger>
+            <Pressable>
                 <button>
                     <SVG
-                        title={
-                            `${__("settings.keyboard.advancedMenu")}`
-                        }
+                        title={`${__("settings.keyboard.advancedMenu")}`}
                         className={classNames(stylesButtons.button_secondary_blue, stylesKeys.advanced_trigger)}
                         svg={MenuIcon}
                     />
                 </button>
-            </Popover.Trigger>
-            <Popover.Portal>
-                <Popover.Content sideOffset={5} className={stylesDropDown.PopoverContent}>
-                    <div className={stylesDropDown.dropdown_menu}>
-                        <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(true)}>
-                            {__("settings.keyboard.resetDefaults")}
-                        </button>
-                        <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsShow()}>
-                            {__("settings.keyboard.editUserJson")}
-                        </button>
-                        <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(false)}>
-                            {__("settings.keyboard.loadUserJson")}
-                        </button>
-                    </div>
-                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                </Popover.Content>
-            </Popover.Portal>
-        </Popover.Root>
+            </Pressable>
+            <Popover
+                placement="bottom"
+                offset={5}
+                crossOffset={0}
+                containerPadding={0}
+                className={stylesDropDown.PopoverContent}
+                style={{ zIndex: OVERLAY_Z_INDEX }}
+            >
+                <PopoverDialog>
+                    <FocusScope autoFocus>
+                        <div className={stylesDropDown.dropdown_menu}>
+                            <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(true)}>
+                                {__("settings.keyboard.resetDefaults")}
+                            </button>
+                            <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsShow()}>
+                                {__("settings.keyboard.editUserJson")}
+                            </button>
+                            <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(false)}>
+                                {__("settings.keyboard.loadUserJson")}
+                            </button>
+                        </div>
+                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                    </FocusScope>
+                </PopoverDialog>
+            </Popover>
+        </DialogTrigger>
     );
 };
 
@@ -611,7 +619,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
                         <div>
 
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "10px" }}>
                             <input
                                 dir={isRTL ? "rtl" : "ltr"}
                                 type="text"
@@ -636,12 +644,13 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 const hit = this.state.editKeyboardShortcutId === id;
                                 const cname = Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].name : undefined;
                                 const cdesc = Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].description : undefined;
-                                const frag = <>
-                                    <div style={{display: "flex", border: isDuplicated ? "2px solid red" : undefined}}>
+                                const heading = <div style={{display: "flex", border: isDuplicated ? "2px solid red" : undefined}}>
                                         <h3 className={stylesKeys.keyshortElement_title}>{cname}</h3>
                                     {    cleanNames[id].description.length ?
                                         <TooltipTrigger>
-                                            <Button style={{ width: "15px", height:"15px", marginLeft: "3px" }} aria-label={cdesc}><SVG ariaHidden svg={InfoIcon} /></Button>
+                                            <Button style={{ width: "15px", height: "15px", marginLeft: "3px" }} aria-label={cdesc}>
+                                                <SVG ariaHidden svg={InfoIcon} />
+                                            </Button>
                                             <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)"}}>
                                                 <OverlayArrow>
                                                 <svg width={8} height={8} viewBox="0 0 8 8">
@@ -653,7 +662,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                         </TooltipTrigger>
                                         : ""
                                     }
-                                    </div>
+                                    </div>;
+                                const frag = <>
                                     <div
                                         style={{border: isDuplicated ? "2px solid orange" : undefined}}
                                         className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
@@ -733,7 +743,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                             :
                                             classNames(stylesKeys.keyshortElement_container)
                                         }
-                                    key={`key_${id}`}>{
+                                    key={`key_${id}`}>
+                                    {heading}
+                                    {
                                     (hit ? <FocusLock
                                         disabled={false}
                                         autoFocus={true}>{frag}</FocusLock> : frag)

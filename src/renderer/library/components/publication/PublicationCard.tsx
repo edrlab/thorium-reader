@@ -10,7 +10,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 
 import * as React from "react";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -31,7 +31,7 @@ import CatalogMenu from "./menu/CatalogMenu";
 
 import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
-import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
+import { PublicationInfoOpdsWithRAC, PublicationInfoOpdsWithRACContent, PublicationInfoOpdsWithRACTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
 // import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
@@ -79,6 +79,7 @@ class PublicationCard extends React.Component<IProps> {
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+        const publicationLabel = `${pubTitleStr}${authors ? ` - ${authors}` : ""}`;
 
         const publicationView = publicationViewMaybeOpds as PublicationView;
         const opdsPublicationView = publicationViewMaybeOpds as IOpdsPublicationView;
@@ -150,15 +151,16 @@ class PublicationCard extends React.Component<IProps> {
             <div className={stylesPublications.publication_wrapper}>
                 {
                     isOpds ?
-                        <PublicationInfoOpdsWithRadix
+                        <PublicationInfoOpdsWithRAC
                             opdsPublicationView={opdsPublicationView}
                         >
-                            <PublicationInfoOpdsWithRadixTrigger asChild>
+                            <PublicationInfoOpdsWithRACTrigger asChild>
                                 <button
                                    className={classNames(
                                         stylesPublications.publication_main_container,
                                     )}
-                                    title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
+                                    aria-label={publicationLabel}
+                                    title={publicationLabel}
                                     tabIndex={0}
                                 >
                                     <Cover
@@ -177,9 +179,9 @@ class PublicationCard extends React.Component<IProps> {
                                         </p>
                                     </div>
                                 </button>
-                            </PublicationInfoOpdsWithRadixTrigger>
-                            <PublicationInfoOpdsWithRadixContent />
-                        </PublicationInfoOpdsWithRadix>
+                            </PublicationInfoOpdsWithRACTrigger>
+                            <PublicationInfoOpdsWithRACContent />
+                        </PublicationInfoOpdsWithRAC>
                         :
                         canOpenLocalPublication ?
                             <a
@@ -188,7 +190,8 @@ class PublicationCard extends React.Component<IProps> {
                                     (e) =>
                                         (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
                                 }
-                                title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
+                                aria-label={publicationLabel}
+                                title={publicationLabel}
                                 className={classNames(
                                             stylesPublications.publication_main_container,
                                             { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },
@@ -215,7 +218,8 @@ class PublicationCard extends React.Component<IProps> {
                             <AlertDialog.Root>
                                 <AlertDialog.Trigger asChild>
                                     <a
-                                        title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
+                                        aria-label={publicationLabel}
+                                        title={publicationLabel}
                                         className={classNames(
                                                     stylesPublications.publication_main_container,
                                                     { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },
@@ -251,8 +255,7 @@ class PublicationCard extends React.Component<IProps> {
                                         </div>
                                     </a>
                                 </AlertDialog.Trigger>
-                                <AlertDialog.Portal>
-                                    <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/>
+                                <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                                     <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                                         <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
                                             {__("catalog.missing")}

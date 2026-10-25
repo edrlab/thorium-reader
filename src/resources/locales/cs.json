@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Zavřít",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Posunout doleva",
+        "loading": "",
         "mainContent": "hlavní obsah",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Posunout doprava",
         "skipLink": "Přeskočit na obsah",
         "toolbar": "panel nástrojů"
@@ -142,23 +159,35 @@
         "sort": "Třídit",
         "tag": "Štítek",
         "tags": "Štítky",
-        "update": "Upravit"
+        "update": "Upravit",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "autor: {{- author}}",
             "descCreator": "vytvořil(a)",
+            "descList_one": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descList_few": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descList_many": "",
-            "descList_one": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descList_other": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
+            "descNewer_one": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descNewer_few": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descNewer_many": "",
-            "descNewer_one": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descNewer_other": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
+            "descOlder_one": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descOlder_few": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descOlder_many": "",
-            "descOlder_one": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descOlder_other": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descTitle": "Anotace titulu: ",
             "importAll": "Importovat všechny poznámky",
@@ -176,14 +205,14 @@
             }
         },
         "deleteAnnotations": "Odstranit anotace?",
+        "deleteAnnotationsText_one": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteAnnotationsText_few": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteAnnotationsText_many": "",
-        "deleteAnnotationsText_one": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteAnnotationsText_other": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteBookmarks": "Odstranit záložky?",
+        "deleteBookmarksText_one": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteBookmarksText_few": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteBookmarksText_many": "",
-        "deleteBookmarksText_one": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteBookmarksText_other": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteFeed": "Odstranit katalog?",
         "deletePublication": "Odstranit publikaci?",
@@ -250,16 +279,17 @@
         "annotations": {
             "alreadyImported": "Všechny poznámky byly již importovány.",
             "emptyFile": "V souboru nejsou dostupné žádné poznámky.",
-            "errorParsing": "Chyba při analýze souboru: ",
             "nothing": "Žádná poznámka k importu, přerušuji import",
             "success": "Import úspěšně dokončen."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "",
-            "error": "Stahování publikace „{{- title}}“ selhalo: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -273,6 +303,31 @@
             "fail": "Import [{{- path}}] selhal: [{{- err}}]",
             "success": "Import publikace „{{- title}}“ dokončen."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
+        },
         "open": {
             "error": "Načítání publikace sehlalo: [{{- err}}]",
             "folderNotFound": ""
@@ -280,9 +335,9 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success_one": "",
                 "success_few": "",
                 "success_many": "",
-                "success_one": "",
                 "success_other": ""
             },
             "removed": "",
@@ -323,10 +378,13 @@
         "menu": {
             "aboutBook": "O publikaci",
             "addExtract": "Importovat úryvek",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Koupit publikaci",
             "goLoanBook": "Zapůjčit si publikaci",
             "goRevokeLoanBook": "Zrušit půjčku",
-            "goSubBook": "Odebírat"
+            "goSubBook": "Odebírat",
+            "placeHold": ""
         },
         "network": {
             "error": "Chyba při přístupu k feedu",
@@ -337,6 +395,12 @@
         },
         "next": "Další",
         "previous": "Předchozí",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Pokračovat v prohlížení",
         "shelf": "Polička",
         "updateForm": {
@@ -678,7 +742,8 @@
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
         "cover": {
-            "img": "titulní obrázek"
+            "img": "titulní obrázek",
+            "zoom": ""
         },
         "day": "den",
         "days": "dny",
@@ -703,10 +768,22 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "Postup"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Postup",
+            "useRemote": ""
         },
         "read": "Dokončeno",
         "remainingTime": "Zápůjčka (zbývající čas)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Obnovit",
         "returnButton": "Vrátit",
         "returnedLcp": "Tato publikace chráněná protokolem LCP byla vrácena.",
@@ -858,9 +935,9 @@
         },
         "picker": {
             "search": {
+                "founds_one": "{{- count}} shod",
                 "founds_few": "{{- count}} shod",
                 "founds_many": "",
-                "founds_one": "{{- count}} shod",
                 "founds_other": "{{- count}} shod",
                 "input": "přesná shoda",
                 "next": "Další",
@@ -898,7 +975,6 @@
             },
             "customFontSelected": "Zvolili jste osobní písmo",
             "customizeReader": "Přizpůsobit formátování textu",
-            "defaultValue": "",
             "disabled": "vypnuto",
             "display": "Zobrazení",
             "disposition": {
@@ -1345,16 +1421,16 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description_one": "",
                     "description_few": "",
                     "description_many": "",
-                    "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount_one": "",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
-                "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""
             }

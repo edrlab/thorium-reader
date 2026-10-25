@@ -58,6 +58,7 @@ import { ICustomizationProfileHistory } from "readium-desktop/common/redux/state
 import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 import { readerPdfConfigReducer } from "readium-desktop/common/redux/reducers/reader/pdfConfig";
+import { opdsProgressionReducer } from "./opdsProgression";
 
 export const rootReducer = () => {
 
@@ -157,6 +158,7 @@ export const rootReducer = () => {
             tts: readerTTSReducer,
             lock: readerLockReducer,
             pdfConfig: readerPdfConfigReducer,
+            opdsProgression: opdsProgressionReducer,
         }),
         search: searchReducer,
         annotation: annotationModeEnableReducer,

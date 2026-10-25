@@ -9,20 +9,21 @@ import * as stylesLoader from "readium-desktop/renderer/assets/styles/loader.scs
 
 import * as React from "react";
 import * as LoaderIcon from "readium-desktop/renderer/assets/icons/loader.svg";
+import { VisuallyHidden } from "react-aria-components";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
 import SVG from "./SVG";
 
-export default class Loader extends React.Component<{}, undefined> {
-
-    constructor(props: {}) {
-        super(props);
-    }
-
-    public render(): React.ReactElement<{}>  {
-        return (
-            <div className={stylesLoader.loader}>
-                <SVG ariaHidden={true} svg={LoaderIcon}/>
-            </div>
-        );
-    }
+export default function Loader({ active = true, announce = true, className = stylesLoader.loader }: {
+    active?: boolean;
+    announce?: boolean;
+    className?: string;
+}) {
+    const [__] = useTranslator();
+    return (
+        <div className={active ? className : undefined} role={announce ? "status" : undefined} aria-atomic={announce ? true : undefined}>
+            {active && <SVG ariaHidden={true} svg={LoaderIcon} />}
+            {announce && <VisuallyHidden>{active ? __("accessibility.loading") : ""}</VisuallyHidden>}
+        </div>
+    );
 }

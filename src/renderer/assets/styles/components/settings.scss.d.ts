@@ -60,3 +60,4 @@ export declare const state: string;
 export declare const storage_location: string;
 export declare const tablist_reading: string;
 export declare const toggleCustom: string;
+export declare const settings_dialog: string;

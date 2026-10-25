@@ -2,6 +2,22 @@
     display: none;
 }
 
+.cover_zoom {
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    cursor: zoom-in;
+
+    &:focus-visible {
+        outline: 2px solid var(--color-brand-primary);
+        outline-offset: 3px;
+    }
+}
+
 .publicationInfo_container {
     display: flex;
     flex-direction: row;
@@ -272,9 +288,14 @@
             }
 
             svg {
-                width: 12px;
-                height: 12px;
+                flex: 0 0 24px;
+                width: 24px;
+                height: 24px;
                 margin-left: 2px;
+            }
+
+            &::after {
+                content: none;
             }
 
             &:first-of-type {

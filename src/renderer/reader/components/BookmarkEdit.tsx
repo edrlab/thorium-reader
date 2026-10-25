@@ -10,14 +10,14 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
 
 import * as React from "react";
+import { Button } from "react-aria-components";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
-import * as Popover from "@radix-ui/react-popover";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
-// import { TextArea } from "react-aria-components";
+// import { Button, TextArea } from "react-aria-components";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
@@ -101,6 +101,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
             `${bookmark.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : bookmark.locatorExtended.selectionInfo.cleanText) : ""}</p> */}
             <p><BookmarkLocatorInfo fallback="" locatorExtended={locatorExtended}/></p>
             <div>
+                <label htmlFor={`${uuid}_edit`}>{__("accessibility.bookmarkNote")}</label>
                 <textarea
                     id={`${uuid}_edit`}
                     value={textAreaValue}
@@ -168,7 +169,14 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
         <div className={stylesBookmarks.bookmark_form_textarea_buttons}>
             {displayFromReaderMenu
                 ? <button className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} onClick={cancel} type="button">{__("dialog.cancel")}</button>
-                : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
+                : <Button
+                    slot="close"
+                    className={stylesButtons.button_secondary_blue}
+                    aria-label={__("dialog.cancel")}
+                    onPress={cancel}
+                >
+                    {__("dialog.cancel")}
+                </Button>
             }
             <button type="submit"
                 className={stylesButtons.button_primary_blue}

@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Meny",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Stäng",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Gå till vänster",
+        "loading": "",
         "mainContent": "huvudinnehåll",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Gå till höger",
         "skipLink": "Hoppa till innehåll",
         "toolbar": "verktygsfält"
@@ -142,7 +159,19 @@
         "sort": "Sortera efter",
         "tag": "Tagg",
         "tags": "Taggar",
-        "update": "Redigera"
+        "update": "Redigera",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -240,16 +269,17 @@
         "annotations": {
             "alreadyImported": "Alla anteckningar har redan importerats.",
             "emptyFile": "Det finns inga anteckningar i filen.",
-            "errorParsing": "Fel vid tolkning av fil: ",
             "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen",
             "success": "Importen lyckades."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Nedladdning avbruten.",
-            "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Integritetskontroll för filen misslyckades. Förväntad SHA-256-hash: {{- expected}}, fick {{- actual}}.",
                 "httpGet": "HTTP-nedladdning misslyckades: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Det tillfälliga filnamnet för den nedladdade filen är ogiltigt.",
                 "invalidLink": "Nedladdningslänken är ogiltig.",
                 "invalidTempDirectory": "Mappen för den tillfälliga nedladdningen är ogiltig.",
@@ -262,6 +292,31 @@
             "alreadyImport": "{{- title}} var redan importerad.",
             "fail": "Importen av {{- path}} misslyckades. {{- err}}",
             "success": "Importen av {{- title}} är slutförd."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Publikationen kan inte öppnas: {{- err}}",
@@ -311,10 +366,13 @@
         "menu": {
             "aboutBook": "Om boken",
             "addExtract": "Importera utdrag",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Köp den här boken",
             "goLoanBook": "Låna den här boken",
             "goRevokeLoanBook": "Återkalla lånet",
-            "goSubBook": "Prenumerera"
+            "goSubBook": "Prenumerera",
+            "placeHold": ""
         },
         "network": {
             "error": "Kunde inte nå OPDS-flödet",
@@ -325,6 +383,12 @@
         },
         "next": "Nästa",
         "previous": "Föregående",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Fortsätt bläddra",
         "shelf": "Hylla",
         "updateForm": {
@@ -666,7 +730,8 @@
         "certificateRevoked": "LCP-certifikatet är återkallat.",
         "certificateSignatureInvalid": "LCP-certifikatets signatur är ogiltig.",
         "cover": {
-            "img": "omslagsbild"
+            "img": "omslagsbild",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dagar",
@@ -691,10 +756,22 @@
         "notStarted": "Ej påbörjad",
         "onGoing": "Läser just nu",
         "progression": {
-            "title": "Läsposition"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Läsposition",
+            "useRemote": ""
         },
         "read": "Läst",
         "remainingTime": "Lån (återstående tid)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Låna om",
         "returnButton": "Lämna tillbaka",
         "returnedLcp": "Den här LCP-skyddade boken är återlämnad.",
@@ -884,7 +961,6 @@
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
             "customizeReader": "Anpassa textformatering",
-            "defaultValue": "standard",
             "disabled": "inaktiverad",
             "display": "Visning",
             "disposition": {

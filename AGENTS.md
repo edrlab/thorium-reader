@@ -52,3 +52,12 @@ The current runtime separation is enforced during Webpack builds by `scripts/web
 - `webpack.config.renderer-pdf.js`, `webpack.config.renderer-pdf-extract.js`, and `webpack.config.preload.js` apply stricter webview/preload isolation rules.
 
 When changing a boundary, update the relevant Webpack config and this file together. After touching imports across runtime-adjacent code, run the relevant Webpack config so the scope checker can catch direct runtime-to-runtime imports.
+
+## Localization (l10n)
+
+- `scripts/translate-scan.js` scans TypeScript source for translation calls with explicit single- or double-quoted keys. Use explicit calls such as `__("catalog.userProfile.loans")` and `__("catalog.userProfile.holds")` rather than dynamically constructed template literals, which the scanner cannot discover.
+- Before synchronizing locales, run `node scripts/translate-scan.js <temporary-json-path>` and verify that changed keys appear in the output. The generated JSON contains empty values and is a key inventory, not a replacement for existing translations. English plural siblings are detected from `src/resources/locales/en.json`.
+- `npm run i18n-scan` synchronizes scanned keys into English through a temporary `und.json`; then supply meaningful English values. `npm run i18n-check` synchronizes the other locales from English. `npm run i18n-json` synchronizes all locales directly from scanned keys. These commands mutate locale files and run `i18n-sort`; use only the synchronization needed for the change.
+- Preserve existing locale translations. Do not remove keys still used at runtime merely because scanning misses them. Review diffs in `src/resources/locales/*.json` after synchronization for accidental key deletions or overwritten translations, including plural forms.
+- After changing the English key structure, run `npm run i18n-typed` to regenerate `src/typings/en.translation.d.ts` and `src/typings/en.translation-keys.d.ts`, and review those diffs too.
+- Check changed labels in English and a translated locale, including missing and empty-string translations. `src/common/services/translator.ts` uses English fallback and explicitly retries English for empty results; ensure labels resolve to meaningful text rather than raw keys or blank strings.

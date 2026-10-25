@@ -9,7 +9,9 @@ $setting_color: var(--color-brand-primary);
 
 .settings_container {
     display: flex;
-    height: 597px;
+    height: min(597px, calc(100dvh - 32px));
+    min-height: 0;
+    min-width: 0;
 
     input[type='range'], input[type="checkbox"] {
         accent-color: $setting_color;
@@ -17,13 +19,13 @@ $setting_color: var(--color-brand-primary);
 
     &:not(:has(.guidedTour_content)) {
         @media screen and (height <= 700px) {
-            height: 450px;
+            height: min(450px, calc(100dvh - 32px));
         }
     }
 
     &:has(.guidedTour_content) {
         @media screen and (height <= 700px) {
-            height: 510px;
+            height: min(510px, calc(100dvh - 32px));
         }
     }
 
@@ -122,8 +124,8 @@ $setting_color: var(--color-brand-primary);
 .modal_dialog_reader .settings_container {
     &:not(:has(.guidedTour_content)) {
         @media screen and (height <= 750px) {
-            height: calc(100dvh - 150px);
-            min-height: 550px;
+            height: min(597px, calc(100dvh - 32px));
+            min-height: 0;
         }
     }
 }
@@ -305,6 +307,8 @@ $setting_color: var(--color-brand-primary);
 
 .settings_content {
     flex: 2;
+    min-width: 0;
+    min-height: 0;
     overflow: hidden scroll;
     margin-top: 50px;
     margin-bottom: 5px;
@@ -699,7 +703,7 @@ div[data-radix-popper-content-wrapper] {
 .display_options {
     display: flex;
     font-size: 14px;
-    height: 80px;
+    min-height: 80px;
     list-style-type: none;
 
     svg {
@@ -708,17 +712,26 @@ div[data-radix-popper-content-wrapper] {
     }
 
     &_item {
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         width: 95px;
+        min-width: 0;
+        flex-shrink: 1;
         padding-top: 5px;
         border: 1px solid transparent;
         border-radius: 6px;
         transition: 200ms linear;
         min-height: 70px;
         background-color: var(--color-gray-50);
+
+        span {
+            max-width: 100%;
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
 
         &[data-disabled] {
             color: var(--color-disabled);
@@ -735,6 +748,10 @@ div[data-radix-popper-content-wrapper] {
     }
 
     div[role="radiogroup"] {
+        min-width: 0;
+        max-width: 100%;
+        flex-wrap: nowrap;
+
         label[data-input-type="radio"] {
             transition: 200ms linear;
 
@@ -1034,6 +1051,7 @@ div[data-radix-popper-content-wrapper] {
     }
 
     &_input {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1118,8 +1136,12 @@ div[data-radix-popper-content-wrapper] {
         gap: 10px;
 
         p,
-        h5 {
+        h3 {
             margin: 0;
+        }
+
+        h3 {
+            font-size: 0.83em;
         }
     }
 }
@@ -1185,4 +1207,127 @@ details {
 
 .CSS_END_components_settings {
     display: none;
+}
+
+// Keep settings bounded by the viewport. Narrow layouts use a single vertical scroller
+// while the Close/docking controls stay outside that scrolling content.
+.settings_dialog {
+    min-height: 0;
+    max-width: calc(100dvw - 32px);
+    max-height: calc(100dvh - 32px);
+}
+
+@media (width <= 600px) {
+    .settings_dialog, .modal_dialog_reader {
+        .settings_container {
+            display: block;
+            height: min(597px, calc(100dvh - 32px)) !important;
+            width: 100%;
+            box-sizing: border-box;
+            padding-top: 48px;
+            overflow: auto;
+            scroll-padding: 48px 12px 12px;
+        }
+
+        .settings_tabslist {
+            width: auto;
+            padding-top: 0;
+            border-right: 0;
+            border-bottom: 2px solid var(--color-gray-100);
+
+            .react-aria-Tab {
+                min-height: 32px;
+                height: auto;
+                box-sizing: border-box;
+                margin: 2px 12px;
+
+                span {
+                    white-space: normal;
+                    max-width: none;
+                }
+            }
+        }
+
+        .settings_tab_title {
+            position: static;
+            margin: 16px 12px;
+            flex-wrap: wrap;
+        }
+
+        .settings_content {
+            overflow: visible;
+            margin: 0 !important;
+        }
+
+        .settings_tab {
+            margin: 16px 12px;
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .section {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .settings_tab_container_reading_spacing {
+            grid-template-columns: minmax(0, 1fr);
+            margin: 0;
+        }
+
+        .settings_reading_text .size_range {
+            flex-wrap: wrap;
+        }
+
+        .form_group {
+            max-width: 100%;
+            box-sizing: border-box;
+
+            > input {
+                min-width: 0;
+                flex: 1;
+            }
+        }
+
+        .preset_settings_container > div:last-child {
+            position: static;
+        }
+
+        .keyshortElement_container > div,
+        .keyshortElement_shortcut,
+        .keyshortElement_shortcut span {
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+            flex-wrap: wrap;
+        }
+
+        .keyshortElement_title {
+            min-width: 0;
+        }
+
+        .close_button_div {
+            top: 0;
+            right: 0;
+            left: 0;
+            min-height: 32px;
+            justify-content: flex-end;
+            padding: 5px;
+            background-color: var(--color-neutral-base);
+
+            > div {
+                margin-bottom: 0;
+            }
+        }
+
+        input:not([type="checkbox"], [type="radio"]), select, textarea,
+        .my_combobox_container {
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        button, [role="checkbox"] {
+            scroll-margin-block: 12px;
+        }
+    }
 }

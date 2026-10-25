@@ -17,6 +17,8 @@ export enum ContentType {
     DivinaPacked = "application/divina+zip",
     Opds2Auth = "application/opds-authentication+json",
     Opds2Pub = "application/opds-publication+json",
+    OpdsProgression = "application/opds-progression+json",
+    OpdsProfile = "application/opds-profile+json",
     Opds2AuthVendorV1_0 = "application/vnd.opds.authentication.v1.0+json",
     OpenSearch = "application/opensearchdescription+xml",
     FormUrlEncoded = "application/x-www-form-urlencoded",

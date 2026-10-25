@@ -35,7 +35,7 @@ import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh-icon
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { IOpdsBrowse, resolveDisplayType, routes } from "readium-desktop/renderer/library/routing";
+import { dispatchHistoryPush, IOpdsBrowse, resolveDisplayType, routes } from "readium-desktop/renderer/library/routing";
 import { Link, matchPath } from "react-router-dom";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
@@ -114,6 +114,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             <div role="region" aria-label={__("accessibility.toolbar")}>
                 <a
                     role="heading"
+                    aria-level={2}
                     className={stylesGlobal.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
@@ -160,6 +161,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         : <></>}
                         <a
                             role="heading"
+                            aria-level={2}
                             className={stylesGlobal.anchor_link}
                             ref={this.fastLinkRef}
                             id="main-content"
@@ -348,102 +350,27 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         const { self } = this.props.headerLinks;
         const { __ } = this.props;
 
-        let refreshComponet = <></>;
+        let pathname = this.props.location.pathname;
         if (self) {
-
             const param = matchPath<keyof IOpdsBrowse, string>(
                 routes["/opds/browse"].path,
-                this.props.location.pathname,
+                pathname,
             ).params;
-
             const lvl = parseInt(param.level, 10);
-
             const i = (lvl > 1) ? (lvl - 1) : lvl;
-            const name = this.props.breadcrumb[i]?.name;
-
-            const route = buildOpdsBrowserRoute(
-                param.opdsId,
-                name,
-                self,
-                lvl,
-            );
-
-            refreshComponet = (
-                <button className={stylesButtons.button_nav_tertiary} style={{ width: "20px", height: "20px" }}>
-                    <Link
-                        to={{
-                            ...this.props.location,
-                            pathname: route,
-                        }}
-                        style={{ height: "unset" }}
-                        state={this.linkState()}
-                        className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
-                        onClick={(e) => {
-                            if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
-                                e.preventDefault();
-                                e.currentTarget.click();
-                            }
-                        }}
-                        onKeyDown={(e) => {
-                            // if (e.code === "Space") {
-                            if (e.key === " " || e.altKey || e.ctrlKey) {
-                                e.preventDefault(); // prevent scroll
-                            }
-                        }}
-                        onKeyUp={(e) => {
-                            // Includes screen reader tests:
-                            // if (e.code === "Space") { WORKS
-                            // if (e.key === "Space") { DOES NOT WORK
-                            // if (e.key === "Enter") { WORKS
-                            if (e.key === " ") { // WORKS
-                                e.preventDefault();
-                                e.currentTarget.click();
-                            }
-                        }}
-                    >
-                        <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
-                    </Link>
-                </button>
-            );
-        } else {
-            refreshComponet = (
-                <button className={stylesButtons.button_nav_tertiary}>
-                    <Link
-                        to={{
-                            ...this.props.location,
-                        }}
-                        state={this.linkState()}
-                        className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
-                        onClick={(e) => {
-                            if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
-                                e.preventDefault();
-                                e.currentTarget.click();
-                            }
-                        }}
-                        onKeyDown={(e) => {
-                            // if (e.code === "Space") {
-                            if (e.key === " " || e.altKey || e.ctrlKey) {
-                                e.preventDefault(); // prevent scroll
-                            }
-                        }}
-                        onKeyUp={(e) => {
-                            // Includes screen reader tests:
-                            // if (e.code === "Space") { WORKS
-                            // if (e.key === "Space") { DOES NOT WORK
-                            // if (e.key === "Enter") { WORKS
-                            if (e.key === " ") { // WORKS
-                                e.preventDefault();
-                                e.currentTarget.click();
-                            }
-                        }}
-                    >
-                        <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
-                    </Link>
-                </button>
-            );
+            pathname = buildOpdsBrowserRoute(param.opdsId, this.props.breadcrumb[i]?.name, self, lvl);
         }
 
-        return refreshComponet;
+        return (
+            <button
+                type="button"
+                className={classNames(stylesButtons.button_nav_tertiary, stylesButtons.button_refresh)}
+                aria-label={__("header.refreshTitle")}
+                onClick={() => this.props.historyPush({ ...this.props.location, pathname }, this.linkState())}
+            >
+                <SVG ariaHidden svg={RefreshIcon} />
+            </button>
+        );
     };
 }
 
@@ -460,6 +387,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
+        historyPush: dispatchHistoryPush(dispatch),
         toggleScreenReader: (screenReaderActivate: boolean, keyboard: string, __: I18nFunction) => {
             dispatch(screenReaderActions.save.build(!screenReaderActivate));
             dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));

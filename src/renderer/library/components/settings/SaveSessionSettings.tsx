@@ -31,7 +31,7 @@ const SaveSessionSettings: React.FC<{}> = () => {
     };
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("app.session.exit.askBox.message")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"} style={{ margin: 0 }}>{__("app.session.exit.askBox.message")}</h3>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("app.session.exit.askBox.help")}</p>

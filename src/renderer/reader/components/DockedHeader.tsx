@@ -9,7 +9,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
@@ -21,7 +21,6 @@ import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { focusElement, getFocusTarget } from "readium-desktop/renderer/common/focusTarget";
 
 interface DockedHeaderProps {
     dockedMode: boolean;
@@ -74,16 +73,8 @@ const SelectRefComponent = ({ isEpub, setSection, dockedMode, dockedModeRef, opt
                 // console.log("selectionchange: ", id);
                 const value = options.find(({ id: _id }) => _id === id)?.value;
                 if (value) {
+                    // Let React Aria restore focus to the trigger when the list closes.
                     setSection(value);
-                    setTimeout(() => {
-                        // TODO: is stealing focus here necessary? Should this vary depending on keyboard or mouse interaction?
-                        const focusId = panel === "menu" ? `reader-menu-${value}` : `readerSettings_tabs-${value}`;
-                        const elem = getFocusTarget(focusId);
-                        elem?.blur();
-                        if (elem) {
-                            focusElement(elem);
-                        }
-                    }, 1);
                     // console.log("set Tab Value = ", value);
                 } else {
                     // console.error("Combobox No value !!!");

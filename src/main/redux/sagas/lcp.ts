@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { lcpActions, readerActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { logLcpPassphrase } from "readium-desktop/main/analytics/lcp";
@@ -25,7 +26,7 @@ function* renewPublicationLicense(action: lcpActions.renewPublicationLicense.TAc
     const publicationDocument = yield* callTyped(() => publicationRepository.get(
         publicationIdentifier,
     ));
-    yield* callTyped(() => lcpManager.renewPublicationLicense(publicationDocument));
+    yield* callTyped(() => lcpManager.renewPublicationLicense(publicationDocument, (action as unknown as ActionWithSender).sender?.identifier));
 }
 
 function* returnPublication(action: lcpActions.returnPublication.TAction) {
@@ -35,7 +36,7 @@ function* returnPublication(action: lcpActions.returnPublication.TAction) {
     const publicationDocument = yield* callTyped(() => publicationRepository.get(
         publicationIdentifier,
     ));
-    yield* callTyped(() => lcpManager.returnPublication(publicationDocument));
+    yield* callTyped(() => lcpManager.returnPublication(publicationDocument, (action as unknown as ActionWithSender).sender?.identifier));
 }
 
 function* unlockPublicationWithPassphrase(action: lcpActions.unlockPublicationWithPassphrase.TAction) {

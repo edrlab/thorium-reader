@@ -147,6 +147,8 @@ import { EDrawType, INoteState, TDrawType, TDrawView } from "readium-desktop/com
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
+import { OpdsProgressionDialog } from "./OpdsProgressionDialog";
+import { opdsProgressionToLocator } from "readium-desktop/common/models/opdsProgression";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
@@ -955,7 +957,7 @@ class Reader extends React.Component<IProps, IState> {
     private onPdfAnnotationSelectionError(payload: TPdfAnnotationSelectionErrorPayload) {
         this.skipNextPdfAnnotationEditor = false;
         debugPdfAnnotationsHost("annotation:selection-error", payload);
-        this.props.toastError(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
+        this.props.toastInfo(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
     }
 
     private syncPdfAnnotations(extraNote?: INoteState) {
@@ -1144,6 +1146,7 @@ class Reader extends React.Component<IProps, IState> {
                 {/* Reader Lock DEMO !!! */}
                 <a
                     role="heading"
+                    aria-level={2}
                     className={stylesReader.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
@@ -1245,6 +1248,7 @@ class Reader extends React.Component<IProps, IState> {
                                 >
                                 <a
                                     role="heading"
+                                    aria-level={2}
                                     className={stylesReader.anchor_link}
                                     ref={this.fastLinkRef}
                                     id="main-content"
@@ -1388,6 +1392,11 @@ class Reader extends React.Component<IProps, IState> {
                         />
                         : <></>
                     }
+                <OpdsProgressionDialog
+                    document={this.props.opdsProgressionDocument}
+                    onAccept={this.goToOpdsProgression}
+                    onCancel={this.cancelOpdsProgression}
+                />
                 </div>
             </>
         );
@@ -1823,6 +1832,36 @@ class Reader extends React.Component<IProps, IState> {
         r2HandleLinkLocator(locator);
     };
 
+    private cancelOpdsProgression = () => {
+        debug("OPDS progression: remote position dismissed, keeping local position");
+        this.props.clearOpdsProgression();
+    };
+
+    private goToOpdsProgression = () => {
+        const progression = this.props.opdsProgressionDocument?.progression;
+        debug("OPDS progression: remote position accepted", {
+            progression,
+            mapping: this.readiumPositionList?.total ? "Readium positions" : "equal resource fallback",
+            totalPositions: this.readiumPositionList?.total,
+        });
+        if (typeof progression === "number") {
+            const locator = opdsProgressionToLocator(
+                progression,
+                this.props.r2Publication?.Spine,
+                this.readiumPositionList,
+            );
+            if (locator) {
+                debug("OPDS progression: navigating to mapped locator", {
+                    locations: locator.locations,
+                });
+                this.goToLocator(locator);
+            } else {
+                debug("OPDS progression: navigation skipped, no usable locator");
+            }
+        }
+        this.props.clearOpdsProgression();
+    };
+
     private handleLinkUrl = (url: string, isFromOnPopState = false) => {
         handleLinkUrl_UpdateHistoryState(url, isFromOnPopState);
 
@@ -2237,7 +2276,7 @@ class Reader extends React.Component<IProps, IState> {
             this.props.toasty(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
 
         } catch (_err) {
-            this.props.toasty("ERROR");
+            this.props.toastError(this.props.__("message.notifications.readingPositionFailed"));
         }
     };
 
@@ -2449,7 +2488,7 @@ class Reader extends React.Component<IProps, IState> {
         ) {
             this.setState({ printDialogOpen: true });
         } else if (this.props.isPdf) {
-            this.props.toastError(this.props.__("reader.navigation.printDisabled"));
+            this.props.toastInfo(this.props.__("reader.navigation.printDisabled"));
         }
     };
 
@@ -3720,6 +3759,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         notes: state.reader.note,
         creator: state.creator,
         noteTotalCount: state.reader.noteTotalCount.state,
+        opdsProgressionDocument: state.reader.opdsProgression.document,
 
         // Reader Lock Demo
         // lock: state.reader.lock,
@@ -3740,6 +3780,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         toasty: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Success, msg));
+        },
+        toastInfo: (msg: string) => {
+            dispatch(toastActions.openRequest.build(ToastType.Info, msg));
         },
         toastError: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Error, msg));
@@ -3828,6 +3871,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         addUpdatePdfAnnotationNote: (publicationIdentifier: string, newNote: Omit<INoteState, "uuid">) => {
             return dispatch(readerActions.note.addUpdate.build(publicationIdentifier, newNote));
+        },
+        clearOpdsProgression: () => {
+            dispatch(readerActions.clearOpdsProgression.build());
         },
     };
 };

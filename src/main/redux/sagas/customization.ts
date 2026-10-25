@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { authActions, customizationActions, toastActions } from "readium-desktop/common/redux/actions";
+import { getTranslator } from "readium-desktop/common/services/translator";
+import { triggerCatalogOpdsAuthentication } from "./opdsAuthentication";
+import { customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { customizationPackageProvisioningManifest, customizationPackageProvisioningFromFolder, customizationWellKnownFolder, customizationPackageProvisioning, customizationPackageProvisioningCheckVersion } from "readium-desktop/main/customization/provisioning";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
@@ -19,15 +21,8 @@ import { SagaGenerator } from "typed-redux-saga";
 import path from "node:path";
 import { ICustomizationLockInfo, ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { getAuthenticationToken, httpGet, httpGetWithAuth } from "readium-desktop/main/network/http";
-import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
-import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
-import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
-import { diMainGet } from "readium-desktop/main/di";
 import { net } from "electron";
-import isURL from "readium-desktop/common/utils/isURL";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 import constants from "node:constants";
 
@@ -481,7 +476,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                         const message = (profileNotProvisioned as ICustomizationProfileError).error ? (profileNotProvisioned as ICustomizationProfileError).message : "not the latest version";
 
                         debug(`ERROR: profile (${fileName}) [${message}]`);
-                        yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${message}]`));
+                        yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileProvisionFailed")));
                         yield* putTyped(customizationActions.lock.build("IDLE"));
                     }
 
@@ -524,128 +519,13 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
         if (timeoutResult) {
             debug(`ERROR: fileName (${fileName}) not provisioned TIMEOUT`);
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: fileName (${fileName}) not provisioned TIMEOUT`));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileTimeout")));
         } else {
             debug(`ERROR: cannot provisioning this profile (${fileName})`);
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: cannot provisioning this profile (${fileName})`));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileProvisionFailed")));
         }
         yield* putTyped(customizationActions.lock.build("IDLE"));
         return;
-    }
-}
-
-function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerOpdsAuth.TAction) {
-
-    const payload = action.payload;
-    const { opdsAuthenticationHref, catalogHref } = payload;
-
-    debug("START SAGA Routine to trigger if not authenticated the OPDS Authentication dialog modal");
-    debug("Receive:  opdsAuthenticationHref=", opdsAuthenticationHref, "catalogHref=", catalogHref);
-
-    /*
-        {
-            "rel": "catalog",
-            "href": "https://demoreader.test.com/v1/home.opds2",
-            "title": {
-                "en": "test catalog"
-            },
-            "properties": {
-                "authenticate": {
-                    "type": "application/opds-authentication+json"
-                    "href": "https://demoreader.test.com/v1/sign_in.opds2"
-                },
-                "logo": {
-                    "rel": "logo",
-                    "href": "./images/catalog.svg"
-                }
-            }
-        }
-    */
-
-
-    const triggerAndWaitAuthenticationDialogModal = function* (linkHref: string, opdsAuthJsonObj: any): SagaGenerator<boolean> {
-
-        const r2OpdsAuth = TaJsonDeserialize(
-            opdsAuthJsonObj,
-            OPDSAuthenticationDoc,
-        );
-
-        const opdsAuthChannel = getOpdsAuthenticationChannel();
-
-        debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
-        opdsAuthChannel.put([r2OpdsAuth, linkHref, false]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
-
-        const { cancel } = yield* raceTyped({
-            cancel: takeTyped(authActions.cancel.build),
-            done: takeTyped(authActions.done.build),
-        });
-        debug("authentication modal closed");
-
-        return !!cancel;
-    };
-
-
-    // authenticate only the first catalog for the moment
-    let catalogLinkUrl: URL;
-    try {
-        catalogLinkUrl = (new URL(catalogHref));
-    } catch {
-        // nothing
-    }
-    if (!catalogLinkUrl) {
-        debug("No catalogLinkUrl found, return");
-        return;
-    }
-    const authToken = yield* callTyped(() => getAuthenticationToken(catalogLinkUrl));
-    // debug("AUTH_TOKEN found", authToken);
-    if (authToken?.accessToken) {
-        debug("authentication token found");
-        // authenticated
-        debug("let's try to verify the authentication access token validity");
-
-        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
-        if (!catalogHref || !isURL(catalogHref)) {
-            debug("isURL() NOK", catalogHref);
-            return;
-        }
-        const response = yield* callTyped(() => httpGet(catalogHref));
-        const opdsService = yield* callTyped(() => diMainGet("opds-service"));
-        const opdsView = yield* callTyped(() => opdsService.opdsRequestTransformer(response));
-        if (!opdsView) {
-            debug("no network!?");
-        } else if (opdsView?.title === "Unauthorized") {
-            debug("authentication dialog modal triggered");
-        } else {
-            debug("odpsFeed seems to be authentified");
-            debug(opdsView);
-        }
-    } else {
-        debug("Authentication token not found !!");
-
-        if (opdsAuthenticationHref) {
-            debug("There is an opds authentication document link");
-
-            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
-            if (!opdsAuthenticationHref || !isURL(opdsAuthenticationHref)) {
-                debug("isURL() NOK", opdsAuthenticationHref);
-                return;
-            }
-            const response = yield* callTyped(() => httpGetWithAuth(true)(opdsAuthenticationHref));
-            const mimeType = parseContentType(response.contentType);
-            if (response.isSuccess || contentTypeisOpdsAuth(mimeType)) {
-                debug("authentication document receive");
-                const opdsAuthJsonObj = yield* callTyped(() => response.response.json());
-                debug("opdsAuthJsonObj:");
-                debug(opdsAuthJsonObj);
-                const cancelled = yield* callTyped(triggerAndWaitAuthenticationDialogModal, catalogHref, opdsAuthJsonObj);
-                if (cancelled) {
-                    debug("authentication modal cancelled");
-                }
-            } else {
-                debug("Error to get opds authentication document", response.statusCode, response.statusMessage, response.isTimeout, response.isNetworkError);
-            }
-
-        }
     }
 }
 

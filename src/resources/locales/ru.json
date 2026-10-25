@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Меню",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Закрыть",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Сдвиньте список влево",
+        "loading": "",
         "mainContent": "основное содержимое",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Сдвиньте список вправо",
         "skipLink": "Перейти к содержимому",
         "toolbar": "панель инструментов"
@@ -142,21 +159,36 @@
         "sort": "Сортировать по",
         "tag": "Тег",
         "tags": "Теги",
-        "update": "Изменить"
+        "update": "Изменить",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "автор '{{- author}}'",
             "descCreator": "создано",
+            "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_few": "{{- count}} примечания {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} примечаний {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
+            "descList_other": "",
+            "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
             "descNewer_few": "Конфликт(ы): {{- count}} новейшие заметки",
             "descNewer_many": "Конфликт(ы): {{- count}} новейших заметок",
-            "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
+            "descNewer_other": "",
+            "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
             "descOlder_few": "Конфликт(ы): {{- count}} наиболее старые заметки",
             "descOlder_many": "Конфликт(ы): {{- count}} наиболее старых заметок",
-            "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
+            "descOlder_other": "",
             "descTitle": "Название аннотации: ",
             "importAll": "Импортировать все заметки",
             "importWithoutConflict": "Импортировать только заметки без конфликтов",
@@ -173,13 +205,15 @@
             }
         },
         "deleteAnnotations": "Удалить аннотации?",
+        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
         "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметки?",
         "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметок?",
-        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
+        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Удалить закладки?",
+        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
         "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладки?",
         "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладок?",
-        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
         "deletePublicationWithNotes": "Внимание: эта книга содержит аннотации и/или закладки, они также будут удалены! (Если вы хотите их сохранить, обязательно экспортируйте заметки перед удалением книги)",
@@ -245,16 +279,17 @@
         "annotations": {
             "alreadyImported": "Все заметки уже импортированы.",
             "emptyFile": "В этом файле нет заметок.",
-            "errorParsing": "Ошибка при анализе файла: ",
             "nothing": "Нет ни одной готовой к импорту заметки, импорт прерван",
             "success": "Импорт успешно завершён."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Загрузка отменена.",
-            "error": "Загрузка {{- title}} не удалась: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Ошибка проверки целостности загруженного файла: ожидаемый хэш SHA-256 {{- expected}}, полученный {{- actual}}.",
                 "httpGet": "Ошибка загрузки по протоколу HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Неверное имя временного загружаемого файла.",
                 "invalidLink": "Ссылка для скачивания недействительна.",
                 "invalidTempDirectory": "Временный каталог загрузки недействителен.",
@@ -268,6 +303,31 @@
             "fail": "Импорт {{- path}} не удался. {{- err}}",
             "success": "Импорт {{- title}} закончен."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
+        },
         "open": {
             "error": "Книга не может быть открыта : {{- err}}",
             "folderNotFound": "Каталог публикации не найден. Повторно импортируйте его или настройте дополнительное хранилище в разделе Настройки > Хранилище."
@@ -275,9 +335,10 @@
         "storage": {
             "recovery": {
                 "failure": "Не удалось восстановить публикацию.",
+                "success_one": "{{- count}} публикация восстановлена.",
                 "success_few": "{{- count}} публикации восстановлено.",
                 "success_many": "{{- count}} публикаций восстановлено.",
-                "success_one": "{{- count}} публикация восстановлена."
+                "success_other": ""
             },
             "removed": "Каталог публикаций удалён.",
             "updateFailed": "Не удалось обновить каталог публикаций: {{- message}}",
@@ -317,10 +378,13 @@
         "menu": {
             "aboutBook": "Об этой книге",
             "addExtract": "Добавить и извлечь",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Купить эту книгу",
             "goLoanBook": "Арендовать книгу",
             "goRevokeLoanBook": "Отозвать абонемент",
-            "goSubBook": "Подписаться"
+            "goSubBook": "Подписаться",
+            "placeHold": ""
         },
         "network": {
             "error": "Невозможно получить доступ к каталогу opds",
@@ -331,6 +395,12 @@
         },
         "next": "Следующая",
         "previous": "Предыдущая",
+        "registry": {
+            "empty": "Каталоги не найдены.",
+            "error": "Не удалось выполнить поиск в реестре. Пожалуйста, попробуйте ещё раз.",
+            "loading": "Поиск по каталогам…",
+            "title": "Поиск в каталогах"
+        },
         "resumeBrowsing": "Продолжить просмотр",
         "shelf": "Полка",
         "updateForm": {
@@ -672,7 +742,8 @@
         "certificateRevoked": "Сертификат LCP отозван.",
         "certificateSignatureInvalid": "Неверная подпись сертификата лицензии LCP.",
         "cover": {
-            "img": "обложка"
+            "img": "обложка",
+            "zoom": ""
         },
         "day": "день",
         "days": "дней",
@@ -697,10 +768,22 @@
         "notStarted": "Не начато",
         "onGoing": "В процессе",
         "progression": {
-            "title": "Прогресс"
+            "remoteDescription": "Новая позиция чтения с {{- device}} доступна по {{- progression}}%.",
+            "remoteTitle": "Продолжить с другого устройства?",
+            "title": "Прогресс",
+            "useRemote": "Перейти к позиции"
         },
         "read": "Закончено",
         "remainingTime": "Абонемент (оставшиеся дни)",
+        "remoteProgression": {
+            "checking": "Служба включена и проверяется...",
+            "disabled": "Для данной публикации эта функция недоступна.",
+            "empty": "Удаленный прогресс не сохранён.",
+            "position": "Удаленный прогресс: {{percent}}% ({{device}}).",
+            "ready": "Включено и готово.",
+            "title": "Синхронизация прогресса чтения:",
+            "unavailable": "Сервис включён, но недоступен."
+        },
         "renewButton": "Продлить",
         "returnButton": "Вернуть",
         "returnedLcp": "Эту книгу невозможно прочитать, поскольку была возвращена лицензия LCP.",
@@ -852,9 +935,10 @@
         },
         "picker": {
             "search": {
+                "founds_one": "{{- count}} найден",
                 "founds_few": "{{- count}} найдено",
                 "founds_many": "{{- count}} найдено",
-                "founds_one": "{{- count}} найден",
+                "founds_other": "",
                 "input": "подходящий текст",
                 "next": "Далее",
                 "notFound": "нет совпадений",
@@ -891,7 +975,6 @@
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
             "customizeReader": "Настройка форматирования текста",
-            "defaultValue": "значение по умолчанию",
             "disabled": "отключено",
             "display": "Отображение",
             "disposition": {
@@ -1338,15 +1421,17 @@
                 "description": "Проверьте место хранения публикаций, чтобы найти те, которые можно безопасно восстановить.",
                 "dialog": {
                     "confirm": "Восстановить",
+                    "description_one": "Thorium обнаружил на диске {{- count}} публикацию, отсутствующую в базе данных. Желаете вернуть её обратно в Thorium?",
                     "description_few": "Thorium обнаружил на диске {{- count}} публикации, отсутствующие в базе данных. Желаете вернуть их обратно в Thorium?",
                     "description_many": "Thorium обнаружил на диске {{- count}} публикации, отсутствующих в базе данных. Желаете вернуть их обратно в Thorium?",
-                    "description_one": "Thorium обнаружил на диске {{- count}} публикацию, отсутствующую в базе данных. Желаете вернуть её обратно в Thorium?",
+                    "description_other": "",
                     "title": "Восстановить публикации"
                 },
                 "none": "Публикаций, которые можно восстановить, не обнаружено.",
+                "recoverableCount_one": "{{- count}} публикацию можно восстановить, используя её исходный идентификатор хранилища.",
                 "recoverableCount_few": "{{- count}} публикации можно восстановить, используя их исходный идентификатор хранилища.",
                 "recoverableCount_many": "{{- count}} публикаций можно восстановить, используя их исходный идентификатор хранилища.",
-                "recoverableCount_one": "{{- count}} публикацию можно восстановить, используя её исходный идентификатор хранилища.",
+                "recoverableCount_other": "",
                 "title": "Восстановление"
             }
         },

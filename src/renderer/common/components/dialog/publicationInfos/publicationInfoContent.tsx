@@ -24,17 +24,18 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import Cover, { CoverWithForwardedRef } from "../../Cover";
+import Cover from "../../Cover";
 import { FormatContributorWithLink } from "./FormatContributorWithLink";
 import { FormatPublicationLanguage } from "./formatPublicationLanguage";
 import { FormatPublisherDate } from "./formatPublisherDate";
+import { OpdsProgressionInfo } from "./OpdsProgressionInfo";
 import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
 import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 // import PublicationInfoA11y from "./publicationInfoA11y";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import SVG from "../../SVG";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
@@ -46,7 +47,6 @@ import {
     createReadiumPositionIndex, getReadiumPositionProgression, isEpubPositionListPublication,
 } from "readium-desktop/common/readium/positions";
 
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { PublicationInfoA11y2 } from "./PublicationInfoA11y2";
 
 
@@ -83,13 +83,12 @@ const Duration = (props: {
 
     return (
         sentence
-            ? <>
+            ? <div>
                 <strong>{`${__("publication.duration.title")}: `}</strong>
                 <i className={stylesBookDetailsDialog.allowUserSelect}>
                     {sentence}
                 </i>
-                <br />
-            </>
+            </div>
             : <></>);
 };
 
@@ -284,13 +283,12 @@ const Progression = (props: {
                         // WARNING: .reverse() is in-place same-array mutation! (not a new array)
                         // ...but we're chaining with .filter() so that locatorExt.headings is not modified
 
-                            let k = 0;
                             const summary = hs.reduce<React.ReactElement[]>((arr, h, i) => {
                                 return arr.concat(
-                                    <div style={{ display: "flex", gap: "5px",overflow: "hidden", textWrap: "nowrap", paddingRight: "2px"}}>
-                                        <span key={`_h${k++}`}>{i === 0 ? " " : " / "}</span>
-                                        <span key={`_h${k++}`} style={{ fontWeight: "bold" }}>h{h.level} </span>
-                                        <span key={`_h${k++}`} style={{overflow: "hidden", textOverflow: "ellipsis"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
+                                    <div key={`_h${h.level}`} style={{ display: "flex", gap: "5px",overflow: "hidden", textWrap: "nowrap", paddingRight: "2px"}}>
+                                        <span>{i === 0 ? " " : " / "}</span>
+                                        <span style={{ fontWeight: "bold" }}>h{h.level} </span>
+                                        <span style={{overflow: "hidden", textOverflow: "ellipsis"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
                                     </div>,
                                 );
                             }, []);
@@ -425,40 +423,26 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
             <div className={stylePublication.publicationInfo_container}>
                 <div className={stylePublication.publicationInfo_leftSide}>
                     <div className={stylePublication.publicationInfo_leftSide_coverWrapper}>
-                        <Dialog.Root open={openCoverDialog} onOpenChange={(open) => {
+                        <Dialog.Root isOpen={openCoverDialog} onOpenChange={(open) => {
                             setOpenCoverDialog(open);
                         }}>
-                            <Dialog.Trigger asChild>
-                                <CoverWithForwardedRef
+                            <Dialog.Trigger className={stylePublication.cover_zoom} aria-label={__("publication.cover.zoom")}>
+                                <Cover
                                     publicationViewMaybeOpds={props.publicationViewMaybeOpds}
                                     coverType="cover"
-                                    onKeyUp={
-                                        (e) => {
-                                            if (e.key === "Enter") {
-                                                setOpenCoverDialog(true);
-                                            }
-                                        }
-                                    }
                                 />
                             </Dialog.Trigger>
                             <Dialog.Portal>
-                                {/* <div className={stylesModals.modal_dialog_overlay}></div> */}
-                                <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
-                                    <VisuallyHidden.Root>
-                                        <Dialog.Title>{__("catalog.bookInfo")}</Dialog.Title>
-                                    </VisuallyHidden.Root>
+                                <Dialog.Content className={classNames(stylesModals.modal_dialog, stylesModals.modal_dialog_cover)} aria-describedby={undefined}>
+                                    <div className={stylesModals.modal_dialog_header}>
+                                        <Dialog.Title>{__("publication.cover.img")}</Dialog.Title>
+                                        <Dialog.Close>{__("accessibility.closeDialog")}</Dialog.Close>
+                                    </div>
                                     <div className={stylesModals.modal_dialog_body_cover}>
                                         <Cover
                                             publicationViewMaybeOpds={props.publicationViewMaybeOpds}
                                             coverType="cover"
-                                            onClick={() => setOpenCoverDialog(false)}
-                                            onKeyUp={
-                                                (e) => {
-                                                    if (e.key === "Enter") {
-                                                        setOpenCoverDialog(false);
-                                                    }
-                                                }
-                                            }
+                                            imageAlt={__("publication.cover.img")}
                                         />
                                     </div>
                                 </Dialog.Content>
@@ -505,7 +489,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                                 onClickLinkCb={onClickLinkCb}
                                             />
                                         </span>
-                                        <br />
                                     </div> : undefined
                             }
                             {
@@ -513,7 +496,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                     <div>
                                         <strong>{`${__("catalog.lang")}: `}</strong>
                                         <FormatPublicationLanguage publicationViewMaybeOpds={publicationViewMaybeOpds} />
-                                        <br />
                                     </div> : undefined
                             }
                             {
@@ -523,7 +505,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                         <span className={stylesBookDetailsDialog.allowUserSelect}>
                                             {publicationViewMaybeOpds.numberOfPages}
                                         </span>
-                                        <br />
 
                                     </div> : undefined
                             }
@@ -538,7 +519,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                         <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             {publicationViewMaybeOpds.nbOfTracks}
                                         </i>
-                                        <br />
 
                                     </div> : undefined
                             }
@@ -556,6 +536,8 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                     {(publicationViewMaybeOpds.lcp ? <section className={stylePublication.publicationInfo_lcpInfo_content}>
                         <LcpInfo publicationLcp={publicationViewMaybeOpds} />
                     </section> : <></>)}
+                    <OpdsProgressionInfo key={`${locale}:${publicationViewMaybeOpds.progressionLink?.url || ""}`}
+                        url={publicationViewMaybeOpds.progressionLink?.url} />
                     <TagManagerComponent />
                     <Progression
                         closeDialogCb={closeDialogCb}

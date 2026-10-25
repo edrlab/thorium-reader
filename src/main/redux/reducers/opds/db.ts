@@ -36,7 +36,14 @@ export function opdsDbReducers(
 
                 const newDoc = clone(doc);
                 newDoc.doNotMigrateAnymore = true;
-                newState.push(newDoc);
+                // Saving an existing identifier is an atomic update. Deleting first
+                // would temporarily hide the feed from concurrent API requests.
+                const idx = newState.findIndex((feed) => feed.identifier === newDoc.identifier);
+                if (idx >= 0) {
+                    newState[idx] = newDoc;
+                } else {
+                    newState.push(newDoc);
+                }
             }
             return newState;
         }

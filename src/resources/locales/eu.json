@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu nagusia",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Itxi",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Mugitu zerrenda ezkerrera",
+        "loading": "",
         "mainContent": "Eduki nagusia",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Mugitu zerrenda eskuinera",
         "skipLink": "Pasatu edukira",
         "toolbar": "Tresna-barra"
@@ -142,7 +159,19 @@
         "sort": "Ordenatu honen arabera",
         "tag": "Etiketa",
         "tags": "Etiketak",
-        "update": "Editatu"
+        "update": "Editatu",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -240,16 +269,17 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "",
-            "error": "{- title}}-ren deskargak huts egin du [{- err}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -262,6 +292,31 @@
             "alreadyImport": "{- title}} inportatuta zegoen",
             "fail": "{- path}}-ren inportazioak huts egin du. {{- Err}}",
             "success": "{- title}}-ren inportazioa amaitu da."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Ezin da argitalpena ireki: {{- err}}",
@@ -311,10 +366,13 @@
         "menu": {
             "aboutBook": "Liburu honi buruz",
             "addExtract": "Inportatu laburpena",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Erosi liburu hau",
             "goLoanBook": "Eskatu maileguan liburu hau",
             "goRevokeLoanBook": "Utzi mailegua",
-            "goSubBook": "Harpidetu"
+            "goSubBook": "Harpidetu",
+            "placeHold": ""
         },
         "network": {
             "error": "Ezin da OPDS katalogora sartu",
@@ -325,6 +383,12 @@
         },
         "next": "Hurrengoa",
         "previous": "Aurrekoa",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "Apala",
         "updateForm": {
@@ -666,7 +730,8 @@
         "certificateRevoked": "Ziurtagiria ezeztatuta dago",
         "certificateSignatureInvalid": "Ziurtagiriaren sinadura ez da baliozkoa",
         "cover": {
-            "img": "Azaleko irudia"
+            "img": "Azaleko irudia",
+            "zoom": ""
         },
         "day": "eguna",
         "days": "egunak",
@@ -691,10 +756,22 @@
         "notStarted": "Hasi gabe",
         "onGoing": "Abian",
         "progression": {
-            "title": "Aurrerapena"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Aurrerapena",
+            "useRemote": ""
         },
         "read": "Bukatuta",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Berritu",
         "returnButton": "Itzuli",
         "returnedLcp": "Liburu hau ezin da irakurri LCP lizentzia itzuli delako.",
@@ -884,7 +961,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "Pertsonalizatu testuaren formatua",
-            "defaultValue": "",
             "disabled": "desgaituta",
             "display": "Bistaratzea",
             "disposition": {

@@ -29,6 +29,7 @@ import { race as raceTyped, select as selectTyped } from "typed-redux-saga/macro
 import { IOpdsHeaderState } from "readium-desktop/common/redux/states/renderer/opds";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
 import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opds/constants";
+import { takeBrowseResponse } from "readium-desktop/renderer/library/opds/browseResponse";
 
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
 export const SEARCH_TERM = "{searchTerms}";
@@ -41,7 +42,7 @@ const debug = debug_("readium-desktop:renderer:redux:saga:opds");
 // does not subscribe to location changes like React Redux’s connect does for state changes.
 // Instead, re-renders after location changes propagate out from the <Router> component.
 // This means that withRouter does not re-render on route transitions unless its parent component re-renders.
-function* browseWatcher(action: routerActions.locationChanged.TAction) {
+export function* browseWatcher(action: routerActions.locationChanged.TAction) {
     const path = action.payload.location.pathname;
 
     // reset on each opds navigation, already set up previously but only when accessing the opds flow not on the catalog list.
@@ -58,6 +59,11 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
     if (path.startsWith("/opds") && path.indexOf("/browse") > 0) {
         const parsedResult = parseOpdsBrowserRoute(path);
         debug("request opds browse", path, parsedResult);
+        if (!parsedResult) {
+            debug("Invalid OPDS browse route", path);
+            yield put(replace("/opds"));
+            return;
+        }
         // parsedResult.title can for example be a search terms "この世界の謎 %2F %20 % ?abc=def&zz=yyé"
         // which is escaped by encodeURIComponent() to
         // %E3%81%93%E3%81%AE%E4%B8%96%E7%95%8C%E3%81%AE%E8%AC%8E%20%252F%20%2520%20%25%20%3Fabc%3Ddef%26zz%3Dyy%C3%A9
@@ -81,10 +87,19 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
 
         const url = parsedResult.url;
         debug("opds browse url=", url);
-        const { b: opdsBrowseAction } = yield* raceTyped({
-            a: delay(20000),
-            b: call(opdsBrowse, url, BROWSE_OPDS_API_REQUEST_ID),
-        });
+        const response = takeBrowseResponse(path);
+        let opdsBrowseAction: apiActions.result.TAction<THttpGetBrowserResultView>;
+        if (response) {
+            opdsBrowseAction = apiActions.result.build({
+                requestId: BROWSE_OPDS_API_REQUEST_ID, moduleId: "httpbrowser", methodId: "browse",
+            }, response);
+            yield put(opdsBrowseAction);
+        } else {
+            ({ b: opdsBrowseAction } = yield* raceTyped({
+                a: delay(20000),
+                b: call(opdsBrowse, url, BROWSE_OPDS_API_REQUEST_ID),
+            }));
+        }
 
         if (!opdsBrowseAction) {
             debug("browseWatcher timeout?", url);

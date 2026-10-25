@@ -7,6 +7,6 @@
 
 export enum ToastType {
     Success = "toast-success",
-    Default = "toast-default",
+    Info = "toast-info",
     Error = "toast-error",
 }

@@ -1,273 +1,137 @@
-schema-version = "1.18.0"
+schema-version = "1.19.0"
 
-# flox config --set-bool set_prompt false
-# ==> .zshrc
-# Warp-ify Flox subshell prompt:
-# function git_branch_name()
-# {
-#   branch=$({ git symbolic-ref -q HEAD || git name-rev --name-only --no-undefined --always HEAD; } 2>/dev/null | sed 's/refs\/heads\///')
-#   if [[ $branch == "" ]];
-#   then
-#     :
-#   else
-#     #echo "[$branch]"
-#     echo '('$branch') '
-#   fi
-# }
-#
-# function flox_prompt()
-# {
-#   FLX_ENVS="${FLOX_PROMPT_ENVIRONMENTS:-}"
-#   if [[ -z "${FLX_ENVS}" ]];
-#   then
-#     :
-#   else
-#     echo 'FLX ['$FLX_ENVS'] '
-#   fi
-# }
-# setopt prompt_subst
-# autoload -U colors && colors
-# export PS1='%{$fg[red]%}$(flox_prompt)%{$reset_color%}%n@%m %{$fg[green]%}%~%{$reset_color%} %{$fg[magenta]%}$(git_branch_name)%{$reset_color%}%# '
-# PROMPT="${PROMPT}"$'\n'
-# printf '\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh" }}\x9c'
 
+## Install Packages --------------------------------------------------
+##  $ flox install gum  <- puts a package in [install] section below
+##  $ flox search gum   <- search for a package
+##  $ flox show gum     <- show all versions of a package
+## -------------------------------------------------------------------
 [install]
-nodejs_24.pkg-path = "nodejs_24"
-nodejs_24.outputs = "all"
+nodejs.pkg-path = "nodejs"
 jq.pkg-path = "jq"
-jq.outputs = "all"
+# gum.pkg-path = "gum"
+# gum.version = "^0.14.5"
 
+
+## Environment Variables ---------------------------------------------
+##  ... available for use in the activated environment
+##      as well as [hook], [profile] scripts and [services] below.
+## -------------------------------------------------------------------
 [vars]
-FLOX_DISABLE_METRICS="true"
-CLICOLOR="1"
+# INTRO_MESSAGE = "It's gettin' Flox in here"
+FLOX_DISABLE_METRICS = "true"
+CLICOLOR = "1"
 
-#set -euo pipefail (set -u in particular ==> undefined vars early exit)
-# FLX_VERBOSE becomes fallback when FLOX_VERBOSE is empty or unset
-FLX_VERBOSE="${FLOX_VERBOSE:-}"
-# FLX_VERBOSE becomes fallback only when FLOX_VERBOSE is unset, not empty
-# FLX_VERBOSE="${FLOX_VERBOSE-}"
 
-# if [[ ! -v FLX_VERBOSE ]]; then
-# # unset
-# elif [[ -z "${FLX_VERBOSE}" ]]; then
-# # empty
-# else
-# neither unset nor empty
-# fi
-
+## Activation Hook ---------------------------------------------------
+##  ... run by _bash_ shell when you run 'flox activate'.
+## -------------------------------------------------------------------
 [hook]
 on-activate = '''
-[[ ! -z "${FLX_VERBOSE}" ]] && echo "##################################################";
-[[ ! -z "${FLX_VERBOSE}" ]] && echo "########## FLOX ACTIVATE...";
+#   # -> Set variables, create files and directories
+#   # -> Perform initialization steps, e.g. create a python venv
+#   # -> Useful environment variables:
+#   #      - FLOX_ENV_PROJECT=/home/user/example
+#   #      - FLOX_ENV=/home/user/example/.flox/run
+#   #      - FLOX_ENV_CACHE=/home/user/example/.flox/cache
 
-#alias lss='ls -alshF --color=auto'
 lss () {
     command ls -alshF --color=auto "$@"
 }
 
-# PWD=$(pwd);
-# [[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> PWD: ${PWD}";
-# unset PWD
+export NPM_CONFIG_PREFIX="${FLOX_ENV_CACHE}/NPM_PREFIX";
+export NPM_CONFIG_CACHE="${FLOX_ENV_CACHE}/NPM_CACHE";
 
-#FLOX_ENV_PROJECT
-#_FLOX_ENV_LOG_DIR
-#FLOX_CACHE_DIR="$(dirname ${FLOX_ENV_CACHE})"
-#FLOX_CACHE_DIR="$(realpath ${FLOX_ENV_CACHE})"
-FLOX_CACHE_DIR="${FLOX_ENV_CACHE}"
-[[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> FLOX_CACHE_DIR: ${FLOX_CACHE_DIR}";
+#echo "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
+#ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
+mkdir -p .flox_tmp
+rm -f "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache/latest"
+cp -R "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache" ".flox_tmp/.sfw-cache" 2> /dev/null
 
-if [[ ! -z "${FLX_VERBOSE}" ]]; then
-
-echo "=====> NODE VERSION: $(node --version)";
-WHICH_NODE=$(which node);
-echo ".....> NODE WHICH: ${WHICH_NODE}";
-lss "${WHICH_NODE}";
-unset WHICH_NODE
-
-echo "=====> NPM VERSION (init): $(npm --version)";
-WHICH_NPM=$(which npm);
-echo ".....> NPM WHICH: ${WHICH_NPM}";
-lss "${WHICH_NPM}";
-unset WHICH_NPM
-
-echo "-----> NPM CONFIG PREFIX (init): $(npm config get prefix)";
-echo "-----> NPM_CONFIG_PREFIX (init): ${NPM_CONFIG_PREFIX}";
-
-echo "-----> NPM CONFIG CACHE (init): $(npm config get cache)"
-echo "-----> NPM_CONFIG_CACHE (init): ${NPM_CONFIG_CACHE}";
-
-fi
-
-# envName="${_FLOX_ACTIVE_ENVIRONMENTS##:*}";
-#echo "${envName}";
-#export NPM_CONFIG_PREFIX="/tmp/${envName}-npm";
-
-export NPM_CONFIG_PREFIX="${FLOX_CACHE_DIR}/NPM_PREFIX";
-rm -rf "$NPM_CONFIG_PREFIX";
+#rm -rf "$NPM_CONFIG_PREFIX";
 mkdir -p "$NPM_CONFIG_PREFIX";
-if [[ ! -z "${FLX_VERBOSE}" ]]; then
-echo "-----> NPM CONFIG PREFIX: $(npm config get prefix)";
-echo "-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}";
-lss "$NPM_CONFIG_PREFIX";
-lss "$NPM_CONFIG_PREFIX/bin";
-lss "$NPM_CONFIG_PREFIX/lib";
-lss "$NPM_CONFIG_PREFIX/lib/node_modules";
-fi
 
-export NPM_CONFIG_CACHE="${FLOX_CACHE_DIR}/NPM_CACHE";
-rm -rf "$NPM_CONFIG_CACHE";
-#### rm -rf "$NPM_CONFIG_CACHE/_cacache/"
+#rm -rf "$NPM_CONFIG_CACHE";
 mkdir -p "$NPM_CONFIG_CACHE";
-if [[ ! -z "${FLX_VERBOSE}" ]]; then
-echo "-----> NPM CONFIG CACHE: $(npm config get cache)"
-echo "-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}";
-lss "$NPM_CONFIG_CACHE";
-fi
 
-unset FLOX_CACHE_DIR
-
-[[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> NODE_PATH (init): ${NODE_PATH}";
 export NODE_PATH="$NPM_CONFIG_PREFIX/lib/node_modules${NODE_PATH:+:$NODE_PATH}";
-[[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> NODE_PATH: ${NODE_PATH}";
 
-#if [[ ! -v FLX_VERBOSE ]]; then
-## unset
-#npm install -g sfw --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
-#elif [[ -z "${FLX_VERBOSE}" ]]; then
-## empty
-#npm install -g sfw --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
-#else
-#npm install -g sfw --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null
-#fi
 npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g sfw
 
+cp -R ".flox_tmp/.sfw-cache" "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
+rm -rf .flox_tmp
+#ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
+
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH";
-[[ ! -z "${FLX_VERBOSE}" ]] && ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
 
-#if [[ ! -v FLX_VERBOSE ]]; then
-## unset
-#sfw npm install -g npm --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
-#sfw npm install -g npm-check-updates --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
-## sfw npm install -g @electron/asar --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
-#elif [[ -z "${FLX_VERBOSE}" ]]; then
-## empty
-#sfw npm install -g npm --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
-#sfw npm install -g npm-check-updates --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
-## sfw npm install -g @electron/asar --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
-#else
-#sfw npm install -g npm --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null
-#sfw npm install -g npm-check-updates --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null
-## sfw npm install -g @electron/asar --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null
-#fi
+sfw --verbose npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g npm
 
-# https://github.com/npm/cli/issues/9133
-sfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g npm
-
-#sfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g npm-check-updates
-#sfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g @electron/asar
-
-[[ ! -z "${FLX_VERBOSE}" ]] && ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
+#echo "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
+#ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
 
 '''
 
+
+## Profile script ----------------------------------------------------
+## ... sourced by _your shell_ when you run 'flox activate'.
+## -------------------------------------------------------------------
 [profile]
 common = '''
-[[ ! -z "${FLX_VERBOSE}" ]] && echo "##################################################";
-[[ ! -z "${FLX_VERBOSE}" ]] && echo "########## FLOX PROFILE COMMON (${SHELL})...";
+#   gum style \
+#   --foreground 212 --border-foreground 212 --border double \
+#   --align center --width 50 --margin "1 2" --padding "2 4" \
+#     $INTRO_MESSAGE
 
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH";
+alias lss='ls -alshFGt --color=auto'
 
-# This seems to help Zed fetch its LSP updates?
-#NIX_SSL_CERT_FILE=/nix/store/yn6p7yzysbx5scq4ap7iq1sf58463b82-nss-cacert-3.108/etc/ssl/certs/ca-bundle.crt
-#SSL_CERT_FILE=/nix/store/yn6p7yzysbx5scq4ap7iq1sf58463b82-nss-cacert-3.108/etc/ssl/certs/ca-bundle.crt
-#NODE_EXTRA_CA_CERTS="${SSL_CERT_FILE:-}"
-
-alias lss='ls -alshF --color=auto'
-alias flx='flox activate'
-alias flxx='FLOX_VERBOSE=1 flox activate'
-
-# PWD=$(pwd);
-# [[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> PWD: ${PWD}";
-# unset PWD
-
-[[ ! -z "${FLX_VERBOSE}" ]] && ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
-
-if [[ ! -z "${FLX_VERBOSE}" ]]; then
-
-echo "=====> NODE VERSION: $(node --version)";
-WHICH_NODE=$(which node);
-echo ".....> NODE WHICH: ${WHICH_NODE}";
-lss "${WHICH_NODE}";
-unset WHICH_NODE
-
-echo "=====> NPM VERSION: $(npm --version)";
-WHICH_NPM=$(which npm);
-echo ".....> NPM WHICH: ${WHICH_NPM}";
-lss "${WHICH_NPM}";
-unset WHICH_NPM
-
-echo "-----> NPM CONFIG PREFIX: $(npm config get prefix)";
-echo "-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}";
-
-echo "-----> NPM CONFIG CACHE: $(npm config get cache)"
-echo "-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}";
-
-echo "=====> NCU VERSION: $(ncu --version)";
-WHICH_NCU=$(which ncu);
-echo ".....> NCU WHICH: ${WHICH_NCU}";
-lss "${WHICH_NCU}";
-unset WHICH_NCU
-
-echo "=====> ASAR VERSION: $(asar --version)";
-WHICH_ASAR=$(which asar);
-echo ".....> ASAR WHICH: ${WHICH_ASAR}";
-lss "${WHICH_ASAR}";
-unset WHICH_ASAR
-
-echo "=====> GIT VERSION: $(git --version)";
-WHICH_GIT=$(which git);
-echo ".....> GIT WHICH: ${WHICH_GIT}";
-lss "${WHICH_GIT}";
-unset WHICH_GIT
-
-ENV=$(env);
-echo "-----> ENV: ${ENV}";
-echo "||||||||||||||||||||||||||";
-
-echo "-----> APPLEID: ${APPLEID}";
-echo "-----> APPLEIDTEAM: ${APPLEIDTEAM}";
-echo "-----> APPLEIDPASS: ${APPLEIDPASS}";
-echo "-----> SKIP_NOTARIZE: ${SKIP_NOTARIZE}";
-echo "-----> CSC_NAME: ${CSC_NAME}";
-
-echo "-----> DEBUG: ${DEBUG}";
-
-echo "-----> USER: ${USER}";
-echo "-----> USERNAME: ${USERNAME}";
-
-echo "-----> NODE_ENV: ${NODE_ENV}";
-
-echo "-----> THORIUM_OPDS_CATALOGS_URL: ${THORIUM_OPDS_CATALOGS_URL}";
-echo "-----> THORIUM_OPEN_DEVTOOLS: ${THORIUM_OPEN_DEVTOOLS}";
-echo "-----> LCP_SKIP_LSD: ${LCP_SKIP_LSD}";
-echo "-----> SKIP_CHECK_TYPESCRIPT: ${SKIP_CHECK_TYPESCRIPT}";
-echo "-----> USE_LEGACY_TYPESCRIPT_LOADER: ${USE_LEGACY_TYPESCRIPT_LOADER}";
-echo "-----> THORIUM_TELEMETRY_SECRET: ${THORIUM_TELEMETRY_SECRET}";
-echo "-----> THORIUM_TELEMETRY_URL: ${THORIUM_TELEMETRY_URL}";
-echo "-----> PACKAGING: ${PACKAGING}";
-echo "-----> RELEASE_TAG: ${RELEASE_TAG}";
-echo "-----> VSCODE_LAUNCH: ${VSCODE_LAUNCH}";
-echo "-----> PORT_APP: ${PORT_APP}";
-echo "-----> PORT_READER: ${PORT_READER}";
-echo "-----> PORT_PDF_WEBVIEW: ${PORT_PDF_WEBVIEW}";
-
-git branch
-git status
-
-fi
 '''
+## Shell-specific customizations such as setting aliases go here:
+# bash = ...
+# zsh  = ...
+# fish = ...
 
+
+## Services ---------------------------------------------------------
+##  $ flox services start             <- Starts all services
+##  $ flox services status            <- Status of running services
+##  $ flox activate --start-services  <- Activates & starts all
+## ------------------------------------------------------------------
 [services]
+# myservice.command = "python3 -m http.server"
 
+
+## Include ----------------------------------------------------------
+## ... environments to create a composed environment
+## ------------------------------------------------------------------
+[include]
+# environments = [
+#     { dir = "../common" }
+# ]
+
+
+## Build and publish your own packages ------------------------------
+##  $ flox build
+##  $ flox publish
+## ------------------------------------------------------------------
+[build]
+# [build.myproject]
+# description = "The coolest project ever"
+# version = "0.0.1"
+# command = """
+#   mkdir -p $out/bin
+#   cargo build --release
+#   cp target/release/myproject $out/bin/myproject
+# """
+
+
+## Other Environment Options -----------------------------------------
 [options]
-systems = ["aarch64-darwin", "aarch64-linux", "x86_64-darwin", "x86_64-linux"]
+# Systems that environment is compatible with
+# systems = [
+#   "aarch64-darwin",
+#   "aarch64-linux",
+#   "x86_64-linux",
+# ]
+# Uncomment to disable CUDA detection.
+# cuda-detection = false

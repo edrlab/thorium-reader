@@ -49,8 +49,13 @@ jest.mock("readium-desktop/main/streamer/streamerNoHttp", () => ({
     streamerCachedPublication: jest.fn(),
 }));
 
+jest.mock("@r2-shared-js/parser/publication-parser", () => ({
+    PublicationParsePromise: jest.fn(),
+}));
+
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { httpGet } from "readium-desktop/main/network/http";
+import * as fs from "node:fs";
 
 type TPublicationLink = {
     Hash?: string;
@@ -129,6 +134,29 @@ beforeEach(() => {
 });
 
 describe("LcpManager secrets", () => {
+    it("returns an empty vault when the secrets file does not exist", async () => {
+        jest.spyOn(fs.promises, "readFile").mockRejectedValue(
+            Object.assign(new Error("missing vault"), { code: "ENOENT" }),
+        );
+        const manager = Object.create(LcpManager.prototype) as TLcpManagerForSecrets;
+
+        await expect(manager.getAllSecrets()).resolves.toEqual({});
+        await expect(manager.getSecrets({ identifier: "publication-1" })).resolves.toEqual([]);
+    });
+
+    it("uses provider and generic secrets when the publication has no saved passphrase", async () => {
+        const manager = Object.create(LcpManager.prototype) as TLcpManagerForSecrets;
+        manager.getAllSecrets = jest.fn(async () => ({
+            "publication-2": { passphrase: "provider-passphrase", provider: "provider-a" },
+            "__THORIUM_LCP_GENERIC_SECRET__:generic-passphrase": { passphrase: "generic-passphrase" },
+        }));
+
+        await expect(manager.getSecrets({
+            identifier: "publication-1",
+            lcp: { provider: "provider-a" },
+        })).resolves.toEqual(["provider-passphrase", "generic-passphrase"]);
+    });
+
     it("returns publication, provider, then generic fallback secrets without duplicates", async () => {
         const manager = Object.create(LcpManager.prototype) as TLcpManagerForSecrets;
         manager.getAllSecrets = jest.fn(async () => ({
@@ -352,5 +380,62 @@ describe("LcpManager.replacePublicationArchiveIfLinkChanged", () => {
             undefined,
             "en",
         );
+    });
+});
+
+
+describe("LCP operation error notifications", () => {
+    it.each([
+        ["renewPublicationLicense", "renew", "lsdRenew"],
+        ["returnPublication", "return", "lsdReturn"],
+    ] as const)("reports one failure and releases the file lock for %s", async (method, rel, request) => {
+        const dispatch = jest.fn();
+        const document = { identifier: "publication-1" };
+        const publication = { LCP: { LSD: { Links: [{ HasRel: (value: string) => value === rel, Type: "application/vnd.readium.license.status.v1.0+json" }] } } };
+        const manager = Object.assign(Object.create(LcpManager.prototype) as object, {
+            store: { getState: () => ({ lcp: { publicationFileLocks: {} } }), dispatch },
+            translator: { translate: (key: string) => key },
+            publicationViewConverter: { unmarshallR2Publication: async () => publication },
+            checkPublicationLicenseUpdate_: async () => ({ publicationDocument: document, r2Publication: publication }),
+            lsdManager: { [request]: async () => { throw new Error("Service unavailable"); } },
+        }) as unknown as LcpManager;
+
+        await expect(manager[method](document as Parameters<LcpManager[typeof method]>[0])).resolves.toBe(document);
+        const toasts = dispatch.mock.calls.map(([action]) => action as { type: string; payload: { type?: string } })
+            .filter((action) => action.type === "TOAST_OPEN_REQUEST");
+        expect(toasts).toHaveLength(1);
+        expect(toasts[0].payload.type).toBe("toast-error");
+        expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ payload: { publicationFileLocks: { "publication-1": false } } }));
+    });
+});
+
+
+describe("LCP persistence notifications", () => {
+    it.each([
+        ["renewPublicationLicense", "renew", "lsdRenew"],
+        ["returnPublication", "return", "lsdReturn"],
+    ] as const)("does not report success before %s persists its update", async (method, rel, request) => {
+        const dispatch = jest.fn();
+        const failure = new Error("Disk full");
+        const document = { identifier: "publication-1" };
+        const status = { Links: [{ HasRel: (value: string) => value === rel, Type: "application/vnd.readium.license.status.v1.0+json" }] };
+        const publication = { LCP: { LSD: status } };
+        const rollback = jest.fn(async (): Promise<void> => undefined);
+        const manager = Object.assign(Object.create(LcpManager.prototype) as object, {
+            store: { getState: () => ({ lcp: { publicationFileLocks: {} } }), dispatch },
+            translator: { translate: (key: string) => key },
+            publicationViewConverter: { unmarshallR2Publication: async () => publication },
+            checkPublicationLicenseUpdate_: async () => ({ publicationDocument: document, r2Publication: publication }),
+            lsdManager: { [request]: async () => status },
+            processStatusDocument: async () => ({ r2Publication: publication }),
+            publicationStorage: { getPublicationEpubPath: async () => "book.epub" },
+            updateDocumentLcp: async (): Promise<void> => undefined,
+            publicationRepository: { save: async () => { throw failure; } },
+            rollbackPublicationFilesReplacement: rollback,
+        }) as unknown as LcpManager;
+        await expect(manager[method](document as Parameters<LcpManager[typeof method]>[0])).rejects.toBe(failure);
+        expect(dispatch.mock.calls.map(([action]) => (action as { type: string }).type)).not.toContain("TOAST_OPEN_REQUEST");
+        expect(rollback).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ payload: { publicationFileLocks: { "publication-1": false } } }));
     });
 });

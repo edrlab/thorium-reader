@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Meniu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Užverti",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Paslinkti į kairę",
+        "loading": "",
         "mainContent": "pagrindinis turinys",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Paslinkti į dešinę",
         "skipLink": "Peršokti į turinį",
         "toolbar": "įrankių juosta"
@@ -142,23 +159,35 @@
         "sort": "Rikiuoti pagal",
         "tag": "Žymė",
         "tags": "Žymės",
-        "update": "Keisti"
+        "update": "Keisti",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "Atverti knygų lentyną",
+            "edit": "Keisti profilį",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "Paskyra",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "'{{- author}}'",
             "descCreator": ", kurią(-ias) sukūrė",
+            "descList_one": "{{- count}} pastaba{{- creator}}, bus susieta su {{- author}} leidiniu '{{- title}}'",
             "descList_few": "{{- count}} pastabos{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
             "descList_many": "",
-            "descList_one": "{{- count}} pastaba{{- creator}}, bus susieta su {{- author}} leidiniu '{{- title}}'",
             "descList_other": "{{- count}} pastabų{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
+            "descNewer_one": "Konfliktas(-ai): {{- count}} naujesnė pastaba",
             "descNewer_few": "Konfliktas(-ai): {{- count}} naujesnės pastabos",
             "descNewer_many": "",
-            "descNewer_one": "Konfliktas(-ai): {{- count}} naujesnė pastaba",
             "descNewer_other": "Konfliktas(-ai): {{- count}} naujesnių pastabų",
+            "descOlder_one": "Konfliktas(-ai): {{- count}} senesnė pastaba",
             "descOlder_few": "Konfliktas(-ai): {{- count}} senesnės pastabos",
             "descOlder_many": "",
-            "descOlder_one": "Konfliktas(-ai): {{- count}} senesnė pastaba",
             "descOlder_other": "Konfliktas(-ai): {{- count}} senesnių pastabų",
             "descTitle": "Pastabų pavadinimas: ",
             "importAll": "Importuoti visas pastabas",
@@ -176,14 +205,14 @@
             }
         },
         "deleteAnnotations": "Šalinti pastabas?",
+        "deleteAnnotationsText_one": "Ar tikrai norite pašalinti {{- count}} pastabą?",
         "deleteAnnotationsText_few": "Ar tikrai norite pašalinti {{- count}} pastabas?",
         "deleteAnnotationsText_many": "",
-        "deleteAnnotationsText_one": "Ar tikrai norite pašalinti {{- count}} pastabą?",
         "deleteAnnotationsText_other": "Ar tikrai norite pašalinti {{- count}} pastabų?",
         "deleteBookmarks": "Šalinti skirtukus?",
+        "deleteBookmarksText_one": "Ar tikrai norite pašalinti {{- count}} skirtuką?",
         "deleteBookmarksText_few": "Ar tikrai norite pašalinti {{- count}} skirtukus?",
         "deleteBookmarksText_many": "",
-        "deleteBookmarksText_one": "Ar tikrai norite pašalinti {{- count}} skirtuką?",
         "deleteBookmarksText_other": "Ar tikrai norite pašalinti {{- count}} skirtukų?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
@@ -250,16 +279,17 @@
         "annotations": {
             "alreadyImported": "Visos pastabos jau importuotos.",
             "emptyFile": "Faile nėra jokių pastabų.",
-            "errorParsing": "Klaida analizuojant failą: ",
             "nothing": "Nėra importui paruoštų pastabų, importas nutraukiamas",
             "success": "Importavimas sėkmingai užbaigtas."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Atsiuntimas atšauktas.",
-            "error": "[{{- title}}] atsiuntimas nepavyko: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
                 "httpGet": "HTTP atsiuntimas nepavyko: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Laikino atsiuntimo failo pavadinimas netaisyklingas.",
                 "invalidLink": "Atsiuntimo nuoroda netaisyklinga.",
                 "invalidTempDirectory": "Netaisyklingas laikinas atsiuntimo aplankas.",
@@ -273,6 +303,31 @@
             "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
             "success": "[{{- title}}] importas baigtas."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
+        },
         "open": {
             "error": "Nepavyko atverti leidinio : [{{- err}}]",
             "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“."
@@ -280,9 +335,9 @@
         "storage": {
             "recovery": {
                 "failure": "Nepavyko atkurti leidinio.",
+                "success_one": "Atkurtas {{- count}} leidinys.",
                 "success_few": "Atkurti {{- count}} leidiniai.",
                 "success_many": "",
-                "success_one": "Atkurtas {{- count}} leidinys.",
                 "success_other": "Atkurta {{- count}} leidinių."
             },
             "removed": "Leidinio aplankas pašalintas.",
@@ -323,10 +378,13 @@
         "menu": {
             "aboutBook": "Apie leidinį",
             "addExtract": "Importuoti ištrauką",
+            "cancelHold": "Atšaukti rezervaciją",
+            "cancelHoldError": "Nepavyko atšaukti šio rezervacijos. Prašome bandyti dar kartą.",
             "goBuyBook": "Pirkti šį leidinį",
             "goLoanBook": "Pasiskolinti leidinį",
             "goRevokeLoanBook": "Atšaukti pasiskolinimą",
-            "goSubBook": "Prenumeruoti"
+            "goSubBook": "Prenumeruoti",
+            "placeHold": "Rezervuoti"
         },
         "network": {
             "error": "Nepavyko pasiekti sklaidos kanalo",
@@ -337,6 +395,12 @@
         },
         "next": "Tolesnis",
         "previous": "Ankstesnis",
+        "registry": {
+            "empty": "Katalogų nerasta.",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Tęsti naršymą",
         "shelf": "Lentyna",
         "updateForm": {
@@ -678,7 +742,8 @@
         "certificateRevoked": "LCP licencijos sertifikato galiojimas sustabdytas.",
         "certificateSignatureInvalid": "Negaliojantis LCP licencijos sertifikato parašas.",
         "cover": {
-            "img": "viršelio paveikslas"
+            "img": "viršelio paveikslas",
+            "zoom": ""
         },
         "day": "diena",
         "days": "dienos",
@@ -703,10 +768,22 @@
         "notStarted": "Nepradėtas",
         "onGoing": "Skaitomas",
         "progression": {
-            "title": "Eiga"
+            "remoteDescription": "",
+            "remoteTitle": "Tęsti iš kito įrenginio?",
+            "title": "Eiga",
+            "useRemote": "Eiti į poziciją"
         },
         "read": "Užbaigtas",
         "remainingTime": "Paskolinta (liko dienų)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": "Įgalinta, tačiau paslauga nepasiekiama."
+        },
         "renewButton": "Atnaujinti",
         "returnButton": "Grąžinti",
         "returnedLcp": "Šis LCP apsaugotas leidinys yra grąžintas.",
@@ -858,9 +935,9 @@
         },
         "picker": {
             "search": {
+                "founds_one": "{{- count}} atitikmuo",
                 "founds_few": "{{- count}} atitikmenys",
                 "founds_many": "",
-                "founds_one": "{{- count}} atitikmuo",
                 "founds_other": "{{- count}} atitikmenų",
                 "input": "ieškomas tekstas",
                 "next": "Kitas",
@@ -898,7 +975,6 @@
             },
             "customFontSelected": "Pasirinkote asmeninį šriftą",
             "customizeReader": "Tinkinti teksto formatavimą",
-            "defaultValue": "numatytoji reikšmė",
             "disabled": "išjungta",
             "display": "Atvaizdavimas",
             "disposition": {
@@ -1345,22 +1421,22 @@
                 "description": "Patikrinkite leidinių saugyklą, kad rastumėte leidinius, kuriuos galima saugiai atkurti.",
                 "dialog": {
                     "confirm": "Atkurti",
+                    "description_one": "Thorium diske rado {{- count}} leidinį, kurio nėra duomenų bazėje. Ar norite jį vėl importuoti į Thorium?",
                     "description_few": "Thorium diske rado {{- count}} leidinius, kurių nėra duomenų bazėje. Ar norite juos vėl importuoti į Thorium?",
                     "description_many": "",
-                    "description_one": "Thorium diske rado {{- count}} leidinį, kurio nėra duomenų bazėje. Ar norite jį vėl importuoti į Thorium?",
                     "description_other": "Thorium diske rado {{- count}} leidinių, kurių nėra duomenų bazėje. Ar norite juos vėl importuoti į Thorium?",
                     "title": "Atkurti leidinius"
                 },
                 "none": "Nerasta atkurtinų leidinių.",
+                "recoverableCount_one": "{{- count}} leidinį galima atkurti naudojant pradinį saugyklos identifikatorių.",
                 "recoverableCount_few": "{{- count}} leidinius galima atkurti naudojant pradinį saugyklos identifikatorių.",
                 "recoverableCount_many": "",
-                "recoverableCount_one": "{{- count}} leidinį galima atkurti naudojant pradinį saugyklos identifikatorių.",
                 "recoverableCount_other": "{{- count}} leidinių galima atkurti naudojant pradinį saugyklos identifikatorių.",
                 "title": "Atkūrimas"
             }
         },
         "tabs": {
-            "advanced": "",
+            "advanced": "Išplėstinės",
             "general": "Bendros",
             "keyboardShortcuts": "Spartieji klavišai",
             "profiles": "Profiliai",

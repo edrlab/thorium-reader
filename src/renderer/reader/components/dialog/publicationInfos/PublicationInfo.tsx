@@ -8,8 +8,8 @@
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
-import * as Dialog from "@radix-ui/react-dialog";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
+import { VisuallyHidden } from "react-aria-components";
 import debug_ from "debug";
 import * as React from "react";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -28,8 +28,8 @@ const debug = debug_("readium-desktop:renderer:reader:publication-info");
 debug("_");
 
 const context = React.createContext<DialogType[DialogTypeName.PublicationInfoReader] | undefined>(undefined);
-// export const PublicationInfoReaderWithRadix: React.FC<React.PropsWithChildren<{actionPayload: dialogActions.openRequest.Payload<DialogTypeName.PublicationInfoReader>["data"]}>> = (props) => {
-export const PublicationInfoReaderWithRadix: React.FC<React.PropsWithChildren<{ handlePublicationInfo: (open: boolean) => void }>> = (props) => {
+// export const PublicationInfoReaderWithRAC: React.FC<React.PropsWithChildren<{actionPayload: dialogActions.openRequest.Payload<DialogTypeName.PublicationInfoReader>["data"]}>> = (props) => {
+export const PublicationInfoReaderWithRAC: React.FC<React.PropsWithChildren<{ handlePublicationInfo: (open: boolean) => void }>> = (props) => {
     const defaultOpen = false;
 
     // const dispatch = useDispatch();
@@ -41,7 +41,7 @@ export const PublicationInfoReaderWithRadix: React.FC<React.PropsWithChildren<{ 
     return (
         <Dialog.Root
             defaultOpen={defaultOpen}
-            open={open}
+            isOpen={open}
             onOpenChange={
                 (open) => {
                     // if (open) {
@@ -59,40 +59,41 @@ export const PublicationInfoReaderWithRadix: React.FC<React.PropsWithChildren<{ 
     );
 };
 
-export const PublicationInfoReaderWithRadixTrigger = Dialog.Trigger;
-PublicationInfoReaderWithRadixTrigger.displayName = Dialog.Trigger.displayName;
-export const PublicationInfoReaderWithRadixContent = React.forwardRef<HTMLDivElement>(
+export const PublicationInfoReaderWithRACTrigger = Dialog.Trigger;
+PublicationInfoReaderWithRACTrigger.displayName = Dialog.Trigger.displayName;
+export const PublicationInfoReaderWithRACContent = React.forwardRef<HTMLElement>(
     ({ ...props }, forwardRef) => {
-        const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
         const [__] = useTranslator();
         return (
-            <Dialog.Portal container={appOverlayElement}>
-                {/* <Dialog.Overlay className="DialogOverlay" /> */}
-                <div className={stylesModals.modal_dialog_overlay}></div>
+            <Dialog.Portal className={stylesModals.modal_dialog_overlay}>
                 <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef} aria-describedby={undefined}>
-                    <VisuallyHidden.Root>
+                    <VisuallyHidden>
                         <Dialog.Title>{__("catalog.bookInfo")}</Dialog.Title>
-                    </VisuallyHidden.Root>
+                    </VisuallyHidden>
                     <div className={stylesModals.modal_dialog_header}>
                         {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
                         <h1>{__("catalog.bookInfo")}</h1>
                         <Dialog.Close asChild>
-                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                            <button
+                                data-css-override=""
+                                className={stylesButtons.button_transparency_icon}
+                                aria-label={__("accessibility.closeDialog")}
+                            >
                                 <SVG ariaHidden={true} svg={QuitIcon} />
                             </button>
                         </Dialog.Close>
                     </div>
                     <div className={stylesModals.modal_dialog_body}>
-                        <PublicationInfoWithRadixContent />
+                        <PublicationInfoWithRACContent />
                     </div>
                 </Dialog.Content>
             </Dialog.Portal>
         );
     },
 );
-PublicationInfoReaderWithRadixContent.displayName = "PublicationInfoReaderWithRadixContent";
+PublicationInfoReaderWithRACContent.displayName = "PublicationInfoReaderWithRACContent";
 
-const PublicationInfoWithRadixContent = () => {
+const PublicationInfoWithRACContent = () => {
     const data = React.useContext(context);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const manifestUrlR2Protocol = useSelector((state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol);

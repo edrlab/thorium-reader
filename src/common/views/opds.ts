@@ -81,6 +81,7 @@ export interface IOpdsPublicationView {
 
     opdsPublicationStringified?: string;
     selfLink?: IOpdsLinkView;
+    progressionLink?: IOpdsLinkView;
 }
 
 export interface IOpdsNavigationLinkView {
@@ -99,6 +100,8 @@ export interface IOpdsFeedMetadataView {
 }
 
 export interface IOpdsResultView {
+    // Preserve the parsed document kind when a server uses a feed media type for a publication.
+    isPublication?: boolean;
     title: string;
     metadata?: IOpdsFeedMetadataView;
     navigation?: IOpdsNavigationLinkView[];
@@ -111,9 +114,10 @@ export interface IOpdsResultView {
 }
 
 export interface IOpdsGroupView {
+    title: string;
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
-    selfLink: IOpdsNavigationLinkView;
+    selfLink?: IOpdsNavigationLinkView;
 }
 
 export interface IOpdsFacetView {
@@ -138,6 +142,7 @@ export interface IOpdsAuthenticationLinkView {
 }
 
 export interface IOPDSPropertiesView {
+    cancellable?: boolean;
     authenticate?: IOpdsAuthenticationLinkView;
     indirectAcquisitionTypes?: { top: string, child: string | undefined} | undefined;
     numberOfItems?: number | undefined;
@@ -180,6 +185,7 @@ export interface IOpdsLinkView {
 }
 
 export interface IOpdsNavigationLink {
+    authenticate?: IOpdsLinkView[];
     next: IOpdsLinkView[];
     previous: IOpdsLinkView[];
     first: IOpdsLinkView[];
