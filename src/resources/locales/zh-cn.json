@@ -268,8 +268,6 @@
             "success": "导入已成功完成。"
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "下载已取消。",
             "errors": {
                 "hashMismatch": "下载文件完整性检查失败：预期SHA-256哈希值为 {{- expected}}，实际为 {{- actual}}。",
@@ -281,7 +279,9 @@
                 "lengthMismatch": "下载文件完整性检查失败：预期大小为 {{- expected}} 字节，实际为 {{- actual}} 字节。",
                 "readStreamMissing": "下载数据流不可用。",
                 "tooManyFilenameAttempts": "无法创建特定临时下载文件名：{{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] 已被导入。",
@@ -803,7 +803,7 @@
             },
             "hide": "不显示",
             "highlight": "高亮",
-            "noSelectionToast": "未选择",
+            "noSelectionToast": "创建注释前先选择文本.",
             "note": "{{- color}} 笔记",
             "quickAnnotations": "快速创建（跳过编辑器）",
             "saveNote": "保存",
