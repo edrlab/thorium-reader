@@ -278,8 +278,6 @@
             "success": ""
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
@@ -291,7 +289,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} je već uvezen",
@@ -748,7 +748,6 @@
         "expired": "",
         "expiredLcp": "Ova knjiga se ne može čitati jer je LCP licenca istekla.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Kraj",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Kopirano znakova",
         "lcpRightsPrint": "Ispisano stranica",

@@ -1,12 +1,12 @@
-import * as React from "react";
 import { afterAll, afterEach, beforeAll, beforeEach, expect, jest, test } from "@jest/globals";
-import { JSDOM } from "jsdom";
-import type { Root } from "react-dom/client";
 import { clipboard, ipcRenderer } from "electron";
+import { JSDOM } from "jsdom";
+import * as React from "react";
+import type { Root } from "react-dom/client";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { ToastState } from "readium-desktop/common/redux/states/toast";
 import { build as openToast } from "readium-desktop/common/redux/actions/toast/openRequest";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
+import { ToastState } from "readium-desktop/common/redux/states/toast";
 
 jest.mock("electron", () => {
     const { EventEmitter } = jest.requireActual<typeof import("events")>("events");
@@ -169,7 +169,7 @@ test("Enter, Space and clicking copy and expand with accessible confirmation whi
     const action = messageAction();
     await press(action, "Enter");
     expect(expanded()).toBe(true);
-    expect(clipboard.writeText).toHaveBeenCalledWith("Download failed", "clipboard");
+    expect(clipboard.writeText).toHaveBeenCalledWith("Download failed");
     expect(document.querySelector(".copyStatus")?.textContent).toBe("accessibility.notificationCopied");
     expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopied");
     expect(action.hasAttribute("aria-describedby")).toBe(false);

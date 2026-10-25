@@ -742,7 +742,6 @@
         "expired": "Lånetiden har gått ut",
         "expiredLcp": "Bokens LCP-licens har löpt ut.",
         "incorrectPassphrase": "Inget sparat lösenord passar för boken, eller så är det angivna lösenordet fel.",
-        "lcpEnd": "Slut",
         "lcpNotSupported": "VARNING: detta är en förhandsversion av Thorium Desktop som inte stödjer produktionsversioner av LCP-licenser, utan stödjer bara dekryptering av LCP \"basic profile\" utan certifikatvalidering.",
         "lcpRightsCopy": "Kopierade tecken",
         "lcpRightsPrint": "Utskrivna sidor",

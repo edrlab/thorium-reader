@@ -273,8 +273,6 @@
             "success": "Import færdig."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Download annulleret.",
             "errors": {
                 "hashMismatch": "Den downloadede fil kunne ikke valideres: Forventet SHA-256 hash: {{- expected}}, fik i stedet {{- actual}}.",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "Integritetstjek af den downloadede fil fejlede: forventede {{- expected}} bytes, fik {{- actual}} bytes.",
                 "readStreamMissing": "Download var ikke muligt.",
                 "tooManyFilenameAttempts": "Var ikke i stand til at lave en unik midlertidig fil til download: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} er allerede importeret.",
@@ -742,7 +742,6 @@
         "expired": "Lånet er udløbet",
         "expiredLcp": "Denne bog kan ikke læses, da LCP-licensen er udløbet.",
         "incorrectPassphrase": "Intet gemt nøgleord passer til bogen, eller det indtastede nøgleord er forkert.",
-        "lcpEnd": "Slut",
         "lcpNotSupported": "ADVARSEL: Dette er en pre-release version af Thorium Desktop, som ikke understøtter rigtige LCP-licenser og kun understøtter LCP-dekryptering af 'grundlæggende profil' uden certifikatvalidering.",
         "lcpRightsCopy": "Kopierede bogstaver",
         "lcpRightsPrint": "Printede sider",

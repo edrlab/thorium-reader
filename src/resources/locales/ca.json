@@ -278,8 +278,6 @@
             "success": ""
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
@@ -291,7 +289,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} ja estava importat",
@@ -748,7 +748,6 @@
         "expired": "Préstec expirat",
         "expiredLcp": "Aquest llibre no es pot llegir perquè la llicència LCP ha expirat.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Fi",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Còpia de personatges",
         "lcpRightsPrint": "Còpia d'impressora",

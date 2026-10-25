@@ -283,8 +283,6 @@
             "success": "Import úspěšně dokončen."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
@@ -296,7 +294,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "Publikace „{{- title}}“ je již nahráná.",
@@ -754,7 +754,6 @@
         "expired": "Výpůjčka vypršela",
         "expiredLcp": "Licence LCP této publikace vypršela.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Skončit",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Zkopírováno znaků",
         "lcpRightsPrint": "Vytištěné stránky",

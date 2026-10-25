@@ -278,8 +278,6 @@
             "success": "Importazione completata."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Download annullato.",
             "errors": {
                 "hashMismatch": "Verifica di integrità del file scaricato non riuscita: previsto SHA-256 hash {{- expected}}, ottenuto {{- actual}}.",
@@ -291,7 +289,9 @@
                 "lengthMismatch": "Verifica di integrità del file scaricato non riuscita: previsti {{- expected}} byte, ottenuti {{- actual}} byte.",
                 "readStreamMissing": "Il download dello streaming non è disponibile.",
                 "tooManyFilenameAttempts": "Impossibile creare un nome univoco per il file di download temporaneo: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} è già stato importato.",
@@ -748,7 +748,6 @@
         "expired": "Prestito scaduto",
         "expiredLcp": "Questa pubblicazione non può essere letta perché la licenza LCP è scaduta.",
         "incorrectPassphrase": "Nessuna passphrase memorizzata è associata alla pubblicazione, oppure la passphrase inserita è errata.",
-        "lcpEnd": "Fine",
         "lcpNotSupported": "ATTENZIONE: questo è un prototipo di Thorium Reader che non supporta la produzione di licenze LCP e supporta unicamente la versione di base di LCP, senza convalida di certificato.",
         "lcpRightsCopy": "Caratteri copiati",
         "lcpRightsPrint": "Pagine stampate",

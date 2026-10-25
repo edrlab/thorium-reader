@@ -748,7 +748,6 @@
         "expired": "Skolinimo terminas baigėsi",
         "expiredLcp": "Šio leidinio LCP licencijos galiojimo laikas baigėsi.",
         "incorrectPassphrase": "Jokia išsaugota slaptafrazė neatitinka leidinio arba įvesta neteisinga slaptafrazė.",
-        "lcpEnd": "Pabaiga",
         "lcpNotSupported": "ĮSPĖJIMAS: tai yra išankstinė Thorium Desktop Reader versija, kuri nepalaiko gamybinių LCP licencijų ir palaiko tik LCP „bazinio profilio“ iššifravimą be sertifikato patikros.",
         "lcpRightsCopy": "Ženklų kopijos",
         "lcpRightsPrint": "Spausdintos kopijos",

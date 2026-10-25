@@ -278,8 +278,6 @@
             "success": "¡Correcto!"
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Descarga cancelada.",
             "errors": {
                 "hashMismatch": "Falló la comprobación de integridad para el archivo descargado: hash SHA-256 esperado {{- expected}}, obtenido {{- actual}}.",
@@ -291,7 +289,9 @@
                 "lengthMismatch": "Falló la comprobación de integridad para el archivo descargado: esperado {{- expected}} bytes, obtenido {{- actual}} bytes.",
                 "readStreamMissing": "La transmisión para la descarga no está disponible.",
                 "tooManyFilenameAttempts": "No se puede crear un único nombre para el archivo temporal de descarga: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} ya estaba importado.",
@@ -748,7 +748,6 @@
         "expired": "Préstamo vencido",
         "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
         "incorrectPassphrase": "No hay contraseñas almacenadas para esta publicación o la contraseña es incorrecta.",
-        "lcpEnd": "Fin",
         "lcpNotSupported": "Aviso: esta es una versión de desarrollo de Thorium Desktop reader que no admite licencias LCP completas, y solo admite el descifrado de LCP con «perfil básico» sin validación de certificado.",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impresas",

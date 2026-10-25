@@ -7,16 +7,16 @@
 
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 
-import { clipboard } from "electron";
+// import { clipboard } from "electron";
 import classNames from "classnames";
 import * as React from "react";
 import {
-    Button,
-    Text,
-    VisuallyHidden,
     UNSTABLE_Toast as AriaToast,
-    UNSTABLE_ToastContent as ToastContent,
+    Button,
     QueuedToast,
+    Text,
+    UNSTABLE_ToastContent as ToastContent,
+    VisuallyHidden,
 } from "react-aria-components";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
@@ -69,7 +69,11 @@ export function Toast({ toast, close, __ }: IProps) {
         let feedback: string;
         let failed = false;
         try {
-            clipboard.writeText(message, "clipboard");
+            console.log("TOAST onClick => clipboard.writeText...");
+            // navigator.clipboard.write([new ClipboardItem({ "text/plain": message })]).then((_res) => { /* no-op */ }).catch((err) => { console.log(err); });
+            navigator.clipboard.writeText(message).then((_res) => { /* no-op */ }).catch((err) => { console.log(err); });
+            // clipboard.writeText(message).then((_res) => { /* no-op */ }).catch((err) => { console.log(err); });
+
             feedback = __("accessibility.notificationCopied");
         } catch (_error) {
             failed = true;

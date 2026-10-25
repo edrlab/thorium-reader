@@ -273,8 +273,6 @@
             "success": ""
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "",
@@ -742,7 +742,6 @@
         "expired": "",
         "expiredLcp": "",
         "incorrectPassphrase": "",
-        "lcpEnd": "",
         "lcpNotSupported": "",
         "lcpRightsCopy": "",
         "lcpRightsPrint": "",

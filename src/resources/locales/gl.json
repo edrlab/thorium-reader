@@ -273,8 +273,6 @@
             "success": ""
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{-  title}} xa estaba importado",
@@ -742,7 +742,6 @@
         "expired": "Préstamo expirado",
         "expiredLcp": "Este libro non se pode ler porque a licenza  LCP expirou.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Fin",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Copia de personaxes",
         "lcpRightsPrint": "Copia de impresora",

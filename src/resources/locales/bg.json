@@ -273,8 +273,6 @@
             "success": ""
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} вече е била добавена.",
@@ -742,7 +742,6 @@
         "expired": "",
         "expiredLcp": "Тази книга не може да бъде прочетена, защото лицензът за LCP е изтекъл.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Край",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Копиране на символи",
         "lcpRightsPrint": "Печат на страници",

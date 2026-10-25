@@ -198,6 +198,7 @@
         "deleteAnnotations": "メモを削除しますか？",
         "deleteAnnotationsText": "{{-count}} 件のメモを削除しますか？",
         "deleteBookmarks": "しおりを削除しますか？",
+        "deleteBookmarksText": "",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "deletePublicationWithNotes": "",
@@ -267,8 +268,6 @@
             "success": "取り込みが正常に完了しました。"
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
@@ -280,7 +279,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "『{{- title}}』はすでに追加されています。",
@@ -318,7 +319,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -734,7 +736,6 @@
         "expired": "貸出の期限切れ",
         "expiredLcp": "この本のLCPライセンスの有効期限が切れました。",
         "incorrectPassphrase": "保存しているパスフレーズが本に適合しないか、入力したパスフレーズが間違っています。",
-        "lcpEnd": "終了",
         "lcpNotSupported": "",
         "lcpRightsCopy": "文字列のコピー",
         "lcpRightsPrint": "ページを印刷",
@@ -1398,9 +1399,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

@@ -283,8 +283,6 @@
             "success": "Import zakończony pomyślnie."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Pobieranie pliku zostało anulowane.",
             "errors": {
                 "hashMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wartość hasha SHA-256 to {{- expected}}, a obliczona to {{- actual}}.",
@@ -296,7 +294,9 @@
                 "lengthMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wielkość pliku to {{- expected}} bajtów, pobrany plik ma {{- actual}} bajtów.",
                 "readStreamMissing": "Transmisja danych nie jest dostępna.",
                 "tooManyFilenameAttempts": "Nie można utworzyć unikalnej tymczasowej nazwy pliku do pobrania: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] został już zaimportowany.",
@@ -754,7 +754,6 @@
         "expired": "Wypożyczenie wygasło",
         "expiredLcp": "Licencja LCP tej publikacji wygasła.",
         "incorrectPassphrase": "Żadne zapisane hasło dostępu nie pasuje do publikacji lub wprowadzone hasło jest nieprawidłowe.",
-        "lcpEnd": "Koniec",
         "lcpNotSupported": "UWAGA: jest to wersja przedpremierowa czytnika Thorium Desktop, która nie obsługuje produkcyjnych licencji LCP i umożliwia jedynie odszyfrowywanie plików LCP w „profilu podstawowym” bez weryfikacji certyfikatu.",
         "lcpRightsCopy": "Skopiowane znaki",
         "lcpRightsPrint": "Wydrukowane strony",

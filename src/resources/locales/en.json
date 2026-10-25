@@ -273,8 +273,6 @@
             "success": "Import completed successfully."
         },
         "download": {
-            "started": "Download started.",
-            "startedWithTitle": "Downloading {{- title}}.",
             "cancelled": "Download cancelled.",
             "errors": {
                 "hashMismatch": "Downloaded file integrity check failed: expected SHA-256 hash {{- expected}}, got {{- actual}}.",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "Downloaded file integrity check failed: expected {{- expected}} bytes, got {{- actual}} bytes.",
                 "readStreamMissing": "Download stream is unavailable.",
                 "tooManyFilenameAttempts": "Unable to create a unique temporary download filename: {{- path}}"
-            }
+            },
+            "started": "Download started.",
+            "startedWithTitle": "Downloading {{- title}}."
         },
         "import": {
             "alreadyImport": "[{{- title}}] was already imported.",
@@ -742,7 +742,6 @@
         "expired": "Loan expired",
         "expiredLcp": "This publication's LCP license is expired.",
         "incorrectPassphrase": "No stored passphrase fits the publication, or the entered passphrase is wrong.",
-        "lcpEnd": "End",
         "lcpNotSupported": "WARNING: this is a pre-release version of Thorium Desktop reader which does not support production LCP licenses, and only supports LCP 'basic profile' decryption without certificate validation.",
         "lcpRightsCopy": "Copied characters",
         "lcpRightsPrint": "Printed pages",

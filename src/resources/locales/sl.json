@@ -283,8 +283,6 @@
             "success": "Uvoz uspešno zaključen."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Prenos preklican.",
             "errors": {
                 "hashMismatch": "Preverjanje celovitosti prenesene datoteke ni uspelo: pričakovani izvleček SHA-256 je {{- expected}}, pridobljeni {{- actual}}.",
@@ -296,7 +294,9 @@
                 "lengthMismatch": "Preverjanje celovitosti prenesene datoteke ni uspelo: pričakovanih {{- expected}} bajtov, prejetih {{- actual}} bajtov.",
                 "readStreamMissing": "Pretok prenosa ni na voljo.",
                 "tooManyFilenameAttempts": "Ni mogoče ustvariti edinstvenega imena začasne datoteke za prenos: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} je že uvožen.",
@@ -754,7 +754,6 @@
         "expired": "Rok izposoje je potekel",
         "expiredLcp": "Licenca LCP za to publikacijo je potekla.",
         "incorrectPassphrase": "Nobeno shranjeno geslo ne ustreza publikaciji ali pa je vneseno geslo napačno.",
-        "lcpEnd": "Konec",
         "lcpNotSupported": "OPOZORILO: to je predizdaja bralnika Thorium Desktop, ki ne podpira produkcijskih licenc LCP in podpira le dešifriranje »osnovnega profila« LCP brez preverjanja potrdila.",
         "lcpRightsCopy": "Kopirani znaki",
         "lcpRightsPrint": "Tiskane strani",

@@ -273,8 +273,6 @@
             "success": "İçe aktarma başarıyla tamamlandı."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "İndirme iptal edildi.",
             "errors": {
                 "hashMismatch": "İndirilen dosyanın bütünlük denetimi başarısız: Beklenen SHA-256 değeri {{- expected}}, alınan {{- actual}}.",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "İndirilen dosya bütünlüğü denetimi başarısız: beklenen {{- expected}} bayt, alınan {{- actual}} bayt.",
                 "readStreamMissing": "İndirme akışı kullanılamıyor.",
                 "tooManyFilenameAttempts": "Benzersiz geçici indirme dosya adı oluşturulamıyor: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] zaten içe aktarılmış.",
@@ -742,7 +742,6 @@
         "expired": "Ödünç alma süresi doldu",
         "expiredLcp": "Bu eserin LCP lisans süresi doldu.",
         "incorrectPassphrase": "Eserle eşleşen kayıtlı bir şifre yok veya girilen şifre hatalı.",
-        "lcpEnd": "Son",
         "lcpNotSupported": "UYARI: Bu, Thorium Desktop okuyucu uygulamasının prodüksiyon LCP lisanslarını desteklemeyen ve yalnızca sertifika doğrulaması olmadan LCP 'temel profil' şifre çözme işlemini destekleyen bir ön sürümüdür.",
         "lcpRightsCopy": "Kopyalanmış karakterler",
         "lcpRightsPrint": "Basılı sayfalar",
