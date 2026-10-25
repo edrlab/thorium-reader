@@ -273,8 +273,6 @@
             "success": "Import vollständig abgeschlossen."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "Es scheint, dass Sie die Publikation [{{- title}}] bereits in Ihren Katalog aufgenommen haben.",
@@ -742,7 +742,6 @@
         "expired": "Ausleihe abgelaufen",
         "expiredLcp": "Die LCP-Lizenz dieser Veröffentlichung ist abgelaufen.",
         "incorrectPassphrase": "Kein gespeichertes Passwort passt zu dieser Publikation oder das eingegebene Passwort ist falsch.",
-        "lcpEnd": "Ende",
         "lcpNotSupported": "WARNUNG: Dies ist eine Vorabversion des Thorium Desktop Reader, die keine produktionsreifen LCP-Lizenzen unterstützt und lediglich die Entschlüsselung von LCP-Zertifikaten im „Basic Profile“ ohne Zertifikatsvalidierung ermöglicht.",
         "lcpRightsCopy": "Kopierte Zeichen",
         "lcpRightsPrint": "Gedruckte Seiten",

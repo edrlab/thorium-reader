@@ -273,8 +273,6 @@
             "success": ""
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{- title}} inportatuta zegoen",
@@ -742,7 +742,6 @@
         "expired": "Mailegua iraungi",
         "expiredLcp": "Liburu hau ezin da irakurri LCP lizentzia iraungi delako.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Amaiera",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Pertsonaien kopia",
         "lcpRightsPrint": "Inprimagailuaren kopia",

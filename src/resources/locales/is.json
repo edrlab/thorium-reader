@@ -273,8 +273,6 @@
             "success": "Innflutningi lokið."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Hætt við niðurhal.",
             "errors": {
                 "hashMismatch": "Heilleikapróf niðurhalaðrar skrár mistókst: búist var við SHA-256-gildinu {{- expected}}, en niðurstaðan var {{- actual}}.",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "Heilleikapróf niðurhalaðrar skrár mistókst: búist var við {{- expected}} bætum, en fjöldinn var {{- actual}}.",
                 "readStreamMissing": "Niðurhalsstraumur er ekki tiltækur.",
                 "tooManyFilenameAttempts": "Ekki tókst að búa til einstakt bráðabirgðaskráarheiti: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] hefur þegar verið bætt við.",
@@ -742,7 +742,6 @@
         "expired": "Lánstími liðinn",
         "expiredLcp": "LCP-leyfi bókarinnar er útrunnið.",
         "incorrectPassphrase": "Ekkert vistað lykilorð passar við bókina eða lykilorðið sem var slegið inn er rangt.",
-        "lcpEnd": "Lýkur",
         "lcpNotSupported": "VIÐVÖRUN: Þetta er forútgáfa af Thorium Desktop sem styður ekki virk LCP-leyfi. Hún styður aðeins afkóðun með einföldu LCP-sniði án staðfestingar vottorðs.",
         "lcpRightsCopy": "Stafir sem má afrita",
         "lcpRightsPrint": "Síður sem má prenta",

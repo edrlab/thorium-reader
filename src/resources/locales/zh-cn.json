@@ -268,8 +268,6 @@
             "success": "导入已成功完成。"
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "下载已取消。",
             "errors": {
                 "hashMismatch": "下载文件完整性检查失败：预期SHA-256哈希值为 {{- expected}}，实际为 {{- actual}}。",
@@ -281,7 +279,9 @@
                 "lengthMismatch": "下载文件完整性检查失败：预期大小为 {{- expected}} 字节，实际为 {{- actual}} 字节。",
                 "readStreamMissing": "下载数据流不可用。",
                 "tooManyFilenameAttempts": "无法创建特定临时下载文件名：{{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] 已被导入。",
@@ -319,7 +319,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "出版物文件路径被移除。",
             "updateFailed": "更新出版物文件路径失败: {{- message}}",
@@ -735,7 +736,6 @@
         "expired": "借阅已到期",
         "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
         "incorrectPassphrase": "没有任何已存储的密码与该出版物匹配，或输入的密码错误。",
-        "lcpEnd": "结束",
         "lcpNotSupported": "警告: 此为 Thorium Desktop 阅读器的预发布版本，不支持生产环境下的 LCP 许可证，仅支持无证书验证的 LCP“基础配置”解密。",
         "lcpRightsCopy": "许可证拷贝",
         "lcpRightsPrint": "许可证打印",
@@ -1399,9 +1399,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

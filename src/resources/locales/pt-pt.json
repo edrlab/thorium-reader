@@ -278,8 +278,6 @@
             "success": "Importação concluída com sucesso."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
@@ -291,7 +289,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "Já tinha sido importado: {{- title}}.",
@@ -748,7 +748,6 @@
         "expired": "Empréstimo expirado",
         "expiredLcp": "A licença PCL deste documento está expirada.",
         "incorrectPassphrase": "Nenhuma frase-passe armazenada corresponde à publicação ou a frase-passe introduzida está errada.",
-        "lcpEnd": "Fim",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impressas",

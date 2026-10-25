@@ -283,8 +283,6 @@
             "success": "Importavimas sėkmingai užbaigtas."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Atsiuntimas atšauktas.",
             "errors": {
                 "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
@@ -296,7 +294,9 @@
                 "lengthMismatch": "Atsiųsto failo vientisumo patikra nepavyko: tikėtasi baitų: {{- expected}}, gauta: {{- actual}}.",
                 "readStreamMissing": "Neprieinamas atsiuntimo srautas.",
                 "tooManyFilenameAttempts": "Nepavyko sukurti unikalaus laikino atsiuntimo failo pavadinimo: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] jau importuotas.",
@@ -754,7 +754,6 @@
         "expired": "Skolinimo terminas baigėsi",
         "expiredLcp": "Šio leidinio LCP licencijos galiojimo laikas baigėsi.",
         "incorrectPassphrase": "Jokia išsaugota slaptafrazė neatitinka leidinio arba įvesta neteisinga slaptafrazė.",
-        "lcpEnd": "Pabaiga",
         "lcpNotSupported": "ĮSPĖJIMAS: tai yra išankstinė Thorium Desktop Reader versija, kuri nepalaiko gamybinių LCP licencijų ir palaiko tik LCP „bazinio profilio“ iššifravimą be sertifikato patikros.",
         "lcpRightsCopy": "Ženklų kopijos",
         "lcpRightsPrint": "Spausdintos kopijos",

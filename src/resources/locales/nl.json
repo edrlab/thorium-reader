@@ -273,8 +273,6 @@
             "success": "Import succesvol voltooid."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Download geannuleerd.",
             "errors": {
                 "hashMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwachte SHA-256 hash {{- expected}}, ontvangen {{- actual}}.",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwacht {{- expected}} bytes, ontvangen {{- actual}} bytes.",
                 "readStreamMissing": "Downloadstream is niet beschikbaar.",
                 "tooManyFilenameAttempts": "Kan geen unieke tijdelijke downloadbestandsnaam aanmaken: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} is al toegevoegd.",
@@ -742,7 +742,6 @@
         "expired": "Uitlening verlopen",
         "expiredLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie verlopen is.",
         "incorrectPassphrase": "Geen opgeslagen wachtwoordzin past bij de publicatie of de ingevoerde wachtwoordzin is verkeerd.",
-        "lcpEnd": "Einde",
         "lcpNotSupported": "LET OP: dit is een pre-releaseversie van de Thorium Desktop Reader die geen ondersteuning biedt voor LCP-licenties voor productieomgevingen en alleen LCP-ontsleuteling met het 'basisprofiel' ondersteunt zonder certificaatvalidatie.",
         "lcpRightsCopy": "Toegestaan aantal te kopiëren karakters",
         "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",

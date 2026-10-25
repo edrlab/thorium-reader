@@ -273,8 +273,6 @@
             "success": "Importen lyckades."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Nedladdning avbruten.",
             "errors": {
                 "hashMismatch": "Integritetskontroll för filen misslyckades. Förväntad SHA-256-hash: {{- expected}}, fick {{- actual}}.",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "Integritetskontroll för den nedladdade filen misslyckades. Förväntade {{- expected}} bytes, fick {{- actual}} bytes.",
                 "readStreamMissing": "Nedladdningsströmmen går inte att nå.",
                 "tooManyFilenameAttempts": "Kunde inte skapa ett unikt filnamn för den nedladdade filen: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} var redan importerad.",
@@ -742,7 +742,6 @@
         "expired": "Lånetiden har gått ut",
         "expiredLcp": "Bokens LCP-licens har löpt ut.",
         "incorrectPassphrase": "Inget sparat lösenord passar för boken, eller så är det angivna lösenordet fel.",
-        "lcpEnd": "Slut",
         "lcpNotSupported": "VARNING: detta är en förhandsversion av Thorium Desktop som inte stödjer produktionsversioner av LCP-licenser, utan stödjer bara dekryptering av LCP \"basic profile\" utan certifikatvalidering.",
         "lcpRightsCopy": "Kopierade tecken",
         "lcpRightsPrint": "Utskrivna sidor",

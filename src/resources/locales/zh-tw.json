@@ -268,8 +268,6 @@
             "success": "匯入已成功完成。"
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "下載已取消。",
             "errors": {
                 "hashMismatch": "",
@@ -281,7 +279,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} 已被匯入。",
@@ -319,7 +319,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -735,7 +736,6 @@
         "expired": "出借到期",
         "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
         "incorrectPassphrase": "有符合此出版物的已儲存密語，或輸入的密語不正確。",
-        "lcpEnd": "結束",
         "lcpNotSupported": "",
         "lcpRightsCopy": "複製的文字",
         "lcpRightsPrint": "列印頁數",
@@ -1399,9 +1399,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

@@ -1824,7 +1824,6 @@ declare namespace typed_i18n {
   readonly "expired": string,
   readonly "expiredLcp": string,
   readonly "incorrectPassphrase": string,
-  readonly "lcpEnd": string,
   readonly "lcpNotSupported": string,
   readonly "lcpRightsCopy": string,
   readonly "lcpRightsPrint": string,
@@ -1953,7 +1952,6 @@ declare namespace typed_i18n {
   (_: "publication.expired", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.incorrectPassphrase", __?: {}): string;
-  (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpNotSupported", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;
   (_: "publication.lcpRightsPrint", __?: {}): string;

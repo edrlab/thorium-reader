@@ -16,6 +16,7 @@ It is currently localized in following 28 languages:
 * (de) Deutsch (German)
 * (es) Español (Spanish)
 * (nl) Nederlands (Dutch)
+* (nb-NO) Bokmål (Norwegian)
 * (ja) 日本語 (Japanese)
 * (ka) ქართული (Georgian)
 * (lt) Lietuvių (Lithuanian)

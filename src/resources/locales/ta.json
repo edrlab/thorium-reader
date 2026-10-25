@@ -273,8 +273,6 @@
             "success": "இறக்குமதி வெற்றிகரமாக முடிந்தது."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] ஏற்கனவே இறக்குமதி செய்யப்பட்டது.",
@@ -742,7 +742,6 @@
         "expired": "கடன் காலாவதியானது",
         "expiredLcp": "இந்த வெளியீட்டின் எல்.சி.பி உரிமம் காலாவதியானது.",
         "incorrectPassphrase": "சேமிக்கப்பட்ட பாச்ஃபிரேச் வெளியீட்டிற்கு பொருந்தவில்லை, அல்லது நுழைந்த பாச்ஃபிரேச் தவறானது.",
-        "lcpEnd": "முடிவு",
         "lcpNotSupported": "",
         "lcpRightsCopy": "நகலெடுக்கப்பட்ட எழுத்துக்கள்",
         "lcpRightsPrint": "அச்சிடப்பட்ட பக்கங்கள்",

@@ -278,8 +278,6 @@
             "success": "Importation réussie."
         },
         "download": {
-            "started": "Téléchargement commencé.",
-            "startedWithTitle": "Téléchargement de {{- title}}.",
             "cancelled": "Téléchargement annulé.",
             "errors": {
                 "hashMismatch": "Erreur de vérification de l'intégrité du fichier téléchargé  : SHA-256 attendu {{- expected}}, obtenu {{- actual}}.",
@@ -291,7 +289,9 @@
                 "lengthMismatch": "Erreur de vérification de l'intégrité des fichiers téléchargés : attendus {{- expected}}, obtenu {{- actual}} octets.",
                 "readStreamMissing": "Le flux de téléchargement n'est pas disponible.",
                 "tooManyFilenameAttempts": "Impossible de créer un fichier de téléchargement temporaire unique : {{- path}}"
-            }
+            },
+            "started": "Téléchargement commencé.",
+            "startedWithTitle": "Téléchargement de {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} a déjà été ajouté.",
@@ -748,7 +748,6 @@
         "expired": "Prêt expiré",
         "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
         "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",
-        "lcpEnd": "Fin",
         "lcpNotSupported": "WARNING : il s'agit d'une version préliminaire de Thorium Desktop, qui ne prend pas en charge les licences de production LCP. Elle ne prend en charge que des licences LCP de test.",
         "lcpRightsCopy": "Caractères copiés",
         "lcpRightsPrint": "Pages imprimées",
