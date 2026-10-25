@@ -809,7 +809,7 @@
             },
             "hide": "Visa inte",
             "highlight": "Markering",
-            "noSelectionToast": "Ingen markering",
+            "noSelectionToast": "Välj text innan du skapar en markering.",
             "note": "{{- color}} anteckning",
             "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
             "saveNote": "Spara",

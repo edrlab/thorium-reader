@@ -803,7 +803,7 @@
             },
             "hide": "不显示",
             "highlight": "高亮",
-            "noSelectionToast": "未选择",
+            "noSelectionToast": "创建注释前先选择文本.",
             "note": "{{- color}} 笔记",
             "quickAnnotations": "快速创建（跳过编辑器）",
             "saveNote": "保存",
