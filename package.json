@@ -138,7 +138,11 @@
     "typescript-check-GO:watch": "npm run patch-types && concurrently \"tsc --noEmit --project ./tsconfig-cli.json --watch --excludeDirectories **/node_modules\" \"npm run unpatch-types\"",
     "package-customization-profile": "sh ./scripts/package-customization-profile.sh && echo \"\nnode ./customization-dist/main/customization/cli.js\" && node ./customization-dist/main/customization/cli.js",
     "_NOT_NEEDED_action-validator": "node node_modules/@action-validator/cli/cli.mjs .github/workflows/main.yml && echo \"SUCCESS\" || echo \"FAIL\"",
-    "node-gyp-native-node-addon-windows-registry": "node-gyp --directory native-node-addon-windows-registry --verbose configure --target=44.9.3 --dist-url=https://electronjs.org/headers && node-gyp build --directory native-node-addon-windows-registry --loglevel=verbose --verbose --strip --target=44.9.3 --dist-url=https://electronjs.org/headers"
+    "node-gyp-native-node-addon-windows-registry": "node-gyp --directory native-node-addon-windows-registry --verbose configure --target=44.9.3 --dist-url=https://electronjs.org/headers && node-gyp build --directory native-node-addon-windows-registry --loglevel=verbose --verbose --strip --target=44.9.3 --dist-url=https://electronjs.org/headers",
+    "taze:minor": "npm exec --no --offline -- taze --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .",
+    "taze:major": "npm exec --no --offline -- taze major --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .",
+    "taze": "npm run taze:minor ; npm run taze:major",
+    "npmi": "sfw --verbose npm install --ignore-scripts --min-release-age=3 --allow-git=root --foreground-scripts"
   },
   "repository": {
     "type": "git",
