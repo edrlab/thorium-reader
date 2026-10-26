@@ -2082,8 +2082,17 @@ function createHighlightDom(
         return null;
     }
 
+    const startContainerTagName = (range.startContainer as Element).tagName?.toLowerCase();
+    const startContainerTagName_ = (range.startContainer.childNodes?.[range.startOffset] as Element)?.tagName?.toLowerCase();
+    const endContainerTagName = (range.endContainer as Element).tagName?.toLowerCase();
+    const endContainerTagName_ = (range.endContainer.childNodes?.[range.endOffset] as Element)?.tagName?.toLowerCase();
+    const commonAncestorContainerTagName = (range.commonAncestorContainer as Element).tagName?.toLowerCase();
+    const rangeIsImage = startContainerTagName_ === "img" || endContainerTagName_ === "img" || startContainerTagName === "img" || endContainerTagName === "img" || commonAncestorContainerTagName === "img";
+    // range.intersectsNode(node)
+    // console.log("rangeIsImage", rangeIsImage, startContainerTagName, startContainerTagName_, endContainerTagName, endContainerTagName_, commonAncestorContainerTagName);
+
     // win.READIUM2 && win.READIUM2.isFixedLayout
-    let rangeHasSVG = false;
+    let rangeHasSVG = false; // TODO: this only tests for start/end containers, not the middle parts! (does it matter? ... it's only used to avoid CSS native highlighting)
     let parent: Node | null = range.startContainer;
     while (parent) {
         if (parent.nodeType === Node.ELEMENT_NODE) {
@@ -2130,7 +2139,7 @@ function createHighlightDom(
     const underlineThickness = 3 / inverseZoom;
     const strikeThroughLineThickness = 3 / inverseZoom;
 
-    if (ENABLE_CSS_HIGHLIGHTS && !doDrawMargin && !rangeHasSVG && (drawBackground || (drawUnderline && !isVWM) || (drawStrikeThrough && !isVWM))) {
+    if (ENABLE_CSS_HIGHLIGHTS && !rangeIsImage && !doDrawMargin && !rangeHasSVG && (drawBackground || (drawUnderline && !isVWM) || (drawStrikeThrough && !isVWM))) {
         highlight.rangeCssHighlight = range;
 
         const [strRGB, cssHighlightID] = computeCssHighlightRGBID(highlight);
@@ -2325,7 +2334,7 @@ https://blackorwhite.lloydk.ca
     // console.log("scrollElement.scrollLeft: " + scrollElement.scrollLeft);
     // console.log("scrollElement.scrollTop: " + scrollElement.scrollTop);
 
-    const doNotMergeHorizontallyAlignedRects = drawUnderline || drawStrikeThrough;
+    const doNotMergeHorizontallyAlignedRects = !rangeIsImage && (drawUnderline || drawStrikeThrough);
 
     // Japanese Ruby ... ugly hack, TODO extract logic elsewhere!? TODO only TTS? (annotations and search could be problematic if only Ruby RT/RP match? ... but search already excludes Ruby, and mouse text selection makes it hard/impossible to select Ruby upperscript, so...)
     // highlight.group === HIGHLIGHT_GROUP_TTS ? JAPANESE_RUBY_TO_SKIP : undefined
