@@ -407,6 +407,36 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
         //     return;
         // }
 
+        let isInsideSummary = false;
+        let isInsideDetails = false;
+        let closedDetails = false;
+        let curEl = textNode as Element;
+        do {
+            if (curEl.nodeType === Node.ELEMENT_NODE) {
+                if (curEl.tagName?.toLowerCase() === "summary") {
+                    isInsideSummary = true;
+                    // console.log("TTS processTextNode -- isInsideSummary");
+                } else if (curEl.tagName?.toLowerCase() === "details") {
+                    isInsideDetails = true;
+                    // console.log("TTS processTextNode -- isInsideDetails");
+
+                    // curEl.getAttribute("open")
+                    //  === "open" or  === "true" ... it's in fact a "boolean attr"
+                    // (much like 'hidden' below),
+                    // so only its non-existence means "not open"
+                    if (!(curEl as HTMLDetailsElement).open) {
+                        closedDetails = true;
+                        // console.log("TTS processTextNode -- closedDetails");
+                    }
+                    break;
+                }
+            }
+        } while (curEl.parentNode && curEl.parentNode.nodeType === Node.ELEMENT_NODE &&
+            (curEl = curEl.parentNode as Element));
+        if (!isInsideSummary && isInsideDetails && closedDetails) {
+            return;
+        }
+
         const parentElement = elementStack[elementStack.length - 1];
         if (!parentElement) {
             return;
@@ -517,20 +547,37 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                 }
             }
 
-            let curEl = el;
-            do {
-                if (curEl.nodeType === Node.ELEMENT_NODE &&
-                    curEl.tagName?.toLowerCase() === "details" &&
+            if (lower !== "details") { // need to dig deeper (summary can be visible even when !details.open)
+                let isInsideSummary = false;
+                let isInsideDetails = false;
+                let closedDetails = false;
+                let curEl = el;
+                do {
+                    if (curEl.nodeType === Node.ELEMENT_NODE) {
+                        if (curEl.tagName?.toLowerCase() === "summary") {
+                            isInsideSummary = true;
+                            // console.log("TTS processElement -- isInsideSummary", lower);
+                        } else if (curEl.tagName?.toLowerCase() === "details") {
+                            isInsideDetails = true;
+                            // console.log("TTS processElement -- isInsideDetails", lower);
 
-                    // curEl.getAttribute("open")
-                    //  === "open" or  === "true" ... it's in fact a "boolean attr"
-                    // (much like 'hidden' below),
-                    // so only its non-existence means "not open"
-                    !(curEl as HTMLDetailsElement).open) {
+                            // curEl.getAttribute("open")
+                            //  === "open" or  === "true" ... it's in fact a "boolean attr"
+                            // (much like 'hidden' below),
+                            // so only its non-existence means "not open"
+                            if (!(curEl as HTMLDetailsElement).open) {
+                                closedDetails = true;
+                                // console.log("TTS processElement -- closedDetails");
+                            }
+                            break;
+                        }
+                    }
+                } while (curEl.parentNode && curEl.parentNode.nodeType === Node.ELEMENT_NODE &&
+                    (curEl = curEl.parentNode as Element));
+                if (!isInsideSummary && isInsideDetails && closedDetails) {
                     return true;
                 }
-            } while (curEl.parentNode && curEl.parentNode.nodeType === Node.ELEMENT_NODE &&
-                (curEl = curEl.parentNode as Element));
+            }
 
             const elStyle = win.getComputedStyle(el);
             if (elStyle) {

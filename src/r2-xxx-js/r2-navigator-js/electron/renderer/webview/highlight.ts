@@ -5,52 +5,53 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as crypto from "node:crypto";
 import debounce from "debounce";
 import { ipcRenderer } from "electron";
+import * as crypto from "node:crypto";
 
 import {
     IEventPayload_R2_EVENT_HIGHLIGHT_CLICK, R2_EVENT_FOCUS_READING_LOC, R2_EVENT_HIGHLIGHT_CLICK,
 } from "../../common/events";
 import {
-    HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline, HighlightDrawTypeOutline, IColor, IHighlight,
-    IHighlightDefinition,
     HighlightDrawTypeBackground,
+    HighlightDrawTypeMarginBookmark,
     HighlightDrawTypeOpacityMask,
     HighlightDrawTypeOpacityMaskRuler,
-    HighlightDrawTypeMarginBookmark,
+    HighlightDrawTypeOutline,
+    HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline,
+    IColor, IHighlight,
+    IHighlightDefinition,
     ITextPopup,
 } from "../../common/highlight";
 import { appendCSSInline, isPaginated } from "../../common/readium-css-inject";
 import { ISelectionInfo } from "../../common/selection";
-import { VERBOSE, IRectSimple, getClientRectsNoOverlap, getBoundingRect, IRect, getTextClientRects, DOMRectListToArray } from "../common/rect-utils";
-import { getScrollingElement, isVerticalWritingMode, isTwoPageSpread } from "./readium-css";
+import { DOMRectListToArray, IRect, IRectSimple, VERBOSE, getBoundingRect, getClientRectsNoOverlap, getTextClientRects } from "../common/rect-utils";
+import { getScrollingElement, isTwoPageSpread, isVerticalWritingMode } from "./readium-css";
 import { convertRangeInfo } from "./selection";
 import { ReadiumElectronWebviewWindow } from "./state";
 
-import { CLASS_HIGHLIGHT_CONTOUR, CLASS_HIGHLIGHT_CONTOUR_MARGIN, ID_HIGHLIGHTS_CONTAINER, CLASS_HIGHLIGHT_CONTAINER, CLASS_HIGHLIGHT_CURSOR2, CLASS_HIGHLIGHT_COMMON, CLASS_HIGHLIGHT_MARGIN, CLASS_HIGHLIGHT_HOVER, CLASS_HIGHLIGHT_BEHIND, CLASS_HIGHLIGHT_COMMON_SVG, CLASS_HIGHLIGHT_MASK, CLASS_HIGHLIGHT_SVG, ID_HIGHLIGHTS_FLOATING } from "../../common/styles";
+import { CLASS_HIGHLIGHT_BEHIND, CLASS_HIGHLIGHT_COMMON, CLASS_HIGHLIGHT_COMMON_SVG, CLASS_HIGHLIGHT_CONTAINER, CLASS_HIGHLIGHT_CONTOUR, CLASS_HIGHLIGHT_CONTOUR_MARGIN, CLASS_HIGHLIGHT_CURSOR2, CLASS_HIGHLIGHT_HOVER, CLASS_HIGHLIGHT_MARGIN, CLASS_HIGHLIGHT_MASK, CLASS_HIGHLIGHT_SVG, ID_HIGHLIGHTS_CONTAINER, ID_HIGHLIGHTS_FLOATING } from "../../common/styles";
 
 import { isRTL } from "./readium-css";
 
 import {
-Polygon,
-Box,
-BooleanOperations,
-Point,
-Face,
-Segment,
-Vector,
-Arc,
-ORIENTATION,
-CCW, // true
-CW, // false
-Utils,
-Edge,
-// PolygonEdge,
+    Arc,
+    BooleanOperations,
+    Box,
+    CCW, // true
+    CW,
+    Edge,
+    Face,
+    ORIENTATION,
+    Point,
+    Polygon,
+    Segment, // false
+    Utils,
+    Vector,
 } from "@flatten-js/core";
 const { unify, subtract } = BooleanOperations;
 
-import { computePosition, flip, shift, offset as offsetFloat, arrow } from "@floating-ui/dom";
+import { arrow, computePosition, flip, offset as offsetFloat, shift } from "@floating-ui/dom";
 import { isPopupDialogOpen } from "./popup-dialog";
 
 const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
@@ -2326,17 +2327,19 @@ https://blackorwhite.lloydk.ca
 
     const doNotMergeHorizontallyAlignedRects = drawUnderline || drawStrikeThrough;
 
+    // Japanese Ruby ... ugly hack, TODO extract logic elsewhere!? TODO only TTS? (annotations and search could be problematic if only Ruby RT/RP match? ... but search already excludes Ruby, and mouse text selection makes it hard/impossible to select Ruby upperscript, so...)
+    // highlight.group === HIGHLIGHT_GROUP_TTS ? JAPANESE_RUBY_TO_SKIP : undefined
+    const textClientRects_ = getTextClientRects(range,
+        // highlight.group === HIGHLIGHT_GROUP_TTS ? undefined : JAPANESE_RUBY_TO_SKIP
+        JAPANESE_RUBY_TO_SKIP,
+    );
+    const textClientRects = textClientRects_[0];
+    const atLeastOneIsInsideClosedDetails = textClientRects_[1];
+
     let clientRects: IRect[] | undefined;
 
     if (doNotMergeHorizontallyAlignedRects) {
         // non-solid highlight (underline or strikethrough), cannot merge and reduce/simplify client rectangles much due to importance of line-level decoration (must preserve horizontal/vertical line heights)
-
-        // Japanese Ruby ... ugly hack, TODO extract logic elsewhere!? TODO only TTS? (annotations and search could be problematic if only Ruby RT/RP match? ... but search already excludes Ruby, and mouse text selection makes it hard/impossible to select Ruby upperscript, so...)
-        // highlight.group === HIGHLIGHT_GROUP_TTS ? JAPANESE_RUBY_TO_SKIP : undefined
-        const textClientRects = getTextClientRects(range,
-            // highlight.group === HIGHLIGHT_GROUP_TTS ? undefined : JAPANESE_RUBY_TO_SKIP
-            JAPANESE_RUBY_TO_SKIP,
-        );
 
         const textReducedClientRects = getClientRectsNoOverlap(textClientRects, true, isVWM, highlight.expand ? highlight.expand : 0);
 
@@ -2419,41 +2422,46 @@ https://blackorwhite.lloydk.ca
 
         // clientRects = (DEBUG_RECTS && drawStrikeThrough) ? textClientRects : textReducedClientRectsToKeep;
     } else {
-        const rangeClientRects = DOMRectListToArray(range.getClientRects());
-        // console.log("rangeClientRects", JSON.stringify(rangeClientRects));
+        if (atLeastOneIsInsideClosedDetails) {
+            clientRects = getClientRectsNoOverlap(textClientRects, false, isVWM, highlight.expand ? highlight.expand : 0);
+        } else {
+            const rangeClientRects = DOMRectListToArray(range.getClientRects());
+            // console.log("rangeClientRects", JSON.stringify(rangeClientRects));
 
-        // page breaks empty span without the zero-width CSS ::before contents trick
-        if (drawMarginBookmark &&
-            rangeClientRects.length === 1 &&
-            rangeClientRects[0].width === 0 && // rangeClientRects[0].left === rangeClientRects[0].right
-            rangeClientRects[0].height !== 0 // rangeClientRects[0].top !== rangeClientRects[0].bottom
-        ) {
-            rangeClientRects[0].width = 2;
-            rangeClientRects[0].left -= 1;
-            rangeClientRects[0].right += 1;
+            // page breaks empty span without the zero-width CSS ::before contents trick
+            if (drawMarginBookmark &&
+                rangeClientRects.length === 1 &&
+                rangeClientRects[0].width === 0 && // rangeClientRects[0].left === rangeClientRects[0].right
+                rangeClientRects[0].height !== 0 // rangeClientRects[0].top !== rangeClientRects[0].bottom
+            ) {
+                rangeClientRects[0].width = 2;
+                rangeClientRects[0].left -= 1;
+                rangeClientRects[0].right += 1;
+            }
+
+            if (drawMarginBookmark &&
+                rangeClientRects.length === 2 &&
+                Math.floor(rangeClientRects[0].width) === 0 && // rangeClientRects[0].left === rangeClientRects[0].right
+                Math.floor(rangeClientRects[1].width) === 0 // rangeClientRects[1].left === rangeClientRects[1].right
+            ) {
+                // EDGE CASE (literally): click on blank area right hand side of CSS column (for LTR text)
+                rangeClientRects[0].width = 2;
+                rangeClientRects[0].left -= 1;
+                rangeClientRects[0].right += 1;
+
+                rangeClientRects[1].width = 2;
+                rangeClientRects[1].left -= 1;
+                rangeClientRects[1].right += 1;
+            }
+
+            // solid highlight, can merge and reduce/simplify client rectangles as much as possible
+            clientRects = getClientRectsNoOverlap(rangeClientRects, false, isVWM, highlight.expand ? highlight.expand : 0);
+
+            // if (drawMarginBookmark && clientRects.length) {
+            //     clientRects = [clientRects[0]];
+            //     clientRects = [clientRects[clientRects.length - 1]];
+            // }
         }
-
-        if (drawMarginBookmark &&
-            rangeClientRects.length === 2 &&
-            Math.floor(rangeClientRects[0].width) === 0 && // rangeClientRects[0].left === rangeClientRects[0].right
-            Math.floor(rangeClientRects[1].width) === 0 // rangeClientRects[1].left === rangeClientRects[1].right
-        ) {
-            // EDGE CASE (literally): click on blank area right hand side of CSS column (for LTR text)
-            rangeClientRects[0].width = 2;
-            rangeClientRects[0].left -= 1;
-            rangeClientRects[0].right += 1;
-
-            rangeClientRects[1].width = 2;
-            rangeClientRects[1].left -= 1;
-            rangeClientRects[1].right += 1;
-        }
-        // solid highlight, can merge and reduce/simplify client rectangles as much as possible
-        clientRects = getClientRectsNoOverlap(rangeClientRects, false, isVWM, highlight.expand ? highlight.expand : 0);
-
-        // if (drawMarginBookmark && clientRects.length) {
-        //     clientRects = [clientRects[0]];
-        //     clientRects = [clientRects[clientRects.length - 1]];
-        // }
     }
 
     // let highlightAreaSVGDocFrag: DocumentFragment | undefined;

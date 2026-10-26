@@ -2352,6 +2352,65 @@ win.addEventListener("DOMContentLoaded", () => {
         checkHeightConstrainedTables(win.document);
     }
 
+    if (win.READIUM2.isAudio) {
+        ;
+    } else {
+        if (!win.READIUM2.isFixedLayout) {
+            let hostDocumentURL = `${win.document.location.protocol}//${win.document.location.host}${win.document.location.pathname}`;
+            // debug("hostDocumentURL1", hostDocumentURL);
+            if (hostDocumentURL.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+                hostDocumentURL = convertCustomSchemeToHttpUrl(hostDocumentURL);
+                // debug("hostDocumentURL2", hostDocumentURL);
+                // const u = new URL(hostDocumentURL);
+                // hostDocumentURL = u.pathname.replace("/pub/", "");
+                // hostDocumentURL = hostDocumentURL.substring(hostDocumentURL.indexOf("/") + 1);
+                // debug("hostDocumentURL3", hostDocumentURL);
+            }
+            const detailsList = win.document.querySelectorAll("details");
+            const obj1 = (JSON.parse(win.localStorage.getItem("_readiumDetailsOpenState") || "{}")) as { [docUrl: string]: { [cssSelector: string]: { open?: boolean } } };
+            if (IS_DEV) debug("_readiumDetailsOpenState1", JSON.stringify(obj1, null, 4));
+            detailsList.forEach((detailsElement: HTMLDetailsElement) => {
+                try {
+                    const obj2 = obj1[hostDocumentURL] || {};
+                    obj1[hostDocumentURL] = obj2;
+                    const css = getCssSelector(detailsElement);
+                    const obj3 = obj2[css] || {};
+                    obj2[css] = obj3;
+                    if (typeof obj3.open !== "undefined") {
+                        detailsElement.open = !!obj3.open;
+                    } else {
+                        obj3.open = detailsElement.open;
+                    }
+
+                    detailsElement.addEventListener("toggle", (event) => {
+                        const d1 = (JSON.parse(win.localStorage.getItem("_readiumDetailsOpenState") || "{}")) as { [docUrl: string]: { [cssSelector: string]: { open?: boolean } } };
+                        if (IS_DEV) debug("_readiumDetailsOpenStateA toggle", JSON.stringify(d1, null, 4));
+                        const d2 = d1[hostDocumentURL] || {};
+                        d1[hostDocumentURL] = d2;
+                        // const css = getCssSelector(detailsElement);
+                        const d3 = d2[css] || {};
+                        d2[css] = d3;
+                        const newOpen = event.newState === "open" ? true : false; // === detailsElement.open
+                        // const oldOpen = d3.open;
+                        d3.open = newOpen;
+                        if (IS_DEV) debug("_readiumDetailsOpenStateB toggle", JSON.stringify(d1, null, 4));
+                        win.localStorage.setItem("_readiumDetailsOpenState", JSON.stringify(d1));
+
+                        ttsStop(); // forces a reset of the utterances (now that details content is revealed or hidden)
+
+                        // recreateAllHighlightsRaw(win);
+                        recreateAllHighlights(win);
+                    });
+
+                } catch (_err) {
+                    return;
+                }
+            });
+            if (IS_DEV) debug("_readiumDetailsOpenState2", JSON.stringify(obj1, null, 4));
+            win.localStorage.setItem("_readiumDetailsOpenState", JSON.stringify(obj1));
+        }
+    }
+
     // sometimes the load event does not occur! (some weird FXL edge case?)
     setTimeout(() => {
         loaded(true);
@@ -2674,6 +2733,8 @@ async function hydrateHighlights(b64Highlights: string): Promise<void> {
         // debug(jsonStr);
         const highlights = JSON.parse(jsonStr);
 
+        debug("################## HIGHLIGHTS hydrate ...");
+
         setDrawMargin(win, highlights.margin);
         recreateAllHighlightsRaw(win, highlights.list);
     } catch (err) {
@@ -2689,6 +2750,7 @@ let _firstResizeObserverTimeout: number | undefined = undefined;
 
 let _loaded = false;
 function loaded(forced: boolean) {
+
     if (_loaded) {
         return;
     }
