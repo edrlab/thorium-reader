@@ -346,23 +346,23 @@ startup: {
             }
             console.log(msg);
 
-            // document.body.querySelectorAll('mjx-container').forEach((mcont) => {
-            //     for (var mass of mcont.children) {
-            //         // console.log('==== ', mass.tagName, mass.localName);
-            //         if (mass.localName === 'mjx-assistive-mml' || mass.tagName.toLowerCase() === 'mjx-assistive-mml') {
-            //             mass.removeAttribute('aria-hidden');
-            //             // console.log('---- ', mass.firstElementChild.tagName, mass.firstElementChild.localName);
-            //             if (mass.firstElementChild &amp;&amp;
-            //                 (mass.firstElementChild.localName === 'math' || mass.firstElementChild.tagName.toUpperCase() === 'MATH')
-            //             ) {
-            //                 var alttext = mass.firstElementChild.getAttribute('alttext');
-            //                 if (alttext) {
-            //                     mcont.setAttribute('aria-label', alttext);
-            //                 }
-            //             }
-            //         }
-            //     }
-            // });
+            document.body.querySelectorAll('mjx-container').forEach((mcont) => {
+                for (var mass of mcont.children) {
+                    // console.log('==== ', mass.tagName, mass.localName);
+                    if (mass.localName === 'mjx-assistive-mml' || mass.tagName.toLowerCase() === 'mjx-assistive-mml') {
+                        // mass.removeAttribute('aria-hidden');
+                        // console.log('---- ', mass.firstElementChild.tagName, mass.firstElementChild.localName);
+                        if (mass.firstElementChild &amp;&amp;
+                            (mass.firstElementChild.localName === 'math' || mass.firstElementChild.tagName.toUpperCase() === 'MATH')
+                        ) {
+                            var alttext = mass.firstElementChild.getAttribute('alttext');
+                            if (alttext) {
+                                mcont.setAttribute('aria-label', alttext);
+                            }
+                        }
+                    }
+                }
+            });
         });
 
         window.MathJax.startup.defaultReady();
