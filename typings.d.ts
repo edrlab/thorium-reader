@@ -42,6 +42,7 @@ declare module "*.svg" {
 // }
 
 declare const __TH__IS_DEV__: boolean;
+declare const __TH__SEARCH_CATALOGS_ENABLED__: boolean;
 declare const __TH__IS_PACKAGED__: boolean;
 declare const __TH__SKIP_LCP_LSD__: boolean;
 declare const __TH__IS_VSCODE_LAUNCH__: boolean;
@@ -56,8 +57,7 @@ declare const __TH__FIREBASE_MEASUREMENT_ID__: string;
 declare const __TH__FIREBASE_MEASUREMENT_PROTOCOL_API_SECRET__: string;
 declare const __TH__FIREBASE_MEASUREMENT_PROTOCOL_ENDPOINT__: string;
 declare const __TH__FIREBASE_MEASUREMENT_PROTOCOL_DEBUG_ENDPOINT__: string;
-declare const __TH__FIREBASE_PROJECT_ID__: string;
-declare const __TH__FIREBASE_STORAGE_BUCKET__: string;
+declare const __TH__FIREBASE_MEASUREMENT_PROTOCOL_QUEUE_SQLITE_ENABLED__: boolean;
 // declare const __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: string;
 
 // declare module "bindings";

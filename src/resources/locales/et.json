@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menüü",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Sulge",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Viipa vasakule",
+        "loading": "",
         "mainContent": "põhiline sisu",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Viipa paremale",
         "skipLink": "Mine sisu juurde",
         "toolbar": "tööriistariba"
@@ -78,6 +95,7 @@
         "deleteBook": "Kustuta",
         "deleteTag": "Kustuta silt",
         "description": "Kirjeldus",
+        "downloaded": "Allalaaditud",
         "emptyTagList": "Siltidega väljaandeid/teoseid ei leidu.",
         "entry": {
             "continueReading": "Jätka lugemist",
@@ -141,7 +159,19 @@
         "sort": "Järjestus",
         "tag": "Silt",
         "tags": "Sildid",
-        "update": "Muuda"
+        "update": "Muuda",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -239,29 +269,54 @@
         "annotations": {
             "alreadyImported": "Kõik märkmed on juba imporditud.",
             "emptyFile": "Failis pole märkmeid.",
-            "errorParsing": "Viga faili töötlemisel: ",
-            "noBelongTo": "Märkmete importimine ei õnnestu - vähemalt üks märge pole väljaandega seotud.",
             "nothing": "Pole ühtegi imporditavat märget, katkestan impordi",
             "success": "Importimine õnnestus kenasti."
         },
         "download": {
             "cancelled": "Allalaadimine on katkestatud.",
-            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}",
             "errors": {
                 "hashMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: faili eeldatud SHA-256 räsi oleks pidanud olema {{- expected}}, kuid tegelikult oli {{- actual}}.",
                 "httpGet": "Allalaadimine ei õnnestunud: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Allalaadimise ajutine failinimi on vale või vigane.",
                 "invalidLink": "Allalaadimislink pole õige.",
                 "invalidTempDirectory": "Allalaaditava sisu ajutine kaust on vale või vigane.",
                 "lengthMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: andmemaht oleks pidanud olema {{- expected}} baiti, kuid tegelikult oli {{- actual}} baiti.",
                 "readStreamMissing": "Allalaadimise andmevoog pole saadaval.",
                 "tooManyFilenameAttempts": "Ei suuda luua ajutist failinime allalaaditavale sisule: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "„{{- title}}“ on juba imporditud.",
             "fail": "„{{- path}}“ objekti importimine ei õnnestunud: {{- err}}",
             "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
@@ -269,9 +324,9 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Väljaande taastamine ei õnnestunud.",
+                "success_one": "{{- count}} väljaanne on taastatud.",
+                "success_other": "{{- count}} väljaannet on taastatud."
             },
             "removed": "Väljaande kaust on eemaldatud.",
             "updateFailed": "Väljaande kausta uuendamine ei õnnestu: {{- message}}",
@@ -292,6 +347,17 @@
         },
         "addMenu": "Lisa OPDS-voog",
         "breadcrumbRoot": "Minu kataloogid",
+        "color": {
+            "blue": "Sinine",
+            "gray": "Hall",
+            "green": "Roheline",
+            "orange": "Oranž",
+            "pink": "Roosa",
+            "purple": "Purpurpunane",
+            "red": "Punane",
+            "title": "Kataloogi värv",
+            "yellow": "Kollane"
+        },
         "documentation": "OPDS-i ametlik veebisait",
         "empty": "Väljaannet/teost/raamatut ei leidu",
         "firstPage": "Esimene",
@@ -300,10 +366,13 @@
         "menu": {
             "aboutBook": "Väljaande teave",
             "addExtract": "Impordi näide",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Osta väljaanne",
             "goLoanBook": "Laenuta väljaanne",
             "goRevokeLoanBook": "Tühista laenutus",
-            "goSubBook": "Telli"
+            "goSubBook": "Telli",
+            "placeHold": ""
         },
         "network": {
             "error": "Viga ligipääsul andmevoole",
@@ -314,6 +383,12 @@
         },
         "next": "Järgmine",
         "previous": "Eelmine",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Jätka sirvimist",
         "shelf": "Raamaturiiul",
         "updateForm": {
@@ -655,7 +730,8 @@
         "certificateRevoked": "LCP-litsentsi sertifikaat on tühistatud.",
         "certificateSignatureInvalid": "Vigane LCP-litsentsi sertifikaadi allkiri.",
         "cover": {
-            "img": "kaanepilt"
+            "img": "kaanepilt",
+            "zoom": ""
         },
         "day": "päev",
         "days": "päeva",
@@ -666,7 +742,6 @@
         "expired": "Laenutus on aegunud",
         "expiredLcp": "Selle väljaande LCP-litsents on aegunud.",
         "incorrectPassphrase": "Mitte ükski salvestatud salasõna/salafraas ei sobi selle väljaandega või on sisestus vigane.",
-        "lcpEnd": "Lõpp",
         "lcpNotSupported": "HOIATUS: tegemist on Thoriumi töölauarakenduse (Thorium Desktop Reader) eelversiooniga, mis ei toeta tegelikuks kasutuseks mõeldud LCP-litsentse ning toetab ainult LCP „põhiprofiili“ dekodeerimist ilma sertifikaadi õigsuse kontrollimiseta.",
         "lcpRightsCopy": "Kopeeritud tähemärke",
         "lcpRightsPrint": "Trükitud lehti",
@@ -680,10 +755,22 @@
         "notStarted": "Pole alustatud",
         "onGoing": "Pooleli",
         "progression": {
-            "title": "Edenemine"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Edenemine",
+            "useRemote": ""
         },
         "read": "Lõpetatud",
         "remainingTime": "Laenutus (jäänud aeg)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Pikenda laenutust",
         "returnButton": "Tagasta",
         "returnedLcp": "See LCP-litsentsiga kaitsutud väljaanne on tagastatud.",
@@ -873,13 +960,12 @@
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
             "customizeReader": "Kohenda teksti vormindust",
-            "defaultValue": "vaikmisi väärtus",
             "disabled": "pole kasutusel",
             "display": "Ekraanivaade",
             "disposition": {
                 "title": "Paigutus"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Näita veeristel reavahetusi",
             "font": "Kirjatüüp",
             "fontSize": "Kirjatüübi suurus",
             "increaseFontSize": "Suurenda teksti suurust",
@@ -912,7 +998,6 @@
             "preset": {
                 "apply": "Rakenda",
                 "applyDetails": "Kasuta oma eelistatud seadistust kogu väljaandes.",
-                "detail": "Salvesta, kasuta või lähtesta oma eelistatud seadistust.",
                 "reset": "Lähtesta",
                 "resetDetails": "Lähtesta sinu tehtud seadistused (vaikimisi seadistusteks).",
                 "save": "Salvesta",
@@ -994,15 +1079,15 @@
                     "name": "Lisa märge"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
+                    "description": "Lisa valitud tekstile kiiresti märkus, kasutades viimati kasutatud esiletõstmise värvi ja tüüpi (märkus ja silt jäävad tühjaks)",
                     "name": "Lisa kiirmärge"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
+                    "description": "Varieeri märkuste ja järjehoidjate visuaalseid märgiseid kas dokumendi servas või tekstis",
                     "name": "Lülita märkme veerised sisse/välja"
                 },
                 "AudioNext": {
-                    "description": "",
+                    "description": "Mine esituse järgmise helisegmendi juurde (kehtib EPUB3 meediaülekatete, kõnesünteesi või eelsalvestatud heliraamatu puhul)",
                     "name": "Heliriba järgmine segment"
                 },
                 "AudioNextAlt": {
@@ -1022,15 +1107,15 @@
                     "name": "Heliriba eelmine segment (sürjuta)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
+                    "description": "Vähenda EPUB3 meediaülekatete puhul heli taasesituse kiirust või kõnesünteesi (TTS) lugemiskiirust",
                     "name": "Vähenda heliriba esituskiirust"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
+                    "description": "Suurenda EPUB3 meediaülekatete puhul heli taasesituse kiirust või kõnesünteesi (TTS) lugemiskiirust",
                     "name": "Suurenda heliriba esituskiirust"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
+                    "description": "Lähtesta EPUB3 meediaülekatete puhul heli taasesituse kiirus või kõnesünteesi (TTS) lugemiskiirus",
                     "name": "Lähtesta heliriba esituskiirus"
                 },
                 "AudioStop": {
@@ -1042,7 +1127,7 @@
                     "name": "Sulge lugemisvaade"
                 },
                 "FXLZoomIn": {
-                    "description": "",
+                    "description": "Suurenda püsipaigutusega üheleheküljelist või kaheleheküljelist lehte.",
                     "name": ""
                 },
                 "FXLZoomOut": {
@@ -1062,8 +1147,8 @@
                     "name": "Süvafookus põhisisule"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Tõsta klahvistiku fookus lugemisvaate menüüriba valikule „Ava leht“",
+                    "name": "Säti fookus valikule „Ava leht“"
                 },
                 "FocusReaderNavigation": {
                     "description": "",
@@ -1111,11 +1196,11 @@
                 },
                 "NavigateNextLibraryPage": {
                     "description": "",
-                    "name": "Mine raamatukogu järgmisele lehele"
+                    "name": "Ava raamatukogu järgmine leht"
                 },
                 "NavigateNextLibraryPageAlt": {
                     "description": "",
-                    "name": "Mine raamatukogu järgmisele lehele (alternatiivne)"
+                    "name": "Ava raamatukogu järgmine leht (alternatiivne)"
                 },
                 "NavigateNextOPDSPage": {
                     "description": "",
@@ -1127,59 +1212,59 @@
                 },
                 "NavigateNextPage": {
                     "description": "",
-                    "name": "Mine järgmisele lehele"
+                    "name": "Ava järgmine leht"
                 },
                 "NavigateNextPageAlt": {
                     "description": "",
-                    "name": "Mine järgmisele lehele (alternatiivne)"
+                    "name": "Ava järgmine leht (alternatiivne)"
                 },
                 "NavigatePreviousChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Ava eelmine peatükk"
                 },
                 "NavigatePreviousChapterAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ava eelmine peatükk (alternatiivne)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Liigu lugemisakna vaates üks samm tagasi",
+                    "name": "Liigu ajaloos tagasi"
                 },
                 "NavigatePreviousLibraryPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ava raamatukogu eelmine leht"
                 },
                 "NavigatePreviousLibraryPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ava raamatukogu eelmine leht (alternatiivne)"
                 },
                 "NavigatePreviousOPDSPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ava OPDS-i eelmine leht"
                 },
                 "NavigatePreviousOPDSPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ava OPDS-i eelmine leht (alternatiivne)"
                 },
                 "NavigatePreviousPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ava eelmine leht"
                 },
                 "NavigatePreviousPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ava eelmine leht (alternatiivne)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Suundu lugemisvaates väljande sisu algusesse",
+                    "name": "Suundu algusesse"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "Suundu lugemisvaates väljande sisu lõppu",
+                    "name": "Suundu lõppu"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "Näita lugemisvaates väljaande teavet",
+                    "name": "Näita väljaande teavet"
                 },
                 "OpenReaderInfoWhereAmI": {
                     "description": "",
@@ -1222,8 +1307,8 @@
                     "name": "Lülita Zen-režiim sisse/välja"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lülita lugemisvaates ekraanilugeja optimeerimistugi sisse/välja",
+                    "name": "Lülita ekraanilugeja optimeerimine sisse/välja"
                 }
             },
             "loadUserJson": "Laadi kasutajafailist",
@@ -1264,79 +1349,84 @@
             "title": "Lülita sessioonide salvestamine sisse"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Eemalda automaatselt aegunud väljaanded ja nendega seotud kasutajaandmed",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Tagab, et aegunud laenutused kustutatakse automaatselt (sealhulgas isiklikud märkmed, lugemise järjehoidjad jne). See on kasulik „ühiskasutuses arvutite“ puhul, nagu raamatukogud või ülikoolide ühised ruumid.",
+            "title": "Ühiskasutusrežiim"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Vali täiendav andmeruum",
+                "changeDirectory": "Uuenda täiendavat andmeruumi",
+                "removeStorageDirectory": "Eemalda täiendav andmeruum"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
+                "availability": "See funktsionaalsus toimib vaid Thoriumi viimastes versioonides - välistes kaustades asuvad raamatud pole näha Thoriumis versioonis 3.4 ja varasemates.",
+                "integrity": "sa pead hoidma seda kausta turvaliselt ja kättesaadavana. Väldi selle kustutamist, juurdepääsu piiramist või aeglase või ebastabiilse andmeruumi, näiteks võrguketaste kasutamist.",
                 "migration": "",
-                "summary": "",
+                "summary": "Loe lisaks selle hetkel beetatestimises oleva funktsionaalsuse kohta",
                 "warning": ""
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Vali kaust, mida Thorium peaks kasutama täiendava andmeruumina.",
+                "configuredDescription": "Täiendav andmeruum on seadistatud ja valmis uue sisu salvestamiseks.",
+                "notConfiguredDescription": "Thoriumi lugemisrakendusse imporditud väljaanded salvestatakse valitud kausta. Varem imporditud väljaanded jäävad algsesse andmeruumi."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Jätka",
+                    "description": "See funktsionaalsus on hetkel beetajärgus. Kas tahad jätkata ning valida kausta täiendava andmeruumi jaoks?",
+                    "title": "Vali täiendav andmeruum"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Muuda kausta",
+                    "description": "Täiendava andmeruumi uuendamine vajab ka sinu osalust. Thorium ei koli olemasolevaid väljaandeid sinna ise üle ja sa pead tegema seda käsitsi. Kas soovid jätkata?",
+                    "title": "Uuenda täiendavat andmeruumi"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Eemalda kaust",
+                    "description": "Täiendava andmeruumi eemaldamine vajab ka sinu osalust. Thorium ei koli olemasolevaid väljaandeid sealt ise üle ja sa pead tegema seda käsitsi. Kas soovid jätkata?",
+                    "title": "Eemalda täiendav andmeruum"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Rakenduse poolt hallatavad väljaanded on vaikimisi salvestatud siia:",
+                "defaultInternal": "Süsteemi andmeruum",
+                "externalStorage": "Väline andmeruum",
+                "title": "Asukohad"
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Tuvasta taastatavaid väljaandeid",
+                    "checkAgain": "Kontrolli uuesti",
+                    "recover": "Taasta väljaanded",
+                    "recovering": "Taaastan…"
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Andmekandjal leidus üks või enam väljaannet, mida pole andmebaasis. Taastamine on võimalik.",
+                "checking": "Kontrollin väljaande andmeruumi…",
+                "description": "Kontrolli väljaannete andmeruumi tuvastamaks kas midagi saab turvaliselt taastada.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Taasta",
+                    "description_one": "Thorium leidis andmekandjalt {{- count}} väljaande, mis puudub andmebaasist. Tahaksid sa selle uuesti Thoriumisse importida?",
+                    "description_other": "Thorium leidis andmekandjalt {{- count}} väljaannet, mis puuduvad andmebaasist. Tahaksid sa need uuesti Thoriumisse importida?",
+                    "title": "Taasta väljaanded"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Taastatavaid väljaandeid ei leidu.",
+                "recoverableCount_one": "{{- count}} väljaanne on taastatava algse salvestusruumi tunnuse alusel.",
+                "recoverableCount_other": "{{- count}} väljaannet on taastatava algse salvestusruumi tunnuse alusel.",
+                "title": "Taastamine"
             }
         },
         "tabs": {
-            "appearance": "Välimus",
+            "advanced": "Täiendavad seadistused",
             "general": "Üldseadistused",
             "keyboardShortcuts": "Klaviatuuri kiirklahvid",
             "profiles": "Profiilid",
-            "storage": ""
+            "storage": "Andmeruum"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "Lülita telemeetria välja",
+            "disableTelemetryMeasurementsDescription": "Sisselülitamisel ei edastata arendajale rakenduse kohta kogutud andmeid.",
+            "title": "Telemeetria"
         },
         "theme": {
             "auto": "Automaatne",

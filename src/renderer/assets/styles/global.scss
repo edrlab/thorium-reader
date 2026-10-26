@@ -85,6 +85,11 @@ section {
   margin-bottom: 20px;
 }
 
+// Native popover dialogs should not inherit document section spacing.
+[data-placement] > section[role="dialog"] {
+  margin: 0;
+}
+
 .main {
   width: calc(100% - 120px);
   padding: 10px 30px;
@@ -270,7 +275,8 @@ nav + nav + .breadcrumb + .main {
   }
 }
 
-.heading_link a {
+.heading_link a,
+.heading_link h3 {
   display: flex;
   justify-content: start;
   align-items: center;

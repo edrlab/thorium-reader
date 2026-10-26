@@ -13,11 +13,17 @@ export interface IStreamAndLength {
     reset: () => Promise<IStreamAndLength>;
 }
 
+export interface IZipEntryMetadata {
+    entryLength: number;
+    isEntryCompressed: boolean;
+}
+
 export interface IZip {
     hasEntries: () => boolean;
     entriesCount: () => number;
     hasEntry: (entryPath: string) => boolean;
     getEntries: () => Promise<string[]>;
+    entryMetadata: (entryPath: string) => IZipEntryMetadata | undefined;
     entryStreamPromise: (entryPath: string) => Promise<IStreamAndLength>;
     entryStreamRangePromise: (entryPath: string, begin: number, end: number) => Promise<IStreamAndLength>;
     freeDestroy: () => void;
@@ -28,6 +34,7 @@ export abstract class Zip implements IZip {
     public abstract entriesCount(): number;
     public abstract hasEntry(entryPath: string): boolean;
     public abstract getEntries(): Promise<string[]>;
+    public abstract entryMetadata(entryPath: string): IZipEntryMetadata | undefined;
     public abstract entryStreamPromise(entryPath: string): Promise<IStreamAndLength>;
     public abstract freeDestroy(): void;
 

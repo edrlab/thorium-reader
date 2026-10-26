@@ -32,6 +32,8 @@ import { assertUUIDv4 } from "readium-desktop/utils/uuid";
 import { persistableWindowBound } from "../session/browserWindowState";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { logPublicationMeasurement } from "readium-desktop/main/analytics/publication";
+import { logWindowFocusTime } from "readium-desktop/main/analytics/window";
+import { registerWindowFocusTracking } from "readium-desktop/main/analytics/windowFocus";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
@@ -76,6 +78,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+    registerWindowFocusTracking(readerWindow, "reader", logWindowFocusTime);
     readerWindow.on("focus", () => {
         readerWindow.webContents?.send("window-focus");
     });

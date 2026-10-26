@@ -8,7 +8,9 @@
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import * as React from "react";
-import * as Popover from "@radix-ui/react-popover";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { FocusScope } from "react-aria";
+import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog } from "react-aria-components";
 import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -21,25 +23,29 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
 
     const [triggerOpen, setTriggerOpen] = React.useState(false);
 
-    const collisionValue = location.hash === "#/home" ? 10 : 280;
-    const collision: Partial<Record<"top", number>> = props.noCollisionPadding ? undefined : {top : collisionValue};
-
     return (
-        <Popover.Root modal onOpenChange={() => setTriggerOpen(!triggerOpen)}>
-            <Popover.Trigger asChild>
+        <DialogTrigger onOpenChange={setTriggerOpen}>
+            <Pressable>
                 <button className={classNames(stylesDropDown.dropdown_trigger, triggerOpen ? "popover_open" : "")}>
                     {props.button}
                 </button>
-            </Popover.Trigger>
-            <Popover.Portal>
-                <Popover.Content sideOffset={5} align="end" alignOffset={-10} hideWhenDetached collisionPadding={collision}>
-                    <div className={stylesDropDown.dropdown_menu}>
-                        {props.children}
-                    </div>
-                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                </Popover.Content>
-            </Popover.Portal>
-        </Popover.Root>
+            </Pressable>
+            <Popover
+                placement="bottom end"
+                offset={10}
+                crossOffset={0}
+                containerPadding={props.noCollisionPadding ? 0 : 12}
+                className={stylesDropDown.PopoverContent}
+                style={{ zIndex: OVERLAY_Z_INDEX }}
+            >
+                <PopoverDialog>
+                    <FocusScope autoFocus>
+                        <div className={stylesDropDown.dropdown_menu}>{props.children}</div>
+                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                    </FocusScope>
+                </PopoverDialog>
+            </Popover>
+        </DialogTrigger>
     );
 };
 

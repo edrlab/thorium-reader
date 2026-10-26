@@ -9,11 +9,13 @@ import * as stylesTags from "readium-desktop/renderer/assets/styles/components/t
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import * as React from "react";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { FocusScope } from "react-aria";
+import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button } from "react-aria-components";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as Popover from "@radix-ui/react-popover";
 import { Link } from "react-router-dom";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 // import { DisplayType } from "readium-desktop/renderer/library/routing";
@@ -44,7 +46,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
         tagString = tag.name;
     }
 
-    if (pubId && onClickDeleteCb) {
+    if (pubId && onClickDeleteCb && typeof index === "number") {
         button = (
             <>
                 <Link
@@ -79,30 +81,38 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                 >
                     {tag as string}
                 </Link>
-                <Popover.Root modal>
-                    <Popover.Trigger asChild>
-                        <button>
+                <DialogTrigger>
+                    <Pressable>
+                        <button type="button" aria-label={__("accessibility.editTag", { tag: tagString })}>
                             <SVG ariaHidden={true} svg={EditIcon} />
                         </button>
-                    </Popover.Trigger>
-                    <Popover.Portal>
-                        <Popover.Content sideOffset={5} className={stylesTags.Popover_delete_tag}>
-                            <Popover.Close asChild>
-                                <button
-                                    onClick={
+                    </Pressable>
+                    <Popover
+                        placement="bottom"
+                        offset={10}
+                        crossOffset={0}
+                        containerPadding={0}
+                        className={stylesTags.Popover_delete_tag}
+                        style={{ zIndex: OVERLAY_Z_INDEX }}
+                    >
+                        <PopoverDialog aria-label={__("accessibility.editTag", { tag: tagString })}>
+                            <FocusScope autoFocus>
+                                <Button
+                                    slot="close"
+                                    onPress={
                                         // () => this.deleteTag(index)
                                         onClickDeleteCb(index)
                                     }
-                                    title={__("catalog.deleteTag")}
+                                    render={(buttonProps) => <button {...buttonProps} title={__("catalog.deleteTag")} />}
                                 >
                                     <SVG ariaHidden={true} svg={TrashIcon} />
                                     {__("catalog.delete")}
-                                </button>
-                            </Popover.Close>
-                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                        </Popover.Content>
-                    </Popover.Portal>
-                </Popover.Root>
+                                </Button>
+                                <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                            </FocusScope>
+                        </PopoverDialog>
+                    </Popover>
+                </DialogTrigger>
             </>
         );
     } else if (typeof tag === "object" && tag?.link?.length && onClickLinkCb) {

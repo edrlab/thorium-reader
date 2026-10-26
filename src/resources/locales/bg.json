@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Меню",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Затвори",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Плъзни списъка наляво",
+        "loading": "",
         "mainContent": "главно съдържание",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Плъзни списъка надясно",
         "skipLink": "Преминете към съдържанието",
         "toolbar": "лента с инструменти"
@@ -78,6 +95,7 @@
         "deleteBook": "Изтрий",
         "deleteTag": "Изтрий маркер",
         "description": "Описание",
+        "downloaded": "",
         "emptyTagList": "Нямате маркирана електронна книга.",
         "entry": {
             "continueReading": "Възобнови четенето",
@@ -141,7 +159,19 @@
         "sort": "Сортирай по",
         "tag": "",
         "tags": "Маркери",
-        "update": "Редактирай"
+        "update": "Редактирай",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -239,29 +269,54 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
         "download": {
             "cancelled": "",
-            "error": "Изтеглянето на {{- title}} е неуспешно: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} вече е била добавена.",
             "fail": "Добавянето на {{- path}} се провали. {{- err}}",
             "success": "Добавянето на {{- title}} завърши."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Книгата не може да бъде отворена: {{- err}}",
@@ -292,6 +347,17 @@
         },
         "addMenu": "Добави OPDS канал",
         "breadcrumbRoot": "Каталози",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "Няма намерени публикации",
         "firstPage": "Първа",
@@ -300,10 +366,13 @@
         "menu": {
             "aboutBook": "Относно тази книга",
             "addExtract": "Добави откъс",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Купи тази книга",
             "goLoanBook": "Заеми тази книга",
             "goRevokeLoanBook": "Откажи заемането",
-            "goSubBook": "Абонирай се"
+            "goSubBook": "Абонирай се",
+            "placeHold": ""
         },
         "network": {
             "error": "Грешка при достъпа до канала",
@@ -314,6 +383,12 @@
         },
         "next": "Следващ",
         "previous": "Предишен",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "Лавица",
         "updateForm": {
@@ -655,7 +730,8 @@
         "certificateRevoked": "Сертификатът е анулиран.",
         "certificateSignatureInvalid": "Ключа за сертификата е невалиден.",
         "cover": {
-            "img": "корица"
+            "img": "корица",
+            "zoom": ""
         },
         "day": "",
         "days": "",
@@ -666,7 +742,6 @@
         "expired": "",
         "expiredLcp": "Тази книга не може да бъде прочетена, защото лицензът за LCP е изтекъл.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Край",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Копиране на символи",
         "lcpRightsPrint": "Печат на страници",
@@ -680,10 +755,22 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "Напредък"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Напредък",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Поднови",
         "returnButton": "Върни",
         "returnedLcp": "Тази книга не може да бъде прочетена, защото лицензът за LCP е върнат.",
@@ -873,7 +960,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "Екран",
             "disposition": {
@@ -912,7 +998,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1332,11 +1417,16 @@
             }
         },
         "tabs": {
-            "appearance": "",
+            "advanced": "",
             "general": "",
             "keyboardShortcuts": "",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "",

@@ -12,7 +12,7 @@ import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/componen
 
 import { shell } from "electron";
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as StarIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
@@ -27,37 +27,47 @@ import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLin
 import * as penIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as linkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon-bold.svg";
+import {
+    OPDS_FEED_DEFAULT_COLOR,
+    type TOpdsFeedColor,
+} from "readium-desktop/common/models/opds";
+import { OpdsFeedColorPicker } from "./OpdsFeedColorPicker";
 
 export const OpdsFeedHowDoesItWorksInfoBox = () => {
 
     const [__] = useTranslator();
     const [infoOpen, setInfoOpen] = React.useState(false);
+    const helpId = React.useId();
 
 
     return (<div>
-        <button className={stylesButtons.button_catalog_infos} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+        <button
+            type="button"
+            aria-expanded={infoOpen}
+            aria-controls={helpId}
+            className={stylesButtons.button_catalog_infos}
+            onClick={() => setInfoOpen(open => !open)}
+        >
             <SVG ariaHidden svg={InfoIcon} />
             {__("opds.whatIsOpds")}
             <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
         </button>
-        {infoOpen ?
-            <div className={stylesCatalogs.catalog_infos_text}>
-                <p>
-                    {__("opds.informations")}
-                </p>
-                <a href=""
-                    onClick={(ev) => {
-                        ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                        const href = "https://opds.io/";
-                        // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                        shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
-                        // }
-                    }}>
-                    {__("opds.documentation")}
-                    <SVG ariaHidden svg={FollowLinkIcon} />
-                </a>
-            </div>
-            : <></>}
+        <div id={helpId} hidden={!infoOpen} className={stylesCatalogs.catalog_infos_text}>
+            <p>
+                {__("opds.informations")}
+            </p>
+            <a href=""
+                onClick={(ev) => {
+                    ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                    const href = "https://opds.io/";
+                    // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                    shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
+                    // }
+                }}>
+                {__("opds.documentation")}
+                <SVG ariaHidden svg={FollowLinkIcon} />
+            </a>
+        </div>
     </div>);
 };
 
@@ -68,11 +78,12 @@ export const OpdsFeedAddFormDialog = () => {
     const [title, setTitle] = React.useState("");
     const [url, setUrl] = React.useState("");
     const [favorite, setFavorite] = React.useState(false);
+    const [color, setColor] = React.useState<TOpdsFeedColor>(OPDS_FEED_DEFAULT_COLOR);
     const addAction = () => {
         if (!title || !url) {
             return;
         }
-        apiAddFeedAction({ title, url, favorite });
+        apiAddFeedAction({ title, url, favorite, color });
     };
 
 
@@ -85,8 +96,7 @@ export const OpdsFeedAddFormDialog = () => {
                 <span>{__("opds.addMenu")}</span>
             </button>
         </Dialog.Trigger>
-        <Dialog.Portal>
-            <div className={stylesModals.modal_dialog_overlay}></div>
+        <Dialog.Portal className={stylesModals.modal_dialog_overlay}>
             <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
                 <div className={stylesModals.modal_dialog_header}>
                     <Dialog.Title>
@@ -131,10 +141,11 @@ export const OpdsFeedAddFormDialog = () => {
                                 required
                             />
                         </div>
-                        <button onClick={() => setFavorite(!favorite)}>
+                        <button type="button" onClick={() => setFavorite(!favorite)}>
                             <SVG svg={StarIcon} ariaHidden className={favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
                             {__("catalog.AddToFavorites")}
                         </button>
+                        <OpdsFeedColorPicker value={color} onChange={setColor} />
                         <OpdsFeedHowDoesItWorksInfoBox />
                     </div>
                     <div className={stylesModals.modal_dialog_footer}>

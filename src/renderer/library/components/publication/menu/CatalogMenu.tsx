@@ -10,7 +10,7 @@ import * as React from "react";
 import { PublicationView, canOpenPublication } from "readium-desktop/common/views/publication";
 import PublicationExportButton from "./PublicationExportButton";
 import DeletePublicationConfirm from "../../dialog/DeletePublicationConfirm";
-import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../../dialog/publicationInfos/PublicationInfo";
+import { PublicationInfoLibWithRAC, PublicationInfoLibWithRACContent, PublicationInfoLibWithRACTrigger } from "../../dialog/publicationInfos/PublicationInfo";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/export-icon.svg";
@@ -30,30 +30,35 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getSaga } from "readium-desktop/renderer/library/createStore";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 
-function useShiftKey() {
+function useShiftKey(menuButtonRef: React.RefObject<HTMLButtonElement>) {
   const [isShiftPressed, setIsShiftPressed] = React.useState(false);
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "Shift" && !isShiftPressed) {
+      // A nested modal leaves the menu mounted but inert. Do not resize that background popover.
+      if (e.key === "Shift" && menuButtonRef.current && !menuButtonRef.current.closest("[inert]")) {
         setIsShiftPressed(true);
       }
     };
     const up = (e: KeyboardEvent) => {
-      if (e.key === "Shift" && isShiftPressed) {
+      if (e.key === "Shift") {
         setIsShiftPressed(false);
       }
     };
+    const blur = () => setIsShiftPressed(false);
 
     window.addEventListener("keydown", down);
     window.addEventListener("keyup", up);
+    window.addEventListener("blur", blur);
 
     return () => {
       window.removeEventListener("keydown", down);
       window.removeEventListener("keyup", up);
+      window.removeEventListener("blur", blur);
     };
-  }, [isShiftPressed]);
+  }, [menuButtonRef]);
 
   return isShiftPressed;
 }
@@ -62,9 +67,16 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
     const [__] = useTranslator();
     const dispatch = useDispatch();
     const locale = useSelector((state: ILibraryRootState) => state.i18n.locale);
-    const isShiftKeyPressed = useShiftKey();
+    const menuButtonRef = React.useRef<HTMLButtonElement>(null);
+    const isShiftKeyPressed = useShiftKey(menuButtonRef);
 
     const canOpen = canOpenPublication(props.publicationView);
+
+    const isLicensed = props.publicationView.lcp !== null && props.publicationView.lcp !== undefined;
+    const licenseStatus = props.publicationView.lcp?.lsd?.lsdStatus?.status;
+    const isLicenseReadyOrActive = isLicensed ?
+        licenseStatus === StatusEnum.Ready || licenseStatus === StatusEnum.Active :
+        false;
 
     const noteExport = <button
         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
@@ -117,6 +129,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                 <DeletePublicationConfirm
                     trigger={(
                         <button
+                            ref={menuButtonRef}
                             className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                         >
                             <SVG ariaHidden svg={TrashIcon} />
@@ -135,20 +148,21 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
             </>
         :
         <>
-            <PublicationInfoLibWithRadix
+            <PublicationInfoLibWithRAC
                 publicationView={props.publicationView}
             >
-                <PublicationInfoLibWithRadixTrigger asChild>
+                <PublicationInfoLibWithRACTrigger asChild>
                     <button
+                        ref={menuButtonRef}
                         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                     >
                         <SVG ariaHidden svg={InfoIcon} />
                         <p>{__("catalog.bookInfo")}</p>
                     </button>
-                </PublicationInfoLibWithRadixTrigger>
-                <PublicationInfoLibWithRadixContent
+                </PublicationInfoLibWithRACTrigger>
+                <PublicationInfoLibWithRACContent
                 />
-            </PublicationInfoLibWithRadix>
+            </PublicationInfoLibWithRAC>
             <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             {props.publicationView.lastReadTimeStamp ?
                 <button
@@ -181,15 +195,19 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
             <PublicationExportButton
                 publicationView={props.publicationView}
             />
-            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
-            <ImportAnnotationsDialog winId={undefined} publicationView={props.publicationView}>
-                <button
-                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
-                >
-                    <SVG ariaHidden svg={ImportIcon} />
-                    {__("catalog.importAnnotation")}
-                </button>
-            </ImportAnnotationsDialog>
+            {!isLicensed || isLicenseReadyOrActive ?
+                <>
+                    <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
+                    <ImportAnnotationsDialog winId={undefined} publicationView={props.publicationView}>
+                        <button
+                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                        >
+                            <SVG ariaHidden svg={ImportIcon} />
+                            {__("catalog.importAnnotation")}
+                        </button>
+                    </ImportAnnotationsDialog>
+                </>
+                : <></>}
             <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             {noteExport}
             {isShiftKeyPressed ? openFolder : <></>}

@@ -15,20 +15,26 @@ export const CRL_URL = "http://crl.edrlab.telesec.de/rl/EDRLab_CA.crl";
 export const CRL_URL_ALT = "http://crl.edrlab.telesec.de/rl/Readium_LCP_Root_CA.crl";
 // curl http://crl.edrlab.telesec.de/rl/Readium_LCP_Root_CA.crl -s | openssl crl -inform DER -text -noout
 
-export const DUMMY_CRL = `-----BEGIN X509 CRL-----
-MIICrTCBljANBgkqhkiG9w0BAQQFADBnMQswCQYDVQQGEwJGUjEOMAwGA1UEBxMF
-UGFyaXMxDzANBgNVBAoTBkVEUkxhYjESMBAGA1UECxMJTENQIFRlc3RzMSMwIQYD
-VQQDExpFRFJMYWIgUmVhZGl1bSBMQ1AgdGVzdCBDQRcNMTcwOTI2MTM1NTE1WhcN
-MjcwOTI0MTM1NTE1WjANBgkqhkiG9w0BAQQFAAOCAgEA27f50xnlaKGUdqs6u6rD
-WsR75z+tZrH4J2aA5E9I/K5fNe20FftQZb6XNjVQTNvawoMW0q+Rh9dVjDnV5Cfw
-ptchu738ZQr8iCOLQHvIM6wqQj7XwMqvyNaaeGMZxfRMGlx7T9DOwvtWFCc5X0ik
-YGPPV19CFf1cas8x9Y3LE8GmCtX9eUrotWLKRggG+qRTCri/SlaoicfzqhViiGeL
-dW8RpG/Q6ox+tLHti3fxOgZarMgMbRmUa6OTh8pnxrfnrdtD2PbwACvaEMCpNCZR
-aSTMRmIxw8UUbUA/JxDIwyISGn3ZRgbFAglYzaX80rSQZr6e0bFlzHl1xZtZ0Raz
-GQWP9vvfH5ESp6FsD98g//VYigatoPz/EKU4cfP+1W/Zrr4jRSBFB37rxASXPBcx
-L8cerb9nnRbAEvIqxnR4e0ZkhMyqIrLUZ3Jva0fC30kdtp09/KJ22mXKBz85wUQa
-7ihiSz7pov0R9hpY93fvt++idHBECRNGOeBC4wRtGxpru8ZUa0/KFOD0HXHMQDwV
-cIa/72T0okStOqjIOcWflxl/eAvUXwtet9Ht3o9giSl6hAObAeleMJOB37Bq9ASf
-h4w7d5he8zqfsCGjaG1OVQNWVAGxQQViWVysfcJohny4PIVAc9KkjCFa/QrkNGjr
-kUiV/PFCwL66iiF666DrXLY=
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// run this at each new build to update the CRL:
+node -e "const url='http://crl.edrlab.telesec.de/rl/EDRLab_CA.crl'; const tick=String.fromCharCode(96); const now=Date.now(); fetch(url).then(async r=>{ if(!r.ok) throw new Error('HTTP '+r.status); const buf=Buffer.from(await r.arrayBuffer()); const b64=buf.toString('base64').match(/.{1,64}/g).join('\n'); console.log('// Build-time CRL fallback generated from CRL_URL on '+new Date(now).toISOString()+'.'); console.log('export const BUILD_CRL_CACHED_AT = '+now+';'); console.log('export const BUILD_CRL = '+tick+'-----BEGIN X509 CRL-----\n'+b64+'\n-----END X509 CRL-----'+tick+';'); }).catch(e=>{ console.error(e); process.exit(1); });"
+*/
+
+// Build-time CRL fallback generated from CRL_URL on 2026-09-14T09:37:19.832Z.
+export const BUILD_CRL_CACHED_AT = 1789378639832;
+export const BUILD_CRL = `-----BEGIN X509 CRL-----
+MIICkTCCAXkCAQEwDQYJKoZIhvcNAQELBQAwQjETMBEGA1UEChMKZWRybGFiLm9y
+ZzEXMBUGA1UECxMOZWRybGFiLm9yZyBMQ1AxEjAQBgNVBAMTCUVEUkxhYiBDQRcN
+MjYwOTEzMTQxNzA4WhcNMjYwOTE4MTQxNzA3WjCB0DAnAgg9/PrnYyy4ABcNMjYw
+ODA1MjAyMTEzWjAMMAoGA1UdFQQDCgEBMCgCCQCoPyWN9DqSBhcNMjYwNTI1MDc1
+NTAwWjAMMAoGA1UdFQQDCgEGMCgCCQCwrtK1lYNPKhcNMjYwODI4MTcyNzQ1WjAM
+MAoGA1UdFQQDCgEGMCcCCAD7am95HSWbFw0yNjAzMjMxMjQ1NThaMAwwCgYDVR0V
+BAMKAQYwKAIJAKjr9Zx5OfipFw0yNjAyMTIxMDE0MDJaMAwwCgYDVR0VBAMKAQag
+MDAuMB8GA1UdIwQYMBaAFNxc/JPkH5/usLrqUgsrylJc4MmHMAsGA1UdFAQEAgIN
+/jANBgkqhkiG9w0BAQsFAAOCAQEAhHCfMKjWaIORdex9iYL2WYOK/qOyRegPa+uT
+TeS6SAqFPwT8EWuo0aa9dSt2GXtMNfPEmOyxioVvhV2gfYyjbmoDyUJDlkySUAcO
+c4voHAuf4wT2y1GzuvI4pQNn3KkZu35HrWBy5pMFwrBkTSRlbTtYESpWlXAezrmD
+YN/kMSjDLSyan15L9r1Hkp1gKMxTluUByQW4pm1zY3MR19Gkew8RivQWt5yPUfCD
+3+HMgBYMnbHmxpUPi3LyfswTiMZxNT2BHiHy6Qdg3uC25tTQs3sq5ih1ErRMuCl/
+MVZZnnZh4KBBFzgcZsSFf8Kggn5SW9BUZRGN4QHuAY9Sma4fAQ==
 -----END X509 CRL-----`;

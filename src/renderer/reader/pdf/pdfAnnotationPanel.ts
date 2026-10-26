@@ -294,5 +294,9 @@ export function buildAnnotationPanelSaveNote(
         note.creator = clone(annotation.creator);
     }
 
+    if (annotation.readiumAnnotation) {
+        note.readiumAnnotation = clone(annotation.readiumAnnotation);
+    }
+
     return note;
 }

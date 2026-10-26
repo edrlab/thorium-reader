@@ -15,8 +15,8 @@ const manifest = {
         },
         "accessMode": "auditory",
         "accessModeSufficient": [["auditory"], ["test", "no trailing comma"]],
+        "conformsTo": "https://readium.org/webpub-manifest/profiles/audiobook",
         "@type": "http://schema.org/Audiobook",
-        "conformsTo": [ "https://readium.org/webpub-manifest/profiles/audiobook" ],
         "title": {
             en: "Audiotest 2",
             fr: "Test Audio 2",
@@ -241,5 +241,5 @@ test("publication to manifest", async () => {
         return undefined;
     });
 
-    expect(JSON.stringify(TaJsonSerialize(res))).toStrictEqual(JSON.stringify(manifest));
+    expect(TaJsonSerialize(res)).toStrictEqual(manifest);
 });

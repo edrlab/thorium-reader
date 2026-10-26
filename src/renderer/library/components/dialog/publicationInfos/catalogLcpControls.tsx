@@ -24,7 +24,7 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import DeletePublicationConfirm from "../DeletePublicationConfirm";
 import * as SaveAsIcon from "readium-desktop/renderer/assets/icons/SaveAs-icon.svg";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
@@ -186,8 +186,7 @@ const RenewLsdConfirm = (props: { publicationView: PublicationView, trigger: Rea
             <AlertDialog.Trigger asChild>
                 {props.trigger}
             </AlertDialog.Trigger>
-            <AlertDialog.Portal>
-                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+            <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.renew")}</AlertDialog.Title>
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}> {/* replace with <p></p> */}
@@ -223,8 +222,7 @@ const ReturnLsdConfirm = (props: { publicationView: PublicationView, trigger: Re
             <AlertDialog.Trigger asChild>
                 {props.trigger}
             </AlertDialog.Trigger>
-            <AlertDialog.Portal>
-                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+            <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.return")}</AlertDialog.Title>
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>

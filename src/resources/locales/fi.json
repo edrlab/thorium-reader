@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Valikko",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Sulje",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Siirry listalla vasemmalle",
+        "loading": "",
         "mainContent": "Pääsisältö",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Siirry listalla oikealle",
         "skipLink": "Hyppää sisältöön",
         "toolbar": "Työkalurivi"
@@ -78,6 +95,7 @@
         "deleteBook": "Poista",
         "deleteTag": "Poista tunniste",
         "description": "Kuvaus",
+        "downloaded": "Ladattu",
         "emptyTagList": "Tunnisteita ei ole käytössä.",
         "entry": {
             "continueReading": "Jatka lukemista",
@@ -141,7 +159,19 @@
         "sort": "Lajittele",
         "tag": "Tunniste",
         "tags": "Tunnisteet",
-        "update": "Muokkaa"
+        "update": "Muokkaa",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -239,29 +269,54 @@
         "annotations": {
             "alreadyImported": "Kaikki muistiinpanot on jo tuotu.",
             "emptyFile": "Tiedostossa ei ole muistiinpanoja.",
-            "errorParsing": "Virhe tiedoston jäsentämisessä: ",
-            "noBelongTo": "Muistiinpanoja ei voida tuoda, vähintään yksi muistiinpano ei kuulu julkaisuun.",
             "nothing": "Yhtään muistiinpanoa ei ole valmiina tuontiin, tuonti keskeytetty.",
             "success": "Tuonti onnistui."
         },
         "download": {
             "cancelled": "Lataus peruttu.",
-            "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",
                 "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Väliaikaisen lataustiedoston nimi ei kelpaa.",
                 "invalidLink": "Latauslinkki ei kelpaa.",
                 "invalidTempDirectory": "Väliaikainen lataushakemisto ei kelpaa.",
                 "lengthMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu {{- expected}} tavua, todellinen määrä {{- actual}} tavua.",
                 "readStreamMissing": "Suoratoiston lataaminen ei onnistu.",
                 "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
             "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
             "success": "Julkaisun {{- title}} tuonti on valmis."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}",
@@ -269,9 +324,9 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Julkaisun palauttaminen epäonnistui.",
+                "success_one": "{{- count}} julkaisu palautettu.",
+                "success_other": "{{- count}} julkaisua palautettu."
             },
             "removed": "Julkaisuhakemisto on poistettu.",
             "updateFailed": "Julkaisuhakemiston päivitys epäonnistui: {{- message}}",
@@ -292,6 +347,17 @@
         },
         "addMenu": "Lisää OPDS-syöte",
         "breadcrumbRoot": "Luettelot",
+        "color": {
+            "blue": "Sininen",
+            "gray": "Harmaa",
+            "green": "Vihreä",
+            "orange": "Oranssi",
+            "pink": "Vaaleanpunainen",
+            "purple": "Violetti",
+            "red": "Punainen",
+            "title": "Luettelon väri",
+            "yellow": "Keltainen"
+        },
         "documentation": "OPDS:n verkkosivu",
         "empty": "Julkaisuja ei löytynyt",
         "firstPage": "Ensimmäinen",
@@ -300,10 +366,13 @@
         "menu": {
             "aboutBook": "Tietoja tästä kirjasta",
             "addExtract": "Tuo näyte",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Osta kirja",
             "goLoanBook": "Lainaa kirja",
             "goRevokeLoanBook": "Peruuta laina",
-            "goSubBook": "Tilaa"
+            "goSubBook": "Tilaa",
+            "placeHold": ""
         },
         "network": {
             "error": "OPDS-syöte ei ole saatavilla",
@@ -314,6 +383,12 @@
         },
         "next": "Seuraava",
         "previous": "Edellinen",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Palaa selailuun",
         "shelf": "Hylly",
         "updateForm": {
@@ -655,7 +730,8 @@
         "certificateRevoked": "Varmenne on kumottu.",
         "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa.",
         "cover": {
-            "img": "kansikuva"
+            "img": "kansikuva",
+            "zoom": ""
         },
         "day": "päivä",
         "days": "päivää",
@@ -666,7 +742,6 @@
         "expired": "Laina-aika on päättynyt",
         "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
         "incorrectPassphrase": "Yksikään tallennettu salasana ei käy julkaisuun tai annettu salasana on väärä.",
-        "lcpEnd": "Loppu",
         "lcpNotSupported": "VAROITUS: Tämä on Thorium Desktop -ohjelman ennakkoversio, joka ei tue tuotantokäyttöön tarkoitettuja LCP-lisenssejä, vaan ainoastaan LCP ”basic profile” -salauksen purkua ilman varmenteen vahvistusta.",
         "lcpRightsCopy": "Kopioidut merkit",
         "lcpRightsPrint": "Tulostetut sivut",
@@ -680,10 +755,22 @@
         "notStarted": "Ei ole aloitettu",
         "onGoing": "Luettavana",
         "progression": {
-            "title": "Eteneminen"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Eteneminen",
+            "useRemote": ""
         },
         "read": "Luettu",
         "remainingTime": "Laina (aikaa jäljellä)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Uudista",
         "returnButton": "Palauta",
         "returnedLcp": "Tämä LCP-suojattu julkaisu on palautettu.",
@@ -873,7 +960,6 @@
             },
             "customFontSelected": "Olet valinnut oman fontin",
             "customizeReader": "Mukauta tekstin ulkoasua",
-            "defaultValue": "oletusarvo",
             "disabled": "ei käytössä",
             "display": "Näyttöasetukset",
             "disposition": {
@@ -912,7 +998,6 @@
             "preset": {
                 "apply": "Käytä",
                 "applyDetails": "Käytä ulkoasun valintojasi nykyiseen julkaisuun.",
-                "detail": "Tallenna / Käytä / Nollaa näyttöasetuksesi.",
                 "reset": "Nollaa",
                 "resetDetails": "Palauta oletusasetukset.",
                 "save": "Tallenna",
@@ -1256,7 +1341,7 @@
         },
         "screenReaderActivate": {
             "help": "Kun sovellus havaitsee, että käytössä on avustavaa teknologiaa, käyttöliittymä mukautuu toimimaan paremmin yhteen ruudunlukuohjelmien kanssa.",
-            "invite": "Optimoi ruudunlukuohjelmaa varten ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimoi ruudunlukuohjelmaa varten",
             "message": "Parannettu tuki ruudunlukuohjelmille",
             "title": "Paranna ruudunlukukokemusta"
         },
@@ -1311,32 +1396,37 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Tarkista palautettavissa olevat julkaisut",
+                    "checkAgain": "Tarkista uudelleen",
+                    "recover": "Palauta julkaisut",
+                    "recovering": "Palauttaa..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Yksi tai useampi julkaisu löytyi levyltä, mutta ei tietokannasta. Palautus on mahdollista.",
+                "checking": "Tarkistaa tallennettuja julkaisuja...",
+                "description": "Tarkista tallennetut julkaisut ja etsi julkaisuja, jotka voi palauttaa turvallisesti.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Palauta",
+                    "description_one": "Thorium löysi levyltä {{- count}} julkaisun, joka puuttuu tietokannasta. Haluatko tuoda sen takaisin Thoriumiin?",
+                    "description_other": "Thorium löysi levyltä {{- count}} julkaisua, jotka puuttuvat tietokannasta. Haluatko tuoda ne takaisin Thoriumiin?",
+                    "title": "Palauta julkaisut"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Ei löytynyt yhtään palautettavissa olevaa julkaisua.",
+                "recoverableCount_one": "{{- count}} julkaisu voidaan palauttaa alkuperäisen varastotunnisteen kanssa.",
+                "recoverableCount_other": "{{- count}} julkaisua voidaan palauttaa alkuperäisten varastotunnisteiden kanssa.",
+                "title": "Palautus"
             }
         },
         "tabs": {
-            "appearance": "Ulkoasu",
+            "advanced": "",
             "general": "Yleiset",
             "keyboardShortcuts": "Pikanäppäimet",
             "profiles": "Profiilit",
             "storage": "Tallennustila"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "Poista etämittaus käytöstä",
+            "disableTelemetryMeasurementsDescription": "Kun tämä on valittu, Thorium ei lähetä etämittausten tuloksia",
+            "title": "Etämittaus"
         },
         "theme": {
             "auto": "Automaattinen",

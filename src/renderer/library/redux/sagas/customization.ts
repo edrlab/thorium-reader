@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { getTranslator } from "readium-desktop/common/services/translator";
 import { nanoid } from "nanoid";
 import { customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
@@ -18,6 +19,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import { ICustomizationManifest, ICustomizationManifestColor } from "readium-desktop/common/readium/customization/manifest";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 
 // Logger
@@ -99,7 +101,10 @@ function* profileActivating(id: string): SagaGenerator<void> {
     const profileActivationHistory = yield* selectTyped((state: ICommonRootState) => state.customization.history);
 
     const profileHistoryFound = profileActivationHistory.find((profileHistory) => profileHistory.id === id);
-    const welcomeScreenNeeded = !profileHistoryFound || profileHistoryFound.version !== (new Date(manifestJson.modified || manifestJson.created)).getTime();
+    const manifestVersion = (new Date(manifestJson.modified || manifestJson.created)).getTime();
+    const welcomeScreenNeeded = !profileHistoryFound || (
+        profileHistoryFound.version !== undefined && profileHistoryFound.version !== manifestVersion
+    );
 
     yield* putTyped(customizationActions.welcomeScreen.build(welcomeScreenNeeded));
 
@@ -139,7 +144,8 @@ function* profileActivating(id: string): SagaGenerator<void> {
         yield* putTyped(customizationActions.triggerOpdsAuth.build(catalogLink.href, catalogLinkOpdsAuthenticateDocumentHref));
     }
 
-    yield* putTyped(customizationActions.addHistory.build(id, (new Date(manifestJson.modified || manifestJson.created)).getTime()));
+    yield* putTyped(customizationActions.addHistory.build(id, profileHistoryFound ? profileHistoryFound.version : manifestVersion));
+    yield* callTyped(logEvent, "profile_activate");
 }
 
 
@@ -160,7 +166,7 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
         } catch (e) {
 
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileActivationFailed")));
             debug("Critical ERROR to activate the profile", id);
             debug(e);
 
@@ -188,7 +194,7 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
             } catch (e) {
 
-                yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+                yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileActivationFailed")));
                 debug("Critical ERROR to activate the profile", id);
                 debug(e);
 
@@ -199,7 +205,7 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
         } else {
             debug(`profile "${id || "thorium default profile"}" cannot be activate because LOCK is enabled on ${lock.state} with ${lock.lockInfo.id || lock.lockInfo.uuid}`);
-            yield* putTyped(toastActions.openRequest.build(ToastType.Success, `profile "${id || "thorium default profile"}" cannot be activate because LOCK is enabled on ${lock.state} with ${lock.lockInfo.id || lock.lockInfo.uuid}`));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Info, getTranslator().translate("message.notifications.profileBusy")));
         }
     }
 }

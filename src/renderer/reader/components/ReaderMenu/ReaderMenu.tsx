@@ -22,7 +22,7 @@ import * as TargetIcon from "readium-desktop/renderer/assets/icons/target-icon.s
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 
-import * as Tabs from "@radix-ui/react-tabs";
+import { Tab, TabList, TabPanelOrRegion, TabPanelsOrFragment, Tabs } from "readium-desktop/renderer/common/components/TabsComponent";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import type { Selection } from "react-aria-components";
 
@@ -36,7 +36,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { Locator } from "@r2-shared-js/models/locator";
+import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged } from "../../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
@@ -170,167 +170,136 @@ const renderLinkList = (isRTLfn: (_link: ILink) => [rtl: boolean, lang: string],
     return T;
 };
 
-const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: ILink) => [rtl: boolean, lang: string], handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
-    const RenderLinkTree = (label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element => {
-        // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
-        const useTree = false;
+interface IReaderLinkTreeProps {
+    currentLocation: MiniLocatorExtended;
+    isRTLfn: (_link: ILink) => [rtl: boolean, lang: string];
+    handleLinkClick: IBaseProps["handleLinkClick"];
+    dockedMode: boolean;
+    label?: string;
+    links: TToc;
+    level: number;
+    headingTrailLink?: ILink;
+}
 
-        const linkRef = React.useRef<HTMLAnchorElement>();
+const ReaderLinkTree = ({ currentLocation, isRTLfn, handleLinkClick, dockedMode, label, links, level, headingTrailLink }: IReaderLinkTreeProps): JSX.Element => {
+    // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
+    const useTree = false;
 
-        React.useEffect(() => {
-            setTimeout(() => {
-                if (linkRef.current) {
-                    // no "structural" focus steal here, just visual scroll into view
-                    // linkRef.current.focus();
-                    linkRef.current.scrollIntoView({
-                        behavior: "instant",
-                        block: "nearest", // "center" | "end" | "nearest" | "start",
-                        inline: "nearest",
-                    });
+    const linkRef = React.useRef<HTMLAnchorElement>();
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            if (linkRef.current) {
+                // no "structural" focus steal here, just visual scroll into view
+                // linkRef.current.focus();
+                linkRef.current.scrollIntoView({
+                    behavior: "instant",
+                    block: "nearest", // "center" | "end" | "nearest" | "start",
+                    inline: "nearest",
+                });
+            }
+        }, 1);
+    });
+
+    const treeReset = (t: TToc) => {
+        for (const link of t) {
+            if ((link as any).__inHeadingsTrail) {
+                delete (link as any).__inHeadingsTrail;
+            }
+            if (link.Children) {
+                treeReset(link.Children);
+            }
+        }
+    };
+    const headingsTrail: TToc = [];
+    const treePass = (t: TToc) => {
+        for (const link of t) {
+            if (currentLocation?.locator?.href && link.Href) {
+                let href1 = currentLocation.locator.href;
+                const i_href1 = href1.lastIndexOf("#");
+                if (i_href1 >= 0) {
+                    href1 = href1.substring(0, i_href1);
                 }
-            }, 1);
-        });
-
-        const treeReset = (t: TToc) => {
-            for (const link of t) {
-                if ((link as any).__inHeadingsTrail) {
-                    delete (link as any).__inHeadingsTrail;
+                let href2 = link.Href;
+                const i_href2 = href2.lastIndexOf("#");
+                if (i_href2 >= 0) {
+                    href2 = href2.substring(0, i_href2);
                 }
-                if (link.Children) {
-                    treeReset(link.Children);
+                if (href1 && href2) {
+                    if (href1 === href2) {
+                        (link as any).__inHeadingsTrail = true;
+                        headingsTrail.push(link);
+                    }
                 }
             }
-        };
-        const headingsTrail: TToc = [];
-        const treePass = (t: TToc) => {
-            for (const link of t) {
-                if (currentLocation?.locator?.href && link.Href) {
-                    let href1 = currentLocation.locator.href;
-                    const i_href1 = href1.lastIndexOf("#");
-                    if (i_href1 >= 0) {
-                        href1 = href1.substring(0, i_href1);
-                    }
-                    let href2 = link.Href;
-                    const i_href2 = href2.lastIndexOf("#");
-                    if (i_href2 >= 0) {
-                        href2 = href2.substring(0, i_href2);
-                    }
-                    if (href1 && href2) {
-                        if (href1 === href2) {
-                            (link as any).__inHeadingsTrail = true;
-                            headingsTrail.push(link);
+            if (link.Children) {
+                treePass(link.Children);
+            }
+        }
+    };
+
+    if (level === 1 && headingTrailLink === undefined) {
+        treeReset(links);
+
+        // headingsTrail = [];
+        treePass(links);
+        headingsTrail.reverse();
+
+        if (currentLocation?.headings) {
+            let iH = -1;
+            for (const h of currentLocation.headings) {
+                iH++;
+                let iHH = -1;
+                for (const hh of headingsTrail) {
+                    iHH++;
+                    if (hh.Href) {
+                        const i_hash = hh.Href.lastIndexOf("#");
+                        const hash = i_hash >= 0 && i_hash < (hh.Href.length - 1) ?
+                            hh.Href.substring(i_hash + 1) :
+                            undefined;
+                        if (hash && h.id === hash ||
+                            iH === (currentLocation.headings.length - 1) &&
+                            iHH === (headingsTrail.length - 1)) {
+                            headingTrailLink = hh;
+                            break;
                         }
                     }
                 }
-                if (link.Children) {
-                    treePass(link.Children);
-                }
-            }
-        };
-
-        if (level === 1 && headingTrailLink === undefined) {
-            treeReset(links);
-
-            // headingsTrail = [];
-            treePass(links);
-            headingsTrail.reverse();
-
-            if (currentLocation?.headings) {
-                let iH = -1;
-                for (const h of currentLocation.headings) {
-                    iH++;
-                    let iHH = -1;
-                    for (const hh of headingsTrail) {
-                        iHH++;
-                        if (hh.Href) {
-                            const i_hash = hh.Href.lastIndexOf("#");
-                            const hash = i_hash >= 0 && i_hash < (hh.Href.length - 1) ?
-                                hh.Href.substring(i_hash + 1) :
-                                undefined;
-                            if (hash && h.id === hash ||
-                                iH === (currentLocation.headings.length - 1) &&
-                                iHH === (headingsTrail.length - 1)) {
-                                headingTrailLink = hh;
-                                break;
-                            }
-                        }
-                    }
-                    if (headingTrailLink) {
-                        break;
-                    }
+                if (headingTrailLink) {
+                    break;
                 }
             }
         }
+    }
 
-        const isRightToLeftTop = isRTLfn(undefined);
+    const isRightToLeftTop = isRTLfn(undefined);
 
-        return <ul
-            dir={isRightToLeftTop[0] ? "rtl" : "ltr"}
-            lang={isRightToLeftTop[1] ? isRightToLeftTop[1] : undefined}
+    return <ul
+        dir={isRightToLeftTop[0] ? "rtl" : "ltr"}
+        lang={isRightToLeftTop[1] ? isRightToLeftTop[1] : undefined}
 
-            role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
-            aria-label={label}
-            className={classNames(stylesPopoverDialog.chapters_content, stylesPopoverDialog.toc_container)}
-        >
-            {links.map((link, i: number) => {
+        role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
+        aria-label={label}
+        className={classNames(stylesPopoverDialog.chapters_content, stylesPopoverDialog.toc_container)}
+    >
+        {links.map((link, i: number) => {
 
-                const isRightToLeft = isRTLfn(link);
+            const isRightToLeft = isRTLfn(link);
 
-                let emphasis = undefined;
-                if (link === headingTrailLink) {
-                    emphasis = { backgroundColor: "var(--color-gray-50", borderLeft: "2px solid var(--color-brand-primary)" };
-                } else if ((link as any).__inHeadingsTrail) {
-                    emphasis = { border: "1px dashed silver" };
-                }
-                const label = link.Title ? link.Title : `#${level}-${i} ${link.Href}`;
-                return (
-                    <li key={`${level}-${i}`}
-                        role={useTree ? "treeitem" : undefined}
-                        aria-expanded={useTree ? "true" : undefined}
-                    >
-                        {link.Children ? (
-                            <>
-                                <div role={"heading"} aria-level={level}>
-                                    <a
-                                        ref={link === headingTrailLink ? linkRef : undefined}
-                                        id={link === headingTrailLink ? "headingFocus" : undefined}
-                                        aria-label={link === headingTrailLink ? label + " (***)" : undefined}
-                                        style={emphasis}
-                                        className={
-                                            classNames(stylesReader.subheading,
-                                                link.Href ? " " : stylesReader.inert,
-                                                isRightToLeft[0] ? stylesReader.rtlDir : " ")
-                                        }
-                                        onClick=
-                                        {link.Href ? (e) => {
-                                            const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
-                                            handleLinkClick(e, link.Href, closeNavTOCTree);
-                                        } : undefined}
-                                        onDoubleClick=
-                                        {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
-                                        tabIndex={0}
-                                        onKeyUp=
-                                        {link.Href ?
-                                            (e) => {
-                                                if (e.key === "Enter") {
-                                                    const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
-                                                    handleLinkClick(e, link.Href, closeNavTOCTree);
-                                                }
-                                            }
-                                            : undefined
-                                        }
-                                        data-href={link.Href}
-                                    >
-                                        <span
-                                            dir={isRightToLeft[0] ? "rtl" : "ltr"}
-                                            lang={isRightToLeft[1] ? isRightToLeft[1] : undefined}
-                                        >{label}</span>
-                                    </a>
-                                </div>
-
-                                {RenderLinkTree(undefined, link.Children, level + 1, headingTrailLink)}
-                            </>
-                        ) : (
+            let emphasis = undefined;
+            if (link === headingTrailLink) {
+                emphasis = { backgroundColor: "var(--color-gray-50", borderLeft: "2px solid var(--color-brand-primary)" };
+            } else if ((link as any).__inHeadingsTrail) {
+                emphasis = { border: "1px dashed silver" };
+            }
+            const label = link.Title ? link.Title : `#${level}-${i} ${link.Href}`;
+            return (
+                <li key={`${level}-${i}`}
+                    role={useTree ? "treeitem" : undefined}
+                    aria-expanded={useTree ? "true" : undefined}
+                >
+                    {link.Children ? (
+                        <>
                             <div role={"heading"} aria-level={level}>
                                 <a
                                     ref={link === headingTrailLink ? linkRef : undefined}
@@ -338,8 +307,7 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
                                     aria-label={link === headingTrailLink ? label + " (***)" : undefined}
                                     style={emphasis}
                                     className={
-                                        classNames(stylesReader.line,
-                                            stylesReader.active,
+                                        classNames(stylesReader.subheading,
                                             link.Href ? " " : stylesReader.inert,
                                             isRightToLeft[0] ? stylesReader.rtlDir : " ")
                                     }
@@ -352,31 +320,71 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
                                     {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
                                     tabIndex={0}
                                     onKeyUp=
-                                    {
-                                        link.Href ?
-                                            (e) => {
-                                                if (e.key === "Enter") {
-                                                    const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
-                                                    handleLinkClick(e, link.Href, closeNavTOCTree);
-                                                }
+                                    {link.Href ?
+                                        (e) => {
+                                            if (e.key === "Enter") {
+                                                const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                                handleLinkClick(e, link.Href, closeNavTOCTree);
                                             }
-                                            : undefined
+                                        }
+                                        : undefined
                                     }
                                     data-href={link.Href}
                                 >
-                                        <span
-                                            dir={isRightToLeft[0] ? "rtl" : "ltr"}
-                                            lang={isRightToLeft[1] ? isRightToLeft[1] : undefined}
-                                        >{label}</span>
+                                    <span
+                                        dir={isRightToLeft[0] ? "rtl" : "ltr"}
+                                        lang={isRightToLeft[1] ? isRightToLeft[1] : undefined}
+                                    >{label}</span>
                                 </a>
                             </div>
-                        )}
-                    </li>
-                );
-            })}
-        </ul>;
-    };
-    return RenderLinkTree;
+
+                            <ReaderLinkTree currentLocation={currentLocation} isRTLfn={isRTLfn} handleLinkClick={handleLinkClick} dockedMode={dockedMode} links={link.Children} level={level + 1} headingTrailLink={headingTrailLink} />
+                        </>
+                    ) : (
+                        <div role={"heading"} aria-level={level}>
+                            <a
+                                ref={link === headingTrailLink ? linkRef : undefined}
+                                id={link === headingTrailLink ? "headingFocus" : undefined}
+                                aria-label={link === headingTrailLink ? label + " (***)" : undefined}
+                                style={emphasis}
+                                className={
+                                    classNames(stylesReader.line,
+                                        stylesReader.active,
+                                        link.Href ? " " : stylesReader.inert,
+                                        isRightToLeft[0] ? stylesReader.rtlDir : " ")
+                                }
+                                onClick=
+                                {link.Href ? (e) => {
+                                    const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                    handleLinkClick(e, link.Href, closeNavTOCTree);
+                                } : undefined}
+                                onDoubleClick=
+                                {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
+                                tabIndex={0}
+                                onKeyUp=
+                                {
+                                    link.Href ?
+                                        (e) => {
+                                            if (e.key === "Enter") {
+                                                const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                                handleLinkClick(e, link.Href, closeNavTOCTree);
+                                            }
+                                        }
+                                        : undefined
+                                }
+                                data-href={link.Href}
+                            >
+                                    <span
+                                        dir={isRightToLeft[0] ? "rtl" : "ltr"}
+                                        lang={isRightToLeft[1] ? isRightToLeft[1] : undefined}
+                                    >{label}</span>
+                            </a>
+                        </div>
+                    )}
+                </li>
+            );
+        })}
+    </ul>;
 };
 
 // const HardWrapComment: React.FC<{ comment: string | undefined }> = (props) => {
@@ -404,7 +412,10 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
 //     );
 // };
 
-export const computeProgression = (spineItemLinks: Link[], locator: Locator) => {
+export const computeProgression = (spineItemLinks: Link[], locator: {
+    href: R2Locator["href"];
+    locations?: Pick<NonNullable<R2Locator["locations"]>, "progression">;
+}) => {
 
     let percent = 100;
     if (spineItemLinks.length && locator.href) {
@@ -604,31 +615,24 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
     const visibleTabs = TabItem.filter(tab => tab.show);
 
-    const TabTriggers = visibleTabs.flatMap(tab => {
-        const trigger = (
-            <Tabs.Trigger
-                key={tab.value}
-                id={`reader-menu-tab-${tab.value.replace("tab-", "")}-trigger`}
-                value={tab.value}
-                data-value={tab.value}
-                title={tab.name}
-                disabled={tab.disabled}
-            >
-                <SVG ariaHidden svg={tab.svg} />
-                <span>{tab.name}</span>
-            </Tabs.Trigger>
-        );
-
-        return tab.separatorBefore
-            ? [<span key={`sep-before-${tab.value}`} style={{ borderBottom: "2px solid var(--color-gray-100)", width: "80%", margin: "0 10%" }} />, trigger]
-            : [trigger];
-    });
+    const TabTriggers = visibleTabs.map(tab => (
+        <Tab
+            key={tab.value}
+            id={tab.value}
+            data-focus-id={`reader-menu-${tab.value}-trigger`}
+            data-separator-before={tab.separatorBefore || undefined}
+            data-value={tab.value}
+            isDisabled={tab.disabled}
+        >
+            <SVG ariaHidden svg={tab.svg} />
+            <span>{tab.name}</span>
+        </Tab>
+    ));
 
     const options = visibleTabs.map(({ id, value, name, svg, disabled }) => ({ id, value, name, svg, disabled }));
     const optionSelected = options.find(({ value }) => value === section)?.id ?? 0;
 
     const isRTLFunction_ = isRTLFunction(r2Publication);
-    const renderLinkTree_ = renderLinkTree(currentLocation, isRTLFunction_, handleLinkClick, dockedMode);
     const renderLinkList_ = renderLinkList(isRTLFunction_, handleLinkClick, dockedMode);
 
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
@@ -677,13 +681,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 {__("reader.navigation.openTableOfContentsTitle")}
             </h1>
             {dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} section={section} panel={"menu"} /> : <></>}
-            <Tabs.Root value={section} onValueChange={(value) => dockedMode ? null : setSection(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+            <Tabs selectedKey={section} onSelectionChange={(key) => dockedMode ? undefined : setSection(key.toString())} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
                         <>
-                            <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
+                            <TabList aria-label={__("reader.navigation.openTableOfContentsTitle")} ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
                                 {TabTriggers}
-                            </Tabs.List>
+                            </TabList>
                             <TabTitle value={section} />
                         </>
                 }
@@ -691,31 +695,32 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     ref={popoverBoundary}
                     style={{ marginTop: dockedMode && "0" }}
                     role="region"
-                    aria-live="polite"
+                    // aria-live="polite"
                 >
-                    <Tabs.Content value="tab-toc" tabIndex={-1} id={"reader-menu-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelsOrFragment dockedMode={dockedMode}>
+                    <TabPanelOrRegion id="tab-toc" focusId="reader-menu-tab-toc" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-toc")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
-                            {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
+                            {(isPdf && pdfToc?.length && <ReaderLinkTree currentLocation={currentLocation} isRTLfn={isRTLFunction_} handleLinkClick={handleLinkClick} dockedMode={dockedMode} label={__("reader.marks.toc")} links={pdfToc} level={1} />) ||
                                 (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
-                                (!isPdf && r2Publication.TOC && renderLinkTree_(__("reader.marks.toc"), r2Publication.TOC, 1, undefined)) ||
+                                (!isPdf && r2Publication.TOC && <ReaderLinkTree currentLocation={currentLocation} isRTLfn={isRTLFunction_} handleLinkClick={handleLinkClick} dockedMode={dockedMode} label={__("reader.marks.toc")} links={r2Publication.TOC} level={1} />) ||
                                 (!isPdf && r2Publication.Spine && renderLinkList_(__("reader.marks.toc"), r2Publication.Spine))}
                         </div>
-                    </Tabs.Content>
+                    </TabPanelOrRegion>
 
-                    <Tabs.Content value="tab-landmark" tabIndex={-1} id={"reader-menu-tab-landmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-landmark" focusId="reader-menu-tab-landmark" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-landmark")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&
                                 renderLinkList_(__("reader.marks.landmarks"), r2Publication.Landmarks)}
                         </div>
-                    </Tabs.Content>
+                    </TabPanelOrRegion>
 
-                    <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"reader-menu-tab-bookmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-bookmark" focusId="reader-menu-tab-bookmark" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-bookmark")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
                             <BookmarkList popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} START_PAGE={START_PAGE} selectionIsSet={selectionIsSet} MAX_MATCHES_PER_PAGE={MAX_MATCHES_PER_PAGE} />
                         </div>
-                    </Tabs.Content>
+                    </TabPanelOrRegion>
 
-                    <Tabs.Content value="tab-annotation" tabIndex={-1} id={"reader-menu-tab-annotation"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-annotation" focusId="reader-menu-tab-annotation" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-annotation")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, dockedMode ? stylesAnnotations.docked_annotations_tab: stylesAnnotations.annotations_tab)}>
                             <AnnotationList
                                 goToLocator={goToLocator}
@@ -734,9 +739,9 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 MAX_MATCHES_PER_PAGE={MAX_MATCHES_PER_PAGE}
                             />
                         </div>
-                    </Tabs.Content>
+                    </TabPanelOrRegion>
 
-                    <Tabs.Content value="tab-search" tabIndex={-1} id={"reader-menu-tab-search"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-search" focusId="reader-menu-tab-search" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-search")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
                                 ? <ReaderMenuSearch
@@ -745,19 +750,20 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 />
                                 : <></>}
                         </div>
-                    </Tabs.Content>
+                    </TabPanelOrRegion>
 
-                    <Tabs.Content value="tab-gotopage" tabIndex={-1} id={"reader-menu-tab-gotopage"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-gotopage" focusId="reader-menu-tab-gotopage" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-gotopage")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             <GoToPageSection totalPages={
                                 isPdf && pdfNumberOfPages
                                     ? pdfNumberOfPages
                                     : 0} {...props} />
                         </div>
-                    </Tabs.Content>
+                    </TabPanelOrRegion>
+                    </TabPanelsOrFragment>
                 </div>
                 <ModalControlButtons dockedMode={dockedMode} />
-            </Tabs.Root>
+            </Tabs>
         </div>
     );
 };

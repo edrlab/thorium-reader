@@ -7,13 +7,16 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { FocusScope } from "react-aria";
+import { useOverlayTriggerState } from "react-stately";
+import { OverlayTriggerStateContext, Popover, Dialog as PopoverDialog } from "react-aria-components";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-icon.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
-import * as Popover from "@radix-ui/react-popover";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
@@ -188,15 +191,14 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         if (ttsState !== TTSStateEnum.STOPPED ||
             mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED
         ) {
-            // ToastType.Error
-            toasty(`${__("reader.tts.stop")} / ${__("reader.media-overlays.stop")}`);
+            dispatch(toastActions.openRequest.build(ToastType.Info, `${__("reader.tts.stop")} / ${__("reader.media-overlays.stop")}`));
             return false;
         }
 
         dispatch(readerActions.note.addUpdate.build(pubId, bookmark));
         dispatch(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
         return true;
-    }, [dispatch, ttsState, mediaOverlaysState, __, toasty, noteTotalCount, pubId]);
+    }, [dispatch, ttsState, mediaOverlaysState, __, noteTotalCount, pubId]);
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
     const colorDefault = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
@@ -217,7 +219,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
             if (!bookmarkSelected) {
                 const msg = `${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${noteTotalCount + 1}]`}`;
-                toasty(msg);
 
                 if (locatorExtended.locator.locations && !locatorExtended.locator.locations.caretInfo?.rangeInfo && locatorExtended.selectionInfo?.rangeInfo) {
                     locatorExtended.locator.locations.caretInfo = {
@@ -236,6 +237,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     group: "bookmark",
                     drawType: EDrawType.bookmark,
                 })) {
+                    toasty(msg);
                     logEvent(readerAnalyticsEvents.bookmarkToggle);
                 }
             }
@@ -251,7 +253,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     deleteBookmark(bookmarkSelected);
                     logEvent(readerAnalyticsEvents.bookmarkToggle);
                 } else {
-                    toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${noteTotalCount + 1}]`}`);
                     if (addBookmark({
                         textualValue: name,
                         created: (new Date()).getTime(),
@@ -263,6 +264,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                         group: "bookmark",
                         drawType: EDrawType.bookmark,
                     })) {
+                        toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${noteTotalCount + 1}]`}`);
                         logEvent(readerAnalyticsEvents.bookmarkToggle);
                     }
                 }
@@ -387,11 +389,9 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         }
 
     }, [allBookmarks, allBookmarksForCurrentLocationHref, locatorExtended, isEpubNavigator, webviewLoaded, isAudiobook]);
-    const noteDefaultColor = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
-
-    return <>
-
-        <Popover.Root modal open={isBookmarkNeedEditing} onOpenChange={(open) => {
+    const bookmarkPopoverState = useOverlayTriggerState({
+        isOpen: isBookmarkNeedEditing,
+        onOpenChange: (open) => {
             if (isBookmarkNeedEditing) {
                 setIsBookmarkNeedEditing(open);
             }
@@ -399,82 +399,113 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             setTimeout(() => {
                 keyboardFocusRequest(true);
             }, 200);
-        }}>
-            <Popover.Trigger asChild>
-                <li
-                    {...(numberOfVisibleBookmarks ?
-                        { style: { backgroundColor: "var(--color-brand-primary)" } }
-                        : {})}
+        },
+    });
+    const bookmarkPopoverTriggerRef = React.useRef<HTMLLIElement>(null);
+    const noteDefaultColor = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
+
+    return <>
+
+        <OverlayTriggerStateContext.Provider value={bookmarkPopoverState}>
+            <li
+                ref={bookmarkPopoverTriggerRef}
+                {...(numberOfVisibleBookmarks ? { style: { backgroundColor: "var(--color-brand-primary)" } } : {})}
+            >
+                <input
+                    id="bookmarkButton"
+                    className={stylesReader.bookmarkButton}
+                    type="checkbox"
+                    checked={!!numberOfVisibleBookmarks}
+                    onClick={() => {
+                        toggleBookmark();
+                    }}
+                    onKeyUp={(e) => {
+                        if (e.key === "Enter") {
+                            e.currentTarget.click();
+                        }
+                    }}
+                    onChange={(e) => e.currentTarget.click()}
+
+                    aria-label={`${__("reader.navigation.bookmarkTitle")} (${
+                        bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
+                    })`}
+                    title={`${__("reader.navigation.bookmarkTitle")} (${
+                        bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
+                    })`}
+                />
+                {
+                    // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
+                }
+                <label
+                    htmlFor="bookmarkButton"
+                    aria-hidden="true"
+                    className={stylesReader.menu_button}
+                    id="bookmarkLabel"
+
+                    aria-label={`${__("reader.navigation.bookmarkTitle")} (${
+                        bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
+                    })`}
+                    title={`${__("reader.navigation.bookmarkTitle")} (${
+                        bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
+                    })`}
                 >
-                    <input
-                        id="bookmarkButton"
-                        className={stylesReader.bookmarkButton}
-                        type="checkbox"
-                        checked={!!numberOfVisibleBookmarks}
-                        onClick={() => {
-                            toggleBookmark();
-                        }}
-                        onKeyUp={(e) => {
-                            if (e.key === "Enter") { e.currentTarget.click(); }
-                        }}
-                        onChange={(e) => e.currentTarget.click()}
-
-                        aria-label={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
-                            })`}
-                        title={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
-                            })`}
+                    <SVG
+                        ariaHidden={true}
+                        svg={MarkIcon}
+                        className={classNames(
+                            stylesReaderHeader.bookmarkIcon,
+                            numberOfVisibleBookmarks > 0 ? stylesReaderHeader.active_svg_option : "",
+                        )}
                     />
-                    {
-                        // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
-                    }
-                    <label
-                        htmlFor="bookmarkButton"
-                        aria-hidden="true"
-                        className={stylesReader.menu_button}
-                        id="bookmarkLabel"
 
-                        aria-label={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
-                            })`}
-                        title={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
-                            })`}
-                    >
-                        <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon,
-                            numberOfVisibleBookmarks > 0
-                                ? stylesReaderHeader.active_svg_option : "")} />
-
-                        <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove,
-                            bookmarkIcon === EBookmarkIcon.DELETE
-                                ? stylesReaderHeader.active_svg_option : "")} />
-
-                        <SVG ariaHidden={true} svg={PlusIcon} className={classNames(stylesReaderHeader.bookmarkAdd,
-                            bookmarkIcon === EBookmarkIcon.ADD
-                                ? stylesReaderHeader.active_svg_option : "")} />
-                    </label>
-                </li>
-            </Popover.Trigger>
-            <Popover.Portal>
-                <Popover.Content sideOffset={isOnSearch ? 50 : 18} align="end" style={{ zIndex: 101, width: "420px" }}
-                // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
-                // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
-                >
-                    <BookmarkEdit
-                        locatorExtended={locatorExtended}
-                        name={""}
-                        save={(name, color, tag) => {
-                            toggleBookmark(name, color, tag);
-
-                            setTimeout(() => {
-                                keyboardFocusRequest(true);
-                            }, 200);
-                        }}
-                        color={noteDefaultColor}
-                        tags={[]}
+                    <SVG
+                        ariaHidden={true}
+                        svg={RemoveBookMarkIcon}
+                        className={classNames(
+                            stylesReaderHeader.bookmarkRemove,
+                            bookmarkIcon === EBookmarkIcon.DELETE ? stylesReaderHeader.active_svg_option : "",
+                        )}
                     />
-                    <Popover.Arrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
-                </Popover.Content>
-            </Popover.Portal>
 
-        </Popover.Root>
+                    <SVG
+                        ariaHidden={true}
+                        svg={PlusIcon}
+                        className={classNames(
+                            stylesReaderHeader.bookmarkAdd,
+                            bookmarkIcon === EBookmarkIcon.ADD ? stylesReaderHeader.active_svg_option : "",
+                        )}
+                    />
+                </label>
+            </li>
+            <Popover
+                triggerRef={bookmarkPopoverTriggerRef}
+
+                placement="bottom end"
+                offset={isOnSearch ? 50 : 18}
+                crossOffset={0}
+                containerPadding={0}
+                style={{ zIndex: OVERLAY_Z_INDEX, width: "420px" }}
+            >
+                <PopoverDialog aria-label={__("reader.navigation.bookmarkTitle")}>
+                    <FocusScope autoFocus>
+                        <BookmarkEdit
+                            locatorExtended={locatorExtended}
+                            name={""}
+                            save={(name, color, tag) => {
+                                toggleBookmark(name, color, tag);
+
+                                setTimeout(() => {
+                                    keyboardFocusRequest(true);
+                                }, 200);
+                            }}
+                            color={noteDefaultColor}
+                            tags={[]}
+                        />
+                        <PopoverArrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
+                    </FocusScope>
+                </PopoverDialog>
+            </Popover>
+        </OverlayTriggerStateContext.Provider>
     </>;
 
 };

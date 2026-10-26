@@ -37,6 +37,7 @@ const PublicationInfoDescription: React.FC<IProps> = ({ publicationViewMaybeOpds
     const descriptionWrapperRef = React.useRef<HTMLDivElement>(null);
     const descriptionRef = React.useRef<HTMLDivElement>(null);
 
+    const descriptionId = React.useId();
     const [seeMore, setSeeMore] = React.useState(false);
     const [needSeeMore, setNeedSeeMore] = React.useState(false);
 
@@ -76,6 +77,7 @@ const PublicationInfoDescription: React.FC<IProps> = ({ publicationViewMaybeOpds
             </div>
             <div className={stylePublication.publicationInfo_description_bloc}>
                 <div
+                    id={descriptionId}
                     ref={descriptionWrapperRef}
                     className={classNames(
                         stylesBookDetailsDialog.descriptionWrapper,
@@ -92,7 +94,7 @@ const PublicationInfoDescription: React.FC<IProps> = ({ publicationViewMaybeOpds
                     />
                 </div>
                 {needSeeMore &&
-                    <button aria-hidden className={stylePublication.publicationInfo_description_bloc_seeMore} onClick={() => setSeeMore(v => !v)}>
+                    <button type="button" aria-expanded={seeMore} aria-controls={descriptionId} className={stylePublication.publicationInfo_description_bloc_seeMore} onClick={() => setSeeMore(v => !v)}>
                         <SVG ariaHidden svg={seeMore ? ChevronUp : ChevronDown} />
                         {seeMore ? __("publication.seeLess") : __("publication.seeMore")}
                     </button>

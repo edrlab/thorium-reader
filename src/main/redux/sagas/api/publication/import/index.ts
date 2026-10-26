@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { getUrlHost } from "readium-desktop/utils/url";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
@@ -150,6 +151,7 @@ export function* importFromLink(
     link: IOpdsLinkView,
     willBeImmediatelyFollowedByOpen: boolean,
     pub?: IOpdsPublicationView,
+    rootFeedIdentifier?: string,
     deep: number = 0,
 ): SagaGenerator<PublicationView | undefined> {
 
@@ -157,7 +159,12 @@ export function* importFromLink(
 
     try {
 
-        const [publicationDocument, alreadyImported] = yield* callTyped(importFromLinkService, link, willBeImmediatelyFollowedByOpen, pub);
+        const [publicationDocument, alreadyImported] = yield* callTyped(
+            importFromLinkService,
+            link,
+            willBeImmediatelyFollowedByOpen,
+            pub,
+        );
 
         if (!publicationDocument) {
             throw new Error("publicationDocument not imported on db");
@@ -184,7 +191,14 @@ export function* importFromLink(
                 );
                 if (!cleanedPublicationDocument) {
                     debug("restart import process after LCP cleanup");
-                    const replacementPublicationView = yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, retryDeep);
+                    const replacementPublicationView = yield* callTyped(
+                        importFromLink,
+                        link,
+                        willBeImmediatelyFollowedByOpen,
+                        pub,
+                        rootFeedIdentifier,
+                        retryDeep,
+                    );
                     yield* callTyped(
                         () => restorePersonalModeReplacementUserData(replacementPublicationView?.identifier, replacementUserData),
                     );
@@ -203,7 +217,14 @@ export function* importFromLink(
                     }
                     try {
                         debug("restart import process after publication was already imported, missing, but not deleted");
-                        return yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, retryDeep);
+                        return yield* callTyped(
+                            importFromLink,
+                            link,
+                            willBeImmediatelyFollowedByOpen,
+                            pub,
+                            rootFeedIdentifier,
+                            retryDeep,
+                        );
                     } catch (e) {
                         debug("Error during the second import of the publication", e);
                         return undefined;
@@ -212,7 +233,7 @@ export function* importFromLink(
 
                     yield put(
                         toastActions.openRequest.build(
-                            ToastType.Success,
+                            ToastType.Info,
                             translate("message.import.alreadyImport",
                                 { title: publicationView.documentTitle }),
                         ),
@@ -241,12 +262,12 @@ export function* importFromLink(
 
     } catch (e: any) {
 
-        debug("importFromLink failed", e.toString(), e.trace);
+        debug("importFromLink failed", link.url, e.toString(), e.stack ?? e.trace);
         yield put(
             toastActions.openRequest.build(
                 ToastType.Error,
                 translate("message.import.fail",
-                    { path: link.url, err: e?.toString() }),
+                    { path: getUrlHost(link.url) || link.url, err: e instanceof Error ? e.message : String(e) }),
             ),
         );
     }
@@ -365,7 +386,7 @@ export function* importFromFs(
 
                                 yield put(
                                     toastActions.openRequest.build(
-                                        ToastType.Success,
+                                        ToastType.Info,
                                         translate("message.import.alreadyImport",
                                             { title: publicationView.documentTitle }),
                                     ),

@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
@@ -28,6 +27,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
 
     const MAX_LEN = 100 * 1024;
     const [__] = useTranslator();
+    const templateLabelId = React.useId();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = langStringIsRTL(locale);
@@ -57,9 +57,9 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
 
     return (<>
 
-        <section className={stylesSettings.section} style={{ position: "relative" }}>
+        <section style={{ position: "relative" }}>
 
-            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h3>
+            <h3 id={templateLabelId} dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h3>
             <input type="checkbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" />
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="enableCheckbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" checked={enableCheckbox} onChange={toggleEnableCheckbox} />
@@ -95,7 +95,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
             </div>
             {
                 enableCheckbox ? <>
-                    <TextArea style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" ref={textAreaRef} defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContentDebounced(a.currentTarget.value)}></TextArea>
+                    <TextArea aria-labelledby={templateLabelId} style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" ref={textAreaRef} defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContentDebounced(a.currentTarget.value)}></TextArea>
                     <button dir={isRTL ? "rtl" : "ltr"} className={stylesButtons.button_secondary_blue} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
                 </>
                     : <></>

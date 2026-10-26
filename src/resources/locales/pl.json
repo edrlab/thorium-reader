@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Zamknij",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Przesuń w lewo",
+        "loading": "",
         "mainContent": "główna treść",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Przesuń w prawo",
         "skipLink": "Przejdź do treści",
         "toolbar": "pasek narzędzi"
@@ -78,6 +95,7 @@
         "deleteBook": "Usuń",
         "deleteTag": "Usuń etykietę",
         "description": "Opis",
+        "downloaded": "",
         "emptyTagList": "Brak zaetykietowanych publikacji.",
         "entry": {
             "continueReading": "Wznów czytanie",
@@ -141,23 +159,35 @@
         "sort": "Sortuj według",
         "tag": "Etykieta",
         "tags": "Etykiety",
-        "update": "Edytuj"
+        "update": "Edytuj",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "przez '{{- author}}'",
             "descCreator": "stworzony przez",
+            "descList_one": "{{- count}} notatka {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_few": "{{- count}} notatki {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} notatek {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
-            "descList_one": "{{- count}} notatka {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_other": "",
+            "descNewer_one": "Konflikt(y): {{- count}} nowsza notatka",
             "descNewer_few": "Konflikt(y): {{- count}} nowsze notatki",
             "descNewer_many": "Konflikt(y): {{- count}} nowszych notatek",
-            "descNewer_one": "Konflikt(y): {{- count}} nowsza notatka",
             "descNewer_other": "",
+            "descOlder_one": "Konflikt(y): {{- count}} starsza notatka",
             "descOlder_few": "Konflikt(y): {{- count}} starsze notatki",
             "descOlder_many": "Konflikt(y): {{- count}} starszych notatek",
-            "descOlder_one": "Konflikt(y): {{- count}} starsza notatka",
             "descOlder_other": "",
             "descTitle": "Tytuł adnotacji: ",
             "importAll": "Importuj wszystkie notatki",
@@ -175,14 +205,14 @@
             }
         },
         "deleteAnnotations": "Usunąć adnotacje?",
+        "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
         "deleteAnnotationsText_few": "Czy na pewno chcesz usunąć {{- count}} notatki?",
         "deleteAnnotationsText_many": "Czy na pewno chcesz usunąć {{- count}} notatek?",
-        "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
         "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Usunąć zakładki?",
+        "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
         "deleteBookmarksText_few": "Czy na pewno chcesz usunąć {{- count}} zakładki?",
         "deleteBookmarksText_many": "Czy na pewno chcesz usunąć {{- count}} zakładek?",
-        "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
         "deleteBookmarksText_other": "",
         "deleteFeed": "Usunąć katalog?",
         "deletePublication": "Usunąć publikację?",
@@ -249,29 +279,54 @@
         "annotations": {
             "alreadyImported": "Wszystkie notatki są już zaimportowane.",
             "emptyFile": "Brak notatek w pliku.",
-            "errorParsing": "Błąd podczas analizowania pliku: ",
-            "noBelongTo": "Nie można zaimportować notatek, co najmniej jedna notatka nie należy do tej publikacji.",
             "nothing": "Brak notatek gotowych do zaimportowania, przerywam import",
             "success": "Import zakończony pomyślnie."
         },
         "download": {
             "cancelled": "Pobieranie pliku zostało anulowane.",
-            "error": "Pobieranie [{{- title}}] nie powiodło się: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wartość hasha SHA-256 to {{- expected}}, a obliczona to {{- actual}}.",
                 "httpGet": "Nie udało się pobrać pliku przez HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Tymczasowa nazwa pliku do pobrania jest nieprawidłowa.",
                 "invalidLink": "Link do pobrania jest nieprawidłowy.",
                 "invalidTempDirectory": "Tymczasowy katalog do pobierania jest nieprawidłowy.",
                 "lengthMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wielkość pliku to {{- expected}} bajtów, pobrany plik ma {{- actual}} bajtów.",
                 "readStreamMissing": "Transmisja danych nie jest dostępna.",
                 "tooManyFilenameAttempts": "Nie można utworzyć unikalnej tymczasowej nazwy pliku do pobrania: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] został już zaimportowany.",
             "fail": "Importowanie [{{- path}}] nie powiodło się: [{{- err}}]",
             "success": "Importowanie [{{- title}}] zakończone."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Ładowanie publikacji nie powiodło się: [{{- err}}]",
@@ -280,9 +335,9 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success_one": "",
                 "success_few": "",
                 "success_many": "",
-                "success_one": "",
                 "success_other": ""
             },
             "removed": "Katalog publikacji został usunięty.",
@@ -304,6 +359,17 @@
         },
         "addMenu": "Dodaj kanał OPDS",
         "breadcrumbRoot": "Katalogi",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Oficjalna strona OPDS",
         "empty": "Nie znaleziono publikacji",
         "firstPage": "Pierwsza",
@@ -312,10 +378,13 @@
         "menu": {
             "aboutBook": "O publikacji",
             "addExtract": "Importuj fragment",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Kup publikację",
             "goLoanBook": "Wypożycz publikację",
             "goRevokeLoanBook": "Anuluj wypożyczenie",
-            "goSubBook": "Subskrybuj"
+            "goSubBook": "Subskrybuj",
+            "placeHold": ""
         },
         "network": {
             "error": "Błąd dostępu do kanału",
@@ -326,6 +395,12 @@
         },
         "next": "Następna",
         "previous": "Poprzednia",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Wznów przeglądanie",
         "shelf": "Półka",
         "updateForm": {
@@ -667,7 +742,8 @@
         "certificateRevoked": "Certyfikat licencji LCP został unieważniony.",
         "certificateSignatureInvalid": "Nieprawidłowy podpis certyfikatu licencji LCP.",
         "cover": {
-            "img": "okładka"
+            "img": "okładka",
+            "zoom": ""
         },
         "day": "dzień",
         "days": "dni",
@@ -678,7 +754,6 @@
         "expired": "Wypożyczenie wygasło",
         "expiredLcp": "Licencja LCP tej publikacji wygasła.",
         "incorrectPassphrase": "Żadne zapisane hasło dostępu nie pasuje do publikacji lub wprowadzone hasło jest nieprawidłowe.",
-        "lcpEnd": "Koniec",
         "lcpNotSupported": "UWAGA: jest to wersja przedpremierowa czytnika Thorium Desktop, która nie obsługuje produkcyjnych licencji LCP i umożliwia jedynie odszyfrowywanie plików LCP w „profilu podstawowym” bez weryfikacji certyfikatu.",
         "lcpRightsCopy": "Skopiowane znaki",
         "lcpRightsPrint": "Wydrukowane strony",
@@ -692,10 +767,22 @@
         "notStarted": "Nie rozpoczęta",
         "onGoing": "W trakcie czytania",
         "progression": {
-            "title": "Postęp"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Postęp",
+            "useRemote": ""
         },
         "read": "Przeczytana",
         "remainingTime": "Wypożyczenie (pozostały czas)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Odnów",
         "returnButton": "Zwróć",
         "returnedLcp": "Ta publikacja chroniona przez LCP została zwrócona.",
@@ -847,9 +934,9 @@
         },
         "picker": {
             "search": {
+                "founds_one": "{{- count}} dopasowanie",
                 "founds_few": "{{- count}} dopasowania",
                 "founds_many": "{{- count}} dopasowań",
-                "founds_one": "{{- count}} dopasowanie",
                 "founds_other": "",
                 "input": "tekst do wyszukania",
                 "next": "Następny",
@@ -887,7 +974,6 @@
             },
             "customFontSelected": "Wybrano własną czcionkę",
             "customizeReader": "Dostosuj formatowanie tekstu",
-            "defaultValue": "domyślna wartość",
             "disabled": "wyłączone",
             "display": "Wyświetlanie",
             "disposition": {
@@ -926,7 +1012,6 @@
             "preset": {
                 "apply": "Zastosuj",
                 "applyDetails": "Zastosuj preferowaną konfigurację do bieżącej publikacji.",
-                "detail": "Zapisz / Zastosuj / Resetuj preferowaną konfigurację.",
                 "reset": "Resetuj",
                 "resetDetails": "Resetuj preferowaną konfigurację (ustawienia domyślne).",
                 "save": "Zapisz",
@@ -1270,7 +1355,7 @@
         },
         "screenReaderActivate": {
             "help": "Gdy aplikacja wykryje obecność technologii wspomagającej, interfejs użytkownika lepiej współpracuje z czytnikami ekranu",
-            "invite": "Optymalizacja wsparcia dla czytników ekranu: ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optymalizacja wsparcia dla czytników ekranu",
             "message": "Ulepszona obsługa czytników ekranu",
             "title": "Popraw doświadczenie z czytnikami ekranu"
         },
@@ -1335,26 +1420,31 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description_one": "",
                     "description_few": "",
                     "description_many": "",
-                    "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount_one": "",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
-                "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""
             }
         },
         "tabs": {
-            "appearance": "Wygląd",
+            "advanced": "",
             "general": "Ogólne",
             "keyboardShortcuts": "Skróty klawiszowe",
             "profiles": "Profile",
             "storage": "Przestrzeń dyskowa"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Automatyczny",

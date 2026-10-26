@@ -45,6 +45,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { getReduxHistory, getStore } from "../createStore";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { CustomizationProfileDialog } from "readium-desktop/renderer/common/components/customizationProfileDialog";
+import { DocumentLanguage } from "readium-desktop/renderer/common/components/DocumentLanguage";
 // eslintxx-disable-next-line @typescript-eslint/no-unused-expressions
 // globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
@@ -258,6 +259,7 @@ export default class App extends React.Component<{}, undefined> {
         return (
             <Provider store={getStore()} >
                 <TranslatorContext.Provider value={getTranslator()}>
+                    <DocumentLanguage />
                     <HistoryRouter history={getReduxHistory()}>
                         <Dropzone
                             getFilesFromEvent={this.getFiles}

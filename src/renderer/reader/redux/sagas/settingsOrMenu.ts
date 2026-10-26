@@ -16,6 +16,7 @@ import { dialogActions, dockActions, readerActions } from "readium-desktop/commo
 import { IReaderDialogOrDockSettingsMenuState, ReaderConfig } from "readium-desktop/common/models/reader";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { focusElement, getFocusTarget } from "readium-desktop/renderer/common/focusTarget";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:img";
@@ -46,47 +47,32 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
     if (focus) {
         const editId = edit ? "_edit" : "";
         const elementId = id + editId;
-        const element = document.getElementById(elementId);
+        const element = getFocusTarget(elementId);
         if (element) {
-            element.focus();
+            focusElement(element);
         } else {
-            const target = document.getElementById("app-overlay");
-            if (!target) {
-                debug("CRITICAL ERROR !!! no `app-overlay` id found !!!");
-                return;
-            }
+            // Native overlays are appended to the document body.
+            const target = document.body;
 
 
             _observer = new MutationObserver((records: MutationRecord[], observer) => {
                 for (const record of records) {
                     debug("mutationObeserver_cb", record);
                     if (record.type === "childList") {
-                        const nodeList = record.addedNodes;
-                        debug("mutationObeserver_cb", nodeList);
-                        for (const node of nodeList) {
-                            if (node.nodeType === node.ELEMENT_NODE && node instanceof HTMLElement) {
+                        debug("mutationObeserver_cb", record.addedNodes);
+                        if (record.addedNodes.length) {
+                            const targetElement = getFocusTarget(elementId);
+                            if (targetElement) {
+                                debug("mutationObeserver_cb_found", targetElement);
+                                focusElement(targetElement);
+                                observer.disconnect();
+                                _isObserving = false;
+                                window.clearTimeout(_timeoutId);
+                                _timeoutId = 0;
 
-
-                                const nodeIterator = document.createNodeIterator(node, NodeFilter.SHOW_ELEMENT, (node) => {
-                                    if ((node as HTMLElement)?.id === elementId) {
-
-                                        return NodeFilter.FILTER_ACCEPT;
-                                    }
-                                    return NodeFilter.FILTER_REJECT;
-                                });
-                                const focusElement: HTMLElement = nodeIterator.nextNode() as HTMLElement | null;
-                                if (focusElement) {
-                                    debug("mutationObeserver_cb_found", focusElement);
-                                    focusElement.focus();
-                                    observer.disconnect();
-                                    _isObserving = false;
-                                    window.clearTimeout(_timeoutId);
-                                    _timeoutId = 0;
-
-                                    return;
-                                } else {
-                                    debug("mutationObeserver_cb_notfound", focusElement);
-                                }
+                                return;
+                            } else {
+                                debug("mutationObeserver_cb_notfound", targetElement);
                             }
                         }
                     }

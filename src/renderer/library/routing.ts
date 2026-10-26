@@ -13,6 +13,7 @@ import Catalog from "./components/catalog/Catalog";
 import Browser from "./components/opds/Browser";
 import Opds from "./components/opds/Opds";
 import AllPublicationPage from "./components/searchResult/AllPublicationPage";
+import CustomizationPage from "./components/customization/Customization";
 // import TagSearchResult from "./components/searchResult/TagSearchResult";
 // import TextSearchResult from "./components/searchResult/TextSearchResult";
 
@@ -102,6 +103,11 @@ const _routes = {
         path: "/home",
         // exact: true,
         component: Catalog,
+    } as Route,
+    "/profile": {
+        path: "/profile/:screenId",
+        // exact: true,
+        component: CustomizationPage,
     } as Route,
     "/": {
         path: "/",

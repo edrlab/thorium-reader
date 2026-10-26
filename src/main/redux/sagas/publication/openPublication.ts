@@ -90,7 +90,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string): Sag
     let publicationDocument = yield* callTyped(() => publicationRepository.get(pubId));
 
     if (!publicationDocument) {
-        yield* putTyped(toastActions.openRequest.build(ToastType.Error, translator.translate("message.open.error", {err: `not found in DataBase: ${pubId}`})));
+        yield* putTyped(toastActions.openRequest.build(ToastType.Error, translator.translate("message.notifications.publicationUnavailable")));
         return undefined;
     }
 
@@ -173,13 +173,11 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string): Sag
             debug("streamerOpenPublicationAndReturnManifestUrl() LCP unlockPublication() AFTER");
             debug(unlockPublicationRes);
 
-            if (typeof unlockPublicationRes === "undefined") {
+            const passphraseAnalyticsValue = yield* callTyped(() =>
+                lcpManager.consumeDiscoveredPassphraseAnalytics(publicationDocument, unlockPublicationRes));
+            if (passphraseAnalyticsValue) {
                 yield* spawnTyped(function*() {
-                    yield* callTyped(() => logLcpPassphrase("discovered"));
-                });
-            } else if (unlockPublicationRes !== null) {
-                yield* spawnTyped(function*() {
-                    yield* callTyped(() => logLcpPassphrase("invalid"));
+                    yield* callTyped(() => logLcpPassphrase(passphraseAnalyticsValue));
                 });
             }
 

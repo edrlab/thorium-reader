@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "菜单",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "关闭",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "将列表划至左侧",
+        "loading": "",
         "mainContent": "主要内容",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "将列表划至右侧",
         "skipLink": "跳转至内容",
         "toolbar": "工具栏"
@@ -78,6 +95,7 @@
         "deleteBook": "删除图书",
         "deleteTag": "删除标签",
         "description": "概要",
+        "downloaded": "",
         "emptyTagList": "未带标签的电子书。",
         "entry": {
             "continueReading": "继续阅读",
@@ -141,7 +159,19 @@
         "sort": "排序方式",
         "tag": "标签",
         "tags": "标签",
-        "update": "编辑"
+        "update": "编辑",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -234,29 +264,54 @@
         "annotations": {
             "alreadyImported": "所有笔记已经导入。",
             "emptyFile": "文件中没有可用的笔记。",
-            "errorParsing": "文件解析时发生错误： ",
-            "noBelongTo": "无法导入笔记，至少有一条笔记不属于此出版物。",
             "nothing": "没有可导入的笔记，导入已终止",
             "success": "导入已成功完成。"
         },
         "download": {
             "cancelled": "下载已取消。",
-            "error": "下载{{- title}}失败: [{{- err}}]",
             "errors": {
                 "hashMismatch": "下载文件完整性检查失败：预期SHA-256哈希值为 {{- expected}}，实际为 {{- actual}}。",
                 "httpGet": "HTTP协议下载失败： {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "当前下载文件的文件名无效。",
                 "invalidLink": "下载链接无效。",
                 "invalidTempDirectory": "当前下载文件的路径无效。",
                 "lengthMismatch": "下载文件完整性检查失败：预期大小为 {{- expected}} 字节，实际为 {{- actual}} 字节。",
                 "readStreamMissing": "下载数据流不可用。",
                 "tooManyFilenameAttempts": "无法创建特定临时下载文件名：{{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] 已被导入。",
             "fail": "导入{{- path}}失败。{{- err}}",
             "success": "导入{{- title}}完成。"
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "无法打开出版物: {{- err}}",
@@ -264,7 +319,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "出版物文件路径被移除。",
             "updateFailed": "更新出版物文件路径失败: {{- message}}",
@@ -285,6 +341,17 @@
         },
         "addMenu": "添加 OPDS 订阅源",
         "breadcrumbRoot": "出版目录",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS 官方网站",
         "empty": "未找到出版物",
         "firstPage": "首页",
@@ -293,10 +360,13 @@
         "menu": {
             "aboutBook": "关于此书",
             "addExtract": "导入摘录",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "购买此书",
             "goLoanBook": "借阅此书",
             "goRevokeLoanBook": "归还此书",
-            "goSubBook": "订阅"
+            "goSubBook": "订阅",
+            "placeHold": ""
         },
         "network": {
             "error": "无法访问 OPDS 订阅源",
@@ -307,6 +377,12 @@
         },
         "next": "下一个",
         "previous": "上一个",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "继续浏览",
         "shelf": "书架",
         "updateForm": {
@@ -648,7 +724,8 @@
         "certificateRevoked": "LCP 授权已被撤销。",
         "certificateSignatureInvalid": "无效的 LCP 许可证证书签名。",
         "cover": {
-            "img": "封面图像"
+            "img": "封面图像",
+            "zoom": ""
         },
         "day": "天",
         "days": "天",
@@ -659,7 +736,6 @@
         "expired": "借阅已到期",
         "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
         "incorrectPassphrase": "没有任何已存储的密码与该出版物匹配，或输入的密码错误。",
-        "lcpEnd": "结束",
         "lcpNotSupported": "警告: 此为 Thorium Desktop 阅读器的预发布版本，不支持生产环境下的 LCP 许可证，仅支持无证书验证的 LCP“基础配置”解密。",
         "lcpRightsCopy": "许可证拷贝",
         "lcpRightsPrint": "许可证打印",
@@ -673,10 +749,22 @@
         "notStarted": "尚未开始",
         "onGoing": "进行中",
         "progression": {
-            "title": "进度"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "进度",
+            "useRemote": ""
         },
         "read": "完成",
         "remainingTime": "借阅（剩余时间）",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "更新",
         "returnButton": "归还",
         "returnedLcp": "此书无法阅读，因为LCP许可证已被归还。",
@@ -715,7 +803,7 @@
             },
             "hide": "不显示",
             "highlight": "高亮",
-            "noSelectionToast": "未选择",
+            "noSelectionToast": "创建注释前先选择文本.",
             "note": "{{- color}} 笔记",
             "quickAnnotations": "快速创建（跳过编辑器）",
             "saveNote": "保存",
@@ -865,7 +953,6 @@
             },
             "customFontSelected": "您已选择自定义字体",
             "customizeReader": "自定义文本格式",
-            "defaultValue": "默认值",
             "disabled": "已禁用",
             "display": "显示",
             "disposition": {
@@ -904,7 +991,6 @@
             "preset": {
                 "apply": "应用",
                 "applyDetails": "将您的偏好设置应用到当前出版物。",
-                "detail": "保存 /应用 /重置您的偏好设置。",
                 "reset": "重置",
                 "resetDetails": "重置您的偏好设置（默认设置）。",
                 "save": "保存",
@@ -1248,7 +1334,7 @@
         },
         "screenReaderActivate": {
             "help": "当应用程序检测到辅助技术的存在时，用户界面在使用屏幕阅读器时将表现更佳",
-            "invite": "为屏幕阅读器优化 ({{- status}}) [{{- keyboard}}]",
+            "invite": "为屏幕阅读器优化",
             "message": "对屏幕阅读器的增强支持",
             "title": "增强屏幕阅读器体验"
         },
@@ -1313,18 +1399,25 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },
         "tabs": {
-            "appearance": "外观",
+            "advanced": "",
             "general": "常规",
             "keyboardShortcuts": "键盘快捷键",
             "profiles": "配置文件",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "自动",

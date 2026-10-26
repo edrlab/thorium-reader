@@ -90,7 +90,7 @@ export class OpdsService {
             responseUrl,
             contentType: _contentType,
         } = httpGetData;
-        const baseUrl = `${_baseUrl}`;
+        const baseUrl = responseUrl || `${_baseUrl}`;
         const contentType = parseContentType(_contentType);
 
         if (contentTypeisXml(contentType)) {
@@ -290,6 +290,7 @@ export class OpdsService {
             );
             const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2OpdsPublication, baseUrl);
             return {
+                isPublication: true,
                 title: pubView.documentTitle,
                 publications: [pubView],
             };

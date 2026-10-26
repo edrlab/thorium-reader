@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "Annotation note",
         "bookMenu": "Menu",
+        "bookmarkNote": "Bookmark note",
+        "cancelDownload": "Cancel download: {{- title}}",
         "closeDialog": "Close",
+        "closeNotification": "Close notification",
+        "copyNotificationInstruction": "Copy notification",
+        "decreaseSetting": "Decrease {{- setting}}",
+        "downloadProgress": "Download progress: {{- title}}",
+        "downloadProgressUnknown": "Download progress is unknown.",
+        "editTag": "Edit tag: {{- tag}}",
+        "favoriteCatalog": "Favorite catalog: {{- title}}",
+        "increaseSetting": "Increase {{- setting}}",
         "leftSlideButton": "Slide to the left",
+        "loading": "Loading…",
         "mainContent": "main content",
+        "notificationCopied": "Notification copied",
+        "notificationCopyFailed": "Could not copy notification",
+        "printPage": "Page {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Reset {{- setting}}",
         "rightSlideButton": "Slide to the right",
         "skipLink": "Skip to content",
         "toolbar": "toolbar"
@@ -78,6 +95,7 @@
         "deleteBook": "Delete",
         "deleteTag": "Delete tag",
         "description": "Description",
+        "downloaded": "Downloaded",
         "emptyTagList": "No tagged publications.",
         "entry": {
             "continueReading": "Resume reading",
@@ -141,7 +159,19 @@
         "sort": "Sort by",
         "tag": "Tag",
         "tags": "Tags",
-        "update": "Edit"
+        "update": "Edit",
+        "userProfile": {
+            "available": "Available: {{count}}",
+            "bookshelf": "Open bookshelf",
+            "edit": "Edit profile",
+            "holds": "Holds",
+            "loading": "Loading account…",
+            "loans": "Loans",
+            "title": "Account",
+            "total": "Limit: {{count}}",
+            "unavailable": "Profile information is unavailable.",
+            "used": "{{used}} of {{total}} used"
+        }
     },
     "dialog": {
         "annotations": {
@@ -239,29 +269,54 @@
         "annotations": {
             "alreadyImported": "All notes are already imported.",
             "emptyFile": "No notes available in the file.",
-            "errorParsing": "Error during file parsing: ",
-            "noBelongTo": "Unable to import notes, at least one note does not belong to the publication.",
             "nothing": "There is no note ready to be imported, aborting the import",
             "success": "Import completed successfully."
         },
         "download": {
             "cancelled": "Download cancelled.",
-            "error": "Downloading [{{- title}}] failed: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Downloaded file integrity check failed: expected SHA-256 hash {{- expected}}, got {{- actual}}.",
                 "httpGet": "HTTP download failed: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "Download stalled: no data received for 30 seconds. Please try again.",
                 "invalidFilename": "The temporary download filename is invalid.",
                 "invalidLink": "The download link is invalid.",
                 "invalidTempDirectory": "The temporary download directory is invalid.",
                 "lengthMismatch": "Downloaded file integrity check failed: expected {{- expected}} bytes, got {{- actual}} bytes.",
                 "readStreamMissing": "Download stream is unavailable.",
                 "tooManyFilenameAttempts": "Unable to create a unique temporary download filename: {{- path}}"
-            }
+            },
+            "started": "Download started.",
+            "startedWithTitle": "Downloading {{- title}}."
         },
         "import": {
             "alreadyImport": "[{{- title}}] was already imported.",
             "fail": "Importing [{{- path}}] failed: [{{- err}}]",
             "success": "Importing [{{- title}}] completed."
+        },
+        "notifications": {
+            "annotationImportFailed": "Unable to import annotations. Check that the file is a valid annotation export.",
+            "annotationPublicationUnavailable": "Unable to import annotations because the publication is unavailable. Try re-importing the publication.",
+            "annotationStopPlayback": "Stop read aloud or audio playback before creating an annotation.",
+            "authenticationFailed": "Unable to sign in to this catalog. Check your connection and try again.",
+            "catalogLinkFailed": "Unable to add this catalog. Check the link and your connection.",
+            "catalogUpdateFailed": "Unable to update this catalog. Check its settings and try again.",
+            "copyLimit": "The copy allowance for this publication has been exhausted.",
+            "deleteFailed": "Unable to delete this publication. Try again.",
+            "exportFailed": "Unable to export this publication. Check the destination folder and available disk space.",
+            "openFileFailed": "Unable to open this file. Check that it is available and uses a supported format.",
+            "openLinkFailed": "Unable to open this publication link. Check the link and try again.",
+            "printLimit": "The print allowance for this publication has been exhausted.",
+            "profileActivationFailed": "Unable to activate this profile. Check the profile package or contact its provider.",
+            "profileBusy": "Another profile operation is in progress. Wait for it to finish, then try again.",
+            "profileProvisionFailed": "Unable to install this profile. Check the profile package or contact its provider.",
+            "profileTimeout": "Profile installation timed out. Check your connection and try again.",
+            "publicationUnavailable": "This publication is unavailable. Try re-importing it.",
+            "readingPositionFailed": "Unable to determine your reading position. Try again.",
+            "recoveryPartialFailure": "Recovered {{- recovered}} publications; {{- failed}} publications could not be recovered.",
+            "renewFailed": "Unable to renew this loan. Try again or contact your library.",
+            "returnFailed": "Unable to return this loan. Try again or contact your library.",
+            "storageRefreshFailed": "The storage setting was saved, but the library could not be refreshed. Try refreshing the library.",
+            "tagsFailed": "Unable to save the publication tags. Try again."
         },
         "open": {
             "error": "Loading publication failed: [{{- err}}]",
@@ -292,6 +347,17 @@
         },
         "addMenu": "Add OPDS feed",
         "breadcrumbRoot": "Catalogs",
+        "color": {
+            "blue": "Blue",
+            "gray": "Gray",
+            "green": "Green",
+            "orange": "Orange",
+            "pink": "Pink",
+            "purple": "Purple",
+            "red": "Red",
+            "title": "Catalog color",
+            "yellow": "Yellow"
+        },
         "documentation": "OPDS official website",
         "empty": "No publication found",
         "firstPage": "First",
@@ -300,10 +366,13 @@
         "menu": {
             "aboutBook": "About publication",
             "addExtract": "Import extract",
+            "cancelHold": "Cancel hold",
+            "cancelHoldError": "Unable to cancel this hold. Please try again.",
             "goBuyBook": "Buy publication",
             "goLoanBook": "Borrow publication",
             "goRevokeLoanBook": "Revoke loan",
-            "goSubBook": "Subscribe"
+            "goSubBook": "Subscribe",
+            "placeHold": "Place hold"
         },
         "network": {
             "error": "Error accessing feed",
@@ -314,6 +383,12 @@
         },
         "next": "Next",
         "previous": "Previous",
+        "registry": {
+            "empty": "No catalogs found.",
+            "error": "Unable to search the registry. Please try again.",
+            "loading": "Searching catalogs…",
+            "title": "Search catalogs"
+        },
         "resumeBrowsing": "Resume browsing",
         "shelf": "Shelf",
         "updateForm": {
@@ -655,7 +730,8 @@
         "certificateRevoked": "Revoked LCP license certificate.",
         "certificateSignatureInvalid": "Invalid LCP license certificate signature.",
         "cover": {
-            "img": "cover image"
+            "img": "cover image",
+            "zoom": "Enlarge cover image"
         },
         "day": "day",
         "days": "days",
@@ -666,7 +742,6 @@
         "expired": "Loan expired",
         "expiredLcp": "This publication's LCP license is expired.",
         "incorrectPassphrase": "No stored passphrase fits the publication, or the entered passphrase is wrong.",
-        "lcpEnd": "End",
         "lcpNotSupported": "WARNING: this is a pre-release version of Thorium Desktop reader which does not support production LCP licenses, and only supports LCP 'basic profile' decryption without certificate validation.",
         "lcpRightsCopy": "Copied characters",
         "lcpRightsPrint": "Printed pages",
@@ -680,10 +755,22 @@
         "notStarted": "Not Started",
         "onGoing": "In Progress",
         "progression": {
-            "title": "Progression"
+            "remoteDescription": "A newer reading position from {{- device}} is available at {{- progression}}%.",
+            "remoteTitle": "Resume from another device?",
+            "title": "Progression",
+            "useRemote": "Go to position"
         },
         "read": "Finished",
         "remainingTime": "Loan (remaining time)",
+        "remoteProgression": {
+            "checking": "Enabled and checking service...",
+            "disabled": "Not enabled for this publication.",
+            "empty": "No saved remote progress.",
+            "position": "Remote progress: {{percent}}% ({{device}}).",
+            "ready": "Enabled and ready.",
+            "title": "Reading progress sync:",
+            "unavailable": "Enabled but service unavailable."
+        },
         "renewButton": "Renew",
         "returnButton": "Return",
         "returnedLcp": "This LCP-protected publication is returned.",
@@ -722,7 +809,7 @@
             },
             "hide": "Do not display",
             "highlight": "Highlight",
-            "noSelectionToast": "No selection",
+            "noSelectionToast": "Select text before creating an annotation.",
             "note": "{{- color}} Note",
             "quickAnnotations": "Quick create (skip editor)",
             "saveNote": "Save",
@@ -873,7 +960,6 @@
             },
             "customFontSelected": "You have chosen a personal font",
             "customizeReader": "Customize text formatting",
-            "defaultValue": "default value",
             "disabled": "disabled",
             "display": "Display",
             "disposition": {
@@ -912,7 +998,6 @@
             "preset": {
                 "apply": "Apply",
                 "applyDetails": "Apply your preferred configuration to the current publication.",
-                "detail": "Save / Apply / Reset your preferred configuration.",
                 "reset": "Reset",
                 "resetDetails": "Reset your preferred configuration (default settings).",
                 "save": "Save",
@@ -1256,7 +1341,7 @@
         },
         "screenReaderActivate": {
             "help": "When the application detects the presence of assistive technology, the user interface works better with screen readers",
-            "invite": "Optimize for screen reader ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimize for screen reader",
             "message": "Improved support for screen readers",
             "title": "Enhance screen reader experience"
         },
@@ -1332,11 +1417,16 @@
             }
         },
         "tabs": {
-            "appearance": "Appearance",
+            "advanced": "Advanced",
             "general": "General",
             "keyboardShortcuts": "Keyboard shortcuts",
             "profiles": "Profiles",
             "storage": "Storage"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "Disable telemetry measurements",
+            "disableTelemetryMeasurementsDescription": "When enabled, Thorium does not send telemetry measurements.",
+            "title": "Telemetry"
         },
         "theme": {
             "auto": "Automatic",

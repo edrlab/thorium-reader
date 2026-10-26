@@ -9,7 +9,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
@@ -58,24 +58,23 @@ const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number
 SelectRef.displayName = "ComboBox";
 
 const SelectRefComponent = ({ isEpub, setSection, dockedMode, dockedModeRef, options, optionSelected, optionDisabled, section, panel }: SelectRefProps & { panel: "menu" | "settings" }) => {
+    const [__] = useTranslator();
+
     return (
         <SelectRef
             id={`reader-${panel}-nav`}
             items={options}
             selectedKey={optionSelected}
+            aria-label={panel === "menu" ? __("reader.navigation.openTableOfContentsTitle") : __("reader.navigation.settingsTitle")}
             disabledKeys={optionDisabled}
             svg={options.find(({ value }) => value === section)?.svg}
+            triggerFocusId={panel === "menu" ? "reader-menu-docked-trigger" : "reader-settings-nav"}
             onSelectionChange={(id) => {
                 // console.log("selectionchange: ", id);
                 const value = options.find(({ id: _id }) => _id === id)?.value;
                 if (value) {
+                    // Let React Aria restore focus to the trigger when the list closes.
                     setSection(value);
-                    setTimeout(() => {
-                        // TODO: is stealing focus here necessary? Should this vary depending on keyboard or mouse interaction?
-                        const elem = document.getElementById(`readerSettings_tabs-${value}`);
-                        elem?.blur();
-                        elem?.focus();
-                    }, 1);
                     // console.log("set Tab Value = ", value);
                 } else {
                     // console.error("Combobox No value !!!");

@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { dialog } from "electron";
 import * as fs from "node:fs";
 import { injectable } from "inversify";
 import * as path from "node:path";
@@ -120,7 +119,7 @@ interface IBackupPublicationFile {
     restored: boolean;
 }
 
-interface IPublicationCoverData {
+export interface IPublicationCoverData {
     buffer: Buffer;
     contentType: string;
     ext: string;
@@ -491,7 +490,7 @@ export class PublicationStorage {
         files.push(bookFile);
 
         try {
-            const coverFile = await this.storePublicationCover(
+            const coverFile = await this.storeEmbeddedPublicationCover(
                 identifier, srcPath, publicationDirectoryPath);
             if (coverFile) {
                 files.push(coverFile);
@@ -751,18 +750,8 @@ export class PublicationStorage {
             throw new Error("no filePath !");
         }
         const publicationPath = await this.getPublicationEpubPath(publicationView.identifier);
-        try {
-            await fs.promises.copyFile(publicationPath, filePath /*, constants.COPYFILE_EXCL */);
-        } catch (err: any) {
-
-            // TODO: Toast!? i18n!?
-            await dialog.showMessageBox({
-                type: "error",
-                message: err?.message,
-                title: err?.name,
-                buttons: ["OK"],
-            });
-        }
+        // The export operation presents the failure and returns an API error.
+        await fs.promises.copyFile(publicationPath, filePath /*, constants.COPYFILE_EXCL */);
     }
 
     // Publication location lookup and cache
@@ -1256,6 +1245,41 @@ export class PublicationStorage {
         return publicationFiles;
     }
 
+    /**
+     * Persist cover data supplied by a source outside the publication archive,
+     * such as the OPDS entry from which an EPUB was acquired.
+     */
+    public async storePublicationCoverData(
+        identifier: string,
+        coverData: IPublicationCoverData,
+    ): Promise<File> {
+
+        assertUUIDv4(identifier);
+
+        const ext = getExtensionWithoutDot(coverData.ext);
+        const contentType = coverData.contentType.split(";", 1)[0].trim().toLowerCase();
+        const extensionContentType = findMimeTypeWithExtension(ext);
+        if (!coverData.buffer.length ||
+            !/^[a-z0-9]+$/.test(ext) ||
+            !contentType.startsWith("image/") ||
+            extensionContentType !== contentType) {
+            throw new Error("Invalid publication cover data");
+        }
+
+        const publicationDirectoryPath = await this.getPublicationPath(identifier);
+        const coverFilename = `cover.${ext}`;
+        const coverPath = path.join(publicationDirectoryPath, coverFilename);
+        await fs.promises.writeFile(coverPath, coverData.buffer);
+
+        return this.buildStoredPublicationFile(
+            identifier,
+            coverFilename,
+            ext,
+            contentType,
+            coverPath,
+        );
+    }
+
     // Publication import helpers
 
     private buildStoredPublicationFile(
@@ -1463,7 +1487,7 @@ export class PublicationStorage {
     }
 
     // Extract the image cover buffer then create a file on the publication folder
-    private async storePublicationCover(
+    private async storeEmbeddedPublicationCover(
         identifier: string,
         srcPath: string,
         dstPath: string,

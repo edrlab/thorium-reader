@@ -10,7 +10,6 @@ import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
-import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { loadReducer } from "readium-desktop/renderer/common/redux/reducers/load";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { historyReducer } from "readium-desktop/renderer/library/redux/reducers/history";
@@ -47,6 +46,7 @@ import { ICustomizationProfileHistory } from "readium-desktop/common/redux/state
 import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
 import { customizationPackageManifestReducer } from "readium-desktop/common/redux/reducers/customization/manifest";
 import { directoryReducer } from "readium-desktop/common/redux/reducers/directory";
+import { libraryApiReducer } from "./api";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -69,7 +69,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         win: winReducer,
         // net: netReducer,
         // update: updateReducer,
-        api: apiReducer,
+        api: libraryApiReducer,
         dialog: dialogReducer,
         router: routerReducer,
         toast: toastReducer,

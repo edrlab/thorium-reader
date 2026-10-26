@@ -6,6 +6,15 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
+import { getCatalogUrls } from "readium-desktop/main/catalogUrls";
+import {
+    OPDS_FEED_DEFAULT_COLOR,
+    getOpdsFeedColor,
+    getOpdsFeedIconUrl,
+    isOpdsFeedColor,
+    type TOpdsFeedColor,
+} from "readium-desktop/common/models/opds";
+
 import { customizationActions, historyActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -18,7 +27,7 @@ import {
 import { all, put, spawn } from "redux-saga/effects";
 import { call as callTyped, take as takeTyped, /*select as selectTyped*/ put as putTyped /*race as raceTyped, delay as delayTyped*/ } from "typed-redux-saga/macro";
 import { browse } from "./api/browser/browse";
-import { addFeed } from "./api/opds/feed";
+import { addFeed, downloadOpdsFeedIcon } from "./api/opds/feed";
 
 import { importFromFs, importFromLink } from "./api/publication/import";
 import { search } from "./api/publication/search";
@@ -29,7 +38,7 @@ import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./get
 // import { ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { URL_HOST_CUSTOMPROFILE, URL_HOST_OPDS_AUTH, URL_DOMAIN_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
-import { getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
 import * as path from "node:path";
@@ -39,6 +48,8 @@ import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/c
 import { ToastType } from "readium-desktop/common/models/toast";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 import { TCatalogAddAnalyticsOrigin } from "src/common/analytics/catalog";
+
+import { getLcpHashedPassphrase } from "readium-desktop/utils/lcp";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -118,7 +129,7 @@ export function saga() {
 
                     debug("ERROR to importFromFs and to open the publication");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `CLI open file ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.openFileFailed")));
                 }
             }
 
@@ -190,6 +201,7 @@ export function saga() {
                     }
 
                     let theUrl = url;
+                    let lcpHashedPassphrase: string | undefined;
 
                     // https://www.thoriumreader.com/en/badge/publication/
                     //
@@ -205,8 +217,10 @@ export function saga() {
                         // const title = u.searchParams.get("title") || theUrl;
                         // const author = u.searchParams.get("author");
                         // const cover = u.searchParams.get("cover");
-                        // const passphrase = u.searchParams.get("passphrase");
-                        // const hashed_passphrase = u.searchParams.get("hashed_passphrase");
+                        lcpHashedPassphrase = getLcpHashedPassphrase(
+                            u.searchParams.get("passphrase"),
+                            u.searchParams.get("hashed_passphrase"),
+                        );
 
                         if (!/^https?:\/\//.test(theUrl)) {
                             throw new Error("HTTP!! " + theUrl + " ------- " + url);
@@ -217,6 +231,9 @@ export function saga() {
 
                     const link: IOpdsLinkView = {
                         url: openUrl,
+                        properties: lcpHashedPassphrase ? {
+                            lcpHashedPassphrase,
+                        } : undefined,
                     };
 
                     const pubViewArray = (yield* callTyped(importFromLink, link, true /* willBeImmediatelyFollowedByOpen */)) as PublicationView | PublicationView[];
@@ -232,7 +249,7 @@ export function saga() {
 
                     debug("ERROR to importFromLink and to open the publication");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `THORIUM Deep link ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.openLinkFailed")));
                 }
             }
 
@@ -282,6 +299,10 @@ export function saga() {
                     } else {
                         let theUrl = url;
                         let title = url;
+                        let feedColor: TOpdsFeedColor = OPDS_FEED_DEFAULT_COLOR;
+                        let feedIcon: string | undefined;
+                        let authenticationUrl: string | undefined;
+                        let lcpHashedPassphrase: string | undefined;
 
                         // https://www.thoriumreader.com/en/badge/catalog/
                         //
@@ -293,22 +314,36 @@ export function saga() {
                             url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP}:/add/catalog`) // single slash!
                         ) {
                             const u = new URL(url);
-                            theUrl = u.searchParams.get("main");
+                            const catalogUrls = getCatalogUrls(u.searchParams);
+                            theUrl = catalogUrls.url;
+                            authenticationUrl = catalogUrls.authenticationUrl;
                             title = u.searchParams.get("title") || theUrl;
-                            // const bookshelf = u.searchParams.get("bookshelf");
-                            // const passphrase = u.searchParams.get("passphrase");
-                            // const hashed_passphrase = u.searchParams.get("hashed_passphrase");
-                            // const icon = u.searchParams.get("icon");
+                            lcpHashedPassphrase = getLcpHashedPassphrase(
+                                u.searchParams.get("passphrase"),
+                                u.searchParams.get("hashed_passphrase"),
+                            );
+                            feedIcon = yield* callTyped(() => downloadOpdsFeedIcon(
+                                getOpdsFeedIconUrl(u.searchParams.get("icon")),
+                            ));
                             // const banner = u.searchParams.get("banner");
                             // const open_in = u.searchParams.get("open_in");
-                            // const color = u.searchParams.get("color");
+
+                            // no color value do not save the default gray color
+                            if (isOpdsFeedColor(u.searchParams.get("color"))) {
+                                feedColor = getOpdsFeedColor(u.searchParams.get("color"));
+                            }
 
                             if (!/^https?:\/\//.test(theUrl)) {
                                 throw new Error("HTTP!! " + theUrl + " ------- " + url);
                             }
+
+                            if (lcpHashedPassphrase) {
+                                const lcpManager = diMainGet("lcp-manager");
+                                yield* callTyped(() => lcpManager.saveGenericSecret(lcpHashedPassphrase));
+                            }
                         }
 
-                        const feed = yield* callTyped(addFeed, { title, url: theUrl }, "deeplink" as TCatalogAddAnalyticsOrigin);
+                        const feed = yield* callTyped(addFeed, { title, url: theUrl, authenticationUrl, color: feedColor, icon: feedIcon }, "deeplink" as TCatalogAddAnalyticsOrigin);
                         if (feed) {
 
                             yield* callTyped(appActivate);
@@ -325,7 +360,7 @@ export function saga() {
                 } catch (e) {
                     debug("OPDS Deep link error");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `OPDS Deep link ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.catalogLinkFailed")));
                 } finally {
                     try { appendFileSyncWithRotation(appLogs, dump); } catch { }
                 }

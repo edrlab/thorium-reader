@@ -1,10 +1,27 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Sluit",
-        "leftSlideButton": "Vorige",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
+        "leftSlideButton": "Schuif naar links",
+        "loading": "",
         "mainContent": "hoofdinhoud",
-        "rightSlideButton": "Volgende",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
+        "rightSlideButton": "Schuif naar rechts",
         "skipLink": "Ga naar inhoud",
         "toolbar": "werkbalk"
     },
@@ -56,7 +73,7 @@
         "about": {
             "title": "Over {{- appName}}"
         },
-        "addBookToLib": "Voeg toe",
+        "addBookToLib": "Importeer",
         "addTags": "Voeg een label toe",
         "addTagsButton": "Voeg toe",
         "allBooks": "Alle publicaties",
@@ -74,10 +91,11 @@
                 "title": "Profiel titel"
             }
         },
-        "delete": "Verwijder",
+        "delete": "Wis",
         "deleteBook": "Verwijder",
         "deleteTag": "Verwijder label",
         "description": "Beschrijving",
+        "downloaded": "Gedownload",
         "emptyTagList": "Je hebt geen boeken met een label.",
         "entry": {
             "continueReading": "Ga verder met lezen",
@@ -141,7 +159,19 @@
         "sort": "Sorteer op",
         "tag": "Label",
         "tags": "Labels",
-        "update": "Wijzig"
+        "update": "Wijzig",
+        "userProfile": {
+            "available": "Beschikbaar: {{count}}",
+            "bookshelf": "Bekijk boekenplank",
+            "edit": "Wijzig profiel",
+            "holds": "Reserveringen",
+            "loading": "Het account wordt geladen…",
+            "loans": "Aantal geleend",
+            "title": "Account",
+            "total": "Limiet: {{count}}",
+            "unavailable": "Profielinformatie niet beschikbaar.",
+            "used": "{{used}} van {{total}} gebruikt"
+        }
     },
     "dialog": {
         "annotations": {
@@ -239,29 +269,54 @@
         "annotations": {
             "alreadyImported": "Alle aantekeningen zijn reeds geïmporteerd.",
             "emptyFile": "Geen aantekeningen beschikbaar in het bestand.",
-            "errorParsing": "Fout tijdens het parsen van het bestand: ",
-            "noBelongTo": "Kan aantekeningen niet importeren, ten minste één aantekening behoort niet bij de publicatie.",
             "nothing": "Er is geen aantekening om geïmporteerd te worden, de import wordt afgebroken",
             "success": "Import succesvol voltooid."
         },
         "download": {
             "cancelled": "Download geannuleerd.",
-            "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwachte SHA-256 hash {{- expected}}, ontvangen {{- actual}}.",
                 "httpGet": "HTTP download mislukt: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "De tijdelijke download bestandsnaam is ongeldig.",
                 "invalidLink": "De download link is ongeldig.",
                 "invalidTempDirectory": "De tijdelijke downloadmap is ongeldig.",
                 "lengthMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwacht {{- expected}} bytes, ontvangen {{- actual}} bytes.",
                 "readStreamMissing": "Downloadstream is niet beschikbaar.",
                 "tooManyFilenameAttempts": "Kan geen unieke tijdelijke downloadbestandsnaam aanmaken: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} is al toegevoegd.",
             "fail": "Het toevoegen van {{- path}} is mislukt. {{- err}}",
             "success": "Het toevoegen van {{- title}} is gelukt."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "De publicatie kan niet worden geopend: {{- err}}",
@@ -269,9 +324,9 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Het herstel van de publicatie is mislukt.",
+                "success_one": "{{- count}} publicatie hersteld.",
+                "success_other": "{{- count}} publicaties recovered."
             },
             "removed": "Publicatiemap verwijderd.",
             "updateFailed": "Het bijwerken van de publicatiemap is mislukt: {{- message}}",
@@ -292,6 +347,17 @@
         },
         "addMenu": "Voeg OPDS feed toe",
         "breadcrumbRoot": "Catalogi",
+        "color": {
+            "blue": "Blauw",
+            "gray": "Grijs",
+            "green": "Groen",
+            "orange": "Oranje",
+            "pink": "Roze",
+            "purple": "Paars",
+            "red": "Rood",
+            "title": "Cataloguskleur",
+            "yellow": "Geel"
+        },
         "documentation": "Officiële website OPDS",
         "empty": "Geen publicatie gevonden",
         "firstPage": "Eerste",
@@ -300,10 +366,13 @@
         "menu": {
             "aboutBook": "Over dit boek",
             "addExtract": "Voeg de samenvatting toe",
+            "cancelHold": "Reservering annuleren",
+            "cancelHoldError": "Het lukt niet om deze reservering te annuleren. Probeer opnieuw.",
             "goBuyBook": "Koop dit boek",
             "goLoanBook": "Leen dit boek",
             "goRevokeLoanBook": "Uitlening intrekken",
-            "goSubBook": "Abonneer"
+            "goSubBook": "Abonneer",
+            "placeHold": "Plaats reservering"
         },
         "network": {
             "error": "Het is niet mogelijk om toegang te krijgen tot de OPDS feed",
@@ -314,6 +383,12 @@
         },
         "next": "Volgende",
         "previous": "Vorige",
+        "registry": {
+            "empty": "Geen catalogi gevonden.",
+            "error": "Kan het register niet doorzoeken. Probeer opnieuw.",
+            "loading": "Catalogi doozoeken…",
+            "title": "Zoek catalogi"
+        },
         "resumeBrowsing": "Terug naar bladeren",
         "shelf": "Plank",
         "updateForm": {
@@ -655,7 +730,8 @@
         "certificateRevoked": "LCP licentie certificaat is ingetrokken.",
         "certificateSignatureInvalid": "LCP licentie certificaat handtekening is ongeldig.",
         "cover": {
-            "img": "cover afbeelding"
+            "img": "cover afbeelding",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dagen",
@@ -666,7 +742,6 @@
         "expired": "Uitlening verlopen",
         "expiredLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie verlopen is.",
         "incorrectPassphrase": "Geen opgeslagen wachtwoordzin past bij de publicatie of de ingevoerde wachtwoordzin is verkeerd.",
-        "lcpEnd": "Einde",
         "lcpNotSupported": "LET OP: dit is een pre-releaseversie van de Thorium Desktop Reader die geen ondersteuning biedt voor LCP-licenties voor productieomgevingen en alleen LCP-ontsleuteling met het 'basisprofiel' ondersteunt zonder certificaatvalidatie.",
         "lcpRightsCopy": "Toegestaan aantal te kopiëren karakters",
         "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
@@ -680,10 +755,22 @@
         "notStarted": "Niet gestart",
         "onGoing": "Bezig",
         "progression": {
-            "title": "Voortgang"
+            "remoteDescription": "Er is een recentere {{- device}} leespositie beschikbaar op {{- progression}}%.",
+            "remoteTitle": "Verder gaan vanaf een ander apparaat?",
+            "title": "Voortgang",
+            "useRemote": "Ga naar positie"
         },
         "read": "Klaar",
         "remainingTime": "Uitlening (resterende tijd)",
+        "remoteProgression": {
+            "checking": "Ingeschakeld en service wordt gecontroleerd...",
+            "disabled": "Niet ingeschakeld voor deze publicatie.",
+            "empty": "Geen opgeslagen voortgang op afstand.",
+            "position": "Voortgang op afstand: {{percent}}% ({{device}}).",
+            "ready": "Ingeschakeld en gereed.",
+            "title": "Synchronisatie van leesvoortgang:",
+            "unavailable": "Ingeschakeld, maar de service is niet beschikbaar."
+        },
         "renewButton": "Vernieuw",
         "returnButton": "Lever in",
         "returnedLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie is ingeleverd.",
@@ -873,13 +960,12 @@
             },
             "customFontSelected": "Je hebt een eigen lettertype gekozen",
             "customizeReader": "Pas de tekstopmaak aan",
-            "defaultValue": "standaardwaarde",
             "disabled": "uitgeschakeld",
             "display": "Weergave",
             "disposition": {
                 "title": "Indeling"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Pagina-einden in de marge weergeven",
             "font": "Lettertype",
             "fontSize": "Lettergrootte",
             "increaseFontSize": "Lettergrootte vergroten",
@@ -912,7 +998,6 @@
             "preset": {
                 "apply": "Pas toe",
                 "applyDetails": "Pas uw voorkeursconfiguratie toe op de huidige publicatie.",
-                "detail": "Bewaar / Pas toe / Reset uw voorkeursconfiguratie.",
                 "reset": "Stel opnieuw in",
                 "resetDetails": "Reset uw voorkeursconfiguratie (standaardinstellingen).",
                 "save": "Bewaar",
@@ -1256,7 +1341,7 @@
         },
         "screenReaderActivate": {
             "help": "Wanneer de app de aanwezigheid van hulpsoftware waarneemt, zal het gebruikersinterface beter werken voor schermlezers",
-            "invite": "Optimaliseer voor schermlezer ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimaliseer voor schermlezer",
             "message": "Verbeterde ondersteuning voor schermlezers",
             "title": "Verbeter de schermlezerervaring"
         },
@@ -1311,32 +1396,37 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Controleren op herstelbare publicaties",
+                    "checkAgain": "Opnieuw controleren",
+                    "recover": "Herstel publicaties",
+                    "recovering": "Aan het herstellen..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Er zijn een of meer publicaties op de schijf gevonden die in de database ontbreken. Herstel is mogelijk.",
+                "checking": "Opslag voor publicaties controleren...",
+                "description": "Controleer de publicatieopslag om publicaties te vinden die veilig kunnen worden hersteld.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Herstel",
+                    "description_one": "Thorium heeft {{- count}} publicatie op schijf gevonden die in de database ontbreekt. Wilt u deze opnieuw in Thorium importeren?",
+                    "description_other": "Thorium heeft {{- count}} publicaties op schijf gevonden die in de database ontbreken. Wilt u ze opnieuw in Thorium importeren?",
+                    "title": "Herstel publicaties"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Er zijn geen te herstellen publicaties gevonden.",
+                "recoverableCount_one": "{{- count}} publicatie kan worden hersteld met de oorspronkelijke opslag-id.",
+                "recoverableCount_other": "{{- count}} publicaties kunnen worden hersteld met de oorspronkelijke opslag-id.",
+                "title": "Herstel"
             }
         },
         "tabs": {
-            "appearance": "Verschijning",
+            "advanced": "Geavanceerd",
             "general": "Algemeen",
             "keyboardShortcuts": "Toetsenbord sneltoetsen",
             "profiles": "Profielen",
             "storage": "Opslag"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "Telemetriemetingen uitschakelen",
+            "disableTelemetryMeasurementsDescription": "Indien ingeschakeld verstuurt Thorium geen telemetriemetingen.",
+            "title": "Telemetrie"
         },
         "theme": {
             "auto": "Automatisch",

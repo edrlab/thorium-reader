@@ -10,6 +10,7 @@ import { File } from "readium-desktop/common/models/file";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
+import type { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 // import { JsonMap } from "readium-desktop/typings/json";
 
 // export interface Resources {
@@ -40,13 +41,16 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     lcpRightsPrints?: number[];
 
     hash: string;
+    sourceFormat?: "cbz";
 
     opdsPublicationStringified?: string;
+    opdsPublicationView?: IOpdsPublicationView;
     opdsPublication?: {
         url?: string;
         type?: string;
         selfLinkUrl?: string;
         identifier?: string;
+        progressionLink?: IOpdsLinkView;
     }
 
     // when true, signifies that pub was migrated from 1.6 PouchDB

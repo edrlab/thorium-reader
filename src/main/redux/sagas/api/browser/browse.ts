@@ -12,7 +12,7 @@ import { IBrowserResultView, THttpGetBrowserResultView } from "readium-desktop/c
 import { IOpdsResultView } from "readium-desktop/common/views/opds";
 import { IProblemDetailsResultView } from "readium-desktop/common/views/problemDetails";
 import { diMainGet } from "readium-desktop/main/di";
-import { httpGet } from "readium-desktop/main/network/http";
+import { httpGet, httpDeleteWithAuth } from "readium-desktop/main/network/http";
 import { OpdsService } from "readium-desktop/main/services/opds";
 import { ContentType, contentTypeisApiProblem, parseContentType } from "readium-desktop/utils/contentType";
 import { SagaGenerator } from "typed-redux-saga";
@@ -35,7 +35,13 @@ const checkUrl = (url: string) => {
     return url;
 };
 
-export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView>  {
+export function* browse(urlRaw: string, method: "GET" | "DELETE" = "GET"): SagaGenerator<THttpGetBrowserResultView>  {
+
+    ok(method === "GET" || method === "DELETE", "Unsupported OPDS request method");
+    if (method === "DELETE") {
+        const parsed = new URL(urlRaw);
+        ok(parsed.protocol === "https:" || parsed.protocol === "http:", "Invalid cancellation URL");
+    }
 
     debug("BROWSE=", urlRaw);
     const opdsService = diMainGet("opds-service") as OpdsService;
@@ -154,7 +160,7 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
             isSuccess: false,
         };
     }
-    const result = yield* callTyped(() => httpGet<IBrowserResultView>(
+    const result = yield* callTyped(() => (method === "DELETE" ? httpDeleteWithAuth : httpGet)<IBrowserResultView>(
         url,
         undefined,
         async (data) => {
@@ -169,6 +175,13 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
 
             const baseUrl = `${_baseUrl}`;
             const contentType = parseContentType(_contentType);
+
+            // CantookStation can acknowledge cancellation with an empty 200 OPDS response.
+            // Empty bodies (including 204 responses) must not be parsed as JSON.
+            if (data.statusCode === 204 || data.response?.headers?.get("content-length") === "0") {
+                data.data = { emptyResponse: true };
+                return data;
+            }
 
             // parse Problem details and return
             if (contentTypeisApiProblem(contentType)) {
@@ -189,6 +202,13 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
                         instance: typeof instance === "string" ? instance : undefined,
                     },
                 };
+                return data;
+            }
+
+            // Web catalogs are routed by the library renderer to the system browser.
+            // Keep the successful response metadata (notably the final response URL),
+            // but do not attempt to parse the HTML body as OPDS.
+            if (contentType === ContentType.Html) {
                 return data;
             }
 

@@ -7,9 +7,9 @@
   left: 50%;
   top: 50%;
   width: 776px;
-  min-height: calc(100vh - 300px);
-  max-width: calc(100vw - 60px);
-  max-height: calc(100vh - 60px);
+  min-height: 0;
+  max-width: calc(100dvw - 32px);
+  max-height: calc(100dvh - 32px);
   border-radius: 10px;
   z-index: 100;
   display: flex;
@@ -19,12 +19,9 @@
   color: var(--color-text-primary);
   position: fixed;
   box-sizing: border-box;
-  overflow: hidden;
+  // overflow: hidden;
   border: 1px solid var(--color-gray-250);
-
-  @media only screen and (height <= 700px) {
-    min-height: 550px;
-  }
+  min-width: 0;
 
   .settings_container {
     min-height: inherit;
@@ -105,7 +102,7 @@
     color: var(--color-text-primary);
     font-size: 12px;
 
-    &:disabled {
+    &[data-disabled] {
       background-color: var(--color-gray-50);
     }
   }

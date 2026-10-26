@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menú",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Pechar",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Desprazar lista á esquerda",
+        "loading": "",
         "mainContent": "Contido principal",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Desprazar lista á dereita",
         "skipLink": "Pasar ao contido",
         "toolbar": "Barra de ferramentas"
@@ -78,6 +95,7 @@
         "deleteBook": "Eliminar",
         "deleteTag": "Eliminar etiqueta",
         "description": "Descrición",
+        "downloaded": "",
         "emptyTagList": "Non tes libros etiquetaxes.",
         "entry": {
             "continueReading": "Reiniciar lectura",
@@ -141,7 +159,19 @@
         "sort": "Ordenar por",
         "tag": "Etiqueta",
         "tags": "Etiquetas",
-        "update": "Edita"
+        "update": "Edita",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -239,29 +269,54 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
         "download": {
             "cancelled": "",
-            "error": "A descarga de {{-  title}} fallou: [{{-  err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{-  title}} xa estaba importado",
             "fail": "A importación de {{-  path}} fallou. {{-  err}}",
             "success": "A importación de {{-  title}} finalizou."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Non se pode abrir a publicación: {{-  err}}",
@@ -292,6 +347,17 @@
         },
         "addMenu": "Engadir catálogo OPDS",
         "breadcrumbRoot": "Catálogos",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS sitio web oficial",
         "empty": "Non se atoparon publicacións",
         "firstPage": "Primeira",
@@ -300,10 +366,13 @@
         "menu": {
             "aboutBook": "Acerca deste libro",
             "addExtract": "Importar mostra",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Mercar este libro",
             "goLoanBook": "Pedir prestado este libro",
             "goRevokeLoanBook": "Cancelar préstamo",
-            "goSubBook": "Suscribirse"
+            "goSubBook": "Suscribirse",
+            "placeHold": ""
         },
         "network": {
             "error": "Non se pode acceder ao catálogo  OPDS",
@@ -314,6 +383,12 @@
         },
         "next": "Seguinte",
         "previous": "Anterior",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "Estante",
         "updateForm": {
@@ -655,7 +730,8 @@
         "certificateRevoked": "O certificado está cancelado",
         "certificateSignatureInvalid": "A firma do certificado non é válida",
         "cover": {
-            "img": "Imaxe de portada"
+            "img": "Imaxe de portada",
+            "zoom": ""
         },
         "day": "día",
         "days": "días",
@@ -666,7 +742,6 @@
         "expired": "Préstamo expirado",
         "expiredLcp": "Este libro non se pode ler porque a licenza  LCP expirou.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Fin",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Copia de personaxes",
         "lcpRightsPrint": "Copia de impresora",
@@ -680,10 +755,22 @@
         "notStarted": "Non iniciado",
         "onGoing": "En curso",
         "progression": {
-            "title": "Progreso"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Progreso",
+            "useRemote": ""
         },
         "read": "Finalizado",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este libro non se pode ler porque a licenza LCP devolveuse.",
@@ -873,7 +960,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "Personalizar o estilo do texto",
-            "defaultValue": "",
             "disabled": "desactivado",
             "display": "Visualización",
             "disposition": {
@@ -912,7 +998,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1332,11 +1417,16 @@
             }
         },
         "tabs": {
-            "appearance": "Aspecto visual",
+            "advanced": "",
             "general": "General",
             "keyboardShortcuts": "Atallos de teclado",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Automático\n",

@@ -8,6 +8,8 @@
 import { shell } from "electron";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
+import { handOffBrowseResponse } from "./browseResponse";
 import { decodeB64 } from "readium-desktop/renderer/common/logics/base64";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { TDispatch } from "readium-desktop/typings/redux";
@@ -24,7 +26,7 @@ const REL_NAVIGATION_TYPES: string[] = [
 
 export const dispatchOpdsLink =
     (dispatch: TDispatch) =>
-        (ln: IOpdsLinkView, location: Location, title?: string) => {
+        (ln: IOpdsLinkView, location: Location, title?: string, response?: THttpGetBrowserResultView) => {
 
             dispatch(dialogActions.closeRequest.build());
 
@@ -48,6 +50,7 @@ export const dispatchOpdsLink =
                     newLvl,
                 );
 
+                if (response) handOffBrowseResponse(route, response);
                 dispatchHistoryPush(dispatch)({
                     ...location,
                     pathname: route,

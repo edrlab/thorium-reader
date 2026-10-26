@@ -36,11 +36,13 @@ import * as FileBroken from "readium-desktop/renderer/assets/icons/file-broken-i
 interface IBaseProps {
     publicationViewMaybeOpds: TPublication;
     coverType?: "cover" | "thumbnail" | undefined;
+    imageAlt?: string;
     onClick?: () => void;
     onKeyUp?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
     forwardedRef?:  React.ForwardedRef<HTMLImageElement>;
     imgRadixProp?: any;
     isPublicationUnavailable?: boolean;
+    isDownloading?: boolean;
 }
 
 // IProps may typically extend:
@@ -54,6 +56,16 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, Transla
 interface IState {
     imgUrl?: string | undefined,
     imgErroredOnce: boolean,
+}
+
+function getCoverUrl(props: Readonly<IProps>): string | undefined {
+    const { cover } = props.publicationViewMaybeOpds;
+    if (!cover) {
+        return undefined;
+    }
+    const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
+    const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
+    return props.coverType === "cover" ? coverUrl || thumbnailUrl : thumbnailUrl || coverUrl;
 }
 
 class Cover extends React.Component<IProps, IState> {
@@ -86,29 +98,16 @@ class Cover extends React.Component<IProps, IState> {
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>): void {
-        if (prevProps.publicationViewMaybeOpds?.cover !== this.props.publicationViewMaybeOpds?.cover) {
-
-            const { cover } = this.props.publicationViewMaybeOpds;
-
-            if (cover) {
-                const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
-                const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
-
-                if (this.props.coverType === "cover") {
-                    this.setState({ imgUrl: coverUrl || thumbnailUrl });
-                } else {
-                    this.setState({ imgUrl: thumbnailUrl || coverUrl });
-                }
-            } else {
-                this.setState({ imgUrl: undefined });
-            }
+        const imgUrl = getCoverUrl(this.props);
+        if (getCoverUrl(prevProps) !== imgUrl) {
+            this.setState({ imgUrl, imgErroredOnce: false });
         }
     }
 
     public render() {
         const { publicationViewMaybeOpds } = this.props;
 
-        let needsSpinner = false;
+        let needsSpinner = !!this.props.isDownloading;
 
         const { identifier } = this.props.publicationViewMaybeOpds;
 
@@ -129,7 +128,9 @@ class Cover extends React.Component<IProps, IState> {
 
         if (this.state.imgUrl) {
             return (
-                <div className={isPublicationUnavailable ? stylesPublications.publication_missing_wrapper : ""}>
+                <div className={isPublicationUnavailable ?
+                    `${stylesPublications.cover_wrapper} ${stylesPublications.publication_missing_wrapper}` :
+                    stylesPublications.cover_wrapper}>
                     {isPublicationUnavailable ?
                     <div className={stylesPublications.publication_missing_container}>
                         <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
@@ -141,8 +142,8 @@ class Cover extends React.Component<IProps, IState> {
                     className={stylesPublications.cover_img}
                     onClick={this.props.onClick}
                     onKeyUp={this.props.onKeyUp}
-                    role="presentation"
-                    alt={(this.props.imgRadixProp || this.props.onKeyUp) ? this.props.__("publication.cover.img") : ""}
+                    role={this.props.imageAlt ? undefined : "presentation"}
+                    alt={this.props.imageAlt ?? ((this.props.imgRadixProp || this.props.onKeyUp) ? this.props.__("publication.cover.img") : "")}
                     // aria-hidden={(this.props.imgRadixProp || this.props.onKeyUp) ? undefined : true}
                     ref={this.props.forwardedRef}
                     src={this.state.imgUrl}
@@ -183,7 +184,9 @@ class Cover extends React.Component<IProps, IState> {
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
         return (
-            <div className={isPublicationUnavailable ? stylesPublications.publication_missing_wrapper : ""} style={{width: "100%"}}>
+            <div className={isPublicationUnavailable ?
+                `${stylesPublications.cover_wrapper} ${stylesPublications.publication_missing_wrapper}` :
+                stylesPublications.cover_wrapper}>
                 {isPublicationUnavailable ?
                     <div className={stylesPublications.publication_missing_container}>
                         <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
@@ -240,6 +243,7 @@ export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IBasePro
     publicationViewMaybeOpds,
     coverType,
     isPublicationUnavailable,
+    isDownloading,
     ...props
 }, forwardedRef) => {
     const [__] = useTranslator();
@@ -252,6 +256,7 @@ export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IBasePro
             forwardedRef={forwardedRef}
             imgRadixProp={props}
             isPublicationUnavailable={isPublicationUnavailable}
+            isDownloading={isDownloading}
         />
     );
 });

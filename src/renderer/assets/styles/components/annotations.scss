@@ -106,11 +106,27 @@
     margin: 20px 0;
   }
 
+  &_section {
+    position: relative;
+    width: 100% !important;
+  }
+
+  &_actions {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 30px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
   &_tagGroup {
     font-family: inherit;
     background-color: var(--color-neutral-base);
     border-radius: 5px;
-    padding: 0 20px;
+    box-sizing: border-box;
+    padding: 0 130px 0 20px;
     height: 45px;
     font-size: 15px;
     line-height: 1;
@@ -133,6 +149,11 @@
     border: 1px solid var(--color-brand-primary);
     background-color: var(--color-brand-secondary);
     color: var(--color-brand-primary);
+
+    &[data-focus-visible] {
+      outline: var(--color-brand-primary) solid 2px !important;
+      outline-offset: 2px;
+    }
 
     &[data-selected],
     &:has(input:checked),

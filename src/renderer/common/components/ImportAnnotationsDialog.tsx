@@ -9,7 +9,7 @@ import * as React from "react";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { annotationActions } from "readium-desktop/common/redux/actions";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
@@ -62,7 +62,7 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
     const author_ = textObj2_ ? convertMultiLangStringToString(textObj2_, locale) : "";
 
     return (
-        <AlertDialog.Root open={props.winId === winId && open} onOpenChange={(requestOpen) => {
+        <AlertDialog.Root isOpen={props.winId === winId && open} onOpenChange={(requestOpen) => {
             if (requestOpen) {
                 dispatch(annotationActions.importAnnotationSet.build(identifier, props.winId));
             } else {
@@ -77,8 +77,7 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
             <AlertDialog.Trigger asChild>
                 {props.children}
             </AlertDialog.Trigger>
-            <AlertDialog.Portal>
-                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+            <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.annotations.title")}</AlertDialog.Title>
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>

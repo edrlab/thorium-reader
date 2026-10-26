@@ -1,0 +1,1473 @@
+{
+    "accessibility": {
+        "annotationNote": "",
+        "bookMenu": "Valmynd",
+        "bookmarkNote": "",
+        "cancelDownload": "",
+        "closeDialog": "Loka",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
+        "leftSlideButton": "Færa til vinstri",
+        "loading": "",
+        "mainContent": "meginefni",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
+        "rightSlideButton": "Færa til hægri",
+        "skipLink": "Fara í efni",
+        "toolbar": "tækjastika"
+    },
+    "apiapp": {
+        "documentation": "Thorium-leiðbeiningar",
+        "howItWorks": "Hvernig virkar þetta?",
+        "informations": "Í Frakklandi bjóða mörg almenningsbókasöfn upp á vélrænt læsilegar safnskrár, svipaðar OPDS en ekki alveg eins. Notendur geta sótt stafrænar bækur úr eigin bókahillu. Með þessari virkni í Thorium Reader er hægt að sækja rafbók eða hljóðbók beint í Thorium Reader og opna hana strax.\nHvernig tengir þú aðgang þinn að frönsku almenningsbókasafni við Thorium Reader? Sláðu inn franska borg, til dæmis „Paris“, eða hluta af heiti safnsins í leitarreitinn og veldu Leita. Listi yfir bókasöfn sem passa við leitina birtist. Veldu safn og síðan Bæta við. Veldu safnið í uppfærðum lista yfir safnskrár. Þá birtist innskráningarform. Sláðu inn notandanafn eða netfang og lykilorð og veldu Skrá inn. Þá geturðu séð innihald bókahillunnar þinnar og sótt og opnað rafbækurnar og hljóðbækurnar sem þú hefur fengið að láni.",
+        "noLibraryFound": "Ekkert bókasafn fannst ({{- name}})"
+    },
+    "app": {
+        "edit": {
+            "copy": "Afrita",
+            "cut": "Klippa",
+            "paste": "Líma",
+            "print": "Prenta",
+            "redo": "Endurtaka",
+            "selectAll": "Velja allt",
+            "title": "Breyta",
+            "undo": "Afturkalla"
+        },
+        "hide": "Fela {{- appName}}",
+        "quit": "Hætta í {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Nei",
+                        "yes": "Já"
+                    },
+                    "help": "Virkjaðu þetta til að lestrargluggar sem eru opnir þegar forritinu er lokað opnist sjálfkrafa aftur næst þegar forritið er ræst.",
+                    "message": "Vista og endurheimta lestrarlotu",
+                    "title": "Vista lestrarlotu?"
+                }
+            }
+        },
+        "update": {
+            "message": "Ný útgáfa er tiltæk. Smelltu til að fá nánari upplýsingar.",
+            "title": "Hugbúnaðaruppfærsla fyrir {{- appName}}.",
+            "whatsnew": "Ný útgáfa var sett upp. Smelltu til að fá nánari upplýsingar."
+        },
+        "window": {
+            "showLibrary": "Sýna bókakost",
+            "trayHint": "{{- appName}} er enn í gangi á tilkynningasvæðinu. Smelltu á táknið til að sýna bókakostinn.",
+            "trayTooltip": "{{- appName}} – smelltu til að sýna eða fela bókakostinn"
+        }
+    },
+    "catalog": {
+        "AddToFavorites": "Setja í uppáhald",
+        "about": {
+            "title": "Um {{- appName}} á vefnum"
+        },
+        "addBookToLib": "Bæta við",
+        "addTags": "Bæta við merki",
+        "addTagsButton": "Bæta við",
+        "allBooks": "Bókakostur",
+        "bookInfo": "Um bókina",
+        "column": {
+            "ascending": "hækkandi",
+            "descending": "lækkandi",
+            "unsorted": "óraðað"
+        },
+        "customization": {
+            "fallback": {
+                "description": "Engin lýsing á sniði",
+                "publications": "Bækur í sniði",
+                "screen": "Ekkert heiti",
+                "title": "Heiti sniðs"
+            }
+        },
+        "delete": "Eyða",
+        "deleteBook": "Eyða",
+        "deleteTag": "Eyða merki",
+        "description": "Lýsing",
+        "downloaded": "",
+        "emptyTagList": "Engar merktar bækur.",
+        "entry": {
+            "continueReading": "Halda áfram",
+            "lastAdditions": "Nýlega bætt við"
+        },
+        "export": "Vista sem",
+        "exportAnnotation": "Vista glósur",
+        "format": "Skráarsnið",
+        "importAnnotation": "Sækja glósur",
+        "lang": "Tungumál",
+        "lastRead": "Síðast lesið",
+        "login": "Skrá inn",
+        "logout": "Skrá út",
+        "missing": "Skrár vantar",
+        "missingUnavailableDescription": "Ekki er hægt að opna bókina þar sem vistaðar skrár hennar eru ekki tiltækar. Bættu bókinni við aftur eða farðu í Stillingar og síðan Geymsla til að bæta við eða breyta viðbótargeymslu.",
+        "moreInfo": "Upplýsingar um bókina",
+        "myBooks": "Bækurnar mínar",
+        "noPublicationHelpL1": "Dragðu skrár hingað",
+        "noPublicationHelpL2": "eða notaðu hnappinn „{{- importTitle }}“ hér að ofan.",
+        "noPublicationHelpL3": "Thorium styður LCP-varðar bækur.",
+        "noPublicationHelpL4": "Leyfðar skráategundir:",
+        "numberOfPages": "Fjöldi síðna",
+        "opds": {
+            "auth": {
+                "cancel": "Hætta við",
+                "external": "Innskráningarsíðan opnast í vafranum. Fylgdu leiðbeiningunum þar. Að innskráningu lokinni fer vafrinn aftur í þetta forrit.",
+                "fallback": "Athugaðu: Ef innskráning í sjálfgefnum vafra gengur ekki skaltu reyna aftur með innskráningu inni í forritinu.",
+                "login": "Skrá inn",
+                "password": "Lykilorð",
+                "register": "Nýskrá",
+                "retry": "Reyna aftur",
+                "unauthorized": "Óheimill aðgangur",
+                "unauthorizedUnsupportedType": "Óheimill aðgangur (WWWAuthenticate-gerðin '{{- type}}' er ekki studd)",
+                "username": "Notandanafn / netfang"
+            },
+            "info": {
+                "availableSince": "Frá",
+                "availableState": {
+                    "available": "Tiltæk",
+                    "ready": "Tilbúin",
+                    "reserved": "Frátekin",
+                    "unavailable": "Ekki tiltæk",
+                    "unknown": "Óþekkt"
+                },
+                "availableUntil": "Til",
+                "copyAvalaible": "Tiltæk",
+                "copyTotal": "Eintök",
+                "holdPosition": "Staða í biðröð",
+                "holdTotal": "Í bið",
+                "numberOfItems": "Fjöldi atriða",
+                "priveValue": "Verð",
+                "state": "Staða"
+            }
+        },
+        "openFolder": "Opna möppu",
+        "publisher": "Útgefandi",
+        "readBook": "Lesa",
+        "released": "Útgáfudagur",
+        "removeFromFavorites": "Fjarlægja úr uppáhaldi",
+        "selectTableHeaders": "Velja sýnilega dálka",
+        "sort": "Raða eftir",
+        "tag": "Merki",
+        "tags": "Merki",
+        "update": "Breyta",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
+    },
+    "dialog": {
+        "annotations": {
+            "descAuthor": "(höfundur bókar: „{{- author}}“)",
+            "descCreator": "með höfundarheitið",
+            "descList_one": "{{- count}} glósa {{- creator}} verður flutt inn í „{{- title}}“ {{- author}}",
+            "descList_other": "{{- count}} glósur {{- creator}} verða fluttar inn í „{{- title}}“ {{- author}}",
+            "descNewer_one": "Árekstur: {{- count}} nýrri glósa",
+            "descNewer_other": "Árekstrar: {{- count}} nýrri glósur",
+            "descOlder_one": "Árekstur: {{- count}} eldri glósa",
+            "descOlder_other": "Árekstrar: {{- count}} eldri glósur",
+            "descTitle": "Heiti glósa: ",
+            "importAll": "Flytja inn allar glósur",
+            "importWithoutConflict": "Flytja aðeins inn glósur án árekstra",
+            "origin": "Upprunabók: „{{- title}}“ {{- author}}",
+            "title": "Flytja inn glósur?"
+        },
+        "cancel": "Hætta við",
+        "customization": {
+            "splashscreen": {
+                "dontShow": "Ekki sýna aftur",
+                "fallbackWelcomeScreen": "Enginn móttökuskjár til staðar",
+                "state": "Staða: {{- state}}",
+                "title": "Setja upp og virkja sérsniðið snið"
+            }
+        },
+        "deleteAnnotations": "Eyða glósum?",
+        "deleteAnnotationsText_one": "Viltu örugglega eyða {{- count}} glósu?",
+        "deleteAnnotationsText_other": "Viltu örugglega eyða {{- count}} glósum?",
+        "deleteBookmarks": "Eyða bókamerkjum?",
+        "deleteBookmarksText_one": "Viltu örugglega eyða {{- count}} bókamerki?",
+        "deleteBookmarksText_other": "Viltu örugglega eyða {{- count}} bókamerkjum?",
+        "deleteFeed": "Eyða safnskrá?",
+        "deletePublication": "Eyða bókinni?",
+        "deletePublicationWithNotes": "Viðvörun: Bókin inniheldur glósur og/eða bókamerki. Þeim verður einnig eytt. Flyttu glósurnar út áður en bókinni er eytt ef þú vilt varðveita þær.",
+        "import": "Staðfesta innflutning:",
+        "importError": "Villa kom upp. Athugaðu skráarendinguna ({{acceptedExtension}}).",
+        "renew": "Endurnýja eða framlengja lán?",
+        "return": "Skila bókinni?",
+        "yes": "Já"
+    },
+    "error": {
+        "errorBox": {
+            "error": "Villuboð:",
+            "message": "Villa í {{- filename}}",
+            "title": "Innri villa í {{- appName}}"
+        }
+    },
+    "header": {
+        "allBooks": "Bókakostur",
+        "catalogs": "Safnskrár",
+        "downloads": "Niðurhal",
+        "fitlerTagTitle": "Sía eftir merki",
+        "gridTitle": "Reitasýn",
+        "home": "Valmynd bókakosts",
+        "homeTitle": "Heim",
+        "importTitle": "Bæta við bók",
+        "listTitle": "Tafla",
+        "myCatalogs": "Safnskrárnar mínar",
+        "refreshTitle": "Endurhlaða",
+        "searchPlaceholder": "Leita",
+        "searchTitle": "Leit",
+        "settings": "Stillingar",
+        "settingsLabel": "Stillingar forrits",
+        "viewMode": "Sýn"
+    },
+    "library": {
+        "filter": {
+            "addFilters": "Bæta við síum",
+            "filterBy": "Sía eftir",
+            "selectOption": "Veldu atriði"
+        },
+        "lcp": {
+            "hidePassphrase": "Fela lykilorð",
+            "hint": "Vísbending:",
+            "open": "Opna",
+            "password": "Lykilorð",
+            "sentence": "Slá þarf inn LCP-lykilorð til að opna bókina",
+            "showPassphrase": "Sýna lykilorð",
+            "urlHint": "Gleymdirðu lykilorðinu? Smelltu hér til að fá aðstoð.",
+            "whatIsLcp?": "Hvað er LCP?",
+            "whatIsLcpInfoDetails": "LCP stendur fyrir „Licensed Content Protection“.",
+            "whatIsLcpInfoDetailsLink": "Nánari upplýsingar eru á vef EDRLab."
+        },
+        "sorting": {
+            "addSorting": "Bæta við röðun",
+            "author": "Höfundur",
+            "language": "Tungumál",
+            "readingState": "Lestrarstaða",
+            "sortBy": "Raða eftir: ",
+            "title": "Titill"
+        }
+    },
+    "message": {
+        "annotations": {
+            "alreadyImported": "Allar glósur hafa þegar verið fluttar inn.",
+            "emptyFile": "Engar glósur eru í skránni.",
+            "nothing": "Engin glósa er tilbúin til innflutnings. Hætt er við.",
+            "success": "Innflutningi lokið."
+        },
+        "download": {
+            "cancelled": "Hætt við niðurhal.",
+            "errors": {
+                "hashMismatch": "Heilleikapróf niðurhalaðrar skrár mistókst: búist var við SHA-256-gildinu {{- expected}}, en niðurstaðan var {{- actual}}.",
+                "httpGet": "HTTP-niðurhal mistókst: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
+                "invalidFilename": "Bráðabirgðaskráarheitið er ógilt.",
+                "invalidLink": "Niðurhalstengillinn er ógildur.",
+                "invalidTempDirectory": "Bráðabirgðamappan er ógild.",
+                "lengthMismatch": "Heilleikapróf niðurhalaðrar skrár mistókst: búist var við {{- expected}} bætum, en fjöldinn var {{- actual}}.",
+                "readStreamMissing": "Niðurhalsstraumur er ekki tiltækur.",
+                "tooManyFilenameAttempts": "Ekki tókst að búa til einstakt bráðabirgðaskráarheiti: {{- path}}"
+            },
+            "started": "",
+            "startedWithTitle": ""
+        },
+        "import": {
+            "alreadyImport": "[{{- title}}] hefur þegar verið bætt við.",
+            "fail": "Ekki tókst að bæta [{{- path}}] við: [{{- err}}]",
+            "success": "[{{- title}}] hefur verið bætt við."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
+        },
+        "open": {
+            "error": "Ekki tókst að opna bókina: [{{- err}}]",
+            "folderNotFound": "Mappa bókarinnar fannst ekki. Bættu bókinni við aftur eða stilltu viðbótargeymslu í Stillingar > Geymsla."
+        },
+        "storage": {
+            "recovery": {
+                "failure": "",
+                "success_one": "",
+                "success_other": ""
+            },
+            "removed": "Mappa bókarinnar fjarlægð.",
+            "updateFailed": "Ekki tókst að uppfæra möppu bókarinnar: {{- message}}",
+            "updated": "Mappa bókarinnar uppfærð."
+        },
+        "wipeData": "Innskráningargögnum eytt (aðgangsteiknum og vefkökum)"
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "Bæta við",
+            "name": "Heiti:",
+            "namePlaceholder": "Heiti",
+            "url": "Tengill:",
+            "urlPlaceholder": "Tengill"
+        },
+        "addFormApiapp": {
+            "title": "Bæta við bókasafnsaðgangi"
+        },
+        "addMenu": "Bæta við OPDS-veitu",
+        "breadcrumbRoot": "Safnskrár",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
+        "documentation": "Opinber vefur OPDS",
+        "empty": "Engin bók fannst",
+        "firstPage": "Fyrsta",
+        "informations": "Með OPDS er hægt að skoða og sækja stafrænar bækur frá almenningsbókasöfnum og rafbóksölum með örfáum smellum. OPDS, Open Publication Distribution System, er staðlað snið fyrir safnskrár. Þú getur skoðað safnskrár frá ýmsum veitendum, nýskráð þig, fengið bók að láni, keypt bók eða opnað eigin bókahillu. Einnig er hægt að sækja rafbók eða hljóðbók beint í Thorium Reader og opna hana strax.\nHvernig finnurðu OPDS-safnskrá? Finndu vefslóð sem vísar á safnskrána og afritaðu hana í reitinn Tengill hér að ofan. Engin ein skrá heldur utan um allar virkar OPDS-safnskrár. Hafðu samband við bókasafnið eða bóksalann sem þú vilt nota og biddu um vefslóð OPDS-safnskrárinnar. Wikipedia birtir einnig nokkra lista yfir OPDS-safnskrár á ýmsum tungumálum.\nHeitið í reitnum Heiti er frjálst. Það auðveldar þér að þekkja veituna í Thorium Reader.",
+        "lastPage": "Síðasta",
+        "menu": {
+            "aboutBook": "Um bókina",
+            "addExtract": "Bæta við sýnishorni",
+            "cancelHold": "",
+            "cancelHoldError": "",
+            "goBuyBook": "Kaupa bók",
+            "goLoanBook": "Fá bók að láni",
+            "goRevokeLoanBook": "Afturkalla lán",
+            "goSubBook": "Gerast áskrifandi",
+            "placeHold": ""
+        },
+        "network": {
+            "error": "Villa við að opna veitu",
+            "noInternet": "Engin nettenging",
+            "noInternetMessage": "Athugaðu netsnúru, mótald, beini eða þráðlaust net.",
+            "reject": "Óvænt villa kom upp.",
+            "timeout": "Tenging rann út. Reyndu aftur síðar."
+        },
+        "next": "Næsta",
+        "previous": "Fyrri",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
+        "resumeBrowsing": "Halda áfram að skoða",
+        "shelf": "Bókahilla",
+        "updateForm": {
+            "name": "Heiti:",
+            "title": "Breyta OPDS-veitu",
+            "updateButton": "Breyta",
+            "url": "Tengill:"
+        },
+        "whatIsOpds": "Hvað er OPDS?"
+    },
+    "publ-a11y-display-guide": {
+        "accessibility-summary": {
+            "accessibility-summary-title": "Samantekt um aðgengi"
+        },
+        "additional-accessibility-information": {
+            "additional-accessibility-information-aria": {
+                "compact": "ARIA-hlutverk eru til staðar",
+                "descriptive": "Efnið inniheldur ARIA-hlutverk sem bæta skipulag og auðvelda leiðsögn"
+            },
+            "additional-accessibility-information-audio-descriptions": {
+                "compact": "Hljóðlýsingar",
+                "descriptive": "Hljóðlýsingar"
+            },
+            "additional-accessibility-information-braille": {
+                "compact": "Blindraletur",
+                "descriptive": "Blindraletur"
+            },
+            "additional-accessibility-information-full-ruby-annotations": {
+                "compact": "Fullar ruby-skýringar",
+                "descriptive": "Fullar ruby-skýringar"
+            },
+            "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
+                "compact": "Góður hljóðaðskilnaður forgrunns og bakgrunns",
+                "descriptive": "Góður hljóðaðskilnaður forgrunns og bakgrunns"
+            },
+            "additional-accessibility-information-high-contrast-between-text-and-background": {
+                "compact": "Mikil birtuskil milli texta og bakgrunns",
+                "descriptive": "Mikil birtuskil milli texta og bakgrunns"
+            },
+            "additional-accessibility-information-large-print": {
+                "compact": "Stórt letur",
+                "descriptive": "Stórt letur"
+            },
+            "additional-accessibility-information-page-breaks": {
+                "compact": "Síðuskil eru til staðar",
+                "descriptive": "Síðuskil úr upprunalegu prentútgáfunni eru til staðar"
+            },
+            "additional-accessibility-information-ruby-annotations": {
+                "compact": "Sumar ruby-skýringar",
+                "descriptive": "Sumar ruby-skýringar"
+            },
+            "additional-accessibility-information-sign-language": {
+                "compact": "Táknmál",
+                "descriptive": "Táknmál"
+            },
+            "additional-accessibility-information-tactile-graphics": {
+                "compact": "Snertimyndir eru til staðar",
+                "descriptive": "Snertimyndir auðvelda blindu fólki að nálgast sjónrænt efni"
+            },
+            "additional-accessibility-information-tactile-objects": {
+                "compact": "Þrívíðir snertihlutir",
+                "descriptive": "Þrívíðir snertihlutir"
+            },
+            "additional-accessibility-information-text-to-speech-hinting": {
+                "compact": "Leiðbeiningar fyrir talgervil",
+                "descriptive": "Leiðbeiningar fyrir talgervil eru til staðar"
+            },
+            "additional-accessibility-information-title": "Fleiri upplýsingar um aðgengi"
+        },
+        "conformance": {
+            "conformance-a": {
+                "compact": "Bókin uppfyllir lágmarkskröfur um aðgengi",
+                "descriptive": "Bókin inniheldur yfirlýsingu um að hún uppfylli EPUB Accessibility og WCAG 2 á stigi A"
+            },
+            "conformance-aa": {
+                "compact": "Bókin uppfyllir viðurkenndar kröfur um aðgengi",
+                "descriptive": "Bókin inniheldur yfirlýsingu um að hún uppfylli EPUB Accessibility og WCAG 2 á stigi AA"
+            },
+            "conformance-aaa": {
+                "compact": "Bókin gengur lengra en viðurkenndar kröfur um aðgengi",
+                "descriptive": "Bókin inniheldur yfirlýsingu um að hún uppfylli EPUB Accessibility og WCAG 2 á stigi AAA"
+            },
+            "conformance-certifier": {
+                "compact": "Vottunaraðili: "
+            },
+            "conformance-certifier-credentials": {
+                "compact": "Réttindi vottunaraðila: "
+            },
+            "conformance-details-certifier-report": {
+                "compact": "Nánari upplýsingar eru í skýrslu vottunaraðila"
+            },
+            "conformance-details-claim": {
+                "compact": "Bókin er sögð uppfylla",
+                "descriptive": "Bókin er sögð uppfylla"
+            },
+            "conformance-details-epub-accessibility-1-0": {
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
+            },
+            "conformance-details-epub-accessibility-1-1": {
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
+            },
+            "conformance-details-level-a": {
+                "compact": "Stig A",
+                "descriptive": "Stig A"
+            },
+            "conformance-details-level-aa": {
+                "compact": "Stig AA",
+                "descriptive": "Stig AA"
+            },
+            "conformance-details-level-aaa": {
+                "compact": "Stig AAA",
+                "descriptive": "Stig AAA"
+            },
+            "conformance-details-wcag-2-0": {
+                "compact": "WCAG 2.0"
+            },
+            "conformance-details-wcag-2-1": {
+                "compact": "WCAG 2.1",
+                "descriptive": "Leiðbeiningar um aðgengi vefefnis (WCAG) 2.1"
+            },
+            "conformance-details-wcag-2-2": {
+                "compact": "WCAG 2.2",
+                "descriptive": "Leiðbeiningar um aðgengi vefefnis (WCAG) 2.2"
+            },
+            "conformance-no": {
+                "compact": "Engar upplýsingar tiltækar",
+                "descriptive": "Engar upplýsingar tiltækar"
+            },
+            "conformance-title": "Samræmi",
+            "conformance-unknown-standard": {
+                "compact": "Ekki er hægt að staðfesta samræmi bókarinnar við viðurkennda aðgengisstaðla",
+                "descriptive": "Ekki er hægt að staðfesta samræmi bókarinnar við viðurkennda aðgengisstaðla"
+            }
+        },
+        "hazards": {
+            "hazards-flashing": {
+                "compact": "Blikkandi efni",
+                "descriptive": "Bókin inniheldur blikkandi efni sem getur valdið flogum hjá ljósnæmu fólki"
+            },
+            "hazards-flashing-none": {
+                "compact": "Ekkert blikkandi efni",
+                "descriptive": "Bókin inniheldur ekkert blikkandi efni"
+            },
+            "hazards-flashing-unknown": {
+                "compact": "Ekki er vitað hvort bókin inniheldur blikkandi efni",
+                "descriptive": "Ekki er vitað hvort bókin inniheldur blikkandi efni"
+            },
+            "hazards-motion": {
+                "compact": "Hreyfihermun",
+                "descriptive": "Bókin inniheldur hreyfihermun sem getur valdið hreyfiveiki"
+            },
+            "hazards-motion-none": {
+                "compact": "Engin hreyfihermun",
+                "descriptive": "Bókin inniheldur enga hreyfihermun"
+            },
+            "hazards-motion-unknown": {
+                "compact": "Ekki er vitað hvort bókin inniheldur hreyfihermun",
+                "descriptive": "Ekki er vitað hvort bókin inniheldur hreyfihermun"
+            },
+            "hazards-no-metadata": {
+                "compact": "Engar upplýsingar tiltækar",
+                "descriptive": "Engar upplýsingar tiltækar"
+            },
+            "hazards-none": {
+                "compact": "Engar þekktar hættur",
+                "descriptive": "Bókin inniheldur engar þekktar hættur"
+            },
+            "hazards-sound": {
+                "compact": "Hljóð",
+                "descriptive": "Bókin inniheldur hljóð sem geta valdið óþægindum"
+            },
+            "hazards-sound-none": {
+                "compact": "Engin hljóð",
+                "descriptive": "Bókin inniheldur engin hljóð"
+            },
+            "hazards-sound-unknown": {
+                "compact": "Ekki er vitað hvort bókin inniheldur hljóð",
+                "descriptive": "Ekki er vitað hvort bókin inniheldur hljóð"
+            },
+            "hazards-title": "Hættur",
+            "hazards-unknown": {
+                "compact": "Ekki er vitað hvort bókin felur í sér hættur",
+                "descriptive": "Ekki er vitað hvort bókin felur í sér hættur"
+            }
+        },
+        "navigation": {
+            "navigation-index": {
+                "compact": "Atriðaskrá",
+                "descriptive": "Atriðaskrá með tenglum á tilvísuð atriði"
+            },
+            "navigation-no-metadata": {
+                "compact": "Engar upplýsingar tiltækar",
+                "descriptive": "Engar upplýsingar tiltækar"
+            },
+            "navigation-page-navigation": {
+                "compact": "Fara á síðu",
+                "descriptive": "Síðulisti sem vísar á síður í prentútgáfunni"
+            },
+            "navigation-structural": {
+                "compact": "Fyrirsagnir",
+                "descriptive": "Fyrirsagnir, töflur og önnur atriði auðvelda skipulega leiðsögn"
+            },
+            "navigation-title": "Leiðsögn",
+            "navigation-toc": {
+                "compact": "Efnisyfirlit",
+                "descriptive": "Efnisyfirlit með tenglum á alla kafla textans"
+            }
+        },
+        "rich-content": {
+            "rich-content-accessible-chemistry-as-latex": {
+                "compact": "Efnaformúlur í LaTeX",
+                "descriptive": "Efnaformúlur á aðgengilegu LaTeX-sniði"
+            },
+            "rich-content-accessible-chemistry-as-mathml": {
+                "compact": "Efnaformúlur í MathML",
+                "descriptive": "Efnaformúlur á aðgengilegu MathML-sniði"
+            },
+            "rich-content-accessible-math-as-latex": {
+                "compact": "Stærðfræði í LaTeX",
+                "descriptive": "Stærðfræðiformúlur á aðgengilegu LaTeX-sniði"
+            },
+            "rich-content-accessible-math-as-mathml": {
+                "compact": "Stærðfræði í MathML",
+                "descriptive": "Stærðfræðiformúlur á aðgengilegu MathML-sniði"
+            },
+            "rich-content-accessible-math-described": {
+                "compact": "Textalýsingar á stærðfræði",
+                "descriptive": "Textalýsingar á stærðfræði eru til staðar"
+            },
+            "rich-content-closed-captions": {
+                "compact": "Myndskeið hafa valkvæða skjátexta",
+                "descriptive": "Myndskeið í bókinni hafa valkvæða skjátexta"
+            },
+            "rich-content-extended": {
+                "compact": "Upplýsingaríkar myndir hafa ítarlegar lýsingar",
+                "descriptive": "Upplýsingaríkar myndir hafa ítarlegar lýsingar"
+            },
+            "rich-content-open-captions": {
+                "compact": "Myndskeið hafa innbyggða skjátexta",
+                "descriptive": "Myndskeið í bókinni hafa innbyggða skjátexta"
+            },
+            "rich-content-title": "Flókið efni",
+            "rich-content-transcript": {
+                "compact": "Textauppskrift tiltæk",
+                "descriptive": "Textauppskrift tiltæk"
+            },
+            "rich-content-unknown": {
+                "compact": "Engar upplýsingar tiltækar",
+                "descriptive": "Engar upplýsingar tiltækar"
+            }
+        },
+        "ways-of-reading": {
+            "ways-of-reading-nonvisual-reading-alt-text": {
+                "compact": "Myndir hafa textalýsingar",
+                "descriptive": "Myndir hafa aðgengilegar textalýsingar"
+            },
+            "ways-of-reading-nonvisual-reading-no-metadata": {
+                "compact": "Engar upplýsingar um lestur án sjónar",
+                "descriptive": "Engar upplýsingar um lestur án sjónar eru tiltækar"
+            },
+            "ways-of-reading-nonvisual-reading-none": {
+                "compact": "Ekki hægt að lesa með upplestri eða endurnýjanlegu blindraletri",
+                "descriptive": "Ekki er hægt að lesa efnið með upplestri eða endurnýjanlegu blindraletri"
+            },
+            "ways-of-reading-nonvisual-reading-not-fully": {
+                "compact": "Ekki allt efni lesanlegt með upplestri eða endurnýjanlegu blindraletri",
+                "descriptive": "Ekki er hægt að lesa allt efnið með upplestri eða endurnýjanlegu blindraletri"
+            },
+            "ways-of-reading-nonvisual-reading-readable": {
+                "compact": "Lesanlegt með upplestri eða endurnýjanlegu blindraletri",
+                "descriptive": "Hægt er að lesa allt efnið með upplestri eða endurnýjanlegu blindraletri"
+            },
+            "ways-of-reading-prerecorded-audio-complementary": {
+                "compact": "Upptökur",
+                "descriptive": "Upptökur eru felldar inn í efnið"
+            },
+            "ways-of-reading-prerecorded-audio-only": {
+                "compact": "Aðeins upptaka",
+                "descriptive": "Hljóðbók án samsvarandi texta"
+            },
+            "ways-of-reading-prerecorded-audio-synchronized": {
+                "compact": "Upptaka samstillt við texta",
+                "descriptive": "Allt efnið er tiltækt sem upptaka samstillt við texta"
+            },
+            "ways-of-reading-title": "Lestrarmöguleikar",
+            "ways-of-reading-visual-adjustments-modifiable": {
+                "compact": "Útliti má breyta",
+                "descriptive": "Lestrarkerfið getur breytt útliti texta og síðuskipulagi, þar á meðal leturgerð og leturstærð, bili milli málsgreina, setninga, orða og stafa og litum texta og bakgrunns"
+            },
+            "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "Engar upplýsingar um hvort breyta megi útliti",
+                "descriptive": "Engar upplýsingar eru tiltækar um hvort breyta megi útliti"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "Ekki er hægt að breyta útliti",
+                "descriptive": "Ekki er hægt að breyta texta og síðuskipulagi þar sem útlitið líkist prentútgáfu. Lestrarkerfið getur þó boðið upp á aðdrátt"
+            }
+        }
+    },
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "Hægt er að lesa allt efnið með upplestri eða endurnýjanlegu blindraletri"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Myndir hafa textalýsingar",
+                "displayTransformability": "Hægt er að breyta útliti texta og síðuskipulagi",
+                "longDescription": "Myndefni hefur ítarlegar lýsingar",
+                "printPageNumbers": "Bókin inniheldur síðulista sem vísar á síður í prentútgáfunni",
+                "readingOrder": "Bókin inniheldur lestrarröð",
+                "synchronizedAudioText": "Texti og hljóð eru samstillt",
+                "tableOfContents": "Bókin inniheldur efnisyfirlit"
+            },
+            "accessibilityHazard": {
+                "flashing": "Blikkandi efni",
+                "motionSimulation": "Hreyfihermun",
+                "name": "Hætta:",
+                "noFlashing": "Ekkert blikkandi efni",
+                "noMotionSimulation": "Engin hreyfihermun",
+                "noSound": "Engin hljóð",
+                "none": "Engin",
+                "sound": "Hljóð",
+                "unknown": "Óþekkt"
+            },
+            "certifierReport": "Skýrsla vottunaraðila:",
+            "conformsTo": "Uppfyllir:",
+            "moreInformation": "Nánari upplýsingar",
+            "name": "Aðgengi",
+            "noA11y": "Engar upplýsingar um aðgengi tiltækar"
+        },
+        "actions": "Aðgerðir",
+        "audio": {
+            "tracks": "Hljóðrásir"
+        },
+        "author": "Höfundur",
+        "cancelledLcp": "LCP-leyfi bókarinnar hefur verið afturkallað.",
+        "certificateRevoked": "Vottorð LCP-leyfisins hefur verið afturkallað.",
+        "certificateSignatureInvalid": "Undirskrift vottorðs LCP-leyfisins er ógild.",
+        "cover": {
+            "img": "kápumynd",
+            "zoom": ""
+        },
+        "day": "dagur",
+        "days": "dagar",
+        "duration": {
+            "title": "Lengd"
+        },
+        "encryptedNoLicense": "Bókin er dulkóðuð en LCP-leyfi vantar.",
+        "expired": "Lánstími liðinn",
+        "expiredLcp": "LCP-leyfi bókarinnar er útrunnið.",
+        "incorrectPassphrase": "Ekkert vistað lykilorð passar við bókina eða lykilorðið sem var slegið inn er rangt.",
+        "lcpNotSupported": "VIÐVÖRUN: Þetta er forútgáfa af Thorium Desktop sem styður ekki virk LCP-leyfi. Hún styður aðeins afkóðun með einföldu LCP-sniði án staðfestingar vottorðs.",
+        "lcpRightsCopy": "Stafir sem má afrita",
+        "lcpRightsPrint": "Síður sem má prenta",
+        "lcpStart": "Hefst",
+        "licenceLCP": "Leyfi (LCP)",
+        "licenseCertificateDateInvalid": "Vottorð LCP-veitunnar rann út áður en leyfið var gefið út ({{- dateTime}}).",
+        "licenseOutOfDate": "LCP-leyfið er úrelt.",
+        "licenseSignatureInvalid": "Undirskrift LCP-leyfisins er ógild.",
+        "licensed": "Með leyfi",
+        "markAsRead": "Merkja sem lesna",
+        "notStarted": "Óbyrjað",
+        "onGoing": "Í gangi",
+        "progression": {
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Framvinda",
+            "useRemote": ""
+        },
+        "read": "Lokið",
+        "remainingTime": "Lánstími eftir",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
+        "renewButton": "Endurnýja",
+        "returnButton": "Skila",
+        "returnedLcp": "LCP-varinni bók hefur verið skilað.",
+        "revokedLcp": "LCP-leyfi bókarinnar hefur verið afturkallað.",
+        "seeLess": "Sýna minna",
+        "seeMore": "Sýna meira",
+        "timeLeft": "Tími eftir",
+        "title": "Titill",
+        "userKeyCheckInvalid": "Rangt lykilorð."
+    },
+    "reader": {
+        "annotations": {
+            "Color": "Litur",
+            "addNote": "Bæta við glósu",
+            "advancedMode": "Sjálfvirk gerð (búa til þegar texti er valinn)",
+            "annotationsExport": {
+                "description": "Gefðu útfluttu glósunum heiti:",
+                "title": "Titill"
+            },
+            "annotationsOptions": "Valkostir glósa",
+            "date": "Breytingardagur",
+            "error": {
+                "pdf": {
+                    "validationSelection": "Ekki er hægt að búa til PDF-glósu úr þessu vali."
+                }
+            },
+            "export": "Vista glósur sem...",
+            "filter": {
+                "all": "Allt",
+                "filterByColor": "Sía eftir lit",
+                "filterByCreator": "Sía eftir höfundi",
+                "filterByDrawtype": "Sía eftir gerð",
+                "filterByTag": "Sía eftir merki",
+                "filterOptions": "Síuvalkostir",
+                "none": "Ekkert"
+            },
+            "hide": "Ekki sýna",
+            "highlight": "Auðkenna",
+            "noSelectionToast": "Ekkert valið",
+            "note": "Glósa, litur: {{- color}}",
+            "quickAnnotations": "Hraðgerð (sleppa ritli)",
+            "saveNote": "Vista",
+            "sorting": {
+                "lastcreated": "Síðast búið til",
+                "lastmodified": "Síðast breytt",
+                "progression": "Framvinda",
+                "sortingOptions": "Röðunarvalkostir"
+            },
+            "toggleMarginMarks": "Sýna á spássíum",
+            "type": {
+                "outline": "Útlína",
+                "solid": "Einlitur bakgrunnur",
+                "strikethrough": "Yfirstrikun",
+                "underline": "Undirstrikun"
+            }
+        },
+        "bookmarks": {
+            "index": "Bókamerki {{- index}}"
+        },
+        "divina": {
+            "mute": "slökkva á hljóði",
+            "unmute": "kveikja á hljóði"
+        },
+        "dock": {
+            "dockDefault": "Sýna spjald í sprettiglugga",
+            "dockLeft": "Festa spjald vinstra megin",
+            "dockRight": "Festa spjald hægra megin"
+        },
+        "fxl": {
+            "fit": "Aðlaga"
+        },
+        "goToContent": "Fara í efnið",
+        "imgViewer": {
+            "title": "Myndskoðari (aðdráttur)",
+            "zoomIn": "Auka aðdrátt",
+            "zoomOut": "Minnka aðdrátt",
+            "zoomReset": "Endurstilla aðdrátt"
+        },
+        "marks": {
+            "annotations": "Glósur",
+            "annotationsReadium": "Readium-glósur",
+            "bookmarks": "Bókamerki",
+            "delete": "Eyða",
+            "edit": "Breyta",
+            "goTo": "Fara á síðu",
+            "landmarks": "Kennileiti",
+            "saveMark": "Vista",
+            "search": "Leit",
+            "searchResult": "Leit að [{{- searchText}}]",
+            "toc": "Efnisyfirlit"
+        },
+        "media-overlays": {
+            "activate": "Virkja samstilltan upplestur",
+            "captions": "Skjátextar / einföld sýn",
+            "captionsDescription": "Einfölduð textasýn með lágmarksútliti skjátexta.",
+            "disableContinuousPlay": "Slökkva á samfelldri spilun",
+            "disableContinuousPlayDescription": "Ekki spila næsta atriði sjálfkrafa. Gera hlé um leið og núverandi atriði lýkur.",
+            "ignoreAndUseTTS": "Hunsa upptöku og nota talgervil",
+            "ignoreAndUseTTSDescription": "Hunsa samstillt EPUB-hljóð og lesa textann með talgervli í staðinn",
+            "next": "Næsti hluti upplesturs",
+            "pause": "Gera hlé á upplestri",
+            "play": "Spila upplestur",
+            "previous": "Fyrri hluti upplesturs",
+            "skip": "Sleppa aukaatriðum",
+            "skipDescription": "Sleppa aukaatriðum á borð við síðuskil, neðanmálsgreinar og aftanmálsgreinar.",
+            "speed": "Upplestrarhraði",
+            "stop": "Stöðva upplestur",
+            "title": "Samstilltur upplestur",
+            "useTTSHighlightsForMO": "Sérsniðin auðkenning",
+            "useTTSHighlightsForMODescription": "Hunsa útlit auðkenningar sem fylgir bókinni"
+        },
+        "navigation": {
+            "ZenModeExit": "Loka einfaldri sýn",
+            "ZenModeTitle": "Einföld sýn",
+            "annotationTitle": "Glósa",
+            "backHomeTitle": "Loka lestrarglugganum og fara í bókakost",
+            "bookmarkTitle": "Bókamerki",
+            "currentPage": "Síða: {{- current}}",
+            "currentPageTotal": "Síða: {{- current}}/{{- total}}",
+            "goTo": "Fara á",
+            "goToError": "Síðuskilið fannst ekki",
+            "goToPlaceHolder": "Sláðu inn síðunúmer",
+            "goToTitle": "Fara á síðu",
+            "history": "Leiðsöguferill",
+            "historyNext": "Fara áfram í leiðsöguferli",
+            "historyPrevious": "Fara til baka í leiðsöguferli",
+            "infoTitle": "Upplýsingar",
+            "magnifyingGlassButton": "Leita í bókinni",
+            "openTableOfContentsTitle": "Leiðsögn",
+            "page": "Síða",
+            "pdfscalemode": "Aðlaga að síðu eða breidd",
+            "print": "Prenta",
+            "printDisabled": "Prentun er óheimil",
+            "screenNext": "Áfram",
+            "screenPrevious": "Til baka",
+            "settingsTitle": "Lestrarstillingar"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Blágrænt",
+                "darkorange": "Dökkappelsínugult",
+                "darkyellow": "Dökkgult",
+                "green": "Grænt",
+                "orange": "Appelsínugult",
+                "purple": "Fjólublátt",
+                "red": "Rautt",
+                "yellow": "Gult"
+            }
+        },
+        "picker": {
+            "search": {
+                "founds_one": "{{- count}} niðurstaða",
+                "founds_other": "{{- count}} niðurstöður",
+                "input": "leitartexti",
+                "next": "Næsta",
+                "notFound": "engar niðurstöður",
+                "previous": "Fyrri",
+                "results": "Niðurstöður",
+                "submit": "Leita"
+            },
+            "searchTitle": "Leit:"
+        },
+        "print": {
+            "descriptionLcpCount": "Fjöldi síðna sem má enn prenta: {{- count}}",
+            "descriptionLcpPrintable": "Áður prentaðar síður: {{- printable}} ({{- count}})",
+            "howTo": "Hvernig á að velja síðubil til prentunar",
+            "lcpInfo": "Heimilt er að prenta að hámarki {{- count}} síður úr bókinni. Veldu hér þær síður sem þú þarft.",
+            "noPagesLcpLimitReached": "Hámarksfjölda samkvæmt LCP-leyfi hefur verið náð",
+            "noPrintablePages": "Engar síður má prenta",
+            "pageHelpInfo": "Snið síðuvals:",
+            "pageHelpInfo1": "sláðu inn síðunúmer til að velja eina síðu, til dæmis „6“",
+            "pageHelpInfo2": "sláðu inn tvö síðunúmer aðskilin með bandstriki til að velja samfellt síðubil, til dæmis „6-13“",
+            "pageHelpInfo3": "notaðu semíkommu til að aðskilja margar síður eða síðubil, til dæmis „5;14-20;37“",
+            "pageHelpInfo4": "slepptu fyrsta eða síðasta númeri bils til að velja frá fyrstu eða að síðustu síðu bókarinnar, til dæmis jafngildir „-16“ „1-16“ og „34-“ jafngildir „34-100“ ef bókin er 100 síður",
+            "pages": "Síður",
+            "preview": "Forskoðun",
+            "print": "Prenta",
+            "printablePages": "Síður sem má prenta (samtals)",
+            "title": "Velja síður til prentunar"
+        },
+        "settings": {
+            "column": {
+                "auto": "Sjálfgefið",
+                "one": "1 dálkur",
+                "title": "Dálkar",
+                "two": "2 dálkar"
+            },
+            "customFontSelected": "Þú hefur valið eigin leturgerð",
+            "customizeReader": "Sérsníða textasnið",
+            "disabled": "óvirkt",
+            "display": "Birting",
+            "disposition": {
+                "title": "Uppsetning"
+            },
+            "enablePageBreakMarginIndicators": "",
+            "font": "Leturgerð",
+            "fontSize": "Leturstærð",
+            "increaseFontSize": "Stækka letur",
+            "infoCustomFont": "Sláðu inn heiti leturgerðar úr stýrikerfinu",
+            "justification": "Textajöfnun",
+            "justify": "Jafna báðum megin",
+            "letterSpacing": "Stafabil",
+            "lineSpacing": "Línubil",
+            "margin": "Spássía",
+            "mathjax": "Virkja MathJax",
+            "noFootnotes": "Slökkva á sprettigluggum fyrir neðanmálsgreinar",
+            "noRTLFlip": "Slökkva á viðmóti frá hægri til vinstri",
+            "noRuby": "Fela japanskar ruby-skýringar",
+            "noTemporaryNavTargetOutline": "Slökkva á sjónrænum leiðsagnarmerkjum",
+            "paginated": "Síðuskipt",
+            "paraSpacing": "Málsgreinabil",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100%",
+                    "150pct": "150%",
+                    "200pct": "200%",
+                    "300pct": "300%",
+                    "500pct": "500%",
+                    "50pct": "50%",
+                    "fit": "aðlaga að síðu",
+                    "width": "aðlaga að breidd"
+                },
+                "title": "Aðdráttur"
+            },
+            "preset": {
+                "apply": "Nota",
+                "applyDetails": "Nota kjörstillingarnar þínar fyrir þessa bók.",
+                "reset": "Endurstilla",
+                "resetDetails": "Endurstilla kjörstillingarnar á sjálfgefin gildi.",
+                "save": "Vista",
+                "saveDetails": "Vistar núverandi útlit og textastillingar sem kjörstillingar. Síðan má nota þær fyrir aðrar bækur með því að velja Nota í öðrum lestrargluggum.",
+                "title": "Kjörstillingar"
+            },
+            "preview": "Forskoðun",
+            "reduceFontSize": "Minnka letur",
+            "reduceMotion": "Draga úr hreyfingu",
+            "scrolled": "Leshamur",
+            "spacing": "Bil",
+            "spreadModeEven": "Jafnar síður saman (sjálfgefið eru oddatölusíður saman)",
+            "text": "Texti",
+            "theme": {
+                "name": {
+                    "Contrast1": "Birtuskil 1",
+                    "Contrast2": "Birtuskil 2",
+                    "Contrast3": "Birtuskil 3",
+                    "Contrast4": "Birtuskil 4",
+                    "Neutral": "Hlutlaust",
+                    "Night": "Nótt",
+                    "Paper": "Pappír",
+                    "Sepia": "Brúntónn"
+                },
+                "title": "Þema"
+            },
+            "wordSpacing": "Orðabil"
+        },
+        "svg": {
+            "left": "Vinstri",
+            "right": "Hægri"
+        },
+        "toc": {
+            "publicationNoToc": "Ekkert efnisyfirlit"
+        },
+        "tts": {
+            "activate": "Virkja upplestur með talgervli (TTS)",
+            "language": "Tungumál upplesturs",
+            "next": "Næsti hluti upplesturs",
+            "options": "Valkostir upplesturs",
+            "pause": "Gera hlé á upplestri",
+            "play": "Hefja upplestur",
+            "previous": "Fyrri hluti upplesturs",
+            "sentenceDetect": "Skipta texta í setningar",
+            "sentenceDetectDescription": "Skipta löngum málsgreinum í setningar.",
+            "speed": "Upplestrarhraði",
+            "stop": "Stöðva upplestur",
+            "voice": "Upplestrarrödd"
+        }
+    },
+    "settings": {
+        "annotationCreator": {
+            "creator": "Höfundur glósa (valfrjálst)",
+            "help": "Ef nafn er tilgreint verður það vistað í lýsigögnum útfluttra glósa.",
+            "name": "Nafn",
+            "organization": "Stofnun",
+            "person": "Einstaklingur",
+            "type": "Gerð:"
+        },
+        "auth": {
+            "help": "Þessi aðgerð eyðir öllum innskráningarupplýsingum fyrir OPDS.",
+            "title": "Aðgangur að safnskrám",
+            "wipeData": "Eyða innskráningargögnum"
+        },
+        "keyboard": {
+            "advancedMenu": "Ítarleg valmynd flýtilykla",
+            "cancel": "Hætta við",
+            "disclaimer": "Sjálfgefnu flýtilyklarnir miðast við staðsetningu lykla á QWERTY-lyklaborði",
+            "editUserJson": "Breyta notandaskrá...",
+            "exportToHTML": "Flytja út sem HTML",
+            "keyboardShortcuts": "Flýtilyklar",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "Opna glugga til að búa til bókamerki og breyta textamerkingu þess, lit og merki",
+                    "name": "Búa til bókamerki með texta"
+                },
+                "AnnotationsCreate": {
+                    "description": "Opna glugga til að búa til glósu við valinn texta og breyta glósutexta, lit og gerð auðkenningar og merki",
+                    "name": "Búa til glósu"
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "Búa strax til glósu við valinn texta með síðast völdum lit og gerð auðkenningar. Enginn glósutexti eða merki fylgja.",
+                    "name": "Búa til glósu hratt"
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "Víxla því hvort sjónræn merki glósa og bókamerkja birtast á spássíu eða í textanum",
+                    "name": "Víxla staðsetningu glósumerkja"
+                },
+                "AudioNext": {
+                    "description": "Fara í næsta hljóðbút, óháð tegund.",
+                    "name": "Næsti hljóðhluti"
+                },
+                "AudioNextAlt": {
+                    "description": "Fara í næsta hljóðbút, óháð tegund og sleppa því sem má sleppa.",
+                    "name": "Næsti hljóðhluti (sleppa atriðum)"
+                },
+                "AudioPlayPause": {
+                    "description": "Hefja eða gera hlé á núverandi frásögn.",
+                    "name": "Spila / gera hlé á hljóði"
+                },
+                "AudioPrevious": {
+                    "description": "Fara í fyrri hljóðbút, óháð tegund.",
+                    "name": "Fyrri hljóðhluti"
+                },
+                "AudioPreviousAlt": {
+                    "description": "Fara í fyrri hljóðhluta frásagnar og sleppa jafnframt atriðum sem heimilt er að sleppa. Gildir um samstillt EPUB 3-hljóð, talgervil og upptökur hljóðbóka.",
+                    "name": "Fyrri hljóðhluti (sleppa atriðum)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "Minnka spilunarhraða samstillts EPUB 3-hljóðs eða upplestrarhraða talgervils",
+                    "name": "Minnka spilunarhraða"
+                },
+                "AudioSpeedIncrease": {
+                    "description": "Auka spilunarhraða samstillts EPUB 3-hljóðs eða upplestrarhraða talgervils",
+                    "name": "Auka spilunarhraða"
+                },
+                "AudioSpeedReset": {
+                    "description": "Endurstilla spilunarhraða samstillts EPUB 3-hljóðs eða upplestrarhraða talgervils",
+                    "name": "Endurstilla spilunarhraða"
+                },
+                "AudioStop": {
+                    "description": "Stöðva núverandi hljóð, hvort sem um er að ræða samstillt EPUB 3-hljóð, talgervil eða upptöku hljóðbókar",
+                    "name": "Hætta spilun"
+                },
+                "CloseReader": {
+                    "description": "Loka lestrarglugganum og fara aftur í bókakost",
+                    "name": "Loka lestrarglugga"
+                },
+                "FXLZoomIn": {
+                    "description": "Auka aðdrátt á einni síðu eða tveggja síðna opnu með föstu skipulagi.",
+                    "name": "Stækka letur / myndir"
+                },
+                "FXLZoomOut": {
+                    "description": "Minnka aðdrátt á einni síðu eða tveggja síðna opnu með föstu skipulagi.",
+                    "name": "Minnka letur / myndir"
+                },
+                "FXLZoomReset": {
+                    "description": "Endurstilla aðdrátt á einni síðu eða tveggja síðna opnu með föstu skipulagi.",
+                    "name": "Endurstilla aðdrátt á föstu skipulagi"
+                },
+                "FocusMain": {
+                    "description": "Færa lyklaborðsfókus á meginefni viðmótsins. Í lestrarglugga færist fókusinn inn í efni bókarinnar.",
+                    "name": "Fara í meginefni"
+                },
+                "FocusMainDeep": {
+                    "description": "Í lestrarglugga færist lyklaborðsfókus inn í efni bókarinnar með áreiðanlegri aðferð fyrir skjálesara.",
+                    "name": "Fara beint í meginefni"
+                },
+                "FocusReaderGotoPage": {
+                    "description": "Færa lyklaborðsfókus á hlutann „Fara á síðu“ í leiðsagnarspjaldi lestrargluggans",
+                    "name": "Fókus á „Fara á síðu“"
+                },
+                "FocusReaderNavigation": {
+                    "description": "Færa lyklaborðsfókus á leiðsagnarspjald lestrargluggans",
+                    "name": "Fókus á leiðsagnarspjald"
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "Færa lyklaborðsfókus á hlutann „Glósur“ í leiðsagnarspjaldi lestrargluggans",
+                    "name": "Fókus á „Glósur“"
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "Færa lyklaborðsfókus á hlutann „Bókamerki“ í leiðsagnarspjaldi lestrargluggans",
+                    "name": "Fókus á „Bókamerki“"
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "Færa lyklaborðsfókus á hlutann „Leit“ í leiðsagnarspjaldi lestrargluggans",
+                    "name": "Fókus á „Leit“"
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "Færa lyklaborðsfókus á hlutann „Efnisyfirlit“ í leiðsagnarspjaldi lestrargluggans",
+                    "name": "Fókus á „Efnisyfirlit“"
+                },
+                "FocusReaderSettings": {
+                    "description": "Færa lyklaborðsfókus á stillingaspjald lestrargluggans, til dæmis birtingarstillingar",
+                    "name": "Fókus á lestrarstillingar"
+                },
+                "FocusSearch": {
+                    "description": "Færa lyklaborðsfókus í textaleit lestrargluggans. Í bókakostsglugganum er leitað í bókakosti eða virkri OPDS-veitu.",
+                    "name": "Leitarskipun"
+                },
+                "FocusToolbar": {
+                    "description": "Færa lyklaborðsfókus á kennileiti tækjastikunnar rétt á undan tenglinum „Fara í efni“, sem færir fókus á meginefni bókakostsgluggans eða lestrargluggans",
+                    "name": "Fókus á tækjastiku"
+                },
+                "NavigateNextChapter": {
+                    "description": "Fara í næsta skjal í lestrarröð bókarinnar, til dæmis næsta kafla. Önnur flýtilyklasamsetning er einnig í boði.",
+                    "name": "Næsti kafli"
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "Fara í næsta skjal í lestrarröð bókarinnar, til dæmis næsta kafla, með annarri flýtilyklasamsetningu",
+                    "name": "Næsti kafli (önnur leið)"
+                },
+                "NavigateNextHistory": {
+                    "description": "Fara eitt skref áfram í leiðsöguferli lestrargluggans",
+                    "name": "Áfram í leiðsöguferli"
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "Sýna næstu síðu í síðuskiptum bókalista í bókakostsglugganum. Önnur flýtilyklasamsetning er einnig í boði.",
+                    "name": "Næsta síða í bókakosti"
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "Sýna næstu síðu í síðuskiptum bókalista í bókakostsglugganum með annarri flýtilyklasamsetningu",
+                    "name": "Næsta síða í bókakosti (önnur leið)"
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "Fylgja tengli á næstu síðu í OPDS-safnskrá. Önnur flýtilyklasamsetning er einnig í boði.",
+                    "name": "Næsta OPDS-síða"
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "Fylgja tengli á næstu síðu í OPDS-safnskrá með annarri flýtilyklasamsetningu",
+                    "name": "Næsta OPDS-síða (önnur leið)"
+                },
+                "NavigateNextPage": {
+                    "description": "Fara á næstu „síðu“ bókarinnar í lestrarglugganum. Önnur flýtilyklasamsetning er einnig í boði.",
+                    "name": "Næsta síða"
+                },
+                "NavigateNextPageAlt": {
+                    "description": "Fara á næstu „síðu“ bókarinnar í lestrarglugganum með annarri flýtilyklasamsetningu",
+                    "name": "Næsta síða (önnur leið)"
+                },
+                "NavigatePreviousChapter": {
+                    "description": "Fara í fyrra skjal í lestrarröð bókarinnar, til dæmis fyrri kafla. Önnur flýtilyklasamsetning er einnig í boði.",
+                    "name": "Fyrri kafli"
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "Fara í fyrra skjal í lestrarröð bókarinnar, til dæmis fyrri kafla, með annarri flýtilyklasamsetningu",
+                    "name": "Fyrri kafli (önnur leið)"
+                },
+                "NavigatePreviousHistory": {
+                    "description": "Fara eitt skref til baka í leiðsöguferli lestrargluggans",
+                    "name": "Til baka í leiðsöguferli"
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "Sýna fyrri síðu í síðuskiptum bókalista í bókakostsglugganum. Önnur flýtilyklasamsetning er einnig í boði.",
+                    "name": "Fyrri síða í bókakosti"
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "Sýna fyrri síðu í síðuskiptum bókalista í bókakostsglugganum með annarri flýtilyklasamsetningu",
+                    "name": "Fyrri síða í bókakosti (önnur leið)"
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "Fylgja tengli á fyrri síðu í OPDS-safnskrá. Önnur flýtilyklasamsetning er einnig í boði.",
+                    "name": "Fyrri OPDS-síða"
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "Fylgja tengli á fyrri síðu í OPDS-safnskrá með annarri flýtilyklasamsetningu",
+                    "name": "Fyrri OPDS-síða (önnur leið)"
+                },
+                "NavigatePreviousPage": {
+                    "description": "Fara á fyrri „síðu“ bókarinnar í lestrarglugganum. Önnur flýtilyklasamsetning er einnig í boði.",
+                    "name": "Fyrri síða"
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "Fara á fyrri „síðu“ bókarinnar í lestrarglugganum með annarri flýtilyklasamsetningu",
+                    "name": "Fyrri síða (önnur leið)"
+                },
+                "NavigateToBegin": {
+                    "description": "Fara í upphaf bókarinnar í lestrarglugganum",
+                    "name": "Fara í upphaf"
+                },
+                "NavigateToEnd": {
+                    "description": "Fara í lok bókarinnar í lestrarglugganum",
+                    "name": "Fara í lok"
+                },
+                "OpenReaderInfo": {
+                    "description": "Opna upplýsingaglugga bókarinnar í lestrarglugganum",
+                    "name": "Sýna upplýsingar um bókina"
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "Opna upplýsingaglugga bókarinnar og færa lyklaborðsfókus á hlutann sem sýnir núverandi lestrarstað",
+                    "name": "Sýna upplýsingar um bókina og lestrarstað"
+                },
+                "Print": {
+                    "description": "Opna prentgluggann í lestrarglugganum",
+                    "name": "Prenta"
+                },
+                "SearchNext": {
+                    "description": "Fara í næstu leitarniðurstöðu í leit lestrargluggans. Önnur flýtilyklasamsetning er einnig í boði.",
+                    "name": "Næsta leitarniðurstaða"
+                },
+                "SearchNextAlt": {
+                    "description": "Fara í næstu leitarniðurstöðu í leit lestrargluggans með annarri flýtilyklasamsetningu",
+                    "name": "Næsta leitarniðurstaða (önnur leið)"
+                },
+                "SearchPrevious": {
+                    "description": "Fara í fyrri leitarniðurstöðu í leit lestrargluggans. Önnur flýtilyklasamsetning er einnig í boði.",
+                    "name": "Fyrri leitarniðurstaða"
+                },
+                "SearchPreviousAlt": {
+                    "description": "Fara í fyrri leitarniðurstöðu í leit lestrargluggans með annarri flýtilyklasamsetningu",
+                    "name": "Fyrri leitarniðurstaða (önnur leið)"
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "Segja frá samhengi núverandi lestrarstaðar með taltexta sem skjálesarar geta lesið.",
+                    "name": "Segja frá lestrarstað"
+                },
+                "ToggleBookmark": {
+                    "description": "Bæta við nýju bókamerki eða fjarlægja núverandi bókamerki ef það er valið",
+                    "name": "Setja eða fjarlægja bókamerki"
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "Virkja fullskjá stýrikerfisins eða fara aftur í venjulegan glugga. Þetta er annað en einföld sýn, sem einfaldar viðmótið.",
+                    "name": "Víxla skjáham"
+                },
+                "ToggleReaderZenMode": {
+                    "description": "Virkja eða loka einfaldri sýn, sem einfaldar viðmótið meðan lesið er",
+                    "name": "Víxla einfaldri sýn"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "Kveikja eða slökkva á sérstilltum stuðningi við skjálesara í bókakostsglugganum",
+                    "name": "Víxla skjálesarastillingu"
+                }
+            },
+            "loadUserJson": "Hlaða úr notandaskrá",
+            "noShortcutFound": "Enginn flýtilykill fannst með þessu heiti",
+            "resetDefaults": "Endurstilla (hlaða sjálfgefnum gildum)",
+            "save": "Vista",
+            "searchPlaceholder": "Sláðu inn til að leita"
+        },
+        "language": {
+            "languageChoice": "Tungumál"
+        },
+        "library": {
+            "enableAPIAPP": "Virkja franska PNB-bókasafnskerfið",
+            "title": "Aðgangur að frönskum bókasafnsreikningum"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "Hlaða sjálfgefnu sniðmáti",
+                "enableCheckbox": "Sérsníða HTML-sniðmátið",
+                "overrideHTMLTemplate": "Útflutningur glósa og bókamerkja"
+            }
+        },
+        "profiles": {
+            "info": "Skiptu um snið til að sérsníða forritið með vörumerki og litum samstarfsaðila. Hvert snið býður upp á sérsniðna upplifun.",
+            "thorium": {
+                "description": "Thorium Vanilla er upprunalega sniðið, hannað af EDRLab.",
+                "title": "Thorium Vanilla"
+            },
+            "version": "Útgáfa: {{- version}}"
+        },
+        "screenReaderActivate": {
+            "help": "Þegar forritið greinir hjálpartækni virkar viðmótið betur með skjálesurum",
+            "invite": "Fínstilla fyrir skjálesara",
+            "message": "Bættur stuðningur við skjálesara",
+            "title": "Bæta upplifun með skjálesara"
+        },
+        "session": {
+            "title": "Virkja vistun lestrarlotu"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "Fjarlægja sjálfkrafa útrunnin lán og tengd notandagögn",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Útrunnum lánum er eytt sjálfkrafa ásamt persónulegum glósum, bókamerkjum og öðrum tengdum gögnum. Þetta hentar samnýttum tölvum, til dæmis á bókasöfnum eða í háskólum.",
+            "title": "Samnýtt tölva"
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "Velja viðbótargeymslu",
+                "changeDirectory": "Breyta viðbótargeymslu",
+                "removeStorageDirectory": "Fjarlægja viðbótargeymslu"
+            },
+            "beta": {
+                "availability": "Þessi virkni er aðeins studd í nýlegum útgáfum af Thorium. Bækur í ytri möppu birtast ekki í Thorium 3.4 eða eldri útgáfum.",
+                "integrity": "Mappan verður að vera örugg og aðgengileg. Ekki eyða henni, takmarka aðgang að henni eða nota hæga eða óstöðuga geymslu á borð við netdrif.",
+                "migration": "Thorium flytur bækurnar ekki sjálfkrafa. Ef viðbótargeymslu er breytt þarftu að færa bækurnar handvirkt á nýja staðinn. Ef hún er fjarlægð þarftu að færa bækurnar handvirkt í upprunalegu geymsluna.",
+                "summary": "Nánar um þessa virkni, sem er enn í prófun",
+                "warning": "Ekki breyta skránum í þessari möppu handvirkt þar sem það getur valdið vandamálum með bækur eða lesarann. Líttu á möppuna sem öruggt safn sem Thorium sér um."
+            },
+            "configuration": {
+                "chooseFolderDescription": "Veldu möppu sem Thorium á að nota sem viðbótargeymslu.",
+                "configuredDescription": "Viðbótargeymslan er tilbúin fyrir bækur sem verða vistaðar héðan í frá.",
+                "notConfiguredDescription": "Bækur sem þú bætir við Thorium Reader verða vistaðar í völdu möppunni. Bækur sem þegar eru í forritinu verða áfram í upprunalegri kerfisgeymslu."
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "Halda áfram",
+                    "description": "Þessi virkni er enn í prófun. Viltu halda áfram og velja möppu sem viðbótargeymslu?",
+                    "title": "Velja viðbótargeymslu"
+                },
+                "edit": {
+                    "confirm": "Breyta möppu",
+                    "description": "Gæta þarf varúðar þegar viðbótargeymslu er breytt. Thorium flytur ekki eldri bækur fyrir þig heldur þarftu að gera það handvirkt. Viltu halda áfram?",
+                    "title": "Breyta viðbótargeymslu"
+                },
+                "remove": {
+                    "confirm": "Fjarlægja möppu",
+                    "description": "Gæta þarf varúðar þegar viðbótargeymsla er fjarlægð. Thorium flytur ekki eldri bækur fyrir þig heldur þarftu að gera það handvirkt. Viltu halda áfram?",
+                    "title": "Fjarlægja viðbótargeymslu"
+                }
+            },
+            "locations": {
+                "defaultDescription": "Bækur sem forritið sér um eru sjálfgefið vistaðar hér:",
+                "defaultInternal": "Kerfisgeymsla",
+                "externalStorage": "Ytri geymsla",
+                "title": "Geymslustaðir"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "title": ""
+            }
+        },
+        "tabs": {
+            "advanced": "",
+            "general": "Almennt",
+            "keyboardShortcuts": "Flýtilyklar",
+            "profiles": "Snið",
+            "storage": "Geymsla"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
+        "theme": {
+            "auto": "Sjálfvirkt",
+            "dark": "Dökkt",
+            "description": "Þema forritsins fylgir stillingum stýrikerfisins.",
+            "light": "Ljóst",
+            "title": "Þema forrits"
+        },
+        "window": {
+            "keepLibraryWindowInBackgroundOnReaderClose": "Halda bókakosti í bakgrunni þegar lestrargluggum er lokað",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Þegar þetta er virkt færist bókakostsglugginn ekki fremst og fær ekki fókus þegar lestrarglugga er lokað.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Lágmarka bókakost þegar lestrargluggi er opnaður",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Þegar þetta er virkt er bókakostsglugginn lágmarkaður þegar lestrargluggi er opnaður.",
+            "minimizeLibraryToTray": "Lágmarka bókakost á tilkynningasvæði kerfisins",
+            "minimizeLibraryToTrayDescription": "Þegar þetta er virkt heldur Thorium áfram að keyra á tilkynningasvæði Windows þegar bókakostsglugginn er lágmarkaður.",
+            "oneReaderWindowPerPublication": "Nota einn lestrarglugga fyrir hverja bók",
+            "oneReaderWindowPerPublicationDescription": "Þegar þetta er virkt fær opinn lestrargluggi bókar fókus í stað þess að annar gluggi opnist.",
+            "title": "Hegðun glugga"
+        }
+    },
+    "tts": {
+        "highlight": {
+            "mainColor": "Aðallitur",
+            "maskBlockWordOutline": "Skyggð textablokk, útlína orðs",
+            "maskBlockWordSolidBackground": "Skyggð textablokk, einlitur bakgrunnur orðs",
+            "maskBlockWordUnderline": "Skyggð textablokk, undirstrikun orðs",
+            "maskWordOutline": "Skygging, útlína orðs",
+            "maskWordSolidBackground": "Skygging, einlitur bakgrunnur orðs",
+            "maskWordUnderline": "Skygging, undirstrikun orðs",
+            "outlineWordOutline": "Útlína, útlína orðs",
+            "outlineWordSolidBackground": "Útlína, einlitur bakgrunnur orðs",
+            "outlineWordUnderline": "Útlína, undirstrikun orðs",
+            "preview": "Forskoðun auðkenningar upplesturs",
+            "solidBackgroundWordOutline": "Einlitur bakgrunnur, útlína orðs",
+            "solidBackgroundWordSolidBackground": "Einlitur bakgrunnur, einlitur bakgrunnur orðs",
+            "solidBackgroundWordUnderline": "Einlitur bakgrunnur, undirstrikun orðs",
+            "style": "Auðkenningarstíll upplesturs",
+            "underlineWordOutline": "Undirstrikun, útlína orðs",
+            "underlineWordSolidBackground": "Undirstrikun, einlitur bakgrunnur orðs",
+            "underlineWordUnderline": "Undirstrikun, undirstrikun orðs",
+            "wordColor": "Orðlitur"
+        }
+    }
+}

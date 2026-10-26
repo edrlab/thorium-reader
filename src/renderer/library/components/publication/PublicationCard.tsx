@@ -10,7 +10,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 
 import * as React from "react";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -28,11 +28,10 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import CatalogMenu from "./menu/CatalogMenu";
-import OpdsMenu from "./menu/OpdsMenu";
 
 import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
-import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
+import { PublicationInfoOpdsWithRAC, PublicationInfoOpdsWithRACContent, PublicationInfoOpdsWithRACTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
 // import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
@@ -40,8 +39,10 @@ import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import classNames from "classnames";
 import moment from "moment";
 import { formatTime } from "readium-desktop/common/utils/time";
-import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
+import { isOpdsPublicationDownloading } from "readium-desktop/renderer/library/opds/download";
+import { isOpdsPublicationDownloaded } from "readium-desktop/renderer/library/opds/localBookshelfPublication";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -78,16 +79,21 @@ class PublicationCard extends React.Component<IProps> {
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+        const publicationLabel = `${pubTitleStr}${authors ? ` - ${authors}` : ""}`;
 
         const publicationView = publicationViewMaybeOpds as PublicationView;
+        const opdsPublicationView = publicationViewMaybeOpds as IOpdsPublicationView;
         const isLocalPublication = !isOpds;
+        const isDownloaded = !!isOpds && isOpdsPublicationDownloaded(opdsPublicationView);
         const canOpenLocalPublication = isLocalPublication &&
             canOpenPublication(publicationView);
         const showUnavailablePublicationState = isLocalPublication &&
             !canOpenLocalPublication;
 
         let pubFormat = "EPUB";
-        if (publicationView.isAudio) {
+        if (publicationView.isCBZ) {
+            pubFormat = "CBZ";
+        } else if (publicationView.isAudio) {
             pubFormat = "Audio";
         } else if (publicationView.isDivina) {
             pubFormat = "Divina";
@@ -145,18 +151,22 @@ class PublicationCard extends React.Component<IProps> {
             <div className={stylesPublications.publication_wrapper}>
                 {
                     isOpds ?
-                        <PublicationInfoOpdsWithRadix
-                            opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
+                        <PublicationInfoOpdsWithRAC
+                            opdsPublicationView={opdsPublicationView}
                         >
-                            <PublicationInfoOpdsWithRadixTrigger asChild>
+                            <PublicationInfoOpdsWithRACTrigger asChild>
                                 <button
                                    className={classNames(
                                         stylesPublications.publication_main_container,
                                     )}
-                                    title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                                    aria-label={publicationLabel}
+                                    title={publicationLabel}
                                     tabIndex={0}
                                 >
-                                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
+                                    <Cover
+                                        publicationViewMaybeOpds={publicationViewMaybeOpds}
+                                        isDownloading={this.props.isDownloading}
+                                    />
                                     <div className={stylesPublications.publication_title_wrapper}>
                                         <p aria-hidden className={stylesPublications.publication_title}
                                             dir={pubTitleIsRTL ? "rtl" : undefined}
@@ -169,9 +179,9 @@ class PublicationCard extends React.Component<IProps> {
                                         </p>
                                     </div>
                                 </button>
-                            </PublicationInfoOpdsWithRadixTrigger>
-                            <PublicationInfoOpdsWithRadixContent />
-                        </PublicationInfoOpdsWithRadix>
+                            </PublicationInfoOpdsWithRACTrigger>
+                            <PublicationInfoOpdsWithRACContent />
+                        </PublicationInfoOpdsWithRAC>
                         :
                         canOpenLocalPublication ?
                             <a
@@ -180,7 +190,8 @@ class PublicationCard extends React.Component<IProps> {
                                     (e) =>
                                         (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
                                 }
-                                title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                                aria-label={publicationLabel}
+                                title={publicationLabel}
                                 className={classNames(
                                             stylesPublications.publication_main_container,
                                             { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },
@@ -207,7 +218,8 @@ class PublicationCard extends React.Component<IProps> {
                             <AlertDialog.Root>
                                 <AlertDialog.Trigger asChild>
                                     <a
-                                        title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                                        aria-label={publicationLabel}
+                                        title={publicationLabel}
                                         className={classNames(
                                                     stylesPublications.publication_main_container,
                                                     { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },
@@ -243,8 +255,7 @@ class PublicationCard extends React.Component<IProps> {
                                         </div>
                                     </a>
                                 </AlertDialog.Trigger>
-                                <AlertDialog.Portal>
-                                    <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/>
+                                <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                                     <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                                         <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
                                             {__("catalog.missing")}
@@ -267,7 +278,13 @@ class PublicationCard extends React.Component<IProps> {
                 }
                 <div className={stylesPublications.publication_infos_wrapper}>
                     <div className={stylesPublications.publication_infos}>
-                        {isOpds ? <></>
+                        {isOpds ?
+                            isDownloaded ?
+                                <div className={stylesPublications.downloadedIndicator}>
+                                    <SVG ariaHidden svg={DoubleCheckIcon} />
+                                    {__("catalog.downloaded")}
+                                </div>
+                                : <></>
                             : <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
                                 {/* (tagString === "/finished/") || */ publicationView.readingFinished ?
                                     <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={DoubleCheckIcon} />{__("publication.read")}</div>
@@ -286,25 +303,19 @@ class PublicationCard extends React.Component<IProps> {
                                             : <></>
                                 }
                             </div>}
-                        <div style={{ display: "flex", alignItems: "end", height: "50px", width: "100%", justifyContent: isOpds ? "flex-end" : "space-between" }}>
-                            {isOpds ? <></>
-                                : <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>}
-                                {isOpds ? <></>
-                            :
-                            <Menu
-                                button={(
-                                    <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
-                                )}
-                            >
-                                {isOpds ?
-                                    <OpdsMenu
-                                        opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
-                                    /> :
+                        {isOpds ? <></>
+                            : <div style={{ display: "flex", alignItems: "end", height: "50px", width: "100%", justifyContent: "space-between" }}>
+                                <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>
+                                <Menu
+                                    button={(
+                                        <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
+                                    )}
+                                >
                                     <CatalogMenu
                                         publicationView={publicationViewMaybeOpds as PublicationView}
-                                    />}
-                            </Menu>}
-                        </div>
+                                    />
+                                </Menu>
+                            </div>}
                     </div>
                 </div>
             </div>
@@ -358,8 +369,12 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (state: IRendererCommonRootState) => ({
+const mapStateToProps = (state: ILibraryRootState, props: IBaseProps) => ({
     locale: state.i18n.locale, // refresh
+    isDownloading: !!props.isOpds && isOpdsPublicationDownloading(
+        state.download,
+        props.publicationViewMaybeOpds as IOpdsPublicationView,
+    ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationCard));

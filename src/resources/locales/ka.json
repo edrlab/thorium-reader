@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "მენიუ",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "დახურვა",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "სიის მარცხნივ ჩაწევა",
+        "loading": "",
         "mainContent": "ძირითადი შიგთავსი",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "სიის მარჯვნივ ჩაწევა",
         "skipLink": "შიგთავსზე გადახტომა",
         "toolbar": "ინსტრუმენტთა პანელი"
@@ -78,6 +95,7 @@
         "deleteBook": "წაშლა",
         "deleteTag": "იარლიყის წაშლა",
         "description": "აღწერა",
+        "downloaded": "",
         "emptyTagList": "არ გაქვს არცერთი იარლიყიანი ელ-წიგნი.",
         "entry": {
             "continueReading": "კითხვის გაგრძელება",
@@ -141,7 +159,19 @@
         "sort": "დალაგება",
         "tag": "",
         "tags": "იარლიყები",
-        "update": ""
+        "update": "",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -239,29 +269,54 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
         "download": {
             "cancelled": "",
-            "error": "{{- title}} გადმოტვირთვა უშედეგოდ დასრულდა: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} უკვე შემოტანილია.",
             "fail": "{{- path}} მისამართის შემოტანა უშედეგოდ დასრულდა. {{- err}}",
             "success": "{{- title}} შემოტანა წარმატებით დასრულდა."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "პუბლიკაცია ვერ იხსნება: {{- err}}",
@@ -292,6 +347,17 @@
         },
         "addMenu": "OPDS წყაროს დამატება",
         "breadcrumbRoot": "კატალოგები",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "პუბლიკაცია არაა ნაპოვნი",
         "firstPage": "პირველი",
@@ -300,10 +366,13 @@
         "menu": {
             "aboutBook": "ამ წიგნის შესახებ",
             "addExtract": "ამონარიდის შემოტანა",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "წიგნის შესყიდვა",
             "goLoanBook": "წიგნის სესხება",
             "goRevokeLoanBook": "სესხის ანულირება",
-            "goSubBook": "გამოწერა"
+            "goSubBook": "გამოწერა",
+            "placeHold": ""
         },
         "network": {
             "error": "OPDS წყარო მიუწვდომელია",
@@ -314,6 +383,12 @@
         },
         "next": "მომდევნო",
         "previous": "წინა",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "თარო",
         "updateForm": {
@@ -655,7 +730,8 @@
         "certificateRevoked": "LCP ლიცენზიის სერტიფიკატი გაუქმებულია.",
         "certificateSignatureInvalid": "არასწორი LCP ლიცენზიის სერტიფიკატის ხელმოწერა.",
         "cover": {
-            "img": "ყდის სურათი"
+            "img": "ყდის სურათი",
+            "zoom": ""
         },
         "day": "",
         "days": "",
@@ -666,7 +742,6 @@
         "expired": "",
         "expiredLcp": "ამ წიგნის წაკითხვა შეუძლებელია რადგან LCP ლიცენზიას ვადა გაუვიდა.",
         "incorrectPassphrase": "",
-        "lcpEnd": "დასასრული",
         "lcpNotSupported": "",
         "lcpRightsCopy": "ასლისთვის სიმბოლოების რაოდენობა",
         "lcpRightsPrint": "ბეჭდისთვის ნებადართული გვერდების რაოდენობა",
@@ -680,10 +755,22 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "პროგრესია"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "პროგრესია",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "განახლება",
         "returnButton": "დაბრუნება",
         "returnedLcp": "ამ წიგნის წაკითხვა შეუძლებელია რადგან LCP ლიცენზია დაბრუნებულია.",
@@ -873,7 +960,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "გამოსახულება",
             "disposition": {
@@ -912,7 +998,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1332,11 +1417,16 @@
             }
         },
         "tabs": {
-            "appearance": "",
+            "advanced": "",
             "general": "",
             "keyboardShortcuts": "",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "",

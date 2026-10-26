@@ -8,6 +8,22 @@ exports.traverseJsonObjects = traverseJsonObjects;
 function isNullOrUndefined(val) {
     return val === undefined || val === null;
 }
+
+const pluralCategories = ["zero", "one", "two", "few", "many", "other"];
+
+function compareKeys(left, right) {
+    const leftPlural = /^(.*)_(zero|one|two|few|many|other)$/.exec(left);
+    const rightPlural = /^(.*)_(zero|one|two|few|many|other)$/.exec(right);
+    const leftBase = leftPlural ? leftPlural[1] : left;
+    const rightBase = rightPlural ? rightPlural[1] : right;
+    if (leftBase !== rightBase) {
+        return leftBase < rightBase ? -1 : 1;
+    }
+    const leftOrder = leftPlural ? pluralCategories.indexOf(leftPlural[2]) : -1;
+    const rightOrder = rightPlural ? pluralCategories.indexOf(rightPlural[2]) : -1;
+    return leftOrder - rightOrder;
+}
+
 function sortObject(obj) {
     if (obj === null) {
         return null;
@@ -22,7 +38,7 @@ function sortObject(obj) {
         return obj;
     }
     const newObj = {};
-    Object.keys(obj).sort().forEach((key) => {
+    Object.keys(obj).sort(compareKeys).forEach((key) => {
         newObj[key] = sortObject(obj[key]);
     });
     return newObj;

@@ -8,6 +8,7 @@
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
 import * as React from "react";
+import { OVERLAY_Z_INDEX } from "./overlayHelpers";
 import { Button, Select as SelectReactAria, Label, ListBox, ListBoxItem, Popover, ValidationResult, Group, SelectValue } from "react-aria-components";
 import { FieldError, Text } from "react-aria-components";
 import SVG, { ISVGProps } from "./SVG";
@@ -25,24 +26,25 @@ extends Omit<TSelectReactAriaProps<T>, "children"> {
   items?: Iterable<T>;
   svg?: ISVGProps;
   refButEl?: React.Ref<HTMLButtonElement>;
+  triggerFocusId?: string;
 }
 
 export function Select<T extends object>(
-  { label, description, errorMessage, children, svg, refButEl, items, ...props }: MySelectProps<T>,
+  { label, description, errorMessage, children, svg, refButEl, items, triggerFocusId, ...props }: MySelectProps<T>,
 ) {
   return (
     <SelectReactAria {...props} className={StylesCombobox.react_aria_ComboBox}>
       <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
       <Group className={classNames(StylesCombobox.my_combobox_container)} >
         {svg ? <SVG ariaHidden svg={svg} /> : <></>}
-        <Button ref={refButEl} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+        <Button ref={refButEl} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" data-focus-id={triggerFocusId}>
           <SelectValue />
           <SVG ariaHidden svg={ChevronDown} className={StylesCombobox.react_aria_Button} />
         </Button>
       </Group>
       {description && <Text slot="description">{description}</Text>}
       <FieldError>{errorMessage}</FieldError>
-      <Popover className={StylesCombobox.react_aria_Popover}>
+      <Popover className={StylesCombobox.react_aria_Popover} style={{ zIndex: OVERLAY_Z_INDEX + 1 }}>
         <ListBox className={StylesCombobox.react_aria_ListBox} items={items}>
           {children}
         </ListBox>

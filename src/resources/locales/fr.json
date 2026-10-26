@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "Note d’annotation",
         "bookMenu": "Menu",
+        "bookmarkNote": "Note du marque-page",
+        "cancelDownload": "Annuler le téléchargement : {{- title}}",
         "closeDialog": "Fermer",
+        "closeNotification": "Fermer la notification",
+        "copyNotificationInstruction": "Copier la notification",
+        "decreaseSetting": "Diminuer {{- setting}}",
+        "downloadProgress": "Progression du téléchargement : {{- title}}",
+        "downloadProgressUnknown": "La progression du téléchargement est inconnue.",
+        "editTag": "Modifier l’étiquette : {{- tag}}",
+        "favoriteCatalog": "Catalogue favori : {{- title}}",
+        "increaseSetting": "Augmenter {{- setting}}",
         "leftSlideButton": "Faire défiler vers la gauche",
+        "loading": "Chargement…",
         "mainContent": "Contenu principal",
+        "notificationCopied": "Notification copiée",
+        "notificationCopyFailed": "Impossible de copier la notification",
+        "printPage": "Page {{page}}",
+        "publicationDetails": "{{- field}} : {{- title}}",
+        "resetSetting": "Réinitialiser {{- setting}}",
         "rightSlideButton": "Faire défiler vers la droite",
         "skipLink": "Aller directement au contenu",
         "toolbar": "Barre d'outils"
@@ -78,6 +95,7 @@
         "deleteBook": "Supprimer",
         "deleteTag": "Supprimer le mot-clé",
         "description": "Description",
+        "downloaded": "Téléchargé",
         "emptyTagList": "Aucune publication dotée de mots-clés.",
         "entry": {
             "continueReading": "Reprendre la lecture",
@@ -132,7 +150,7 @@
                 "state": "État"
             }
         },
-        "openFolder": "Répertoire ouvert",
+        "openFolder": "Ouvrir le dossier",
         "publisher": "Éditeur",
         "readBook": "Lire",
         "released": "Publié le",
@@ -141,20 +159,32 @@
         "sort": "Trier par",
         "tag": "Mot-clé",
         "tags": "Mots-clés",
-        "update": "Modifier"
+        "update": "Modifier",
+        "userProfile": {
+            "available": "Disponibles : {{count}}",
+            "bookshelf": "Ouvrir les prêts et réservations",
+            "edit": "Modifier le profil",
+            "holds": "Réservations",
+            "loading": "Chargement du compte…",
+            "loans": "Prêts",
+            "title": "Compte",
+            "total": "Limite : {{count}}",
+            "unavailable": "Les informations du profil sont indisponibles.",
+            "used": "{{used}} sur {{total}} utilisés"
+        }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "par {{- author}}",
             "descCreator": "créées par",
-            "descList_many": "{{- count}} note(s) {{- creator}} seront importées vers {{- title}} {{- author}}",
             "descList_one": "{{- count}} note {{- creator}} sera importée vers {{- title}} {{- author}}",
+            "descList_many": "",
             "descList_other": "{{- count}} notes {{- creator}} seront importées vers {{- title}} {{- author}}",
-            "descNewer_many": "{{- count}} conflits : certaines notes associées à la publication sont plus récentes",
             "descNewer_one": "{{- count}} conflit : une note associée à la publication est plus récente",
+            "descNewer_many": "",
             "descNewer_other": "{{- count}} conflits : certaines notes associées à la publication sont plus récentes",
-            "descOlder_many": "{{- count}} conflits : certaines notes associées à la publication sont plus anciennes",
             "descOlder_one": "{{- count}} conflit : une note associée à la publication est plus ancienne",
+            "descOlder_many": "",
             "descOlder_other": "{{- count}} conflits : certaines notes associées à la publication sont plus anciennes",
             "descTitle": "Titre de la liste de notes : ",
             "importAll": "Importer toutes les notes",
@@ -172,12 +202,12 @@
             }
         },
         "deleteAnnotations": "Supprimer les notes ?",
-        "deleteAnnotationsText_many": "Voulez-vous supprimer {{- count}} notes ?",
         "deleteAnnotationsText_one": "Voulez-vous supprimer {{- count}} note ?",
+        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_other": "Voulez-vous supprimer {{- count}} notes ?",
         "deleteBookmarks": "Supprimer les marque-pages ?",
-        "deleteBookmarksText_many": "Êtes-vous certain de vouloir supprimer {{- count}} marque-pages ?",
         "deleteBookmarksText_one": "Êtes-vous certain de vouloir supprimer {{- count}} marque-page ?",
+        "deleteBookmarksText_many": "",
         "deleteBookmarksText_other": "Êtes-vous certain de vouloir supprimer {{- count}} marque-pages ?",
         "deleteFeed": "Supprimer ce catalogue ?",
         "deletePublication": "Supprimer ce livre ?",
@@ -244,29 +274,54 @@
         "annotations": {
             "alreadyImported": "Toutes les notes sont déjà importées, importation annulée.",
             "emptyFile": "Aucune note n'est disponible dans ce fichier.",
-            "errorParsing": "Erreur lors de la lecture du fichier : ",
-            "noBelongTo": "Impossible d'importer les notes, au moins une note n'appartient pas à la publication finale.",
             "nothing": "Aucune note disponible, ajout annulé",
             "success": "Importation réussie."
         },
         "download": {
             "cancelled": "Téléchargement annulé.",
-            "error": "Le téléchargement de {{- title}} a échoué : [{{- err}}]",
             "errors": {
                 "hashMismatch": "Erreur de vérification de l'intégrité du fichier téléchargé  : SHA-256 attendu {{- expected}}, obtenu {{- actual}}.",
                 "httpGet": "Téléchargement HTTP échoué : {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "Le téléchargement est bloqué : aucune donnée reçue depuis 30 secondes. Veuillez réessayer.",
                 "invalidFilename": "Le nom du fichier temporaire téléchargé est invalide.",
                 "invalidLink": "Le lien de téléchargement est invalide.",
                 "invalidTempDirectory": "Le répertoire de téléchargement temporaire est invalide.",
                 "lengthMismatch": "Erreur de vérification de l'intégrité des fichiers téléchargés : attendus {{- expected}}, obtenu {{- actual}} octets.",
                 "readStreamMissing": "Le flux de téléchargement n'est pas disponible.",
                 "tooManyFilenameAttempts": "Impossible de créer un fichier de téléchargement temporaire unique : {{- path}}"
-            }
+            },
+            "started": "Téléchargement commencé.",
+            "startedWithTitle": "Téléchargement de {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} a déjà été ajouté.",
             "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
             "success": "L'ajout de {{- title}} est achevé."
+        },
+        "notifications": {
+            "annotationImportFailed": "Impossible d’importer les annotations. Vérifiez que le fichier est un export d’annotations valide.",
+            "annotationPublicationUnavailable": "Impossible d’importer les annotations car la publication est indisponible. Essayez de réimporter la publication.",
+            "annotationStopPlayback": "Arrêtez la lecture vocale ou audio avant de créer une annotation.",
+            "authenticationFailed": "Impossible de se connecter à ce catalogue. Vérifiez votre connexion et réessayez.",
+            "catalogLinkFailed": "Impossible d’ajouter ce catalogue. Vérifiez le lien et votre connexion.",
+            "catalogUpdateFailed": "Impossible de modifier ce catalogue. Vérifiez ses paramètres et réessayez.",
+            "copyLimit": "Le quota de copie de cette publication est épuisé.",
+            "deleteFailed": "Impossible de supprimer cette publication. Réessayez.",
+            "exportFailed": "Impossible d’exporter cette publication. Vérifiez le dossier de destination et l’espace disque disponible.",
+            "openFileFailed": "Impossible d’ouvrir ce fichier. Vérifiez sa disponibilité et son format.",
+            "openLinkFailed": "Impossible d’ouvrir ce lien de publication. Vérifiez le lien et réessayez.",
+            "printLimit": "Le quota d’impression de cette publication est épuisé.",
+            "profileActivationFailed": "Impossible d’activer ce profil. Vérifiez le fichier du profil ou contactez son fournisseur.",
+            "profileBusy": "Une autre opération sur un profil est en cours. Attendez qu’elle se termine, puis réessayez.",
+            "profileProvisionFailed": "Impossible d’installer ce profil. Vérifiez le fichier du profil ou contactez son fournisseur.",
+            "profileTimeout": "Le délai d’installation du profil est dépassé. Vérifiez votre connexion et réessayez.",
+            "publicationUnavailable": "Cette publication est indisponible. Essayez de la réimporter.",
+            "readingPositionFailed": "Impossible de déterminer votre position de lecture. Réessayez.",
+            "recoveryPartialFailure": "{{- recovered}} publications récupérées ; {{- failed}} publications n’ont pas pu être récupérées.",
+            "renewFailed": "Impossible de prolonger ce prêt. Réessayez ou contactez votre bibliothèque.",
+            "returnFailed": "Impossible de rendre ce prêt. Réessayez ou contactez votre bibliothèque.",
+            "storageRefreshFailed": "Le réglage de stockage a été enregistré, mais la bibliothèque n’a pas pu être actualisée. Essayez de l’actualiser.",
+            "tagsFailed": "Impossible d’enregistrer les étiquettes de la publication. Réessayez."
         },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
@@ -275,8 +330,8 @@
         "storage": {
             "recovery": {
                 "failure": "La récupération des publications a échoué.",
-                "success_many": "{{- count}} publications récupérées.",
                 "success_one": "{{- count}} publication récupérée.",
+                "success_many": "",
                 "success_other": "{{- count}} publications récupérées."
             },
             "removed": "Le répertoire des publications a été supprimé.",
@@ -298,6 +353,17 @@
         },
         "addMenu": "Ajouter un catalogue OPDS",
         "breadcrumbRoot": "Mes catalogues",
+        "color": {
+            "blue": "Bleu",
+            "gray": "Gris",
+            "green": "Vert",
+            "orange": "Orange",
+            "pink": "Rose",
+            "purple": "Violet",
+            "red": "Rouge",
+            "title": "Couleur du catalogue",
+            "yellow": "Jaune"
+        },
         "documentation": "Site web officiel du standard OPDS",
         "empty": "Aucune publication trouvée",
         "firstPage": "Première",
@@ -306,10 +372,13 @@
         "menu": {
             "aboutBook": "À propos",
             "addExtract": "Ajouter l'extrait",
+            "cancelHold": "Annuler la réservation",
+            "cancelHoldError": "Impossible d’annuler cette réservation. Veuillez réessayer.",
             "goBuyBook": "Acheter le livre",
             "goLoanBook": "Emprunter le livre",
             "goRevokeLoanBook": "Mettre fin à l'emprunt",
-            "goSubBook": "Aller sur la page d'abonnement"
+            "goSubBook": "Aller sur la page d'abonnement",
+            "placeHold": "Réserver"
         },
         "network": {
             "error": "Une erreur est survenue",
@@ -320,6 +389,12 @@
         },
         "next": "Suivant",
         "previous": "Précédent",
+        "registry": {
+            "empty": "Aucun catalogue trouvé.",
+            "error": "Impossible de rechercher dans le registre. Veuillez réessayer.",
+            "loading": "Recherche de catalogues…",
+            "title": "Rechercher des catalogues"
+        },
         "resumeBrowsing": "Reprendre le parcours",
         "shelf": "Étagère",
         "updateForm": {
@@ -661,7 +736,8 @@
         "certificateRevoked": "Certificat LCP révoqué.",
         "certificateSignatureInvalid": "Signature de certificat LCP invalide.",
         "cover": {
-            "img": "image de couverture"
+            "img": "image de couverture",
+            "zoom": "Agrandir l’image de couverture"
         },
         "day": "jour",
         "days": "jours",
@@ -672,7 +748,6 @@
         "expired": "Prêt expiré",
         "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
         "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",
-        "lcpEnd": "Fin",
         "lcpNotSupported": "WARNING : il s'agit d'une version préliminaire de Thorium Desktop, qui ne prend pas en charge les licences de production LCP. Elle ne prend en charge que des licences LCP de test.",
         "lcpRightsCopy": "Caractères copiés",
         "lcpRightsPrint": "Pages imprimées",
@@ -686,10 +761,22 @@
         "notStarted": "Non Demarré",
         "onGoing": "En Cours",
         "progression": {
-            "title": "Progression"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Progression",
+            "useRemote": ""
         },
         "read": "Terminé",
         "remainingTime": "Prêt (temps restant)",
+        "remoteProgression": {
+            "checking": "Activée, vérification du service en cours...",
+            "disabled": "Non activée pour cette publication.",
+            "empty": "Aucune progression distante enregistrée.",
+            "position": "Progression distante : {{percent}} % ({{device}}).",
+            "ready": "Activée et prête.",
+            "title": "Synchronisation de la progression :",
+            "unavailable": "Activée, mais service indisponible."
+        },
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
         "returnedLcp": "Ce livre ne peut être lu car la licence LCP a été retournée.",
@@ -728,7 +815,7 @@
             },
             "hide": "Ne pas afficher",
             "highlight": "Surligner",
-            "noSelectionToast": "Aucun texte sélectionné",
+            "noSelectionToast": "Sélectionnez du texte avant de créer une annotation.",
             "note": "Note {{- color}}",
             "quickAnnotations": "Création rapide (sans édition)",
             "saveNote": "Sauvegarder",
@@ -841,8 +928,8 @@
         },
         "picker": {
             "search": {
-                "founds_many": "{{- count}} correspondance(s)",
                 "founds_one": "{{- count}} correspondance",
+                "founds_many": "",
                 "founds_other": "{{- count}} correspondances",
                 "input": "Texte à trouver",
                 "next": "Suivant",
@@ -880,7 +967,6 @@
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
             "customizeReader": "Personnaliser la mise en forme",
-            "defaultValue": "Valeur par défaut",
             "disabled": "Désactivé",
             "display": "Affichage",
             "disposition": {
@@ -919,7 +1005,6 @@
             "preset": {
                 "apply": "Appliquer les paramètres de lecture préférés",
                 "applyDetails": "Appliquer au livre courant les paramètres de lecture précédemment enregistrés.",
-                "detail": "Sauvegarder/Appliquer vos paramètres de lecture favoris.",
                 "reset": "Réinitialiser les paramètres de lecture préférés",
                 "resetDetails": "Effacer les paramètres de lecture précédemment appliqués, et revenir à la mise en forme et aux choix d'affichage par défaut.",
                 "save": "Enregistrer les paramètres de lecture préférés.",
@@ -1263,7 +1348,7 @@
         },
         "screenReaderActivate": {
             "help": "Lorsque l'application détecte la présence d'une technologie d'assistance, l'interface utilisateur fonctionne mieux avec les lecteurs d'écran",
-            "invite": "Support optimisé des lecteurs d'écran ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimiser pour les lecteurs d'écran",
             "message": "Support amélioré pour les lecteurs d'écran",
             "title": "Améliorer l'expérience d'un utilisateur doté d'un lecteur d'écran"
         },
@@ -1328,24 +1413,29 @@
                 "description": "Vérifiez le stockage des publications pour trouver celles qui peuvent être récupérées en toute sécurité.",
                 "dialog": {
                     "confirm": "Récupérer",
-                    "description_many": "Thorium a trouvé {{- count}} publications sur le disque, absentes de la base de données. Voulez-vous les réimporter dans Thorium ?",
                     "description_one": "Thorium a trouvé {{- count}} publication sur le disque, absente de la base de données. Voulez-vous la réimporter dans Thorium ?",
+                    "description_many": "",
                     "description_other": "Thorium a trouvé {{- count}} publications sur le disque, absentes de la base de données. Voulez-vous les réimporter dans Thorium ?",
                     "title": "Récupérer les publications"
                 },
                 "none": "Aucune publication récupérable n'a été trouvée.",
-                "recoverableCount_many": "{{- count}} publications peuvent être récupérées avec leur identifiant de stockage d'origine.",
                 "recoverableCount_one": "{{- count}} publication peut être récupérée avec son identifiant de stockage d'origine.",
+                "recoverableCount_many": "",
                 "recoverableCount_other": "{{- count}} publications peuvent être récupérées avec leur identifiant de stockage d'origine.",
                 "title": "Récupération"
             }
         },
         "tabs": {
-            "appearance": "Apparence",
+            "advanced": "Options avancées",
             "general": "Géneral",
             "keyboardShortcuts": "Raccourcis clavier",
             "profiles": "Profils",
             "storage": "Stockage"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "Désactiver la télémétrie",
+            "disableTelemetryMeasurementsDescription": "Lorsque cette option est activée, Thorium n'envoie pas de mesures de télémétrie.",
+            "title": "Télémétrie"
         },
         "theme": {
             "auto": "Automatique",

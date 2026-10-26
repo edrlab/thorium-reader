@@ -15,11 +15,16 @@ import {
 } from "readium-desktop/main/network/fetch";
 import { absorbDBToJson as absorbDBToJsonOpdsAuth } from "readium-desktop/main/network/http";
 import { needToPersistFinalState } from "readium-desktop/main/redux/sagas/persist";
+import {
+    flushMeasurementProtocolQueue,
+    stopMeasurementProtocolQueue,
+} from "readium-desktop/main/analytics/measurementProtocolQueue";
+import { flushActiveWindowFocus } from "readium-desktop/main/analytics/windowFocus";
 import { error } from "readium-desktop/main/tools/error";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, race, spawn, take } from "redux-saga/effects";
-import { delay as delayTyped, put as putTyped, race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { call as callTyped, delay as delayTyped, put as putTyped, race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 // import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 import { clearSessions } from "readium-desktop/main/sessions";
@@ -37,6 +42,7 @@ import { PersistRootState, RootState } from "../states";
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
 const debug = debug_(filename_);
+const MEASUREMENT_PROTOCOL_SHUTDOWN_FLUSH_TIMEOUT_MS = 5000;
 
 export function* init() {
 
@@ -232,6 +238,12 @@ export function* init() {
     yield call(() => {
         const store = diMainGet("store");
         const locale = store.getState().i18n.locale as keyof typeof availableLanguages | "";
+        if (locale !== "") {
+            // Redux restores the chosen locale, but the main-process translator
+            // starts fresh and must receive it on every launch.
+            store.dispatch(i18nActions.setLocale.build(locale));
+            return;
+        }
         if (locale === "") {
 
             const isAnAvailableLanguage = (a: string): a is keyof typeof availableLanguages => a in availableLanguages;
@@ -252,7 +264,7 @@ export function* init() {
     });
 }
 
-function* closeProcess() {
+function* closeProcess(stopAnalyticsQueue: boolean) {
 
     closeProcessLock.lock();
 
@@ -291,6 +303,30 @@ function* closeProcess() {
                         debug("Success to destroy publication-data");
                     } catch (e) {
                         debug("ERROR to destroy publication-data", e);
+                    }
+                }),
+                call(function*() {
+
+                    try {
+                        const [flushResult] = yield* raceTyped([
+                            callTyped(async () => {
+                                await flushActiveWindowFocus();
+                                return flushMeasurementProtocolQueue();
+                            }),
+                            delayTyped(MEASUREMENT_PROTOCOL_SHUTDOWN_FLUSH_TIMEOUT_MS),
+                        ]);
+
+                        if (flushResult) {
+                            debug("Measurement Protocol queue shutdown flush result", flushResult);
+                        } else {
+                            debug("Measurement Protocol queue shutdown flush timed out");
+                        }
+                    } catch (e) {
+                        debug("ERROR to flush Measurement Protocol queue", e);
+                    } finally {
+                        if (stopAnalyticsQueue) {
+                            stopMeasurementProtocolQueue();
+                        }
                     }
                 }),
                 call(function*() {
@@ -420,7 +456,7 @@ export function exit() {
                 debug("#####");
                 debug("#####");
 
-                yield call(closeProcess);
+                yield call(closeProcess, shouldExit);
 
                 if (shouldExit) {
                     exitNow();

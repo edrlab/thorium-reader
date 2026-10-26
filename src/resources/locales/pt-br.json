@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Fechar",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Deslizar para a esquerda",
+        "loading": "",
         "mainContent": "conteúdo principal",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Deslizar para a direita",
         "skipLink": "Ir para o conteúdo",
         "toolbar": "barra de ferramentas"
@@ -78,6 +95,7 @@
         "deleteBook": "Remover",
         "deleteTag": "Apagar a tag",
         "description": "Descrição",
+        "downloaded": "",
         "emptyTagList": "Você não tem livro marcado.",
         "entry": {
             "continueReading": "Retomar a leitura",
@@ -141,20 +159,32 @@
         "sort": "Ordenar por",
         "tag": "Tag",
         "tags": "Tags",
-        "update": "Editar"
+        "update": "Editar",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "por '{{- author}} '",
             "descCreator": "criado por",
-            "descList_many": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} A nota de {{- creator}} será importada em '{{- title}}' {{- author}}",
+            "descList_many": "",
             "descList_other": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
-            "descNewer_many": "Conflito(s): {{- count}} nota(s) mais recente(s)",
             "descNewer_one": "Conflito: {{- count}} nota mais recente",
+            "descNewer_many": "",
             "descNewer_other": "Conflito(s): {{- count}} nota(s) mais recente(s)",
-            "descOlder_many": "Conflito(s): {{- count}} nota(s) mais antiga(s)",
             "descOlder_one": "Conflito: {{- count}} nota mais antiga",
+            "descOlder_many": "",
             "descOlder_other": "Conflito(s): {{- count}} nota(s) mais antiga(s)",
             "descTitle": "Título de anotações: ",
             "importAll": "Importar todas as notas",
@@ -172,12 +202,12 @@
             }
         },
         "deleteAnnotations": "Excluir anotações?",
-        "deleteAnnotationsText_many": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
         "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} notas?",
+        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_other": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
         "deleteBookmarks": "Excluir marcadores?",
-        "deleteBookmarksText_many": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteBookmarksText_one": "Tem certeza de que deseja excluir {{- count}} marcadore?",
+        "deleteBookmarksText_many": "",
         "deleteBookmarksText_other": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteFeed": "Deseja excluir este catálogo?",
         "deletePublication": "Deseja excluir esta publicação?",
@@ -244,29 +274,54 @@
         "annotations": {
             "alreadyImported": "Todas as notas já estão importadas.",
             "emptyFile": "Não há notas disponíveis no arquivo.",
-            "errorParsing": "Erro durante a análise do arquivo: ",
-            "noBelongTo": "Incapaz de importar notas, pelo menos uma nota não pertence à publicação.",
             "nothing": "Não há nota pronta para ser importada, abortando a importação",
             "success": "Importação concluída com sucesso."
         },
         "download": {
             "cancelled": "",
-            "error": "O download de {{- title}} falhou: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} já foi importado.",
             "fail": "A importação de {{- path}} falhou: [{{- err}}]",
             "success": "A importação de {{- title}} terminou."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Erro na abertura da publicação: {{- err}}",
@@ -275,8 +330,8 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success_many": "",
                 "success_one": "",
+                "success_many": "",
                 "success_other": ""
             },
             "removed": "",
@@ -298,6 +353,17 @@
         },
         "addMenu": "Adicionar origem OPDS",
         "breadcrumbRoot": "Catálogos",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Site oficial do OPDS",
         "empty": "Nenhuma publicação encontrada",
         "firstPage": "Primeira",
@@ -306,10 +372,13 @@
         "menu": {
             "aboutBook": "Sobre este livro",
             "addExtract": "Importar o excerto",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Comprar este livro",
             "goLoanBook": "Emprestar publicação",
             "goRevokeLoanBook": "Revogar empréstimo",
-            "goSubBook": "Subscrever"
+            "goSubBook": "Subscrever",
+            "placeHold": ""
         },
         "network": {
             "error": "Incapaz de acessar a origem OPDS",
@@ -320,6 +389,12 @@
         },
         "next": "Próximo",
         "previous": "Anterior",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Retornar à navegação",
         "shelf": "Estante",
         "updateForm": {
@@ -661,7 +736,8 @@
         "certificateRevoked": "O certificado foi revogado.",
         "certificateSignatureInvalid": "A assinatura do certificado é inválida.",
         "cover": {
-            "img": "imagem de capa"
+            "img": "imagem de capa",
+            "zoom": ""
         },
         "day": "dia",
         "days": "dias",
@@ -672,7 +748,6 @@
         "expired": "Empréstimo expirado",
         "expiredLcp": "A licença LCP desta publicação expirou.",
         "incorrectPassphrase": "Nenhuma senha armazenada funciona na publicação, ou a senha inserida é errada.",
-        "lcpEnd": "Fim",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impressas",
@@ -686,10 +761,22 @@
         "notStarted": "Não iniciado",
         "onGoing": "Em andamento",
         "progression": {
-            "title": "Andamento"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Andamento",
+            "useRemote": ""
         },
         "read": "Finalizado",
         "remainingTime": "Empréstimos (dias restantes)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Renovar",
         "returnButton": "Retornar",
         "returnedLcp": "Publicação protegida por LCP devolvida.",
@@ -841,8 +928,8 @@
         },
         "picker": {
             "search": {
-                "founds_many": "{{- count}} correspondência(s)",
                 "founds_one": "{{- count}} correspondência",
+                "founds_many": "",
                 "founds_other": "{{- count}} correspondência(s)",
                 "input": "texto para correspondência",
                 "next": "Próximo",
@@ -880,7 +967,6 @@
             },
             "customFontSelected": "Você escolheu uma fonte personalizada",
             "customizeReader": "Personalize a formatação do texto",
-            "defaultValue": "",
             "disabled": "desabilitado",
             "display": "Exibição",
             "disposition": {
@@ -919,7 +1005,6 @@
             "preset": {
                 "apply": "Aplicar",
                 "applyDetails": "Aplicar sua configuração preferida à publicação atual.",
-                "detail": "Salvar / Aplicar / Redefinir sua configuração preferida.",
                 "reset": "Redefinir",
                 "resetDetails": "Redefinir a configuração preferida (configurações padrão).",
                 "save": "Salvar",
@@ -1328,24 +1413,29 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description_many": "",
                     "description_one": "",
+                    "description_many": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount_many": "",
                 "recoverableCount_one": "",
+                "recoverableCount_many": "",
                 "recoverableCount_other": "",
                 "title": ""
             }
         },
         "tabs": {
-            "appearance": "Aparência",
+            "advanced": "",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos do teclado",
             "profiles": "Perfis",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Automático",

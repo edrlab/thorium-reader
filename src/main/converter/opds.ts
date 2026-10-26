@@ -9,13 +9,16 @@ import debug_ from "debug";
 import { inject, injectable } from "inversify";
 import moment from "moment";
 import {
-    IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
-    IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOPDSPropertiesView,
-    IOpdsPublicationView, IOpdsResultView, IOpdsTagView,
+    IOpdsAuthenticationLinkView, IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView,
+    IOpdsFeedView, IOpdsGroupView, IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView,
+    IOPDSPropertiesView, IOpdsPublicationView, IOpdsResultView, IOpdsTagView,
 } from "readium-desktop/common/views/opds";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { getOpdsFeedColor, getOpdsFeedIcon } from "readium-desktop/common/models/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
+import { OPDS_PROGRESSION_MEDIA_TYPE, OPDS_PROGRESSION_REL } from "readium-desktop/common/models/opdsProgression";
+import { normalizeLcpHashedPassphrase } from "readium-desktop/utils/lcp";
 
 import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
@@ -40,7 +43,8 @@ import { diSymbolTable } from "../diSymbolTable";
 import { type Store } from "redux";
 import { RootState } from "../redux/states";
 import { PublicationRepository } from "../db/repository/publication";
-import { getAuthenticationToken } from "../network/http";
+import { isOpdsAuthenticated } from "readium-desktop/main/services/opdsAuthenticated";
+import { opdsActions } from "readium-desktop/common/redux/actions";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -91,6 +95,42 @@ const supportedFileTypeLinksForPayWallAcquisition = [
     ContentType.AtomXml,
 ];
 
+export const normalizeOpdsAuthenticationLink = (
+    authenticate: unknown,
+    baseUrl: string,
+): IOpdsAuthenticationLinkView | undefined => {
+    if (!authenticate || typeof authenticate !== "object" || Array.isArray(authenticate)) {
+        return undefined;
+    }
+
+    const {
+        href,
+        type,
+        title,
+    } = authenticate as { href?: unknown, type?: unknown, title?: unknown };
+
+    if (typeof href !== "string" || !href.trim() ||
+        (typeof type !== "undefined" && typeof type !== "string") ||
+        (typeof title !== "undefined" && typeof title !== "string")) {
+        return undefined;
+    }
+
+    try {
+        const authenticationLink: IOpdsAuthenticationLinkView = {
+            url: new URL(href.trim(), baseUrl).toString(),
+        };
+        if (typeof type === "string") {
+            authenticationLink.type = type;
+        }
+        if (typeof title === "string") {
+            authenticationLink.title = title;
+        }
+        return authenticationLink;
+    } catch {
+        return undefined;
+    }
+};
+
 @injectable()
 export class OpdsFeedViewConverter {
 
@@ -103,7 +143,69 @@ export class OpdsFeedViewConverter {
     // @inject(diSymbolTable["opds-service"])
     // private readonly opdsService!: OpdsService;
 
-    public async convertDocumentToView(document: OpdsFeedDocument): Promise<IOpdsFeedView> {
+    private readonly authenticationStatus = new Map<string, boolean>();
+    private readonly authenticationChecks = new Set<string>();
+    private readonly pendingAuthentication = new Map<string, Promise<boolean | undefined>>();
+
+    private checkAuthentication(document: OpdsFeedDocument, key: string): Promise<boolean | undefined> {
+        let pending = this.pendingAuthentication.get(key);
+        if (typeof pending === "undefined") {
+            pending = this.getAuthenticationStatus(document).then((status) => {
+                this.authenticationStatus.set(key, !!status);
+                return status;
+            }).finally(() => this.pendingAuthentication.delete(key));
+            this.pendingAuthentication.set(key, pending);
+        }
+        return pending;
+    }
+
+    public async convertDocumentToView(
+        document: OpdsFeedDocument,
+        backgroundAuthentication = false,
+        refreshAuthentication = true,
+    ): Promise<IOpdsFeedView> {
+        const key = JSON.stringify([document.url, document.authenticationUrl]);
+        let authentified: boolean;
+        if (backgroundAuthentication) {
+            authentified = this.authenticationStatus.get(key) || undefined;
+            if (refreshAuthentication && !this.authenticationChecks.has(key)) {
+                this.authenticationChecks.add(key);
+                // Let the API response be sent before starting network work.
+                setImmediate(() => {
+                    void (async () => {
+                        try {
+                            const status = !!(await this.checkAuthentication(document, key));
+                            // Compare with the value returned to this list, even if
+                            // a foreground conversion has since populated the cache.
+                            const previous = !!authentified;
+                            if (status !== previous) {
+                                this.store.dispatch(opdsActions.refresh.build(true));
+                            }
+                        } catch (e) {
+                            debug("Background OPDS authentication check failed", e);
+                        } finally {
+                            this.authenticationChecks.delete(key);
+                        }
+                    })();
+                });
+            }
+        } else {
+            authentified = await this.checkAuthentication(document, key);
+        }
+
+        return {
+            identifier: document.identifier,
+            title: document.title,
+            url: document.url,
+            authentified,
+            authenticationUrl: document.authenticationUrl,
+            favorite: document.favorite || false,
+            color: getOpdsFeedColor(document.color),
+            icon: getOpdsFeedIcon(document.icon),
+        };
+    }
+
+    private async getAuthenticationStatus(document: OpdsFeedDocument): Promise<boolean | undefined> {
 
         let authentified: boolean = undefined;
 
@@ -133,12 +235,11 @@ export class OpdsFeedViewConverter {
             debug(e);
         }
         if (catalogLinkUrl) {
-            const authToken = await getAuthenticationToken(catalogLinkUrl);
-            if (authToken?.accessToken) {
+            if (await isOpdsAuthenticated(catalogLinkUrl, document.authenticationUrl)) {
                 debug("catalog authentified: ", catalogLinkUrl.host);
                 authentified = true;
             } else {
-                debug("catalog NOT authentified: ", catalogLinkUrl.host, authToken);
+                debug("catalog NOT authentified: ", catalogLinkUrl.host);
             }
         } else {
             debug("No catalogLinkUrl found, return");
@@ -169,15 +270,7 @@ export class OpdsFeedViewConverter {
         //     return false;
         // }
 
-        return {
-            identifier: document.identifier, // preserve Identifiable identifier
-            title: document.title,
-            url: document.url,
-            authentified: authentified,
-            authenticationUrl: document.authenticationUrl,
-            favorite: document.favorite || false,
-            // feedHasAuthentication: authentified || await feedHasAuthenticationFunction(),
-        };
+        return authentified;
     }
 
     public convertOpdsNavigationLinkToView(link: OPDSLink, baseUrl: string): IOpdsNavigationLinkView {
@@ -190,62 +283,32 @@ export class OpdsFeedViewConverter {
             subtitle,
             url: urlPathResolve(baseUrl, link.Href),
             numberOfItems: link.Properties && link.Properties.NumberOfItems,
+            properties: this.convertOpdsPropertiesToView(link.Properties, baseUrl),
         };
     }
 
-    public convertOpdsPropertiesToView(properties: TProperties | undefined): IOPDSPropertiesView | undefined {
+    public convertOpdsPropertiesToView(
+        properties: TProperties | undefined,
+        baseUrl: string,
+    ): IOPDSPropertiesView | undefined {
 
         if (properties) {
 
-            const key = "lcp_hashed_passphrase";
-            const lcpHashedPassphraseObj = properties.AdditionalJSON ? properties.AdditionalJSON[key] : undefined;
-            let lcpHashedPassphrase: string;
-            if (typeof lcpHashedPassphraseObj === "string") {
-                const lcpHashedPassphraseHexOrB64 = lcpHashedPassphraseObj as string;
-                let isHex = false;
-                try {
-                    const low1 = lcpHashedPassphraseHexOrB64.toLowerCase();
-                    const buff = Buffer.from(low1, "hex");
-                    const str = buff.toString("hex");
-                    const low2 = str.toLowerCase();
-                    isHex = low1 === low2;
-                    if (!isHex) {
-                        debug(`OPDS lcp_hashed_passphrase should be HEX! (${lcpHashedPassphraseHexOrB64}) ${low1} !== ${low2}`);
-                    } else {
-                        debug(`OPDS lcp_hashed_passphrase is HEX: ${lcpHashedPassphraseHexOrB64}`);
-                    }
-                } catch (err) {
-                    debug(err); // ignore
-                }
-                if (isHex) {
-                    lcpHashedPassphrase = lcpHashedPassphraseHexOrB64;
-                } else {
-                    let isBase64 = false;
-                    try {
-                        const buff = Buffer.from(lcpHashedPassphraseHexOrB64, "base64");
-                        const str = buff.toString("hex");
-                        const b64 = Buffer.from(str, "hex").toString("base64");
-                        isBase64 = lcpHashedPassphraseHexOrB64 === b64;
-                        if (!isBase64) {
-                            debug(`OPDS lcp_hashed_passphrase is not BASE64?! (${lcpHashedPassphraseHexOrB64}) ${lcpHashedPassphraseHexOrB64} !== ${b64}`);
-                        } else {
-                            debug(`OPDS lcp_hashed_passphrase is BASE64! (${lcpHashedPassphraseHexOrB64})`);
-                        }
-                    } catch (err) {
-                        debug(err); // ignore
-                    }
-                    if (isBase64) {
-                        lcpHashedPassphrase = Buffer.from(lcpHashedPassphraseHexOrB64, "base64").toString("hex");
-                    }
-                }
-            }
+            const lcpHashedPassphrase = normalizeLcpHashedPassphrase(properties.AdditionalJSON?.lcp_hashed_passphrase);
 
             const indirectAcquisitions = properties.IndirectAcquisitions ?
                 (Array.isArray(properties.IndirectAcquisitions) ?
                     properties.IndirectAcquisitions : [properties.IndirectAcquisitions]) :
                 undefined;
 
+            // CantookStation workaround: some catalogs nest cancellable under properties.actions.
+            const actions = properties.AdditionalJSON?.actions;
+            const cancellableAction = actions && typeof actions === "object" && !Array.isArray(actions)
+                && actions.cancellable === true;
+
             return {
+                cancellable: properties.AdditionalJSON?.cancellable === true || !!cancellableAction,
+                authenticate: normalizeOpdsAuthenticationLink(properties.AdditionalJSON?.authenticate, baseUrl),
                 indirectAcquisitionTypes: indirectAcquisitions?.reduce<{ top: string, child: string | undefined} | undefined>((pv, cv) => {
                     if (typeof cv?.TypeAcquisition === "string") {
                         const child = cv.Children?.reduce<string | undefined>((pv_, cv_) => {
@@ -333,7 +396,7 @@ export class OpdsFeedViewConverter {
             type: ln.TypeLink,
             // length,
             // hash,
-            properties: this.convertOpdsPropertiesToView(ln.Properties),
+            properties: this.convertOpdsPropertiesToView(ln.Properties, baseUrl),
             rel: ln.Rel && ln.Rel.length > 0 ? ln.Rel[0] : undefined,
         };
     }
@@ -453,6 +516,18 @@ export class OpdsFeedViewConverter {
             type: "application/opds-publication+json",
         });
         const selfLinkUrl = selfLinkView.length === 1 ? selfLinkView[0].url : undefined;
+
+        // OPDS Progression discovery requires both an exact relation and media type.
+        // The generic link filter intentionally accepts links without a type, so use
+        // a strict predicate here before applying the regular URL/property conversion.
+        const progressionSourceLink = r2OpdsPublication.Links?.find((link) =>
+            typeof link.Href === "string" && link.Href.length > 0 &&
+            link.Rel?.includes(OPDS_PROGRESSION_REL) &&
+            link.TypeLink?.replace(/\s/g, "").split(";", 1)[0].toLowerCase() === OPDS_PROGRESSION_MEDIA_TYPE,
+        );
+        const progressionLink = progressionSourceLink
+            ? this.convertLinkToView(progressionSourceLink, baseUrl)
+            : undefined;
 
 
         const attachLocalBookshelfPubId = (opdsLinkView: IOpdsLinkView) => {
@@ -582,6 +657,7 @@ export class OpdsFeedViewConverter {
 
             opdsPublicationStringified: JSON.stringify(TaJsonSerialize(r2OpdsPublication)), // NOTE: This is not a idempotent json serialization from the original json , strict comparaison between json response request will not be equal to this !
             selfLink: selfLinkView.length === 1 ? selfLinkView[0] : undefined,
+            progressionLink,
         };
     }
     public convertOpdsAuthToView(r2OpdsAuth: OPDSAuthenticationDoc, baseUrl: string): IOpdsResultView {
@@ -673,15 +749,16 @@ export class OpdsFeedViewConverter {
 
         const selfLink = new OPDSLink();
         selfLink.Title = title;
-        selfLink.Properties = new OPDSProperties();
+        selfLink.Properties = Object.assign(new OPDSProperties(), lnFiltered?.Properties);
         selfLink.Properties.NumberOfItems = nb;
         selfLink.Rel = lnFiltered?.Rel || undefined;
         selfLink.Href = lnFiltered?.Href || undefined;
 
         const ret: IOpdsGroupView = {
+            title,
             publications,
             navigation,
-            selfLink: this.convertOpdsNavigationLinkToView(selfLink, baseUrl),
+            selfLink: lnFiltered?.Href ? this.convertOpdsNavigationLinkToView(selfLink, baseUrl) : undefined,
         };
         return ret;
     }
@@ -743,7 +820,10 @@ export class OpdsFeedViewConverter {
                 start: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "start" }),
                 up: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
                 search: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
-                bookshelf: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/shelf" }),
+                authenticate: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "authenticate" }),
+                bookshelf: r2OpdsFeed.Links.filter((link) => link.Href &&
+                    (link.Rel?.includes("http://opds-spec.org/shelf") || link.Rel?.includes("shelf")))
+                    .map((link) => this.convertLinkToView(link, baseUrl)),
                 text: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { type: [ContentType.Html] }),
                 self: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
             }

@@ -42,16 +42,34 @@ export enum SpreadEnum {
     Landscape = "landscape",
 }
 
+export const ArchiveProperty = "https://readium.org/webpub-manifest/properties#archive";
+
+@JsonObject()
+export class ArchiveProperties {
+
+    @JsonProperty("entryLength")
+    public EntryLength!: number;
+
+    @JsonProperty("isEntryCompressed")
+    public IsEntryCompressed!: boolean;
+}
+
 // [\n\s\S]+?^[ ]+@JsonProperty\(("[a-zA-Z]+")\)$
 // regexp replace all:
 // $1,
 // tslint:disable-next-line:max-line-length
-export const PropertiesSupportedKeys = ["contains", "layout", "orientation", "overflow", "page", "spread", "encrypted", "media-overlay"];
+export const PropertiesSupportedKeys = [
+    "contains", "layout", "orientation", "overflow", "page", "spread", "encrypted", "media-overlay",
+    ArchiveProperty,
+];
 
 // tslint:disable-next-line:max-line-length
 // https://github.com/readium/webpub-manifest/blob/917c83e798e3eda42b3e9d0dc92f0fef31b16211/schema/extensions/epub/properties.schema.json
 @JsonObject()
 export class Properties implements IWithAdditionalJSON {
+
+    @JsonProperty(ArchiveProperty)
+    public Archive!: ArchiveProperties;
 
     // tslint:disable-next-line:max-line-length
     // https://github.com/readium/webpub-manifest/blob/917c83e798e3eda42b3e9d0dc92f0fef31b16211/schema/extensions/epub/properties.schema.json#L7

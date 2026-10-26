@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "תפריט",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "סגור",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "",
+        "loading": "",
         "mainContent": "",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "",
         "skipLink": "",
         "toolbar": ""
@@ -78,6 +95,7 @@
         "deleteBook": "",
         "deleteTag": "",
         "description": "",
+        "downloaded": "",
         "emptyTagList": "",
         "entry": {
             "continueReading": "",
@@ -141,21 +159,33 @@
         "sort": "",
         "tag": "",
         "tags": "",
-        "update": ""
+        "update": "",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
             "descList_one": "",
-            "descList_other": "",
             "descList_two": "",
+            "descList_other": "",
             "descNewer_one": "",
-            "descNewer_other": "",
             "descNewer_two": "",
+            "descNewer_other": "",
             "descOlder_one": "",
-            "descOlder_other": "",
             "descOlder_two": "",
+            "descOlder_other": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -173,12 +203,12 @@
         },
         "deleteAnnotations": "",
         "deleteAnnotationsText_one": "",
-        "deleteAnnotationsText_other": "",
         "deleteAnnotationsText_two": "",
+        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "",
         "deleteBookmarksText_one": "",
-        "deleteBookmarksText_other": "",
         "deleteBookmarksText_two": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "",
         "deletePublication": "",
         "deletePublicationWithNotes": "",
@@ -244,29 +274,54 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
         "download": {
             "cancelled": "",
-            "error": "",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "",
             "fail": "",
             "success": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "",
@@ -276,8 +331,8 @@
             "recovery": {
                 "failure": "",
                 "success_one": "",
-                "success_other": "",
-                "success_two": ""
+                "success_two": "",
+                "success_other": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -298,6 +353,17 @@
         },
         "addMenu": "",
         "breadcrumbRoot": "",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "",
         "firstPage": "",
@@ -306,10 +372,13 @@
         "menu": {
             "aboutBook": "",
             "addExtract": "",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "",
             "goLoanBook": "",
             "goRevokeLoanBook": "",
-            "goSubBook": ""
+            "goSubBook": "",
+            "placeHold": ""
         },
         "network": {
             "error": "",
@@ -320,6 +389,12 @@
         },
         "next": "",
         "previous": "",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "",
         "updateForm": {
@@ -661,7 +736,8 @@
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
         "cover": {
-            "img": ""
+            "img": "",
+            "zoom": ""
         },
         "day": "",
         "days": "",
@@ -672,7 +748,6 @@
         "expired": "",
         "expiredLcp": "",
         "incorrectPassphrase": "",
-        "lcpEnd": "",
         "lcpNotSupported": "",
         "lcpRightsCopy": "",
         "lcpRightsPrint": "",
@@ -686,10 +761,22 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": ""
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "",
         "returnButton": "",
         "returnedLcp": "",
@@ -842,8 +929,8 @@
         "picker": {
             "search": {
                 "founds_one": "",
-                "founds_other": "",
                 "founds_two": "",
+                "founds_other": "",
                 "input": "",
                 "next": "",
                 "notFound": "",
@@ -880,7 +967,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "",
             "disposition": {
@@ -919,7 +1005,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1329,23 +1414,28 @@
                 "dialog": {
                     "confirm": "",
                     "description_one": "",
-                    "description_other": "",
                     "description_two": "",
+                    "description_other": "",
                     "title": ""
                 },
                 "none": "",
                 "recoverableCount_one": "",
-                "recoverableCount_other": "",
                 "recoverableCount_two": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },
         "tabs": {
-            "appearance": "",
+            "advanced": "",
             "general": "",
             "keyboardShortcuts": "",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "",

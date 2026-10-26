@@ -6,17 +6,73 @@
 // ==LICENSE-END==
 
 import { goBack, push } from "redux-first-history";
-import { authActions, historyActions } from "readium-desktop/common/redux/actions";
+import { Location } from "history";
+import debug_ from "debug";
+import { authActions, customizationActions, historyActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
+import {
+    buildLibraryPageViewParams,
+    libraryPageViewFromPathname,
+} from "readium-desktop/renderer/library/analytics/pageView";
 import { routerActions, winActions } from "readium-desktop/renderer/library/redux/actions";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, put } from "redux-saga/effects";
+import { all, call, put } from "redux-saga/effects";
 import { select as selectTyped } from "typed-redux-saga/macro";
 import { buildOpdsBrowserRoute } from "../../opds/route";
 
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
+const debug = debug_("readium-desktop:renderer:redux:saga:history");
+
+let lastPageViewRouteKey: string | undefined;
+
+function* sendPageView(location: Location) {
+    const customization = yield* selectTyped((state: ILibraryRootState) => state.customization);
+    if (
+        location.pathname.startsWith("/opds/") &&
+        customization.activate.id &&
+        !customization.manifest
+    ) {
+        debug("GA4 page_view deferred until the active profile manifest is loaded", location.pathname);
+        return;
+    }
+
+    const pageView = libraryPageViewFromPathname(location.pathname, customization.manifest);
+
+    if (!pageView) {
+        debug("GA4 page_view skipped for untracked Library route", location.pathname);
+        lastPageViewRouteKey = undefined;
+        return;
+    }
+
+    if (pageView.routeKey === lastPageViewRouteKey) {
+        debug("GA4 page_view skipped for duplicate Library screen", pageView.pageTitle, location.pathname);
+        return;
+    }
+
+    lastPageViewRouteKey = pageView.routeKey;
+    const params = buildLibraryPageViewParams(pageView.pageTitle);
+    debug("GA4 page_view sent for Library route", location.pathname, params);
+    yield call(logEvent, "page_view", params);
+}
+
+function* sendInitialPageView() {
+    const location = yield* selectTyped((state: ILibraryRootState) => state?.router?.location);
+    if (location) {
+        yield* sendPageView(location);
+    }
+}
+
+function* customizationManifestChanged() {
+    const location = yield* selectTyped((state: ILibraryRootState) => state?.router?.location);
+    if (location) {
+        yield* sendPageView(location);
+    }
+}
+
 function* historyWatcher(action: routerActions.locationChanged.TAction) {
+    yield* sendPageView(action.payload.location);
     yield put(winActions.history.build(action.payload.location));
 }
 
@@ -56,9 +112,14 @@ function* historyGoBack() {
 export function saga() {
     return all(
         [
+            call(sendInitialPageView),
             takeSpawnEvery(
                 routerActions.locationChanged.ID,
                 historyWatcher,
+            ),
+            takeSpawnEvery(
+                customizationActions.manifest.ID,
+                customizationManifestChanged,
             ),
             takeSpawnEvery(
                 historyActions.refresh.ID,

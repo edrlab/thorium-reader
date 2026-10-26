@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Izbornik",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Zatvori",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Povuci popis ulijevo",
+        "loading": "",
         "mainContent": "glavni sadržaj",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Povuci popis udesno",
         "skipLink": "Preskoči do sadržaja",
         "toolbar": "alatna traka"
@@ -78,6 +95,7 @@
         "deleteBook": "Izbriši",
         "deleteTag": "Izbriši oznaku",
         "description": "Opis",
+        "downloaded": "",
         "emptyTagList": "Nemate označenu e-knjigu.",
         "entry": {
             "continueReading": "Nastavi čitati",
@@ -141,20 +159,32 @@
         "sort": "Sortiraj po",
         "tag": "",
         "tags": "Oznake",
-        "update": "Uredi"
+        "update": "Uredi",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList_few": "",
             "descList_one": "",
+            "descList_few": "",
             "descList_other": "",
-            "descNewer_few": "",
             "descNewer_one": "",
+            "descNewer_few": "",
             "descNewer_other": "",
-            "descOlder_few": "",
             "descOlder_one": "",
+            "descOlder_few": "",
             "descOlder_other": "",
             "descTitle": "",
             "importAll": "",
@@ -172,12 +202,12 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText_few": "",
         "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_few": "",
         "deleteAnnotationsText_other": "",
         "deleteBookmarks": "",
-        "deleteBookmarksText_few": "",
         "deleteBookmarksText_one": "",
+        "deleteBookmarksText_few": "",
         "deleteBookmarksText_other": "",
         "deleteFeed": "Želiš li stvarno izbrisati ovaj katalog ?",
         "deletePublication": "Želiš li stvarno izbrisati ovu građu ?",
@@ -244,29 +274,54 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
         "download": {
             "cancelled": "",
-            "error": "Preuzimanje {{- title}} nije uspjelo: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} je već uvezen",
             "fail": "Neuspjeli uvoz {{- path}}. {{- err}}",
             "success": "Uvoz {{- title}} je završen."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Građa se ne može otvoriti: {{- err}}",
@@ -275,8 +330,8 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success_few": "",
                 "success_one": "",
+                "success_few": "",
                 "success_other": ""
             },
             "removed": "",
@@ -298,6 +353,17 @@
         },
         "addMenu": "Dodaj OPDS katalog",
         "breadcrumbRoot": "Katalozi",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "Građa nije pronađena",
         "firstPage": "Prva",
@@ -306,10 +372,13 @@
         "menu": {
             "aboutBook": "O ovoj knjizi",
             "addExtract": "Uvezi izvadak",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Kupi knjigu",
             "goLoanBook": "Posudi knjigu",
             "goRevokeLoanBook": "Prekini posudbu",
-            "goSubBook": "Pretplati se"
+            "goSubBook": "Pretplati se",
+            "placeHold": ""
         },
         "network": {
             "error": "Greška pri otvaranju kataloga",
@@ -320,6 +389,12 @@
         },
         "next": "Naprijed",
         "previous": "Natrag",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "Polica",
         "updateForm": {
@@ -661,7 +736,8 @@
         "certificateRevoked": "Certifikat je poništen",
         "certificateSignatureInvalid": "Potpis certifikata je netočan",
         "cover": {
-            "img": "slika naslovnice"
+            "img": "slika naslovnice",
+            "zoom": ""
         },
         "day": "",
         "days": "",
@@ -672,7 +748,6 @@
         "expired": "",
         "expiredLcp": "Ova knjiga se ne može čitati jer je LCP licenca istekla.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Kraj",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Kopirano znakova",
         "lcpRightsPrint": "Ispisano stranica",
@@ -686,10 +761,22 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "Napredak"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Napredak",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Obnovi",
         "returnButton": "Vrati",
         "returnedLcp": "Ova knjiga se ne može čitati jer je LCP licenca vraćena.",
@@ -841,8 +928,8 @@
         },
         "picker": {
             "search": {
-                "founds_few": "{{- count}} podudaranje(a)",
                 "founds_one": "{{- count}} podudaranje(a)",
+                "founds_few": "{{- count}} podudaranje(a)",
                 "founds_other": "{{- count}} podudaranje(a)",
                 "input": "tekst za pretragu",
                 "next": "Sljedeće",
@@ -880,7 +967,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "Prikaz",
             "disposition": {
@@ -919,7 +1005,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1328,24 +1413,29 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description_few": "",
                     "description_one": "",
+                    "description_few": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount_few": "",
                 "recoverableCount_one": "",
+                "recoverableCount_few": "",
                 "recoverableCount_other": "",
                 "title": ""
             }
         },
         "tabs": {
-            "appearance": "",
+            "advanced": "",
             "general": "",
             "keyboardShortcuts": "",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "",

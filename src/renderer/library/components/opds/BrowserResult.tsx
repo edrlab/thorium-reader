@@ -10,13 +10,14 @@ import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/componen
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
 import * as React from "react";
+import { VisuallyHidden } from "react-aria-components";
 import { connect } from "react-redux";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import { apiState } from "readium-desktop/renderer/common/redux/api/api";
-import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/redux/sagas/opds";
+import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opds/constants";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 // import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
@@ -27,6 +28,7 @@ import Entry from "./Entry";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -43,21 +45,20 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __, browserData } = this.props;
-        let content = (<Loader />);
+        let status = __("accessibility.loading");
+        const message = (title: string, detail?: string) => {
+            status = [title, detail].filter(Boolean).join(". ");
+            return <MessageOpdBrowserResult title={title} message={detail} />;
+        };
+        let content = (<Loader announce={false} />);
 
         if (!navigator.onLine) {
             content = (
-                <MessageOpdBrowserResult
-                    title={__("opds.network.noInternet")}
-                    message={__("opds.network.noInternetMessage")}
-                />
+                message(__("opds.network.noInternet"), __("opds.network.noInternetMessage"))
             );
         } else if (browserData?.error) { // reject in opds api // network don't reject now
             content = (
-                <MessageOpdBrowserResult
-                    title={__("opds.network.reject")}
-                    message={browserData.errorMessage.message}
-                />
+                message(__("opds.network.reject"), browserData.errorMessage.message)
             );
         } else if (browserData?.result) {
             const browserResult = browserData.result;
@@ -72,18 +73,24 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                 } } } = browserResult;
 
                 content = (
-                    <MessageOpdBrowserResult
-                        title={__("opds.network.reject")}
-                        message={`(http ${status}) ${title || type}`}
-                    />
+                    message(__("opds.network.reject"), `(http ${status}) ${title || type}`)
                 );
 
+            } else if (
+                browserResult.isSuccess &&
+                parseContentType(browserResult.contentType) === ContentType.Html
+            ) {
+                // The route saga hands Web Catalogs off to the system browser.
+                content = (<Loader announce={false} />);
             } else if (
                 browserResult.isSuccess
                 || (browserResult.isFailure && browserResult.statusCode === 401 && browserResult?.data?.opds?.auth)
             ) {
 
                 const { data: { opds } } = browserResult;
+                const hasEntries = !!(opds.navigation?.length || opds.publications?.length
+                    || opds.groups?.some(group => group.navigation?.length || group.publications?.length));
+                status = hasEntries ? "" : __("opds.empty");
 
                 if (opds.navigation &&
                     !opds.publications &&
@@ -121,7 +128,6 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                         opdsPublicationView={opds.publications}
                                         links={opds.links}
                                         pageInfo={opds.metadata}
-                                        opdsGroupsFound={opds.groups ? true : false}
                                     />
                                 </div>
                             </div>
@@ -144,7 +150,6 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                     opdsPublicationView={opds.publications}
                                     links={opds.links}
                                     pageInfo={opds.metadata}
-                                    opdsGroupsFound={opds.groups ? true : false}
                                 />
                                 : <></>
                             }
@@ -152,9 +157,11 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                             {
                                 opds.groups?.map((group, i) =>
                                     <section key={i}>
-                                        { group.publications?.length > 1 ?
+                                        { group.publications?.length > 0 ?
                                         <div className={stylesGlobal.heading_link}>
-                                            <Entry level={this.props.level} entry={group.selfLink}></Entry>
+                                            {group.selfLink ?
+                                                <Entry level={this.props.level} entry={group.selfLink}></Entry>
+                                                : <h3>{group.title}</h3>}
                                         </div>
                                         : <></>}
                                         {
@@ -163,7 +170,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                             : <></>
                                         }
                                         {
-                                            group.publications?.length > 1 ?
+                                            group.publications?.length > 0 ?
                                                     <Slider
                                                         resetSliderPosition={false}
                                                         content={group.publications.map((pub) =>
@@ -183,24 +190,22 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     );
                 } else {
                     content = (
-                        <MessageOpdBrowserResult title={__("opds.empty")} />
+                        message(__("opds.empty"))
                     );
                 }
             } else if (browserResult.isTimeout) {
                 content = (
-                    <MessageOpdBrowserResult title={__("opds.network.timeout")} />
+                    message(__("opds.network.timeout"))
                 );
             } else {
                 content = (
-                    <MessageOpdBrowserResult
-                        title={__("opds.network.error")}
-                        message={`${browserResult.statusCode ? `${browserResult.statusCode} : ` : ""}${browserResult.statusMessage || ""}`}
-                    />
+                    message(__("opds.network.error"), `${browserResult.statusCode ? `${browserResult.statusCode} : ` : ""}${browserResult.statusMessage || ""}`)
                 );
             }
         }
 
         return <div className={stylesCatalogs.opds_browserResults} id="opds_browserResults">
+            <VisuallyHidden><span role="status" aria-atomic="true">{status}</span></VisuallyHidden>
             {content}
         </div>;
     }

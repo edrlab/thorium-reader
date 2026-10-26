@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "பட்டியல்",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "மூடு",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "இடதுபுறத்தில் ச்லைடு",
+        "loading": "",
         "mainContent": "முக்கிய உள்ளடக்கம்",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "வலதுபுறம் சரிய",
         "skipLink": "உள்ளடக்கத்தைத் தவிர்க்கவும்",
         "toolbar": "கருவிப்பட்டி"
@@ -78,6 +95,7 @@
         "deleteBook": "நீக்கு",
         "deleteTag": "குறிச்சொல்லை நீக்கு",
         "description": "விவரம்",
+        "downloaded": "",
         "emptyTagList": "குறிக்கப்பட்ட வெளியீடுகள் இல்லை.",
         "entry": {
             "continueReading": "மீண்டும் வாசிப்பு",
@@ -141,7 +159,19 @@
         "sort": "வரிசைப்படுத்தவும்",
         "tag": "குறிச்சொல்",
         "tags": "குறிச்சொற்கள்",
-        "update": "தொகு"
+        "update": "தொகு",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -239,29 +269,54 @@
         "annotations": {
             "alreadyImported": "எல்லா குறிப்புகளும் ஏற்கனவே இறக்குமதி செய்யப்பட்டுள்ளன.",
             "emptyFile": "கோப்பில் குறிப்புகள் எதுவும் கிடைக்கவில்லை.",
-            "errorParsing": "கோப்பு பாகுபடுத்தலின் போது பிழை: ",
-            "noBelongTo": "குறிப்புகளை இறக்குமதி செய்ய முடியவில்லை, குறைந்தது ஒரு குறிப்பையாவது வெளியீட்டிற்கு சொந்தமானது அல்ல.",
             "nothing": "இறக்குமதியை நிறுத்தி, இறக்குமதி செய்ய எந்த குறிப்பும் தயாராக இல்லை",
             "success": "இறக்குமதி வெற்றிகரமாக முடிந்தது."
         },
         "download": {
             "cancelled": "",
-            "error": "பதிவிறக்கம் [{{- title}}] தோல்வியுற்றது: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] ஏற்கனவே இறக்குமதி செய்யப்பட்டது.",
             "fail": "இறக்குமதி [{{- path}}] தோல்வியுற்றது: [{{- err}}]",
             "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]",
@@ -292,6 +347,17 @@
         },
         "addMenu": "OPDS ஊட்டத்தைச் சேர்க்கவும்",
         "breadcrumbRoot": "பட்டியல்கள்",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS அதிகாரப்பூர்வ வலைத்தளம்",
         "empty": "வெளியீடு எதுவும் கிடைக்கவில்லை",
         "firstPage": "முதல்",
@@ -300,10 +366,13 @@
         "menu": {
             "aboutBook": "வெளியீடு பற்றி",
             "addExtract": "இறக்குமதி சாறு",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "வெளியீடு வாங்கவும்",
             "goLoanBook": "கடன் வெளியீடு",
             "goRevokeLoanBook": "கடனைத் திரும்பப் பெறுங்கள்",
-            "goSubBook": "குழுசேர்"
+            "goSubBook": "குழுசேர்",
+            "placeHold": ""
         },
         "network": {
             "error": "ஊட்டத்தை அணுகுவதில் பிழை",
@@ -314,6 +383,12 @@
         },
         "next": "அடுத்தது",
         "previous": "முந்தைய",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "அலமாரி",
         "updateForm": {
@@ -655,7 +730,8 @@
         "certificateRevoked": "ரத்து செய்யப்பட்ட எல்.சி.பி உரிம சான்றிதழ்.",
         "certificateSignatureInvalid": "தவறான எல்.சி.பி உரிம சான்றிதழ் கையொப்பம்.",
         "cover": {
-            "img": "கவர் படம்"
+            "img": "கவர் படம்",
+            "zoom": ""
         },
         "day": "நாள்",
         "days": "நாட்கள்",
@@ -666,7 +742,6 @@
         "expired": "கடன் காலாவதியானது",
         "expiredLcp": "இந்த வெளியீட்டின் எல்.சி.பி உரிமம் காலாவதியானது.",
         "incorrectPassphrase": "சேமிக்கப்பட்ட பாச்ஃபிரேச் வெளியீட்டிற்கு பொருந்தவில்லை, அல்லது நுழைந்த பாச்ஃபிரேச் தவறானது.",
-        "lcpEnd": "முடிவு",
         "lcpNotSupported": "",
         "lcpRightsCopy": "நகலெடுக்கப்பட்ட எழுத்துக்கள்",
         "lcpRightsPrint": "அச்சிடப்பட்ட பக்கங்கள்",
@@ -680,10 +755,22 @@
         "notStarted": "தொடங்கப்படவில்லை",
         "onGoing": "முன்னேற்றத்தில் உள்ளது",
         "progression": {
-            "title": "முன்னேற்றம்"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "முன்னேற்றம்",
+            "useRemote": ""
         },
         "read": "முடிந்தது",
         "remainingTime": "கடன் (மீதமுள்ள நேரம்)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "புதுப்பித்தல்",
         "returnButton": "திரும்ப",
         "returnedLcp": "இந்த எல்.சி.பி-பாதுகாக்கப்பட்ட வெளியீடு திரும்பப் பெறப்படுகிறது.",
@@ -873,7 +960,6 @@
             },
             "customFontSelected": "நீங்கள் ஒரு தனிப்பட்ட எழுத்துருவைத் தேர்ந்தெடுத்துள்ளீர்கள்",
             "customizeReader": "உரை வடிவமைப்பைத் தனிப்பயனாக்குங்கள்",
-            "defaultValue": "",
             "disabled": "முடக்கப்பட்டது",
             "display": "காட்சி",
             "disposition": {
@@ -912,7 +998,6 @@
             "preset": {
                 "apply": "இடு",
                 "applyDetails": "தற்போதைய வெளியீட்டில் உங்களுக்கு விருப்பமான உள்ளமைவைப் பயன்படுத்துங்கள்.",
-                "detail": "உங்களுக்கு விருப்பமான உள்ளமைவைச் சேமிக்கவும் / விண்ணப்பிக்கவும் / மீட்டமைக்கவும்.",
                 "reset": "மீட்டமை",
                 "resetDetails": "உங்களுக்கு விருப்பமான உள்ளமைவை மீட்டமைக்கவும் (இயல்புநிலை அமைப்புகள்).",
                 "save": "சேமி",
@@ -1332,11 +1417,16 @@
             }
         },
         "tabs": {
-            "appearance": "தோற்றம்",
+            "advanced": "",
             "general": "பொது",
             "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "தானியங்கி",

@@ -1,9 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Μενού",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Κλείσιμο",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Μετακίνηση προς τα αριστερά",
+        "loading": "",
         "mainContent": "κυρίως περιεχόμενο",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Μετακίνηση προς τα δεξιά",
         "skipLink": "Μεταπήδηση στο περιεχόμενο",
         "toolbar": "Γραμμή εργαλείων"
@@ -78,6 +95,7 @@
         "deleteBook": "Διαγραφή",
         "deleteTag": "Διαγραφή ετικέτας",
         "description": "Περιγραφή",
+        "downloaded": "Κατέβηκε",
         "emptyTagList": "Καμμιά δημοσίευση με ετικέτα.",
         "entry": {
             "continueReading": "Συνέχεια ανάγνωσης",
@@ -141,7 +159,19 @@
         "sort": "Ταξινόμηση με",
         "tag": "Ετικέτα",
         "tags": "Ετικέτες",
-        "update": "Επεξεργασία"
+        "update": "Επεξεργασία",
+        "userProfile": {
+            "available": "Διαθεσιμα: {{count}}",
+            "bookshelf": "Μετάβαση στη βιβλιοθήκη",
+            "edit": "Επεξεργασία προφίλ",
+            "holds": "Κρατήσεις",
+            "loading": "Σύνδεση στον λογαριασμό…",
+            "loans": "Δανεισμοί",
+            "title": "Λογαριασμός",
+            "total": "Όριο: {{count}}",
+            "unavailable": "Μη διαθέσιμες πληροφορίες προφίλ.",
+            "used": "Χρησιμοποιούνται {{used}} από {{total}}"
+        }
     },
     "dialog": {
         "annotations": {
@@ -239,29 +269,54 @@
         "annotations": {
             "alreadyImported": "Όλες οι σημειώσεις έχουν ήδη εισαχθεί.",
             "emptyFile": "Δεν διατίθενται σημειώσεις μέσα στο αρχείο.",
-            "errorParsing": "Σφάλμα κατά την ανάλυση αρχείου: ",
-            "noBelongTo": "Αδυναμία εισαγωγής σημειώσεων, τουλάχιστον μία σημείωση δεν ανήκει στη δημοσίευση.",
             "nothing": "Δεν υπάρχει καμία σημείωση για εισαγωγή· παράκαμψη εισαγωγής",
             "success": "Επιτυχής ολοκλήρωση εισαγωγής."
         },
         "download": {
             "cancelled": "Ακύρωση λήψης.",
-            "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενος κωδικός SHA-256 {{- expected}}, βρέθηκε {{- actual}}.",
                 "httpGet": "Αποτυχία λήψης μέσω HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Το προσωρινό όνομα του αρχείου λήψης δεν είναι έγκυρο.",
                 "invalidLink": "Ο σύνδεσμος λήψης δεν είναι έγκυρος.",
                 "invalidTempDirectory": "Ο προσωρινός φάκελος λήψης δεν είναι έγκυρος.",
                 "lengthMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενα {{- expected}} bytes, ληφθήκαν {{- actual}} bytes.",
                 "readStreamMissing": "Η ροή λήψης δεν είναι διαθέσιμη.",
                 "tooManyFilenameAttempts": "Αδυναμία δημιουργίας ενός μοναδικού προσωρινού ονόματος αρχείου λήψης: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} έχει ήδη εισαχθεί.",
             "fail": "Η εισαγωγή του {{- path}} απέτυχε. {{- err}}",
             "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Η δημοσίευση δεν μπορεί να ανοίξει: {{- err}}",
@@ -269,9 +324,9 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Η ανάκτηση της δημοσίευσης απέτυχε.",
+                "success_one": "{{- count}} δημοσίευση ανακτήθηκε.",
+                "success_other": "{{- count}} δημοσιεύσεις ανακτήθηκαν."
             },
             "removed": "Ο Φάκελος δημοσιεύσεων έχει αφαιρεθεί.",
             "updateFailed": "Αποτυχία ενημέρωσης του φακέλου δημοσιεύσεων: {{- message}}",
@@ -292,6 +347,17 @@
         },
         "addMenu": "Προσθήκη τροφοδοσίας OPDS",
         "breadcrumbRoot": "Κατάλογοι",
+        "color": {
+            "blue": "Μπλε",
+            "gray": "Γκρι",
+            "green": "Πράσινο",
+            "orange": "Πορτοκαλί",
+            "pink": "Ροζ",
+            "purple": "Μωβ",
+            "red": "Κόκκινο",
+            "title": "Χρώμα καταλόγου",
+            "yellow": "Κίτρινο"
+        },
         "documentation": "Επίσημος ιστότοπος OPDS",
         "empty": "Δεν βρέθηκε δημοσίευση",
         "firstPage": "Πρώτη σελίδα",
@@ -300,10 +366,13 @@
         "menu": {
             "aboutBook": "Σχετικά με αυτήν τη δημοσίευση",
             "addExtract": "Εισαγωγή αποσπάσματος",
+            "cancelHold": "Ακύρωση κράτησης",
+            "cancelHoldError": "Αδυναμία ακύρωσης αυτής της κράτησης. Παρακαλώ δοκίμασε ξανά.",
             "goBuyBook": "Αγορά δημοσίευσης",
             "goLoanBook": "Δανεισμός δημοσίευσης",
             "goRevokeLoanBook": "Ανάκληση δανεισμού",
-            "goSubBook": "Εγγραφή"
+            "goSubBook": "Εγγραφή",
+            "placeHold": "Κράτηση"
         },
         "network": {
             "error": "Σφάλμα πρόσβασης στη ροή",
@@ -314,6 +383,12 @@
         },
         "next": "Επόμενο",
         "previous": "Προηγούμενο",
+        "registry": {
+            "empty": "Δεν βρέθηκαν κατάλογοι.",
+            "error": "Αδυναμία αναζήτησης στο μητρώο. Παρακαλώ δοκίμασε ξανά.",
+            "loading": "Αναζήτηση σε καταλόγους…",
+            "title": "Αναζήτηση καταλόγων"
+        },
         "resumeBrowsing": "Συνέχιση περιήγησης",
         "shelf": "Ράφι",
         "updateForm": {
@@ -655,7 +730,8 @@
         "certificateRevoked": "Το πιστοποιητικό LCP ανακλήθηκε.",
         "certificateSignatureInvalid": "Η υπογραφή του πιστοποιητικού LCP είναι άκυρη.",
         "cover": {
-            "img": "εικόνα εξωφύλλου"
+            "img": "εικόνα εξωφύλλου",
+            "zoom": ""
         },
         "day": "ημέρα",
         "days": "ημέρες",
@@ -666,7 +742,6 @@
         "expired": "Ο δανεισμός έχει λήξει",
         "expiredLcp": "Αυτό το βιβλίο δεν μπορεί να διαβαστεί επειδή η άδεια χρήσης LCP έχει λήξει.",
         "incorrectPassphrase": "Καμία αποθηκευμένη συνθηματική φράση δεν ταιριάζει με το βιβλίο ή η εισαχθείσα συνθηματική φράση είναι λανθασμένη.",
-        "lcpEnd": "Τέλος",
         "lcpNotSupported": "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Αυτή είναι μια pre-release έκδοση του προγράμματος ανάγνωσης Thorium Desktop, η οποία δεν υποστηρίζει άδειες χρήσης LCP παραγωγής και υποστηρίζει μόνο την αποκρυπτογράφηση LCP «βασικού προφίλ» χωρίς επικύρωση πιστοποιητικού.",
         "lcpRightsCopy": "Αντιγραμμένοι χαρακτήρες",
         "lcpRightsPrint": "Εκτυπώσιμες σελίδες",
@@ -680,10 +755,22 @@
         "notStarted": "Δεν έχει αρχίσει",
         "onGoing": "Σε εξέλιξη",
         "progression": {
-            "title": "Εξέλιξη"
+            "remoteDescription": "Υπάρχει νεότερη θέση ανάγνωσης από τη συσκευή {{- device}} στο {{- progression}}%.",
+            "remoteTitle": "Συνέχεια από άλλη συσκευή;",
+            "title": "Εξέλιξη",
+            "useRemote": "Μετάβαση στη θέση"
         },
         "read": "Ολοκληρώθηκε",
         "remainingTime": "Δανεισμός (υπολείπεται χρόνος)",
+        "remoteProgression": {
+            "checking": "Ενεργοποιήθηκε και γίνεται έλεγχος υπηρεσίας…",
+            "disabled": "Δεν υποστηρίζεται για αυτή τη δημοσίευση.",
+            "empty": "Χωρίς αποθηκευμένη απομακρυσμένη πρόοδο.",
+            "position": "Απομακρυσμένη πρόοδος: {{percent}}% ({{device}}).",
+            "ready": "Ενεργοποιημένο και έτοιμο.",
+            "title": "Συγχρονισμός προόδου ανάγνωσης:",
+            "unavailable": "Ενεργοποιήθηκε, αλλά η υπηρεσία δεν είναι διαθέσιμη."
+        },
         "renewButton": "Ανανέωση",
         "returnButton": "Επιστροφή",
         "returnedLcp": "Αυτή η προστατευμένη LCP δημοσίευση έχει επιστραφεί.",
@@ -873,13 +960,12 @@
             },
             "customFontSelected": "Έχεις επιλέξει μια προσωπική γραμματοσειρά",
             "customizeReader": "Προσαρμογή μορφοποίησης κειμένου",
-            "defaultValue": "προκαθορισμένη τιμή",
             "disabled": "απενεργοποιημένο",
             "display": "Εμφάνιση",
             "disposition": {
                 "title": "Διάταξη"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Εμφάνιση αλλαγών σελίδας στο περιθώριο",
             "font": "Γραμματοσειρά",
             "fontSize": "Μέγεθος γραμματοσειράς",
             "increaseFontSize": "Αύξηση μεγέθους γραμματοσειράς",
@@ -912,7 +998,6 @@
             "preset": {
                 "apply": "Εφαρμογή",
                 "applyDetails": "Εφαρμογή των επιλογών σου στο ανοιγμένο βιβλίο.",
-                "detail": "Αποθήκευση / Εφαρμογή / Επαναφορά των επιλεγμένων ρυθμίσεων.",
                 "reset": "Επαναφορά",
                 "resetDetails": "Επαναφορά προτιμήσεων διαμόρφωσης (προεπιλεγμένες ρυθμίσεις).",
                 "save": "Αποθήκευση",
@@ -1256,7 +1341,7 @@
         },
         "screenReaderActivate": {
             "help": "Όταν η εφαρμογή ανιχνεύει την παρουσία βοηθητικής τεχνολογίας, η διεπαφή χρήστη λειτουργεί καλύτερα με προγράμματα ανάγνωσης οθόνης",
-            "invite": "Βελτιστοποίηση αναγνώστη οθόνης ({{- status}}) [{{- keyboard}}]",
+            "invite": "Βελτιστοποίηση αναγνώστη οθόνης",
             "message": "Βελτιωμένη υποστήριξη για προγράμματα ανάγνωσης οθόνης",
             "title": "Βελτίωση της εμπειρίας χρήσης του προγράμματος ανάγνωσης οθόνης"
         },
@@ -1311,32 +1396,37 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Έλεγχος ανακτήσιμων δημοσιεύσεων",
+                    "checkAgain": "Επανάληψη ελέγχου",
+                    "recover": "Ανάκτηση δημοσιεύσεων",
+                    "recovering": "Ανάκτηση..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Βρέθηκαν μία ή περισσότερες δημοσιεύσεις στο δίσκο, οι οποίες όμως δεν περιλαμβάνονται στη βάση δεδομένων. Η ανάκτησή τους είναι εφικτή.",
+                "checking": "Έλεγχος αποθήκευσης δημοσιεύσεων...",
+                "description": "Έλεγχος αποθήκης δημοσιεύσεων για τον εντοπισμό δημοσιεύσεων που μπορούν να ανακτηθούν με ασφάλεια.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Ανάκτηση",
+                    "description_one": "Το Thorium εντόπισε {{- count}} δημοσίευση στο δίσκο που δεν υπάρχει στη βάση δεδομένων. Θέλεις να εισαχθεί ξανά στο Thorium;",
+                    "description_other": "Το Thorium εντόπισε {{- count}} δημοσιεύσεις στο δίσκο που δεν υπάρχουν στη βάση δεδομένων.Θέλεις να εισαχθούν ξανά στο Thorium;",
+                    "title": "Ανάκτηση δημοσιεύσεων"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Δεν βρέθηκαν δημοσιεύσεις προς ανάκτηση.",
+                "recoverableCount_one": "Η {{- count}} δημοσίευση μπορεί να ανακτηθεί με τον αρχικό αναγνωριστικό αποθήκευσης.",
+                "recoverableCount_other": "Οι {{- count}} δημοσιεύσεις μπορεί να ανακτηθούν με τον αρχικό αναγνωριστικό αποθήκευσης.",
+                "title": "Αποκατάσταση"
             }
         },
         "tabs": {
-            "appearance": "Εμφάνιση",
+            "advanced": "Σύνθετη",
             "general": "Γενικά",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
             "profiles": "Προφίλ",
             "storage": "Χώρος αποθήκευσης"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "Απενεργοποίηση μετρήσεων τηλεμετρίας",
+            "disableTelemetryMeasurementsDescription": "Όταν είναι ενεργοποιημένο, το Thorium δεν αποστέλλει μετρήσεις τηλεμετρίας.",
+            "title": "Τηλεμετρία"
         },
         "theme": {
             "auto": "Αυτόματο",

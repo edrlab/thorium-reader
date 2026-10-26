@@ -1,18 +1,52 @@
 declare namespace typed_i18n {
   interface TFunction {
   (_: "accessibility", __?: {}): {
+  readonly "annotationNote": string,
   readonly "bookMenu": string,
+  readonly "bookmarkNote": string,
+  readonly "cancelDownload": string,
   readonly "closeDialog": string,
+  readonly "closeNotification": string,
+  readonly "copyNotificationInstruction": string,
+  readonly "decreaseSetting": string,
+  readonly "downloadProgress": string,
+  readonly "downloadProgressUnknown": string,
+  readonly "editTag": string,
+  readonly "favoriteCatalog": string,
+  readonly "increaseSetting": string,
   readonly "leftSlideButton": string,
+  readonly "loading": string,
   readonly "mainContent": string,
+  readonly "notificationCopied": string,
+  readonly "notificationCopyFailed": string,
+  readonly "printPage": string,
+  readonly "publicationDetails": string,
+  readonly "resetSetting": string,
   readonly "rightSlideButton": string,
   readonly "skipLink": string,
   readonly "toolbar": string
 };
+  (_: "accessibility.annotationNote", __?: {}): string;
   (_: "accessibility.bookMenu", __?: {}): string;
+  (_: "accessibility.bookmarkNote", __?: {}): string;
+  (_: "accessibility.cancelDownload", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
+  (_: "accessibility.closeNotification", __?: {}): string;
+  (_: "accessibility.copyNotificationInstruction", __?: {}): string;
+  (_: "accessibility.decreaseSetting", __?: {}): string;
+  (_: "accessibility.downloadProgress", __?: {}): string;
+  (_: "accessibility.downloadProgressUnknown", __?: {}): string;
+  (_: "accessibility.editTag", __?: {}): string;
+  (_: "accessibility.favoriteCatalog", __?: {}): string;
+  (_: "accessibility.increaseSetting", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.loading", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
+  (_: "accessibility.notificationCopied", __?: {}): string;
+  (_: "accessibility.notificationCopyFailed", __?: {}): string;
+  (_: "accessibility.printPage", __?: {}): string;
+  (_: "accessibility.publicationDetails", __?: {}): string;
+  (_: "accessibility.resetSetting", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.toolbar", __?: {}): string;
@@ -150,6 +184,7 @@ declare namespace typed_i18n {
   readonly "deleteBook": string,
   readonly "deleteTag": string,
   readonly "description": string,
+  readonly "downloaded": string,
   readonly "emptyTagList": string,
   readonly "entry": {
     readonly "continueReading": string,
@@ -213,7 +248,19 @@ declare namespace typed_i18n {
   readonly "sort": string,
   readonly "tag": string,
   readonly "tags": string,
-  readonly "update": string
+  readonly "update": string,
+  readonly "userProfile": {
+    readonly "available": string,
+    readonly "bookshelf": string,
+    readonly "edit": string,
+    readonly "holds": string,
+    readonly "loading": string,
+    readonly "loans": string,
+    readonly "title": string,
+    readonly "total": string,
+    readonly "unavailable": string,
+    readonly "used": string
+  }
 };
   (_: "catalog.AddToFavorites", __?: {}): string;
   (_: "catalog.about", __?: {}): { readonly "title": string };
@@ -253,6 +300,7 @@ declare namespace typed_i18n {
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;
   (_: "catalog.description", __?: {}): string;
+  (_: "catalog.downloaded", __?: {}): string;
   (_: "catalog.emptyTagList", __?: {}): string;
   (_: "catalog.entry", __?: {}): { readonly "continueReading": string, readonly "lastAdditions": string };
   (_: "catalog.entry.continueReading", __?: {}): string;
@@ -376,6 +424,28 @@ declare namespace typed_i18n {
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
+  (_: "catalog.userProfile", __?: {}): {
+  readonly "available": string,
+  readonly "bookshelf": string,
+  readonly "edit": string,
+  readonly "holds": string,
+  readonly "loading": string,
+  readonly "loans": string,
+  readonly "title": string,
+  readonly "total": string,
+  readonly "unavailable": string,
+  readonly "used": string
+};
+  (_: "catalog.userProfile.available", __?: {}): string;
+  (_: "catalog.userProfile.bookshelf", __?: {}): string;
+  (_: "catalog.userProfile.edit", __?: {}): string;
+  (_: "catalog.userProfile.holds", __?: {}): string;
+  (_: "catalog.userProfile.loading", __?: {}): string;
+  (_: "catalog.userProfile.loans", __?: {}): string;
+  (_: "catalog.userProfile.title", __?: {}): string;
+  (_: "catalog.userProfile.total", __?: {}): string;
+  (_: "catalog.userProfile.unavailable", __?: {}): string;
+  (_: "catalog.userProfile.used", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,
@@ -587,29 +657,54 @@ declare namespace typed_i18n {
   readonly "annotations": {
     readonly "alreadyImported": string,
     readonly "emptyFile": string,
-    readonly "errorParsing": string,
-    readonly "noBelongTo": string,
     readonly "nothing": string,
     readonly "success": string
   },
   readonly "download": {
     readonly "cancelled": string,
-    readonly "error": string,
     readonly "errors": {
       readonly "hashMismatch": string,
       readonly "httpGet": string,
+      readonly "idleTimeout": string,
       readonly "invalidFilename": string,
       readonly "invalidLink": string,
       readonly "invalidTempDirectory": string,
       readonly "lengthMismatch": string,
       readonly "readStreamMissing": string,
       readonly "tooManyFilenameAttempts": string
-    }
+    },
+    readonly "started": string,
+    readonly "startedWithTitle": string
   },
   readonly "import": {
     readonly "alreadyImport": string,
     readonly "fail": string,
     readonly "success": string
+  },
+  readonly "notifications": {
+    readonly "annotationImportFailed": string,
+    readonly "annotationPublicationUnavailable": string,
+    readonly "annotationStopPlayback": string,
+    readonly "authenticationFailed": string,
+    readonly "catalogLinkFailed": string,
+    readonly "catalogUpdateFailed": string,
+    readonly "copyLimit": string,
+    readonly "deleteFailed": string,
+    readonly "exportFailed": string,
+    readonly "openFileFailed": string,
+    readonly "openLinkFailed": string,
+    readonly "printLimit": string,
+    readonly "profileActivationFailed": string,
+    readonly "profileBusy": string,
+    readonly "profileProvisionFailed": string,
+    readonly "profileTimeout": string,
+    readonly "publicationUnavailable": string,
+    readonly "readingPositionFailed": string,
+    readonly "recoveryPartialFailure": string,
+    readonly "renewFailed": string,
+    readonly "returnFailed": string,
+    readonly "storageRefreshFailed": string,
+    readonly "tagsFailed": string
   },
   readonly "open": {
     readonly "error": string,
@@ -629,36 +724,34 @@ declare namespace typed_i18n {
   (_: "message.annotations", __?: {}): {
   readonly "alreadyImported": string,
   readonly "emptyFile": string,
-  readonly "errorParsing": string,
-  readonly "noBelongTo": string,
   readonly "nothing": string,
   readonly "success": string
 };
   (_: "message.annotations.alreadyImported", __?: {}): string;
   (_: "message.annotations.emptyFile", __?: {}): string;
-  (_: "message.annotations.errorParsing", __?: {}): string;
-  (_: "message.annotations.noBelongTo", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
   (_: "message.download", __?: {}): {
   readonly "cancelled": string,
-  readonly "error": string,
   readonly "errors": {
     readonly "hashMismatch": string,
     readonly "httpGet": string,
+    readonly "idleTimeout": string,
     readonly "invalidFilename": string,
     readonly "invalidLink": string,
     readonly "invalidTempDirectory": string,
     readonly "lengthMismatch": string,
     readonly "readStreamMissing": string,
     readonly "tooManyFilenameAttempts": string
-  }
+  },
+  readonly "started": string,
+  readonly "startedWithTitle": string
 };
   (_: "message.download.cancelled", __?: {}): string;
-  (_: "message.download.error", __?: {}): string;
   (_: "message.download.errors", __?: {}): {
   readonly "hashMismatch": string,
   readonly "httpGet": string,
+  readonly "idleTimeout": string,
   readonly "invalidFilename": string,
   readonly "invalidLink": string,
   readonly "invalidTempDirectory": string,
@@ -668,12 +761,15 @@ declare namespace typed_i18n {
 };
   (_: "message.download.errors.hashMismatch", __?: {}): string;
   (_: "message.download.errors.httpGet", __?: {}): string;
+  (_: "message.download.errors.idleTimeout", __?: {}): string;
   (_: "message.download.errors.invalidFilename", __?: {}): string;
   (_: "message.download.errors.invalidLink", __?: {}): string;
   (_: "message.download.errors.invalidTempDirectory", __?: {}): string;
   (_: "message.download.errors.lengthMismatch", __?: {}): string;
   (_: "message.download.errors.readStreamMissing", __?: {}): string;
   (_: "message.download.errors.tooManyFilenameAttempts", __?: {}): string;
+  (_: "message.download.started", __?: {}): string;
+  (_: "message.download.startedWithTitle", __?: {}): string;
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
   readonly "fail": string,
@@ -682,6 +778,54 @@ declare namespace typed_i18n {
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.notifications", __?: {}): {
+  readonly "annotationImportFailed": string,
+  readonly "annotationPublicationUnavailable": string,
+  readonly "annotationStopPlayback": string,
+  readonly "authenticationFailed": string,
+  readonly "catalogLinkFailed": string,
+  readonly "catalogUpdateFailed": string,
+  readonly "copyLimit": string,
+  readonly "deleteFailed": string,
+  readonly "exportFailed": string,
+  readonly "openFileFailed": string,
+  readonly "openLinkFailed": string,
+  readonly "printLimit": string,
+  readonly "profileActivationFailed": string,
+  readonly "profileBusy": string,
+  readonly "profileProvisionFailed": string,
+  readonly "profileTimeout": string,
+  readonly "publicationUnavailable": string,
+  readonly "readingPositionFailed": string,
+  readonly "recoveryPartialFailure": string,
+  readonly "renewFailed": string,
+  readonly "returnFailed": string,
+  readonly "storageRefreshFailed": string,
+  readonly "tagsFailed": string
+};
+  (_: "message.notifications.annotationImportFailed", __?: {}): string;
+  (_: "message.notifications.annotationPublicationUnavailable", __?: {}): string;
+  (_: "message.notifications.annotationStopPlayback", __?: {}): string;
+  (_: "message.notifications.authenticationFailed", __?: {}): string;
+  (_: "message.notifications.catalogLinkFailed", __?: {}): string;
+  (_: "message.notifications.catalogUpdateFailed", __?: {}): string;
+  (_: "message.notifications.copyLimit", __?: {}): string;
+  (_: "message.notifications.deleteFailed", __?: {}): string;
+  (_: "message.notifications.exportFailed", __?: {}): string;
+  (_: "message.notifications.openFileFailed", __?: {}): string;
+  (_: "message.notifications.openLinkFailed", __?: {}): string;
+  (_: "message.notifications.printLimit", __?: {}): string;
+  (_: "message.notifications.profileActivationFailed", __?: {}): string;
+  (_: "message.notifications.profileBusy", __?: {}): string;
+  (_: "message.notifications.profileProvisionFailed", __?: {}): string;
+  (_: "message.notifications.profileTimeout", __?: {}): string;
+  (_: "message.notifications.publicationUnavailable", __?: {}): string;
+  (_: "message.notifications.readingPositionFailed", __?: {}): string;
+  (_: "message.notifications.recoveryPartialFailure", __?: {}): string;
+  (_: "message.notifications.renewFailed", __?: {}): string;
+  (_: "message.notifications.returnFailed", __?: {}): string;
+  (_: "message.notifications.storageRefreshFailed", __?: {}): string;
+  (_: "message.notifications.tagsFailed", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;
@@ -712,6 +856,17 @@ declare namespace typed_i18n {
   readonly "addFormApiapp": { readonly "title": string },
   readonly "addMenu": string,
   readonly "breadcrumbRoot": string,
+  readonly "color": {
+    readonly "blue": string,
+    readonly "gray": string,
+    readonly "green": string,
+    readonly "orange": string,
+    readonly "pink": string,
+    readonly "purple": string,
+    readonly "red": string,
+    readonly "title": string,
+    readonly "yellow": string
+  },
   readonly "documentation": string,
   readonly "empty": string,
   readonly "firstPage": string,
@@ -720,10 +875,13 @@ declare namespace typed_i18n {
   readonly "menu": {
     readonly "aboutBook": string,
     readonly "addExtract": string,
+    readonly "cancelHold": string,
+    readonly "cancelHoldError": string,
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
     readonly "goRevokeLoanBook": string,
-    readonly "goSubBook": string
+    readonly "goSubBook": string,
+    readonly "placeHold": string
   },
   readonly "network": {
     readonly "error": string,
@@ -734,6 +892,12 @@ declare namespace typed_i18n {
   },
   readonly "next": string,
   readonly "previous": string,
+  readonly "registry": {
+    readonly "empty": string,
+    readonly "error": string,
+    readonly "loading": string,
+    readonly "title": string
+  },
   readonly "resumeBrowsing": string,
   readonly "shelf": string,
   readonly "updateForm": {
@@ -760,6 +924,26 @@ declare namespace typed_i18n {
   (_: "opds.addFormApiapp.title", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
+  (_: "opds.color", __?: {}): {
+  readonly "blue": string,
+  readonly "gray": string,
+  readonly "green": string,
+  readonly "orange": string,
+  readonly "pink": string,
+  readonly "purple": string,
+  readonly "red": string,
+  readonly "title": string,
+  readonly "yellow": string
+};
+  (_: "opds.color.blue", __?: {}): string;
+  (_: "opds.color.gray", __?: {}): string;
+  (_: "opds.color.green", __?: {}): string;
+  (_: "opds.color.orange", __?: {}): string;
+  (_: "opds.color.pink", __?: {}): string;
+  (_: "opds.color.purple", __?: {}): string;
+  (_: "opds.color.red", __?: {}): string;
+  (_: "opds.color.title", __?: {}): string;
+  (_: "opds.color.yellow", __?: {}): string;
   (_: "opds.documentation", __?: {}): string;
   (_: "opds.empty", __?: {}): string; (_: "opds.firstPage", __?: {}): string;
   (_: "opds.informations", __?: {}): string;
@@ -767,17 +951,23 @@ declare namespace typed_i18n {
   (_: "opds.menu", __?: {}): {
   readonly "aboutBook": string,
   readonly "addExtract": string,
+  readonly "cancelHold": string,
+  readonly "cancelHoldError": string,
   readonly "goBuyBook": string,
   readonly "goLoanBook": string,
   readonly "goRevokeLoanBook": string,
-  readonly "goSubBook": string
+  readonly "goSubBook": string,
+  readonly "placeHold": string
 };
   (_: "opds.menu.aboutBook", __?: {}): string;
   (_: "opds.menu.addExtract", __?: {}): string;
+  (_: "opds.menu.cancelHold", __?: {}): string;
+  (_: "opds.menu.cancelHoldError", __?: {}): string;
   (_: "opds.menu.goBuyBook", __?: {}): string;
   (_: "opds.menu.goLoanBook", __?: {}): string;
   (_: "opds.menu.goRevokeLoanBook", __?: {}): string;
   (_: "opds.menu.goSubBook", __?: {}): string;
+  (_: "opds.menu.placeHold", __?: {}): string;
   (_: "opds.network", __?: {}): {
   readonly "error": string,
   readonly "noInternet": string,
@@ -791,6 +981,16 @@ declare namespace typed_i18n {
   (_: "opds.network.reject", __?: {}): string;
   (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
+  (_: "opds.registry", __?: {}): {
+  readonly "empty": string,
+  readonly "error": string,
+  readonly "loading": string,
+  readonly "title": string
+};
+  (_: "opds.registry.empty", __?: {}): string;
+  (_: "opds.registry.error", __?: {}): string;
+  (_: "opds.registry.loading", __?: {}): string;
+  (_: "opds.registry.title", __?: {}): string;
   (_: "opds.resumeBrowsing", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
   (_: "opds.updateForm", __?: {}): {
@@ -1616,7 +1816,7 @@ declare namespace typed_i18n {
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,
   readonly "certificateSignatureInvalid": string,
-  readonly "cover": { readonly "img": string },
+  readonly "cover": { readonly "img": string, readonly "zoom": string },
   readonly "day": string,
   readonly "days": string,
   readonly "duration": { readonly "title": string },
@@ -1624,7 +1824,6 @@ declare namespace typed_i18n {
   readonly "expired": string,
   readonly "expiredLcp": string,
   readonly "incorrectPassphrase": string,
-  readonly "lcpEnd": string,
   readonly "lcpNotSupported": string,
   readonly "lcpRightsCopy": string,
   readonly "lcpRightsPrint": string,
@@ -1637,9 +1836,23 @@ declare namespace typed_i18n {
   readonly "markAsRead": string,
   readonly "notStarted": string,
   readonly "onGoing": string,
-  readonly "progression": { readonly "title": string },
+  readonly "progression": {
+    readonly "remoteDescription": string,
+    readonly "remoteTitle": string,
+    readonly "title": string,
+    readonly "useRemote": string
+  },
   readonly "read": string,
   readonly "remainingTime": string,
+  readonly "remoteProgression": {
+    readonly "checking": string,
+    readonly "disabled": string,
+    readonly "empty": string,
+    readonly "position": string,
+    readonly "ready": string,
+    readonly "title": string,
+    readonly "unavailable": string
+  },
   readonly "renewButton": string,
   readonly "returnButton": string,
   readonly "returnedLcp": string,
@@ -1728,8 +1941,9 @@ declare namespace typed_i18n {
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
   (_: "publication.certificateSignatureInvalid", __?: {}): string;
-  (_: "publication.cover", __?: {}): { readonly "img": string };
+  (_: "publication.cover", __?: {}): { readonly "img": string, readonly "zoom": string };
   (_: "publication.cover.img", __?: {}): string;
+  (_: "publication.cover.zoom", __?: {}): string;
   (_: "publication.day", __?: {}): string;
   (_: "publication.days", __?: {}): string;
   (_: "publication.duration", __?: {}): { readonly "title": string };
@@ -1738,7 +1952,6 @@ declare namespace typed_i18n {
   (_: "publication.expired", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.incorrectPassphrase", __?: {}): string;
-  (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpNotSupported", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;
   (_: "publication.lcpRightsPrint", __?: {}): string;
@@ -1751,10 +1964,34 @@ declare namespace typed_i18n {
   (_: "publication.markAsRead", __?: {}): string;
   (_: "publication.notStarted", __?: {}): string;
   (_: "publication.onGoing", __?: {}): string;
-  (_: "publication.progression", __?: {}): { readonly "title": string };
+  (_: "publication.progression", __?: {}): {
+  readonly "remoteDescription": string,
+  readonly "remoteTitle": string,
+  readonly "title": string,
+  readonly "useRemote": string
+};
+  (_: "publication.progression.remoteDescription", __?: {}): string;
+  (_: "publication.progression.remoteTitle", __?: {}): string;
   (_: "publication.progression.title", __?: {}): string;
+  (_: "publication.progression.useRemote", __?: {}): string;
   (_: "publication.read", __?: {}): string;
   (_: "publication.remainingTime", __?: {}): string;
+  (_: "publication.remoteProgression", __?: {}): {
+  readonly "checking": string,
+  readonly "disabled": string,
+  readonly "empty": string,
+  readonly "position": string,
+  readonly "ready": string,
+  readonly "title": string,
+  readonly "unavailable": string
+};
+  (_: "publication.remoteProgression.checking", __?: {}): string;
+  (_: "publication.remoteProgression.disabled", __?: {}): string;
+  (_: "publication.remoteProgression.empty", __?: {}): string;
+  (_: "publication.remoteProgression.position", __?: {}): string;
+  (_: "publication.remoteProgression.ready", __?: {}): string;
+  (_: "publication.remoteProgression.title", __?: {}): string;
+  (_: "publication.remoteProgression.unavailable", __?: {}): string;
   (_: "publication.renewButton", __?: {}): string;
   (_: "publication.returnButton", __?: {}): string;
   (_: "publication.returnedLcp", __?: {}): string;
@@ -1933,7 +2170,6 @@ declare namespace typed_i18n {
     },
     readonly "customFontSelected": string,
     readonly "customizeReader": string,
-    readonly "defaultValue": string,
     readonly "disabled": string,
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
@@ -1970,7 +2206,6 @@ declare namespace typed_i18n {
     readonly "preset": {
       readonly "apply": string,
       readonly "applyDetails": string,
-      readonly "detail": string,
       readonly "reset": string,
       readonly "resetDetails": string,
       readonly "save": string,
@@ -2354,7 +2589,6 @@ declare namespace typed_i18n {
   },
   readonly "customFontSelected": string,
   readonly "customizeReader": string,
-  readonly "defaultValue": string,
   readonly "disabled": string,
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
@@ -2391,7 +2625,6 @@ declare namespace typed_i18n {
   readonly "preset": {
     readonly "apply": string,
     readonly "applyDetails": string,
-    readonly "detail": string,
     readonly "reset": string,
     readonly "resetDetails": string,
     readonly "save": string,
@@ -2432,7 +2665,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.column.two", __?: {}): string;
   (_: "reader.settings.customFontSelected", __?: {}): string;
   (_: "reader.settings.customizeReader", __?: {}): string;
-  (_: "reader.settings.defaultValue", __?: {}): string;
   (_: "reader.settings.disabled", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
@@ -2489,7 +2721,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.preset", __?: {}): {
   readonly "apply": string,
   readonly "applyDetails": string,
-  readonly "detail": string,
   readonly "reset": string,
   readonly "resetDetails": string,
   readonly "save": string,
@@ -2498,7 +2729,6 @@ declare namespace typed_i18n {
 };
   (_: "reader.settings.preset.apply", __?: {}): string;
   (_: "reader.settings.preset.applyDetails", __?: {}): string;
-  (_: "reader.settings.preset.detail", __?: {}): string;
   (_: "reader.settings.preset.reset", __?: {}): string;
   (_: "reader.settings.preset.resetDetails", __?: {}): string;
   (_: "reader.settings.preset.save", __?: {}): string;
@@ -2938,11 +3168,16 @@ declare namespace typed_i18n {
     }
   },
   readonly "tabs": {
-    readonly "appearance": string,
+    readonly "advanced": string,
     readonly "general": string,
     readonly "keyboardShortcuts": string,
     readonly "profiles": string,
     readonly "storage": string
+  },
+  readonly "telemetry": {
+    readonly "disableTelemetryMeasurements": string,
+    readonly "disableTelemetryMeasurementsDescription": string,
+    readonly "title": string
   },
   readonly "theme": {
     readonly "auto": string,
@@ -3910,17 +4145,25 @@ declare namespace typed_i18n {
   (_: "settings.storage.recovery.recoverableCount", __?: {}): string;
   (_: "settings.storage.recovery.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
-  readonly "appearance": string,
+  readonly "advanced": string,
   readonly "general": string,
   readonly "keyboardShortcuts": string,
   readonly "profiles": string,
   readonly "storage": string
 };
-  (_: "settings.tabs.appearance", __?: {}): string;
+  (_: "settings.tabs.advanced", __?: {}): string;
   (_: "settings.tabs.general", __?: {}): string;
   (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
   (_: "settings.tabs.profiles", __?: {}): string;
   (_: "settings.tabs.storage", __?: {}): string;
+  (_: "settings.telemetry", __?: {}): {
+  readonly "disableTelemetryMeasurements": string,
+  readonly "disableTelemetryMeasurementsDescription": string,
+  readonly "title": string
+};
+  (_: "settings.telemetry.disableTelemetryMeasurements", __?: {}): string;
+  (_: "settings.telemetry.disableTelemetryMeasurementsDescription", __?: {}): string;
+  (_: "settings.telemetry.title", __?: {}): string;
   (_: "settings.theme", __?: {}): {
   readonly "auto": string,
   readonly "dark": string,

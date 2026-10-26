@@ -7,43 +7,44 @@
 
 import { ipcRenderer } from "electron";
 
-import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
-import * as Dialog from "@radix-ui/react-dialog";
+import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 
-import { Link } from "react-router-dom";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import classNames from "classnames";
 import * as React from "react";
-import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
+import { Link } from "react-router-dom";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { resolveDisplayType } from "../../routing";
-import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
-import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
+import { URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PROTOCOL_THORIUMHTTPS } from "readium-desktop/common/streamerProtocol";
 import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
-import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
+import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
+import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
+import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { Settings } from "../settings/Settings";
-import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import { buildOpdsBrowserRoute } from "../../opds/route";
-import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
-import DOMPurify from "dompurify";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
-import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import {
+    buildProfileCatalogRootIdentifier,
+    buildProfileRoute,
+    getLocalizedProfileScreenLinks,
+} from "../../customization/route";
+import { buildOpdsBrowserRoute } from "../../opds/route";
+import { resolveDisplayType } from "../../routing";
+import { Settings } from "../settings/Settings";
 // import { WizardModal } from "../Wizard";
 
 export interface NavigationHeader {
     route: string;
     label: string;
     matchRoutes: string[];
+    exactMatch?: boolean;
+    replace?: boolean;
     searchEnable?: boolean;
     styles: string[];
     svg: any;
@@ -87,11 +88,11 @@ const Header = () => {
         );
 
         return (
-            <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index} style={{ height: "inherit" }}>
+            <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index} style={{ height: "auto", flexShrink: 0 }}>
                 <Link
                     to={nextLocation}
                     state={{ displayType: resolveDisplayType(nextLocation.state, savedDisplayTypeSetting) }}
-                    replace={true}
+                    replace={item.replace ?? true}
                     aria-pressed={active}
                     role={"button"}
                     className={classNames(active ? stylesButtons.button_nav_primary : "", !active ? "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" : "")}
@@ -118,9 +119,9 @@ const Header = () => {
                             e.currentTarget.click();
                         }
                     }}
-                    style={{ height: "inherit" }}
+                    style={{ height: "auto" }}
                 >
-                    {typeof item.svg === "string" ? <img width={"20px"} height={"20px"} src={item.svg}></img> : <SVG ariaHidden svg={item.svg} />}
+                    {typeof item.svg === "string" ? <img alt="" aria-hidden width={"20px"} height={"20px"} src={item.svg}></img> : <SVG ariaHidden svg={item.svg} />}
                     <h3>{item.label}</h3>
                 </Link>
             </li>
@@ -164,18 +165,10 @@ const Header = () => {
     const logoObj = customizationManifest?.images?.find((ln) => ln?.rel === "logo");
     const customizationBaseUrl = customizationEnable ? `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
 
-    const screenZipLinks = React.useMemo(() => {
-        let a = customizationManifest?.links?.filter((ln) => ln.rel === "screen" && (!ln.type || ln.type === "text/html") && ln.language === locale);
-        if (!a) {
-            a = customizationManifest?.links?.filter((ln) => ln.rel === "screen" && (!ln.type || ln.type === "text/html") && (ln.language === "en" || !ln.language));
-        }
-        return a;
-    }, [customizationManifest, locale]);
-    const screenZipObj = React.useMemo(() => screenZipLinks?.map(({ href, title }) => href && customizationBaseUrl ? {url: customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(href).toString("base64")), title } : undefined), [screenZipLinks, customizationBaseUrl]);
-
-    const [screenHtmlArray, setScreenHtmlArray] = React.useState<Array<{ dangerousInnerHTML_CustomProfileScreenSanitized: string, title: string | IStringMap }>>([]);
-    const [cancel, setCancel] = React.useState(false);
-
+    const screenZipLinks = React.useMemo(
+        () => getLocalizedProfileScreenLinks(customizationManifest, locale),
+        [customizationManifest, locale],
+    );
 
     const screenReaderActivate = useSelector((state: ILibraryRootState) => state.screenReader.activate);
 
@@ -187,8 +180,8 @@ const Header = () => {
 
     const screenReaderToggle = React.useCallback(() => {
         dispatch(screenReaderActions.save.build(!screenReaderActivate));
-        dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));
-    }, [dispatch, __, screenReaderActivate, keyboardShortcutScreenReader]);
+        dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite") + ` (${!screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no")})`));
+    }, [dispatch, __, screenReaderActivate]); // keyboardShortcutScreenReader
 
     const [isAccessibilitySupportEnabled, setAccessibilitySupportEnabled] = React.useState(false);
 
@@ -215,64 +208,13 @@ const Header = () => {
         };
     }, [isAccessibilitySupportEnabled]);
 
-    React.useEffect(() => {
-        if (customizationId && screenZipObj?.length) {
-
-            setScreenHtmlArray([]);
-            setCancel(false);
-
-            for (const screenHref of screenZipObj) {
-
-                // URL is thoriumhttps:// "custom-profile-zip" protocol handler, so no use of isURL(url) and /^https?:\/\//.test(url) checks here
-                fetch(screenHref.url)
-                    .then((response) => {
-                        if (response.ok) {
-                            return response.text();
-                        }
-                        return Promise.reject(response.statusText);
-                    })
-                    .then((rawHtmlContent) => {
-                        // console.log("RAW HTML", rawHtmlContent);
-
-                        if (cancel) {
-                            return ;
-                        }
-
-                        if (!rawHtmlContent) {
-                            return ;
-                        }
-
-                        const htmlSanitized = DOMPurify.sanitize(rawHtmlContent, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
-                        // console.log(rawHtmlContent, htmlSanitized);
-                        // NOTE that <a href="yyy">xxx</a> is fine, caught by webContents.on("will-navigate", ...) with event.preventDefault() and shell.openExternal(...) on normalized/escaped URL and filtered on HTTP(S)://
-                        // NOTE that the attribute target="_blank" (etc) is automatically removed by DOMPurify but would be caught by webContents.setWindowOpenHandler(...) with { action: "deny" }, although no shell.openExternal(...) in this case
-                        setScreenHtmlArray((screenHtmlArray) => [...screenHtmlArray, { dangerousInnerHTML_CustomProfileScreenSanitized: htmlSanitized, title: screenHref.title }]);
-                    })
-                    .catch((e) => {
-                        console.error("Error fetching data:", e);
-                    });
-            }
-        } else {
-            setScreenHtmlArray([]);
-            setCancel(true);
-        }
-
-    }, [screenZipObj, customizationId, setScreenHtmlArray, cancel, setCancel]);
-
-
     const customizationCatalogs = customizationManifest?.links?.filter(({ rel }) => rel === "catalog");
     if (customizationCatalogs?.length) {
         for (const catalog of customizationCatalogs) {
-            let catalogOrigin = "";
-            try {
-                const { host } = new URL(catalog.href);
-                if (host) {
-                    catalogOrigin = host;
-                }
-            } catch {
-                // ignore
+            const hostEncoded = buildProfileCatalogRootIdentifier(catalog.href);
+            if (!hostEncoded) {
+                continue;
             }
-            const hostEncoded = Buffer.from(encodeURIComponent(catalogOrigin), "utf8").toString("base64");
             const label = convertMultiLangStringToString(catalog?.title, locale) || __("header.myCatalogs");
             headerNav.push({
                 route: buildOpdsBrowserRoute(hostEncoded, label, catalog.href),
@@ -285,13 +227,34 @@ const Header = () => {
             });
         }
     }
+
+    if (screenZipLinks?.length) {
+        for (const screenLink of screenZipLinks) {
+            if (!screenLink.href) {
+                continue;
+            }
+            const route = buildProfileRoute(screenLink.href);
+            const label = convertMultiLangStringToString(screenLink.title, locale) || __("catalog.customization.fallback.screen");
+            headerNav.push({
+                route,
+                label,
+                matchRoutes: [route],
+                exactMatch: true,
+                replace: false,
+                searchEnable: false,
+                styles: [],
+                svg: InfoIcon,
+            });
+        }
+    }
+
     const displayScreenReaderInvite = !screenReaderActivate && isAccessibilitySupportEnabled;
 
     return (<>
         {displayScreenReaderInvite ? <SkipLink
             className={stylesHeader.skip_link}
             anchorId="xxx"
-            label={__("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader, status: screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no")})}
+            label={__("settings.screenReaderActivate.invite") + ` [${keyboardShortcutScreenReader}]`}
             onClick={screenReaderToggle}
         /> : <></>}
         <SkipLink
@@ -310,81 +273,45 @@ const Header = () => {
             }
             <h1 className={stylesHeader.appName} aria-label="Thorium"></h1>
             <ul style={{ paddingTop: "10px", height: customizationEnable ? "calc(100% - 180px)" : "" }}>
-                <div>
-                    {
-                        headerNav.map(
-                            (item, index, array) => {
+                {
+                    headerNav.map(
+                        (item, index, array) => {
 
-                                const pathname = location.pathname;
+                            const pathname = location.pathname;
 
-                                let active = false;
-                                const itemsFound = array.filter(({ matchRoutes }) => !!matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1]));
-                                // console.log("ITEMS FOUND=", itemsFound);
-                                if (!itemsFound) {
-                                    console.error("No Route Found !!!", pathname);
-                                } else if (itemsFound.length === 1) {
-                                    if (itemsFound[0].label === item.label) {
+                            let active = item.exactMatch && pathname === item.route;
+                            if (item.exactMatch) {
+                                return buildNavItem(item, index, active);
+                            }
+                            const itemsFound = array.filter(({ matchRoutes }) => !!matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1]));
+                            // console.log("ITEMS FOUND=", itemsFound);
+                            if (!itemsFound) {
+                                console.error("No Route Found !!!", pathname);
+                            } else if (itemsFound.length === 1) {
+                                if (itemsFound[0].label === item.label) {
+                                    active = true;
+                                }
+                            } else {
+                                const items2Found = array.filter(({ matchRoutes }) => !!matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1] && route.split("/")[2] === pathname.split("/")[2]));
+                                if (items2Found?.length === 0) {
+                                    if (item.matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1] && route.split("/")[2] === undefined)) {
+                                        active = true;
+                                    }
+                                } else if (items2Found.length === 1) {
+                                    if (items2Found[0].label === item.label) {
                                         active = true;
                                     }
                                 } else {
-                                    const items2Found = array.filter(({ matchRoutes }) => !!matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1] && route.split("/")[2] === pathname.split("/")[2]));
-                                    if (items2Found?.length === 0) {
-                                        if (item.matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1] && route.split("/")[2] === undefined)) {
-                                            active = true;
-                                        }
-                                    } else if (items2Found.length === 1) {
-                                        if (items2Found[0].label === item.label) {
-                                            active = true;
-                                        }
-                                    } else {
-                                        if (items2Found[0].label === item.label) {
-                                            active = true;
-                                        }
+                                    if (items2Found[0].label === item.label) {
+                                        active = true;
                                     }
                                 }
-                                // console.log("ITEM", item.label, "ACTIVE=", active);
-                                return buildNavItem(item, index, active);
-                            },
-                        )
-                    }
-                {
-                    screenHtmlArray.length ? screenHtmlArray.map(({dangerousInnerHTML_CustomProfileScreenSanitized, title: titleStringOrObject}, index) => {
-
-                        const title = convertMultiLangStringToString(titleStringOrObject, locale);
-
-                        return <>
-                            <li className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={`customization-screen-${index}`} style={{ height: "inherit" }}>
-                                <Dialog.Root>
-                                    <Dialog.Trigger asChild>
-                                        <button title={title || __("catalog.customization.fallback.screen")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                                            <SVG ariaHidden svg={InfoIcon} />
-                                            <h3>{title || __("catalog.customization.fallback.screen")}</h3>
-                                        </button>
-                                    </Dialog.Trigger>
-                                    <Dialog.Portal>
-                                        <div className={stylesModals.modal_dialog_overlay}></div>
-                                        <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
-                                            {
-                                                // FALSE this to test sourcemaps:
-                                                true &&
-                                                <VisuallyHidden.Root>
-                                                    <Dialog.Title>{title || __("catalog.customization.fallback.screen")}</Dialog.Title>
-                                                </VisuallyHidden.Root>
-                                            }
-
-                                            {
-                                                dangerousInnerHTML_CustomProfileScreenSanitized ?
-                                                    <div className={stylesModals.modal_dialog_body} dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_CustomProfileScreenSanitized }} /> : <></>
-                                            }
-
-                                        </Dialog.Content>
-                                    </Dialog.Portal>
-                                </Dialog.Root>
-                            </li>
-                        </>;
-                    }) : <></>
+                            }
+                            // console.log("ITEM", item.label, "ACTIVE=", active);
+                            return buildNavItem(item, index, active);
+                        },
+                    )
                 }
-                </div>
                 <li /* style={{position: "absolute", bottom: "10px" }} */>
                     <Settings />
                 </li>

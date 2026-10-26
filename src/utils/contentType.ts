@@ -17,6 +17,8 @@ export enum ContentType {
     DivinaPacked = "application/divina+zip",
     Opds2Auth = "application/opds-authentication+json",
     Opds2Pub = "application/opds-publication+json",
+    OpdsProgression = "application/opds-progression+json",
+    OpdsProfile = "application/opds-profile+json",
     Opds2AuthVendorV1_0 = "application/vnd.opds.authentication.v1.0+json",
     OpenSearch = "application/opensearchdescription+xml",
     FormUrlEncoded = "application/x-www-form-urlencoded",
@@ -37,6 +39,7 @@ export enum ContentType {
     problemDetails = "application/problem+json", // https://datatracker.ietf.org/doc/html/rfc7807#section-6.1
     ApiProblem = "application/api-problem+json",
     Zip = "application/zip", // Daisy Zipped file
+    PkixCrl = "application/pkix-crl", // RFC 5280 section 4.2.1.13 / RFC 2585 section 4.2
 
     Opf = "application/oebps-package+xml",
 }

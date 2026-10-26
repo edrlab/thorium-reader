@@ -9,7 +9,7 @@ import debug_ from "debug";
 
 import StreamZip from "node-stream-zip";
 
-import { IStreamAndLength, IZip, Zip } from "./zip";
+import { IStreamAndLength, IZip, IZipEntryMetadata, Zip } from "./zip";
 
 // import { bufferToStream } from "../stream/BufferUtils";
 
@@ -91,6 +91,23 @@ export class Zip1 extends Zip {
             return Promise.resolve([]);
         }
         return Promise.resolve(Object.keys(this.zip.entries()));
+    }
+
+    public entryMetadata(entryPath: string): IZipEntryMetadata | undefined {
+        if (!this.hasEntries()) {
+            return undefined;
+        }
+
+        const entry = this.zip.entries()[entryPath];
+        if (!entry) {
+            return undefined;
+        }
+
+        const isEntryCompressed = entry.method !== 0;
+        return {
+            entryLength: isEntryCompressed ? entry.compressedSize : entry.size,
+            isEntryCompressed,
+        };
     }
 
     public async entryStreamPromise(entryPath: string): Promise<IStreamAndLength> {

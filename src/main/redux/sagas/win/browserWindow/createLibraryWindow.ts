@@ -10,6 +10,8 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "node:path";
 import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
+import { logWindowFocusTime } from "readium-desktop/main/analytics/window";
+import { registerWindowFocusTracking } from "readium-desktop/main/analytics/windowFocus";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -66,6 +68,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+    registerWindowFocusTracking(libWindow, "library", logWindowFocusTime);
 
     debug("LibraryWindow new BrowserWindow instancied");
     registerWindowsLibraryTray(libWindow);
