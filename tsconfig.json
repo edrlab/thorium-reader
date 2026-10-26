@@ -75,7 +75,7 @@
       "@r2-lcp-js/*": ["./src/r2-xxx-js/r2-lcp-js/*"]
     }
   },
-  "include": ["./src/**/*", "./test/**/*"],
+  "include": ["./src/**/*"],
   "exclude": ["./node_modules"],
   "files": ["./typings.d.ts"]
 }
