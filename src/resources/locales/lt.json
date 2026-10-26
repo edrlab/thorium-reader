@@ -815,7 +815,7 @@
             },
             "hide": "Neatvaizduoti",
             "highlight": "Paryškinimas",
-            "noSelectionToast": "Niekas nepasirinkta",
+            "noSelectionToast": "Prieš kurdami pastabą, pažymėkite tekstą.",
             "note": "{{- color}} Pastaba",
             "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
             "saveNote": "Išsaugoti",
