@@ -10,11 +10,11 @@ import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app
 
 import * as React from "react";
 
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
-import { IReaderSettingsProps } from "readium-desktop/renderer/reader/components/options-values";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useReaderConfigAll, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { IReaderSettingsProps } from "readium-desktop/renderer/reader/components/options-values";
 
 export const ReadingDisplayCheckboxSettings = ({
     disableRTLFlip,
@@ -38,7 +38,9 @@ export const ReadingDisplayCheckboxSettings = ({
             checked: enableMathJax,
             onChange: () => {
                 if (enableMathJax === false) {
-                    set({ paged: false, enableMathJax: true });
+                    // MathJax menu disabled => no need to disable pagination and switch to scroll
+                    // set({ paged: false, enableMathJax: true });
+                    set({ enableMathJax: true });
                     return;
                 }
                 set({ enableMathJax: false });
