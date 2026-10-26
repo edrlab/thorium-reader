@@ -2653,6 +2653,18 @@ async function hydrateHighlights(b64Highlights: string): Promise<void> {
 
         csWriter.close().then(() => { /* debug("hydrateHighlights CSWRITER CLOSE DONE"); */ }).catch((err) => { debug("hydrateHighlights CSWRITER CLOSE ERR"); debug(err); });
 
+        // const reader = cs.readable.getReader();
+        // let done = false;
+        // let output = [];
+        // while (!done) {
+        //   const result = await reader.read();
+        //   if (result.value) {
+        //     output.push(...result.value);
+        //   }
+        //   done = result.done;
+        // }
+        // const arr = new Uint8Array(output); // .toBase64()
+        // const buff = Buffer.from(arr);
         const buffer = Buffer.from(await new Response(cs.readable).arrayBuffer());
         // const buffer = await streamToBufferPromise(cs.readable as ReadableStream<any>);
 
