@@ -3561,10 +3561,10 @@ class Reader extends React.Component<IProps, IState> {
         mediaOverlaysResume();
     }
     private handleMediaOverlaysNext() {
-        mediaOverlaysNext();
+        mediaOverlaysNext(false, true);
     }
     private handleMediaOverlaysPrevious() {
-        mediaOverlaysPrevious();
+        mediaOverlaysPrevious(true);
     }
     private handleMediaOverlaysPlaybackRate(speed: string) {
         mediaOverlaysPlaybackRate(parseFloat(speed));
