@@ -2027,7 +2027,8 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.r2PublicationHasMediaOverlays) {
-            this.handleMediaOverlaysPrevious();
+            // the Alt shortcut (escape for TTS) steps a sentence in word-level overlays
+            this.handleMediaOverlaysPrevious(escape);
         } else if (this.state.currentLocation.audioPlaybackInfo) {
             audioRewind();
         } else {
@@ -2056,7 +2057,8 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.r2PublicationHasMediaOverlays) {
-            this.handleMediaOverlaysNext();
+            // the Alt shortcut (escape for TTS) steps a sentence in word-level overlays
+            this.handleMediaOverlaysNext(escape);
         } else if (this.state.currentLocation.audioPlaybackInfo) {
             audioForward();
         } else {
@@ -3560,11 +3562,11 @@ class Reader extends React.Component<IProps, IState> {
     private handleMediaOverlaysResume() {
         mediaOverlaysResume();
     }
-    private handleMediaOverlaysNext() {
-        mediaOverlaysNext(false, true);
+    private handleMediaOverlaysNext(bySentence = false) {
+        mediaOverlaysNext(false, bySentence);
     }
-    private handleMediaOverlaysPrevious() {
-        mediaOverlaysPrevious(true);
+    private handleMediaOverlaysPrevious(bySentence = false) {
+        mediaOverlaysPrevious(bySentence);
     }
     private handleMediaOverlaysPlaybackRate(speed: string) {
         mediaOverlaysPlaybackRate(parseFloat(speed));

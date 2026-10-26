@@ -1063,11 +1063,12 @@ function findPreviousTextAudioPair(
 }
 
 // Word-level overlays (a text/audio pair per word) usually group each
-// sentence's pairs in a seq of their own. There, the Previous/Next controls
-// step a whole group, the way TTS steps a sentence: one word is too little
-// to hear, at any playback rate. Pairs averaging a second or more (a
-// sentence or longer per pair) are not word-level, so they keep stepping
-// one pair at a time.
+// sentence's pairs in a seq of their own. There, the Previous/Next controls'
+// Alt variant (Shift+Alt click, or the Alt keyboard shortcuts) steps a whole
+// group, the way TTS steps a sentence: one word is little to hear, at any
+// playback rate. The plain controls keep stepping one pair, for readers who
+// go word by word. Pairs averaging a second or more (a sentence or longer
+// per pair) are not word-level, so they always step one pair at a time.
 const WORD_PAIRS_MAX_AVERAGE_SECONDS = 1;
 
 function findParentNode(mo: MediaOverlayNode, child: MediaOverlayNode): MediaOverlayNode | undefined {
@@ -1801,8 +1802,9 @@ export function mediaOverlaysResume() {
     }
 }
 
-// bySentence: the user's Previous control (button or keyboard), which steps a
-// whole word group in word-level overlays (see findWordGroup()).
+// bySentence: the Alt variant of the user's Previous control (button or
+// keyboard), which steps a whole word group in word-level overlays (see
+// findWordGroup()).
 export function mediaOverlaysPrevious(bySentence?: boolean) {
     if (IS_DEV) {
         debug("mediaOverlaysPrevious()");
@@ -1882,8 +1884,9 @@ export function mediaOverlaysPrevious(bySentence?: boolean) {
     }
 }
 
-// bySentence: the user's Next control (button or keyboard), which steps a
-// whole word group in word-level overlays (see findWordGroup()).
+// bySentence: the Alt variant of the user's Next control (button or
+// keyboard), which steps a whole word group in word-level overlays (see
+// findWordGroup()).
 export function mediaOverlaysNext(escape?: boolean, bySentence?: boolean) {
     if (IS_DEV) {
         debug("mediaOverlaysNext()");
