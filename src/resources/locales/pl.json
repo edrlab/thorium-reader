@@ -1355,7 +1355,7 @@
         },
         "screenReaderActivate": {
             "help": "Gdy aplikacja wykryje obecność technologii wspomagającej, interfejs użytkownika lepiej współpracuje z czytnikami ekranu",
-            "invite": "Optymalizacja wsparcia dla czytników ekranu: ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optymalizacja wsparcia dla czytników ekranu",
             "message": "Ulepszona obsługa czytników ekranu",
             "title": "Popraw doświadczenie z czytnikami ekranu"
         },

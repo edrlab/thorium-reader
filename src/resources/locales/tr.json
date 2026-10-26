@@ -1341,7 +1341,7 @@
         },
         "screenReaderActivate": {
             "help": "Uygulama yardımcı teknolojinin mevcudiyetini saptadığında, kullanıcı arayüzü ekran okuyucularla daha iyi çalışır",
-            "invite": "Ekran okuyucu için iyileştir ({{- status}}) [{{- keyboard}}]",
+            "invite": "Ekran okuyucu için iyileştir",
             "message": "Ekran okuyucular için geliştirilmiş destek",
             "title": "Ekran okuyucu deneyimini iyileştir"
         },

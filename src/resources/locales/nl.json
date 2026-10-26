@@ -1341,7 +1341,7 @@
         },
         "screenReaderActivate": {
             "help": "Wanneer de app de aanwezigheid van hulpsoftware waarneemt, zal het gebruikersinterface beter werken voor schermlezers",
-            "invite": "Optimaliseer voor schermlezer ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimaliseer voor schermlezer",
             "message": "Verbeterde ondersteuning voor schermlezers",
             "title": "Verbeter de schermlezerervaring"
         },

@@ -1348,7 +1348,7 @@
         },
         "screenReaderActivate": {
             "help": "Cuando la aplicación detecta la presencia de tecnología de apoyo, la interfaz de usuario funciona mejor con los lectores de pantalla",
-            "invite": "Optimizar para lectores de pantalla ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimizar para lectores de pantalla",
             "message": "Mejora de la compatibilidad con lectores de pantalla",
             "title": "Mejorar la experiencia con los lectores de pantalla"
         },

@@ -1341,7 +1341,7 @@
         },
         "screenReaderActivate": {
             "help": "Þegar forritið greinir hjálpartækni virkar viðmótið betur með skjálesurum",
-            "invite": "Fínstilla fyrir skjálesara ({{- status}}) [{{- keyboard}}]",
+            "invite": "Fínstilla fyrir skjálesara",
             "message": "Bættur stuðningur við skjálesara",
             "title": "Bæta upplifun með skjálesara"
         },

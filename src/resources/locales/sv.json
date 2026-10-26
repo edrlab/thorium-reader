@@ -1341,7 +1341,7 @@
         },
         "screenReaderActivate": {
             "help": "När programmet upptäcker hjälpmedelsteknik så anpassas gränssnittet för att fungera bättre med skärmläsare",
-            "invite": "Optimera för skärmläsare ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimera för skärmläsare",
             "message": "Förbättrat stöd för skärmläsare",
             "title": "Förbättra skärmläsarupplevelsen"
         },

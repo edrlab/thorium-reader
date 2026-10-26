@@ -1334,7 +1334,7 @@
         },
         "screenReaderActivate": {
             "help": "当应用程序检测到辅助技术的存在时，用户界面在使用屏幕阅读器时将表现更佳",
-            "invite": "为屏幕阅读器优化 ({{- status}}) [{{- keyboard}}]",
+            "invite": "为屏幕阅读器优化",
             "message": "对屏幕阅读器的增强支持",
             "title": "增强屏幕阅读器体验"
         },

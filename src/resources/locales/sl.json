@@ -1355,7 +1355,7 @@
         },
         "screenReaderActivate": {
             "help": "Ko aplikacija zazna prisotnost podporne tehnologije, uporabniški vmesnik deluje bolje z bralniki zaslona",
-            "invite": "Optimiziraj za bralnik zaslona ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimiziraj za bralnik zaslona",
             "message": "Izboljšana podpora za bralnike zaslona",
             "title": "Izboljšajte izkušnjo bralnika zaslona"
         },

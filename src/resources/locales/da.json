@@ -1341,7 +1341,7 @@
         },
         "screenReaderActivate": {
             "help": "Når applikationen registrerer at hjælpeteknologier benyttes, fungerer brugergrænsefladen bedre med skærmlæsere",
-            "invite": "Optimer til skærmoplæser ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimer til skærmoplæser",
             "message": "Forbedret understøttelse af skærmlæsere",
             "title": "Forbedret oplevelse med skærmlæser"
         },
