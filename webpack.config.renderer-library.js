@@ -409,12 +409,15 @@ let config = Object.assign(
             ],
         },
 
+        watchOptions: {
+            ignored: ["dist/**/*", "docs/**/*", "scripts/**/*", "test/**/*", "**/node_modules", "external-assets/**/*", ".flox/**/*", ".git/**/*", ".pi/**/*"],
+        },
         devServer: {
             static: {
                 directory: __dirname,
                 publicPath: "/",
                 watch: {
-                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/, /\.flox/],
+                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/, /\.flox/, /\.git/, /\.pi/],
                 },
             },
             devMiddleware: {
@@ -462,12 +465,15 @@ if (nodeEnv !== "production") {
         // https://webpack.js.org/configuration/devtool/
         devtool: "source-map",
 
+        watchOptions: {
+            ignored: ["dist/**/*", "docs/**/*", "scripts/**/*", "test/**/*", "**/node_modules", "external-assets/**/*", ".flox/**/*", ".git/**/*", ".pi/**/*"],
+        },
         devServer: {
             static: {
                 directory: __dirname,
                 publicPath: "/",
                 watch: {
-                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/, /\.flox/],
+                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/, /\.flox/, /\.git/, /\.pi/],
                 },
             },
             devMiddleware: {
