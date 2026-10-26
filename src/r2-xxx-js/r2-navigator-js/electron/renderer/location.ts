@@ -1815,7 +1815,6 @@ const hydrateHighlightsBuild = async (highlights: IHighlight[] | undefined, href
         //   }
         //   done = result.done;
         // }
-
         // const arr = new Uint8Array(output); // .toBase64()
         // const buff = Buffer.from(arr);
         const buff = Buffer.from(await new Response(cs.readable).arrayBuffer());
