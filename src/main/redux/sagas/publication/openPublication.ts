@@ -90,7 +90,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string): Sag
     let publicationDocument = yield* callTyped(() => publicationRepository.get(pubId));
 
     if (!publicationDocument) {
-        yield* putTyped(toastActions.openRequest.build(ToastType.Error, translator.translate("message.open.error", {err: `not found in DataBase: ${pubId}`})));
+        yield* putTyped(toastActions.openRequest.build(ToastType.Error, translator.translate("message.notifications.publicationUnavailable")));
         return undefined;
     }
 

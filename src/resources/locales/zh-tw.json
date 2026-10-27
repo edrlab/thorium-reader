@@ -5,13 +5,20 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "關閉",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "將列表移至左側",
+        "loading": "",
         "mainContent": "主要內容",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "將列表移至右側",
@@ -258,28 +265,54 @@
         "annotations": {
             "alreadyImported": "所有註解均已匯入。",
             "emptyFile": "文件中沒有可用的註解。",
-            "errorParsing": "文件解析時發生錯誤： ",
             "nothing": "沒有可供匯入的註解，正在中止匯入",
             "success": "匯入已成功完成。"
         },
         "download": {
             "cancelled": "下載已取消。",
-            "error": "下載 [{{- title}}] 失敗：[{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} 已被匯入。",
             "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
             "success": "匯入 [{{- title}}] 完成。"
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "無法打開出版物：[{{- err}}]",
@@ -287,7 +320,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -703,7 +737,6 @@
         "expired": "出借到期",
         "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
         "incorrectPassphrase": "有符合此出版物的已儲存密語，或輸入的密語不正確。",
-        "lcpEnd": "結束",
         "lcpNotSupported": "",
         "lcpRightsCopy": "複製的文字",
         "lcpRightsPrint": "列印頁數",
@@ -1367,9 +1400,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

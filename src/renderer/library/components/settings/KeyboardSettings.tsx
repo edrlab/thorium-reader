@@ -619,7 +619,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
                         <div>
 
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "10px" }}>
                             <input
                                 dir={isRTL ? "rtl" : "ltr"}
                                 type="text"
@@ -644,8 +644,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 const hit = this.state.editKeyboardShortcutId === id;
                                 const cname = Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].name : undefined;
                                 const cdesc = Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].description : undefined;
-                                const frag = <>
-                                    <div style={{display: "flex", border: isDuplicated ? "2px solid red" : undefined}}>
+                                const heading = <div style={{display: "flex", border: isDuplicated ? "2px solid red" : undefined}}>
                                         <h3 className={stylesKeys.keyshortElement_title}>{cname}</h3>
                                     {    cleanNames[id].description.length ?
                                         <TooltipTrigger>
@@ -663,7 +662,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                         </TooltipTrigger>
                                         : ""
                                     }
-                                    </div>
+                                    </div>;
+                                const frag = <>
                                     <div
                                         style={{border: isDuplicated ? "2px solid orange" : undefined}}
                                         className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
@@ -743,7 +743,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                             :
                                             classNames(stylesKeys.keyshortElement_container)
                                         }
-                                    key={`key_${id}`}>{
+                                    key={`key_${id}`}>
+                                    {heading}
+                                    {
                                     (hit ? <FocusLock
                                         disabled={false}
                                         autoFocus={true}>{frag}</FocusLock> : frag)

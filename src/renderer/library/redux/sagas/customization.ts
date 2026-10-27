@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { getTranslator } from "readium-desktop/common/services/translator";
 import { nanoid } from "nanoid";
 import { customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
@@ -165,7 +166,7 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
         } catch (e) {
 
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileActivationFailed")));
             debug("Critical ERROR to activate the profile", id);
             debug(e);
 
@@ -193,7 +194,7 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
             } catch (e) {
 
-                yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+                yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileActivationFailed")));
                 debug("Critical ERROR to activate the profile", id);
                 debug(e);
 
@@ -204,7 +205,7 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
         } else {
             debug(`profile "${id || "thorium default profile"}" cannot be activate because LOCK is enabled on ${lock.state} with ${lock.lockInfo.id || lock.lockInfo.uuid}`);
-            yield* putTyped(toastActions.openRequest.build(ToastType.Success, `profile "${id || "thorium default profile"}" cannot be activate because LOCK is enabled on ${lock.state} with ${lock.lockInfo.id || lock.lockInfo.uuid}`));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Info, getTranslator().translate("message.notifications.profileBusy")));
         }
     }
 }

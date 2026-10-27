@@ -5,13 +5,20 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "닫기",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "목록 왼쪽으로 밀기 ",
+        "loading": "",
         "mainContent": "메인 콘텐츠",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "목록 오른쪽으로 밀기",
@@ -171,6 +178,9 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
+            "descList": "",
+            "descNewer": "",
+            "descOlder": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -187,7 +197,9 @@
             }
         },
         "deleteAnnotations": "",
+        "deleteAnnotationsText": "",
         "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "deletePublicationWithNotes": "",
@@ -253,28 +265,54 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },
         "download": {
             "cancelled": "",
-            "error": "{{- title}} 다운로드 실패하였습니다: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}}는 이미 추가된 도서입니다",
             "fail": "{{- path}} 열기를 실패하였습니다. {{- err}}",
             "success": "{{- title}} 열기를 성공하였습니다."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "지원하지 않는 형식의 출판물입니다: {{- err}}",
@@ -282,7 +320,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -698,7 +737,6 @@
         "expired": "",
         "expiredLcp": "이 책은 LCP 라이선스가 만료되어서 읽을 수 없습니다",
         "incorrectPassphrase": "",
-        "lcpEnd": "종료",
         "lcpNotSupported": "",
         "lcpRightsCopy": "복사된 문자",
         "lcpRightsPrint": "인쇄된 페이지",
@@ -1362,9 +1400,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

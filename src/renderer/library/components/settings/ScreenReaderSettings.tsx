@@ -5,19 +5,19 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import * as React from "react";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { screenReaderActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { logAppSettingModified } from "./analytics";
 
 const ScreenReaderSettings: React.FC<{}> = () => {
@@ -29,7 +29,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
     const screenReaderActivate = useSelector((state: ICommonRootState) => state.screenReader.activate);
     const onChange = () => {
         const nextScreenReaderActivate = !screenReaderActivate;
-        dispatch(screenReaderActions.save.build(nextScreenReaderActivate));
+        dispatch(screenReaderActions.save.build(nextScreenReaderActivate, nextScreenReaderActivate));
         logAppSettingModified("screenreader", nextScreenReaderActivate);
     };
     return (

@@ -6,13 +6,20 @@ declare namespace typed_i18n {
   readonly "bookmarkNote": string,
   readonly "cancelDownload": string,
   readonly "closeDialog": string,
+  readonly "closeNotification": string,
+  readonly "copyNotificationInstruction": string,
   readonly "decreaseSetting": string,
   readonly "downloadProgress": string,
+  readonly "downloadProgressUnknown": string,
   readonly "editTag": string,
   readonly "favoriteCatalog": string,
   readonly "increaseSetting": string,
   readonly "leftSlideButton": string,
+  readonly "loading": string,
   readonly "mainContent": string,
+  readonly "notificationCopied": string,
+  readonly "notificationCopyFailed": string,
+  readonly "printPage": string,
   readonly "publicationDetails": string,
   readonly "resetSetting": string,
   readonly "rightSlideButton": string,
@@ -25,13 +32,20 @@ declare namespace typed_i18n {
   (_: "accessibility.bookmarkNote", __?: {}): string;
   (_: "accessibility.cancelDownload", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
+  (_: "accessibility.closeNotification", __?: {}): string;
+  (_: "accessibility.copyNotificationInstruction", __?: {}): string;
   (_: "accessibility.decreaseSetting", __?: {}): string;
   (_: "accessibility.downloadProgress", __?: {}): string;
+  (_: "accessibility.downloadProgressUnknown", __?: {}): string;
   (_: "accessibility.editTag", __?: {}): string;
   (_: "accessibility.favoriteCatalog", __?: {}): string;
   (_: "accessibility.increaseSetting", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.loading", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
+  (_: "accessibility.notificationCopied", __?: {}): string;
+  (_: "accessibility.notificationCopyFailed", __?: {}): string;
+  (_: "accessibility.printPage", __?: {}): string;
   (_: "accessibility.publicationDetails", __?: {}): string;
   (_: "accessibility.resetSetting", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
@@ -645,28 +659,54 @@ declare namespace typed_i18n {
   readonly "annotations": {
     readonly "alreadyImported": string,
     readonly "emptyFile": string,
-    readonly "errorParsing": string,
     readonly "nothing": string,
     readonly "success": string
   },
   readonly "download": {
     readonly "cancelled": string,
-    readonly "error": string,
     readonly "errors": {
       readonly "hashMismatch": string,
       readonly "httpGet": string,
+      readonly "idleTimeout": string,
       readonly "invalidFilename": string,
       readonly "invalidLink": string,
       readonly "invalidTempDirectory": string,
       readonly "lengthMismatch": string,
       readonly "readStreamMissing": string,
       readonly "tooManyFilenameAttempts": string
-    }
+    },
+    readonly "started": string,
+    readonly "startedWithTitle": string
   },
   readonly "import": {
     readonly "alreadyImport": string,
     readonly "fail": string,
     readonly "success": string
+  },
+  readonly "notifications": {
+    readonly "annotationImportFailed": string,
+    readonly "annotationPublicationUnavailable": string,
+    readonly "annotationStopPlayback": string,
+    readonly "authenticationFailed": string,
+    readonly "catalogLinkFailed": string,
+    readonly "catalogUpdateFailed": string,
+    readonly "copyLimit": string,
+    readonly "deleteFailed": string,
+    readonly "exportFailed": string,
+    readonly "openFileFailed": string,
+    readonly "openLinkFailed": string,
+    readonly "printLimit": string,
+    readonly "profileActivationFailed": string,
+    readonly "profileBusy": string,
+    readonly "profileProvisionFailed": string,
+    readonly "profileTimeout": string,
+    readonly "publicationUnavailable": string,
+    readonly "readingPositionFailed": string,
+    readonly "recoveryPartialFailure": string,
+    readonly "renewFailed": string,
+    readonly "returnFailed": string,
+    readonly "storageRefreshFailed": string,
+    readonly "tagsFailed": string
   },
   readonly "open": {
     readonly "error": string,
@@ -686,34 +726,34 @@ declare namespace typed_i18n {
   (_: "message.annotations", __?: {}): {
   readonly "alreadyImported": string,
   readonly "emptyFile": string,
-  readonly "errorParsing": string,
   readonly "nothing": string,
   readonly "success": string
 };
   (_: "message.annotations.alreadyImported", __?: {}): string;
   (_: "message.annotations.emptyFile", __?: {}): string;
-  (_: "message.annotations.errorParsing", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
   (_: "message.download", __?: {}): {
   readonly "cancelled": string,
-  readonly "error": string,
   readonly "errors": {
     readonly "hashMismatch": string,
     readonly "httpGet": string,
+    readonly "idleTimeout": string,
     readonly "invalidFilename": string,
     readonly "invalidLink": string,
     readonly "invalidTempDirectory": string,
     readonly "lengthMismatch": string,
     readonly "readStreamMissing": string,
     readonly "tooManyFilenameAttempts": string
-  }
+  },
+  readonly "started": string,
+  readonly "startedWithTitle": string
 };
   (_: "message.download.cancelled", __?: {}): string;
-  (_: "message.download.error", __?: {}): string;
   (_: "message.download.errors", __?: {}): {
   readonly "hashMismatch": string,
   readonly "httpGet": string,
+  readonly "idleTimeout": string,
   readonly "invalidFilename": string,
   readonly "invalidLink": string,
   readonly "invalidTempDirectory": string,
@@ -723,12 +763,15 @@ declare namespace typed_i18n {
 };
   (_: "message.download.errors.hashMismatch", __?: {}): string;
   (_: "message.download.errors.httpGet", __?: {}): string;
+  (_: "message.download.errors.idleTimeout", __?: {}): string;
   (_: "message.download.errors.invalidFilename", __?: {}): string;
   (_: "message.download.errors.invalidLink", __?: {}): string;
   (_: "message.download.errors.invalidTempDirectory", __?: {}): string;
   (_: "message.download.errors.lengthMismatch", __?: {}): string;
   (_: "message.download.errors.readStreamMissing", __?: {}): string;
   (_: "message.download.errors.tooManyFilenameAttempts", __?: {}): string;
+  (_: "message.download.started", __?: {}): string;
+  (_: "message.download.startedWithTitle", __?: {}): string;
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
   readonly "fail": string,
@@ -737,6 +780,54 @@ declare namespace typed_i18n {
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.notifications", __?: {}): {
+  readonly "annotationImportFailed": string,
+  readonly "annotationPublicationUnavailable": string,
+  readonly "annotationStopPlayback": string,
+  readonly "authenticationFailed": string,
+  readonly "catalogLinkFailed": string,
+  readonly "catalogUpdateFailed": string,
+  readonly "copyLimit": string,
+  readonly "deleteFailed": string,
+  readonly "exportFailed": string,
+  readonly "openFileFailed": string,
+  readonly "openLinkFailed": string,
+  readonly "printLimit": string,
+  readonly "profileActivationFailed": string,
+  readonly "profileBusy": string,
+  readonly "profileProvisionFailed": string,
+  readonly "profileTimeout": string,
+  readonly "publicationUnavailable": string,
+  readonly "readingPositionFailed": string,
+  readonly "recoveryPartialFailure": string,
+  readonly "renewFailed": string,
+  readonly "returnFailed": string,
+  readonly "storageRefreshFailed": string,
+  readonly "tagsFailed": string
+};
+  (_: "message.notifications.annotationImportFailed", __?: {}): string;
+  (_: "message.notifications.annotationPublicationUnavailable", __?: {}): string;
+  (_: "message.notifications.annotationStopPlayback", __?: {}): string;
+  (_: "message.notifications.authenticationFailed", __?: {}): string;
+  (_: "message.notifications.catalogLinkFailed", __?: {}): string;
+  (_: "message.notifications.catalogUpdateFailed", __?: {}): string;
+  (_: "message.notifications.copyLimit", __?: {}): string;
+  (_: "message.notifications.deleteFailed", __?: {}): string;
+  (_: "message.notifications.exportFailed", __?: {}): string;
+  (_: "message.notifications.openFileFailed", __?: {}): string;
+  (_: "message.notifications.openLinkFailed", __?: {}): string;
+  (_: "message.notifications.printLimit", __?: {}): string;
+  (_: "message.notifications.profileActivationFailed", __?: {}): string;
+  (_: "message.notifications.profileBusy", __?: {}): string;
+  (_: "message.notifications.profileProvisionFailed", __?: {}): string;
+  (_: "message.notifications.profileTimeout", __?: {}): string;
+  (_: "message.notifications.publicationUnavailable", __?: {}): string;
+  (_: "message.notifications.readingPositionFailed", __?: {}): string;
+  (_: "message.notifications.recoveryPartialFailure", __?: {}): string;
+  (_: "message.notifications.renewFailed", __?: {}): string;
+  (_: "message.notifications.returnFailed", __?: {}): string;
+  (_: "message.notifications.storageRefreshFailed", __?: {}): string;
+  (_: "message.notifications.tagsFailed", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;
@@ -1735,7 +1826,6 @@ declare namespace typed_i18n {
   readonly "expired": string,
   readonly "expiredLcp": string,
   readonly "incorrectPassphrase": string,
-  readonly "lcpEnd": string,
   readonly "lcpNotSupported": string,
   readonly "lcpRightsCopy": string,
   readonly "lcpRightsPrint": string,
@@ -1864,7 +1954,6 @@ declare namespace typed_i18n {
   (_: "publication.expired", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.incorrectPassphrase", __?: {}): string;
-  (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpNotSupported", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;
   (_: "publication.lcpRightsPrint", __?: {}): string;

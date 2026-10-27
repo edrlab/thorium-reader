@@ -1,10 +1,26 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Meny",
+        "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "Lukk",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Flytt til venstre",
+        "loading": "",
         "mainContent": "Hovedinnhold",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Flytt til høyre",
         "skipLink": "Hopp til hovedinnhold",
         "toolbar": "Verktøylinje"
@@ -43,10 +59,13 @@
         },
         "update": {
             "message": "En ny versjon er tilgjengelig. Klikk for å lese mer.",
-            "title": "Programvareoppdatering for {{- appName}}."
+            "title": "Programvareoppdatering for {{- appName}}.",
+            "whatsnew": ""
         },
         "window": {
-            "showLibrary": "Vis bibliotek / bokhylle"
+            "showLibrary": "Vis bibliotek / bokhylle",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -76,6 +95,7 @@
         "deleteBook": "Slett",
         "deleteTag": "Slett tag",
         "description": "Bokbeskrivelse",
+        "downloaded": "",
         "emptyTagList": "Slett alle tagger",
         "entry": {
             "continueReading": "Fortsett å lese",
@@ -89,6 +109,8 @@
         "lastRead": "Sist lest",
         "login": "Logg inn",
         "logout": "Logg ut",
+        "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Bokinformasjon",
         "myBooks": "Mine bøker",
         "noPublicationHelpL1": "Slipp en bok her",
@@ -105,6 +127,8 @@
                 "password": "Passord",
                 "register": "Registrer deg",
                 "retry": "Prøv igjen",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Brukernavn / e-postadresse"
             },
             "info": {
@@ -126,17 +150,27 @@
                 "state": "Status"
             }
         },
+        "openFolder": "",
         "publisher": "Utgiver",
         "readBook": "Les",
         "released": "Publisert",
         "removeFromFavorites": "Fjern fra favoritter",
+        "selectTableHeaders": "",
         "sort": "Sorter etter",
         "tag": "Tagg",
         "tags": "Tagger",
         "update": "Rediger",
         "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
             "holds": "",
-            "loans": ""
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
         }
     },
     "dialog": {
@@ -158,6 +192,7 @@
         "cancel": "Avbryt",
         "customization": {
             "splashscreen": {
+                "dontShow": "",
                 "fallbackWelcomeScreen": "Ingen velkomstskjerm er angitt",
                 "state": "Status: {{- state}}",
                 "title": "Klargjøring og aktivering av tilpasningsprofil"
@@ -200,6 +235,7 @@
         "searchPlaceholder": "Søk",
         "searchTitle": "Start søk",
         "settings": "Innstillinger",
+        "settingsLabel": "",
         "viewMode": "Visningsmodus"
     },
     "library": {
@@ -233,21 +269,68 @@
         "annotations": {
             "alreadyImported": "Alle notatene er allerede importert.",
             "emptyFile": "Filen inneholder ingen notater.",
-            "errorParsing": "Feil ved behandling av filen: ",
-            "noBelongTo": "Kan ikke importere notatene fordi minst ett notat ikke tilhører publikasjonen.",
             "nothing": "Det finnes ingen notater som kan importeres. Importen avbrytes.",
             "success": "Importen er fullført."
         },
         "download": {
-            "error": "Nedlasting av {{- title}} mislyktes: [{{- err}}]"
+            "cancelled": "",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "idleTimeout": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} er allerede importert",
             "fail": "Importen av {{- path}} mislyktes. {{- err}}",
             "success": "{{- title}} er nå importert."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
+        },
         "open": {
-            "error": "Boken kan ikke åpnes: {{- err}}"
+            "error": "Boken kan ikke åpnes: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "recovery": {
+                "failure": "",
+                "success_one": "",
+                "success_other": ""
+            },
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Innloggingsdata ble slettet (tilgangstokener og informasjonskapsler)"
     },
@@ -264,6 +347,17 @@
         },
         "addMenu": "Legg til en OPDS-feed",
         "breadcrumbRoot": "Kataloger",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Offisielt nettsted for OPDS",
         "empty": "Fant ingen bøker",
         "firstPage": "Først",
@@ -272,10 +366,13 @@
         "menu": {
             "aboutBook": "Om denne boken",
             "addExtract": "Legg til utdrag",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Kjøp boken",
             "goLoanBook": "Lån boken",
             "goRevokeLoanBook": "Forny lån",
-            "goSubBook": "Abonner"
+            "goSubBook": "Abonner",
+            "placeHold": ""
         },
         "network": {
             "error": "Fant ikke OPDS-feed",
@@ -286,6 +383,12 @@
         },
         "next": "Neste",
         "previous": "Forrige",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Fortsett å bla",
         "shelf": "Bokhylle",
         "updateForm": {
@@ -580,6 +683,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Ingen informasjon om muligheten for å tilpasse utseendet er tilgjengelig",
                 "descriptive": "Ingen informasjon om muligheten for å tilpasse utseendet er tilgjengelig"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -623,7 +730,8 @@
         "certificateRevoked": "Sertifikatet er tilbakekallet",
         "certificateSignatureInvalid": "Sertifikatets signatur er ugyldig",
         "cover": {
-            "img": "Omslagsbilde"
+            "img": "Omslagsbilde",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dager",
@@ -634,7 +742,7 @@
         "expired": "Lånet er utløpt",
         "expiredLcp": "Denne boken kan ikke leses, LCP-lisensen er utløpt.",
         "incorrectPassphrase": "Ingen lagret passfrase passer til publikasjonen, eller passfrasen du skrev inn, er feil.",
-        "lcpEnd": "Slutt",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Kopierte tegn",
         "lcpRightsPrint": "Utskrifter",
         "lcpStart": "Start",
@@ -647,10 +755,22 @@
         "notStarted": "Ikke påbegynt",
         "onGoing": "Under lesing",
         "progression": {
-            "title": "Lest"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Lest",
+            "useRemote": ""
         },
         "read": "Ferdiglest",
         "remainingTime": "Lån (gjenværende tid)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Forny lån",
         "returnButton": "Returner",
         "returnedLcp": "Denne boken kan ikke åpnes, LCP-lisensen er returnert",
@@ -672,6 +792,11 @@
             },
             "annotationsOptions": "Alternativer for notater",
             "date": "Endringsdato",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Lagre notater som ...",
             "filter": {
                 "all": "Alle",
@@ -726,6 +851,7 @@
         },
         "marks": {
             "annotations": "Notater",
+            "annotationsReadium": "",
             "bookmarks": "Bokmerker",
             "delete": "Fjern",
             "edit": "Rediger",
@@ -752,7 +878,9 @@
             "skipDescription": "Hopp over eller ignorer tilleggsinnhold som sideskift, fotnoter/sluttnoter osv.",
             "speed": "Avspillingshastighet",
             "stop": "Stopp opplesing",
-            "title": "Opplesing"
+            "title": "Opplesing",
+            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMODescription": ""
         },
         "navigation": {
             "ZenModeExit": "Avslutt zen-modus",
@@ -783,6 +911,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Grønn",
                 "orange": "Oransje",
                 "purple": "Lilla",
@@ -835,8 +965,10 @@
             "disposition": {
                 "title": "Layout"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Skrifttype",
             "fontSize": "Skriftstørrelse",
+            "increaseFontSize": "",
             "infoCustomFont": "Skriv inn navnet på en skrifttype fra operativsystemet",
             "justification": "Margjustering",
             "justify": "Like marger",
@@ -866,7 +998,6 @@
             "preset": {
                 "apply": "Bruk",
                 "applyDetails": "Bruk den foretrukne konfigurasjonen på den gjeldende publikasjonen.",
-                "detail": "Lagre, bruk eller tilbakestill den foretrukne konfigurasjonen.",
                 "reset": "Tilbakestill",
                 "resetDetails": "Tilbakestill den foretrukne konfigurasjonen til standardinnstillingene.",
                 "save": "Lagre",
@@ -874,6 +1005,7 @@
                 "title": "Preferanser"
             },
             "preview": "Forhåndsvisning",
+            "reduceFontSize": "",
             "reduceMotion": "Reduser bevegelser",
             "scrolled": "Rullbar",
             "spacing": "Avstand",
@@ -973,6 +1105,18 @@
                 "AudioPreviousAlt": {
                     "description": "Gå tilbake til forrige lydsegment i opplesingen (EPUB 3 Media Overlays, talesyntese eller forhåndsinnspilt lydbok). Innhold som kan hoppes over, blir hoppet over",
                     "name": "Forrige lydsegment (hopp over)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "Stopp gjeldende lydavspilling (EPUB 3 Media Overlays, talesyntese eller forhåndsinnspilt lydbok)",
@@ -1157,6 +1301,14 @@
                 "ToggleReaderFullscreen": {
                     "description": "Aktiver fullskjermmodus eller gå tilbake til vanlig vindusmodus. Dette er ikke det samme som «zen-modus», som forenkler brukergrensesnittet",
                     "name": "Slå fullskjerm av/på"
+                },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Åpne fra brukerfil",
@@ -1189,17 +1341,92 @@
         },
         "screenReaderActivate": {
             "help": "Når programmet oppdager at hjelpemiddelteknologi er i bruk, tilpasses brukergrensesnittet for å fungere bedre med skjermlesere",
+            "invite": "",
             "message": "Forbedret støtte for skjermlesere",
             "title": "Forbedre skjermleseropplevelsen"
         },
         "session": {
             "title": "Lagre økt"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "title": ""
+            }
+        },
         "tabs": {
-            "appearance": "Utseende",
+            "advanced": "",
             "general": "Generelt",
             "keyboardShortcuts": "Hurtigtaster",
-            "profiles": "Profiler"
+            "profiles": "Profiler",
+            "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Automatisk",
@@ -1207,6 +1434,17 @@
             "description": "Programtemaet følger innstillingene i operativsystemet.",
             "light": "Lys",
             "title": "Programtema"
+        },
+        "window": {
+            "keepLibraryWindowInBackgroundOnReaderClose": "",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "",
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "oneReaderWindowPerPublication": "",
+            "oneReaderWindowPerPublicationDescription": "",
+            "title": ""
         }
     },
     "tts": {
