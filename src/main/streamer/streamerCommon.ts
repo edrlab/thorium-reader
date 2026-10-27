@@ -10,13 +10,14 @@ import * as path from "node:path";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { diMainGet } from "readium-desktop/main/di";
-import { _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { Transformers } from "@r2-shared-js/transform/transformer";
 import { TransformerHTML } from "@r2-shared-js/transform/transformer-html";
+import { URL_PATH_PREFIX_MATHJAX } from "readium-desktop/common/streamerProtocol";
 import { TransformerSVG } from "./transformer-svg";
 
 const debug = debug_("readium-desktop:main#streamerCommon");
@@ -56,12 +57,18 @@ export async function computeReadiumCssJsonMessageInStreamer(
 }
 
 let mathJaxPath = "MathJax";
-if (__TH__IS_PACKAGED__) {
-    mathJaxPath = path.normalize(path.join(__dirname, mathJaxPath));
-} else {
-    mathJaxPath = "mathjax";
-    mathJaxPath = path.normalize(path.join(__dirname, _NODE_MODULE_RELATIVE_URL, mathJaxPath));
-}
+
+// MathJax 4 fonts
+// e.g.
+// /mathjax-newcm-font/chtml/woff2/mjx-ncm-zero.woff2
+mathJaxPath = path.normalize(path.join(__dirname, mathJaxPath));
+// if (__TH__IS_PACKAGED__) {
+//     mathJaxPath = path.normalize(path.join(__dirname, mathJaxPath));
+// } else {
+//     mathJaxPath = "mathjax";
+//     mathJaxPath = path.normalize(path.join(__dirname, _NODE_MODULE_RELATIVE_URL, mathJaxPath));
+// }
+
 mathJaxPath = mathJaxPath.replace(/\\/g, "/");
 debug("MathJax path:", mathJaxPath);
 
@@ -278,6 +285,9 @@ return;
 
 window.MathJax = {
 loader: {
+    paths: {
+        fonts: '/${URL_PATH_PREFIX_MATHJAX}'
+    },
     load: [
         // 'a11y/semantic-enrich',
         'a11y/assistive-mml',
@@ -302,13 +312,13 @@ options:
             speech: false,
             braille: false,
             assistiveMml: true,
-            explorer: false,
+            // explorer: false,
         }
     },
     enableExplorerHelp: false,
     enableExplorer: false,
     enableComplexity: false,
-    makeCollapsible: false,
+    // makeCollapsible: false,
     enableAssistiveMml: true,
     enableEnrichment: false,
     sre: {
