@@ -163,15 +163,15 @@
         "update": "Redigera",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
-            "edit": "",
+            "bookshelf": "Öppna bokhylla",
+            "edit": "Redigera användarprofil",
             "holds": "",
-            "loading": "",
-            "loans": "",
-            "title": "",
+            "loading": "Läser in konto…",
+            "loans": "Lån",
+            "title": "Konto",
             "total": "",
             "unavailable": "",
-            "used": ""
+            "used": "{{used}} av {{total}} använda"
         }
     },
     "dialog": {
@@ -286,8 +286,8 @@
                 "readStreamMissing": "Nedladdningsströmmen går inte att nå.",
                 "tooManyFilenameAttempts": "Kunde inte skapa ett unikt filnamn för den nedladdade filen: {{- path}}"
             },
-            "started": "",
-            "startedWithTitle": ""
+            "started": "Nedladdning påbörjad.",
+            "startedWithTitle": "Laddar ner {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} var redan importerad.",
@@ -302,10 +302,10 @@
             "catalogLinkFailed": "",
             "catalogUpdateFailed": "",
             "copyLimit": "",
-            "deleteFailed": "",
-            "exportFailed": "",
-            "openFileFailed": "",
-            "openLinkFailed": "",
+            "deleteFailed": "Kunde inte ta bort den här boken. Försök igen.",
+            "exportFailed": "Kunde inte exportera den här boken. Kontrollera destinationen och tillgängligt diskutrymme.",
+            "openFileFailed": "Kunde inte öppna den här filen. Kontrollera att den är tillgänglig och att den använder ett format som stöds.",
+            "openLinkFailed": "Kunde inte öppna länken till den här boken. Kontrollera länken och försök igen.",
             "printLimit": "",
             "profileActivationFailed": "",
             "profileBusy": "",
