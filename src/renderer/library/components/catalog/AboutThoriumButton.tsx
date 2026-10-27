@@ -39,6 +39,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 
 // import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { whatsNewActions } from "readium-desktop/common/redux/actions";
+import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -137,7 +138,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
         // const source = encodeURIComponent_RFC3986("thorium-desktop");
 
         // const customizationProfileProvisionedAndActivated = this.props.customizationProvision.find(({id}) => this.props.customizationProfileId === id);
-        const keyboardShortcutScreenReader = `${(this.props.keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + this.props.keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
+        const keyboardShortcutScreenReader = textualizeKeyboardShortcut(this.props.keyboardShortcuts.ToggleScreenReaderOptimize);
 
         return (
             <section
