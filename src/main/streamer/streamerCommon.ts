@@ -17,6 +17,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { Transformers } from "@r2-shared-js/transform/transformer";
 import { TransformerHTML } from "@r2-shared-js/transform/transformer-html";
+import { URL_PATH_PREFIX_MATHJAX } from "src/common/streamerProtocol";
 import { TransformerSVG } from "./transformer-svg";
 
 const debug = debug_("readium-desktop:main#streamerCommon");
@@ -278,6 +279,9 @@ return;
 
 window.MathJax = {
 loader: {
+    paths: {
+        fonts: '/${URL_PATH_PREFIX_MATHJAX}/newcm-font'
+    },
     load: [
         // 'a11y/semantic-enrich',
         'a11y/assistive-mml',
