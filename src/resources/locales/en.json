@@ -22,6 +22,7 @@
         "publicationDetails": "{{- field}}: {{- title}}",
         "resetSetting": "Reset {{- setting}}",
         "rightSlideButton": "Slide to the right",
+        "searching": "Searching…",
         "skipLink": "Skip to content",
         "toolbar": "toolbar"
     },

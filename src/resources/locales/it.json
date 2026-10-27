@@ -22,6 +22,7 @@
         "publicationDetails": "{{- field}}: {{- title}}",
         "resetSetting": "Ripristina {{- setting}}",
         "rightSlideButton": "Scorri a destra",
+        "searching": "",
         "skipLink": "Vai al contenuto",
         "toolbar": "barra degli strumenti"
     },
