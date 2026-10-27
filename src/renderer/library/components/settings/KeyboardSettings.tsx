@@ -5,57 +5,57 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
-import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
-import { keyboardShortcutsMatch, keyboardShortcutMatches, defaultKeyboardShortcuts, TKeyboardShortcutScopeZone } from "readium-desktop/common/keyboard";
-import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-
 import classNames from "classnames";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
-import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
+import { Button, DialogTrigger, OverlayArrow, Popover, Dialog as PopoverDialog, Pressable, Tooltip, TooltipTrigger } from "react-aria-components";
 import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
-import {
-    DEBUG_KEYBOARD, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutsMap,
-} from "readium-desktop/common/keyboard";
+import { DEBUG_KEYBOARD, defaultKeyboardShortcuts, keyboardShortcutMatches, keyboardShortcutsMatch, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutScopeZone, TKeyboardShortcutsMap } from "readium-desktop/common/keyboard";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
-import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import {
-    ensureKeyboardListenerIsInstalled, KEY_CODES, TKeyboardDocument,
+    applyKeyboardLayoutMap,
+    ensureKeyboardListenerIsInstalled, getKeyboardCodes, invalidateKeyboardLayoutMap,
+    textualizeKeyboardShortcut,
+    TKeyboardDocument,
+    toUpperIfSimpleLowerCase,
 } from "readium-desktop/renderer/common/keyboard";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
-import SVG from "../../../common/components/SVG";
-import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
-import * as ShiftIcon from "readium-desktop/renderer/assets/icons/shift-icon.svg";
-import * as MacOptionIcon from "readium-desktop/renderer/assets/icons/macoption-icon.svg";
 import * as MacCmdIcon from "readium-desktop/renderer/assets/icons/maccommand-icon.svg";
+import * as MacOptionIcon from "readium-desktop/renderer/assets/icons/macoption-icon.svg";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
+import * as ShiftIcon from "readium-desktop/renderer/assets/icons/shift-icon.svg";
 import * as WindowsIcon from "readium-desktop/renderer/assets/icons/windows-icon.svg";
+import SVG from "../../../common/components/SVG";
 
-import { useTranslator } from "../../../common/hooks/useTranslator";
-import { useDispatch } from "../../../common/hooks/useDispatch";
 import os from "node:os";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
+import { useDispatch } from "../../../common/hooks/useDispatch";
+import { useTranslator } from "../../../common/hooks/useTranslator";
 
 const _isMac = os.platform() === "darwin";
 const _isWindows = os.platform() === "win32";
@@ -83,15 +83,7 @@ interface IState {
     editKeyboardShortcutId: TKeyboardShortcutId | undefined;
     editKeyboardShortcutData: TKeyboardShortcut | undefined;
     searchItem: string | undefined;
-    // layoutMap: Map<KeyMapCode, string> | null;
-    selectLayoutMap: Map<string, string> | null;
-}
-
-function toUpperIfSimpleLowerCase(char: string): string {
-    if (/^[a-z]$/.test(char)) {
-        return char.toUpperCase();
-    }
-    return char;
+    refresh: number;
 }
 
 export const AdvancedTrigger = () => {
@@ -164,8 +156,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             editKeyboardShortcutId: undefined,
             editKeyboardShortcutData: undefined,
             searchItem: undefined,
-            // layoutMap: null,
-            selectLayoutMap: null,
+            refresh: 0,
         };
         this.onKeyUp = this.onKeyUp.bind(this);
 
@@ -175,7 +166,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         this._keyboardSinkIsActive = false;
     }
 
-    // _isMounted = false;
+    // public componentWillMount() {
+    //     invalidateKeyboardLayoutMap(this.props.keyboardShortcuts).then((_changed) => { /* noop */ }).catch((_err) => { /* noop */ });
+    // }
 
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
@@ -185,70 +178,18 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             passive: false,
             capture: true,
         });
-        // this._isMounted = true;
-        // this.loadLayoutMap();
 
-        Object.values(this.props.keyboardShortcuts).forEach(def => {
-            if (!KEY_CODES.includes(def.key)) {
-                KEY_CODES.push(def.key);
-            }
-        });
-        this.loadKeyboardLayoutMap(/* KEY_CODES , "selectLayoutMap" */).then((_v) => { /* noop */ }).catch((_err) => { /* noop */ });
+        invalidateKeyboardLayoutMap(this.props.keyboardShortcuts).then((changed) => { if (changed) { this.setState({ refresh: this.state.refresh + 1 }); /* this.forceUpdate(); */ } }).catch((_err) => { /* noop */ });
     }
 
     public componentDidUpdate(oldProps: IProps) {
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
-            let needsUpdating = false;
-            Object.values(this.props.keyboardShortcuts).forEach(def => {
-                if (!KEY_CODES.includes(def.key)) {
-                    KEY_CODES.push(def.key);
-                    needsUpdating = true;
-                }
-            });
-            if (needsUpdating) {
-                this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */).then((_v) => { /* noop */ }).catch((_err) => { /* noop */ });
-            }
+            invalidateKeyboardLayoutMap(this.props.keyboardShortcuts).then((changed) => { if (changed) { this.setState({ refresh: this.state.refresh + 1 }); /* this.forceUpdate(); */ } }).catch((_err) => { /* noop */ });
         }
     }
-
-    private async loadKeyboardLayoutMap/* <K extends  "layoutMap" | "selectLayoutMap"> */(
-        // codes: string[],
-        // stateKey: K,
-    ) {
-        try {
-            const layoutMapAPI = await navigator.keyboard?.getLayoutMap();
-            if (!layoutMapAPI) return;
-
-            const newMap = new Map<string, string>();
-            for (const code of KEY_CODES) { // codes
-                const label = layoutMapAPI.get(code as KeyMapCode) ?? code;
-                // console.log("code > label", code, label);
-                newMap.set(code, label);
-            }
-
-            // if (this._isMounted) {
-                // this.setState({ [stateKey]: newMap } as Pick<IState, K>);
-                this.setState({ selectLayoutMap: newMap });
-            // }
-        } catch {
-            // if (this._isMounted) {
-                // this.setState({ [stateKey]: null } as Pick<IState, K>);
-                this.setState({ selectLayoutMap: null });
-            // }
-        }
-    }
-
-    // private async loadLayoutMap() {
-    //     const codes = Array.from(new Set(
-    //         Object.values(this.props.keyboardShortcuts).map(item => item.key),
-    //     ));
-    //     await this.loadKeyboardLayoutMap(codes, "layoutMap");
-    // }
-
 
     public componentWillUnmount() {
         document.removeEventListener("keyup", this.onKeyUp);
-        // this._isMounted = false;
     }
 
     public render(): React.ReactElement<{}> {
@@ -875,12 +816,12 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         const meta = def.meta ? <span title={DETECTED_OS === "MacOS" ? "Command" : "Meta"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : <SVG ariaHidden svg={WindowsIcon} />} + </span> : null;
         // const { layoutMap } = this.state;
         // const softKeyRaw = layoutMap?.get(def.key as KeyMapCode) ?? def.key;
-        const softKeyRaw = this.state.selectLayoutMap?.get(def.key) ?? def.key;
+        const softKeyRaw = applyKeyboardLayoutMap(def.key);
         const softKey = toUpperIfSimpleLowerCase(softKeyRaw);
         return <span aria-hidden>{shift}{control}{alt}{meta}<span>{softKey}</span></span>;
     }
     private stringifyKeyboardShortcut(def: TKeyboardShortcut) {
-        return `${def.shift ? "SHIFT " : ""}${def.control ? "CTRL " : ""}${def.alt ? "ALT " : ""}${def.meta ? "META " : ""}${(def.shift || def.control || def.alt || def.meta) ? "+ " : ""}${def.key}`;
+        return textualizeKeyboardShortcut(def);
     }
     private editifyKeyboardShortcut(id: TKeyboardShortcutId, def: TKeyboardShortcut) {
 
@@ -984,10 +925,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             aria-label={DETECTED_OS === "MacOS" ? "Command" : "Meta"}
         >{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : <SVG ariaHidden svg={WindowsIcon} />}</label></>;
 
-        if (!KEY_CODES.includes(def.key)) {
-            KEY_CODES.push(def.key);
-            this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
-        }
+        invalidateKeyboardLayoutMap({"dummy": def}).then((changed) => { if (changed) { this.setState({ refresh: this.state.refresh + 1 }); /* this.forceUpdate(); */ } }).catch((_err) => { /* debug(err); */ });
 
         const keySelect =
         <>
@@ -1015,8 +953,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             className={stylesSettings.form_group}
             id="keySelect"
         >
-            {KEY_CODES.map((keyOption, idx) => {
-                const label = this.state.selectLayoutMap?.get(keyOption) ?? keyOption;
+            {getKeyboardCodes().map((keyOption, idx) => {
+                const label = applyKeyboardLayoutMap(keyOption);
                 return (
                     <option
                         key={`keyOption_${idx}`}

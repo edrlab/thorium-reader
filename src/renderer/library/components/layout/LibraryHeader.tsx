@@ -6,12 +6,12 @@
 // ==LICENSE-END==
 
 import { ipcRenderer } from "electron";
-
 import { ToastType } from "readium-desktop/common/models/toast";
 import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import classNames from "classnames";
@@ -176,7 +176,7 @@ const Header = () => {
 
     const dispatch = useDispatch();
 
-    const keyboardShortcutScreenReader = `${(keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
+    const keyboardShortcutScreenReader = textualizeKeyboardShortcut(keyboardShortcuts.ToggleScreenReaderOptimize);
 
     const screenReaderToggle = React.useCallback(() => {
         dispatch(screenReaderActions.save.build(!screenReaderActivate));

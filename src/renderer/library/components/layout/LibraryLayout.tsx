@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
+import * as React from "react";
+import { connect } from "react-redux";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
 import { I18nFunction } from "readium-desktop/common/services/translator";
@@ -12,11 +15,8 @@ import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/componen
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
 import { TDispatch } from "readium-desktop/typings/redux";
-
-import classNames from "classnames";
-import * as React from "react";
-import { connect } from "react-redux";
 
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
@@ -212,7 +212,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         }
     };
     private onKeyboardToggleScreenReaderOptimize = () => {
-        const keyboardShortcutScreenReader = `${(this.props.keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + this.props.keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
+        const keyboardShortcutScreenReader = textualizeKeyboardShortcut(this.props.keyboardShortcuts.ToggleScreenReaderOptimize);
         this.props.toggleScreenReader(this.props.screenReaderActivate, keyboardShortcutScreenReader, this.props.__);
     };
 

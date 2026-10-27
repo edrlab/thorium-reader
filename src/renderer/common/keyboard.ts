@@ -8,10 +8,17 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
 
 import {
-    DEBUG_KEYBOARD, IKeyboardEvent, keyboardShortcutMatch, TKeyboardShortcut,
+    DEBUG_KEYBOARD, defaultKeyboardShortcuts, IKeyboardEvent, keyboardShortcutMatch, TKeyboardShortcut,
 } from "readium-desktop/common/keyboard";
 
 import { ipcRenderer } from "electron";
+
+import os from "node:os";
+
+const _isMac = os.platform() === "darwin";
+const _isWindows = os.platform() === "win32";
+// const isLinux = !isMac && !isWindows;
+const DETECTED_OS: "Windows" | "MacOS" | "Linux" = _isWindows ? "Windows" : _isMac ? "MacOS" : "Linux";
 
 type TDocument = typeof document;
 export interface TKeyboardDocument extends TDocument {
@@ -46,7 +53,7 @@ const _keyOptionsArrows = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "P
 const _keyOptionsEnterReturnSpace = ["Space", "Enter", "Return"];
 
 // const, but can be augmented from client code when new Key codes are "discovered" (platform-specific detection)
-export const KEY_CODES = _keyOptionsNumpads.concat(
+const KEY_CODES = new Set<string>(_keyOptionsNumpads.concat(
     _keyOptionsFunctions,
     _keyOptionsNumbers,
     _keyOptionsAlpha,
@@ -57,7 +64,7 @@ export const KEY_CODES = _keyOptionsNumpads.concat(
     ["Period", "Comma", "Quote", "Backquote", "Minus", "Equal", "Semicolon"],
     ["CapsLock", "Insert", "PrintScreen"],
     ["NumLock", "NumpadMultiply", "NumpadEqual", "NumpadSubtract", "NumpadDecimal", "NumpadEnter", "NumpadDivide"],
-);
+));
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
 
 const _elementNameBlacklist: string[] = [];
@@ -298,4 +305,83 @@ export function unregisterKeyboardListener(callback: () => void) {
             break;
         }
     }
+}
+
+export function getKeyboardCodes() {
+    return Array.from(KEY_CODES); // .sort();
+}
+
+let _keyboardLayoutMap: null | undefined | Map<string, string> = undefined;
+export async function invalidateKeyboardLayoutMap(keys?: Record<string, TKeyboardShortcut>): Promise<boolean> {
+
+    const old = _keyboardLayoutMap;
+
+    Object.values(defaultKeyboardShortcuts).forEach(def => {
+        KEY_CODES.add(def.key);
+    });
+
+    if (keys) {
+        Object.values(keys).forEach(def => {
+            KEY_CODES.add(def.key);
+        });
+    }
+
+    try {
+        const layoutMapAPI = typeof navigator !== "undefined" ? await navigator.keyboard?.getLayoutMap() : undefined;
+        if (!layoutMapAPI) {
+            _keyboardLayoutMap = undefined;
+        }
+        const newMap = new Map<string, string>();
+        for (const code of KEY_CODES) {
+            const label = layoutMapAPI.get(code as KeyMapCode) || code;
+            if (label !== code) {
+                newMap.set(code, label);
+            }
+        }
+        _keyboardLayoutMap = newMap;
+    } catch {
+        _keyboardLayoutMap = null;
+    }
+
+    if (!old && !_keyboardLayoutMap) {
+        return false;
+    }
+    if (old && !_keyboardLayoutMap || !old && _keyboardLayoutMap) {
+        return true;
+    }
+    if (old && _keyboardLayoutMap) {
+        if (old.size !== _keyboardLayoutMap.size) {
+            return true;
+        }
+        for (const k of old.keys()) {
+            const v = _keyboardLayoutMap.get(k);
+            if (v !== old.get(k)) {
+                return true;
+            }
+        }
+        // for (const k of _keyboardLayoutMap.keys()) {
+        //     const v = old.get(k);
+        //     if (v !== _keyboardLayoutMap.get(k)) {
+        //         return true;
+        //     }
+        // }
+    }
+    return false;
+}
+invalidateKeyboardLayoutMap().then((_v) => { /* noop */ }).catch((_err) => { /* noop */ });
+
+export function applyKeyboardLayoutMap(key: string): string {
+    return _keyboardLayoutMap?.get(key) || key;
+}
+
+export function toUpperIfSimpleLowerCase(char: string): string {
+    if (/^[a-z]$/.test(char)) {
+        return char.toUpperCase();
+    }
+    return char;
+}
+export function textualizeKeyboardShortcut(def: TKeyboardShortcut) {
+    const key = toUpperIfSimpleLowerCase(applyKeyboardLayoutMap(def.key));
+    return `${def.shift ? "SHIFT " : ""}${def.control ? "CTRL " : ""}${def.alt ? (DETECTED_OS === "MacOS" ? "OPTION " : "ALT ") : ""}${def.meta ? (DETECTED_OS === "MacOS" ? "COMMAND" : "META") : ""}${(def.shift || def.control || def.alt || def.meta) ? "+ " : ""}${key}`;
+    // return `${(def.shift ? "SHIFT " : "") + (def.control ? "CTRL " : "") + (def.alt ? "ALT/OPT " : "") + (def.meta ? "META/CMD " : "") + def.key}`;
 }
