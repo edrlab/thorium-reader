@@ -290,7 +290,7 @@ let config = Object.assign(
                         // https://docs.mathjax.org/en/v4.1/output/fonts.html
                         // https://cdn.jsdelivr.net/npm/@mathjax/mathjax-newcm-font@4.1.3/chtml/woff2/mjx-ncm-n.woff2
                         from: path.join(__dirname, "node_modules", "@mathjax", "mathjax-newcm-font", "chtml"),
-                        to: "MathJax/newcm-font/chtml",
+                        to: "MathJax/mathjax-newcm-font/chtml",
                     },
                 ],
             }),
