@@ -47,7 +47,7 @@ import { customizationWellKnownFolder } from "readium-desktop/main/customization
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
-import { TCatalogAddAnalyticsOrigin } from "src/common/analytics/catalog";
+import { TCatalogAddAnalyticsOrigin } from "readium-desktop/common/analytics/catalog";
 
 import { getLcpHashedPassphrase } from "readium-desktop/utils/lcp";
 
