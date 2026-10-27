@@ -179,12 +179,12 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             capture: true,
         });
 
-        invalidateKeyboardLayoutMap(this.props.keyboardShortcuts).then((changed) => { if (changed) { this.setState({ refresh: this.state.refresh + 1 }); /* this.forceUpdate(); */ } }).catch((_err) => { /* noop */ });
+        invalidateKeyboardLayoutMap(this.props.keyboardShortcuts).then((changed) => { if (changed) { console.log("KEYBOARD CHANGED1"); this.setState({ refresh: this.state.refresh + 1 }); /* this.forceUpdate(); */ } }).catch((_err) => { /* noop */ });
     }
 
     public componentDidUpdate(oldProps: IProps) {
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
-            invalidateKeyboardLayoutMap(this.props.keyboardShortcuts).then((changed) => { if (changed) { this.setState({ refresh: this.state.refresh + 1 }); /* this.forceUpdate(); */ } }).catch((_err) => { /* noop */ });
+            invalidateKeyboardLayoutMap(this.props.keyboardShortcuts).then((changed) => { if (changed) { console.log("KEYBOARD CHANGED2"); this.setState({ refresh: this.state.refresh + 1 }); /* this.forceUpdate(); */ } }).catch((_err) => { /* noop */ });
         }
     }
 
@@ -925,7 +925,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             aria-label={DETECTED_OS === "MacOS" ? "Command" : "Meta"}
         >{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : <SVG ariaHidden svg={WindowsIcon} />}</label></>;
 
-        invalidateKeyboardLayoutMap({"dummy": def}).then((changed) => { if (changed) { this.setState({ refresh: this.state.refresh + 1 }); /* this.forceUpdate(); */ } }).catch((_err) => { /* debug(err); */ });
+        invalidateKeyboardLayoutMap({"dummy": def}).then((changed) => { if (changed) { console.log("KEYBOARD CHANGED3"); this.setState({ refresh: this.state.refresh + 1 }); /* this.forceUpdate(); */ } }).catch((_err) => { /* debug(err); */ });
 
         const keySelect =
         <>
