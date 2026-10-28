@@ -14,14 +14,15 @@ import { IwidthHeight } from "./fxl";
 import { READIUM_CSS_URL_PATH } from "./readium-css-settings";
 import { READIUM2_ELECTRON_HTTP_PROTOCOL, convertCustomSchemeToHttpUrl } from "./sessions";
 import {
+    CLASS_PAGINATED,
     CLASS_VWM,
-    CLASS_PAGINATED, ROOT_CLASS_FIXED_LAYOUT, ROOT_CLASS_INVISIBLE_MASK,
+    DISABLE_TEMPORARY_NAV_TARGET_OUTLINE_CLASS,
+    ENABLE_VISIBILITY_MASK,
+    ROOT_CLASS_FIXED_LAYOUT, ROOT_CLASS_INVISIBLE_MASK,
     ROOT_CLASS_INVISIBLE_MASK_REMOVED, ROOT_CLASS_MATHJAX, ROOT_CLASS_NO_FOOTNOTES, ROOT_CLASS_NO_RUBY,
     ROOT_CLASS_REDUCE_MOTION, WebViewSlotEnum, audioCssStyles, focusCssStyles, footnotesCssStyles,
     mediaOverlaysCssStyles, readPosCssStyles, scrollBarCssStyles, selectionCssStyles,
     targetCssStyles, ttsCssStyles, visibilityMaskCssStyles,
-    ENABLE_VISIBILITY_MASK,
-    DISABLE_TEMPORARY_NAV_TARGET_OUTLINE_CLASS,
 } from "./styles";
 
 export const READIUM2_BASEURL_ID = "r2_BASEURL_ID";
@@ -940,6 +941,7 @@ export function appendCSS(documant: Document, mod: string, urlRoot: string) {
     }
     const linkElement = documant.createElement("link");
     linkElement.setAttribute("id", idz);
+    linkElement.setAttribute("crossorigin", "anonymous");
     linkElement.setAttribute("rel", "stylesheet");
     linkElement.setAttribute("type", "text/css");
     linkElement.setAttribute("href", urlRoot + "ReadiumCSS-" + mod + ".css");
