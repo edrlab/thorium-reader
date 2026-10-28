@@ -27,7 +27,7 @@ npm exec --no --offline -- taze major --maturity-period 2 --fail-on-outdated --a
 
 Summarize reports and wait for user instructions before editing `package.json` or installing updates. The user must assess upgrade safety: majors may break compatibility; minors can carry supply-chain risks. `npm audit` reports known vulnerabilities; published artifacts can be compared at `https://npmx.dev/diff/react/v/19.2.8...19.3.0` (substitute package/versions).
 
-Never use `npx`: it can download and execute packages outside the vetted project lockfile/SBOM. Use `npm exec --no --offline -- [PACKAGE_NAME]` for locally installed tools; otherwise ask the user how to proceed and explain this alternative.
+Never use `npx` or allow implicit tool installation. Prefer existing `npm run` scripts; otherwise verify the tool is installed locally and use `npm exec --no --offline -- <tool>`. If missing, ask the user before installing it through the dependency workflow above.
 
 If install scripts are blocked, run `npm install-scripts ls`, then ask the user to decide on `npm install-scripts [approve|deny] PACKAGE_NAME`. Approved exceptions can use `.npmrc`'s `allow-scripts=PACKAGE_NAME` or `--allow-scripts=PACKAGE_NAME` after `--ignore-scripts`.
 
