@@ -11,12 +11,12 @@ import { fileURLToPath } from "node:url";
 // Never include directories, URL credentials, ports, queries, or fragments in a toast label.
 export function notificationSource(value: string): string | undefined {
     if (/^[a-z]:[\\/]/i.test(value)) {
-        return path.win32.basename(value) || undefined;
+        return path.basename(value) || undefined;
     }
     try {
         const url = new URL(value);
         if (url.protocol === "file:") {
-            return path.win32.basename(fileURLToPath(url)) || undefined;
+            return path.basename(fileURLToPath(url)) || undefined;
         }
         return url.hostname || undefined;
     } catch {
@@ -24,6 +24,6 @@ export function notificationSource(value: string): string | undefined {
         if (value.includes("://")) {
             return undefined;
         }
-        return path.win32.basename(value) || undefined;
+        return path.basename(value) || undefined;
     }
 }
