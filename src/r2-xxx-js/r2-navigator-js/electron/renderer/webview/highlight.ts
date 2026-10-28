@@ -2420,6 +2420,10 @@ https://blackorwhite.lloydk.ca
     const textClientRects = textClientRects_[0];
     const atLeastOneIsInsideClosedDetails = textClientRects_[1];
 
+    if (!textClientRects.length) {
+        return null;
+    }
+
     let clientRects: IRect[] | undefined;
 
     if (doNotMergeHorizontallyAlignedRects) {
@@ -2546,6 +2550,10 @@ https://blackorwhite.lloydk.ca
             //     clientRects = [clientRects[clientRects.length - 1]];
             // }
         }
+    }
+
+    if (!clientRects.length) {
+        return null;
     }
 
     // let highlightAreaSVGDocFrag: DocumentFragment | undefined;

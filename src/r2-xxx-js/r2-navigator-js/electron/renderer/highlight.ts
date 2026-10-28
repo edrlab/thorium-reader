@@ -156,7 +156,7 @@ export async function highlightsCreate(
                                 webview.READIUM2.highlights = [];
                             }
                             webview.READIUM2.highlights.push(...(payloadPong.highlights.filter((h) => !!h) as IHighlight[]));
-                            console.log(`pre-hydrateHighlightsBuild CREATE: ${webview.READIUM2.link?.HrefDecoded} -----  ${activeWebView.READIUM2.link?.HrefDecoded} ===== ${webview.READIUM2.highlights?.length} /// ${JSON.stringify(webview.READIUM2.highlights, null, 4)}`);
+                            console.log(`pre-hydrateHighlightsBuild CREATE: ${webview.READIUM2.link?.HrefDecoded} -----  ${activeWebView.READIUM2.link?.HrefDecoded} ===== ${webview.READIUM2.highlights?.length}`); /// ${JSON.stringify(webview.READIUM2.highlights, null, 4)}
                             resolve(payloadPong.highlights);
                         }
                     }

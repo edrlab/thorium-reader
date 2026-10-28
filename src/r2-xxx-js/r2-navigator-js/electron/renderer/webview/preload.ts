@@ -243,7 +243,7 @@ win.prompt = (...args: any[]): string => {
 // (I observed different outcomes with Virtual Machines in various resolutions, versus hardware laptop/tablet)
 const CSS_PIXEL_TOLERANCE = 5;
 
-// setTimeout(() => {
+// win.setTimeout(() => {
 //     if (win.alert) {
 //         win.alert("win.alert!");
 //     }
@@ -770,7 +770,7 @@ ipcRenderer.on(R2_EVENT_SCROLLTO, (_event: any, payload: IEventPayload_R2_EVENT_
         const scrollLeft = scrollElement.scrollLeft;
         win.location.href = "#";
         delayScrollIntoView = true;
-        setTimeout(() => {
+        win.setTimeout(() => {
             debug("location HREF # hash, reset scroll left/top: ", scrollTop, scrollLeft);
             scrollElement.scrollTop = scrollTop;
             scrollElement.scrollLeft = scrollLeft;
@@ -782,7 +782,7 @@ ipcRenderer.on(R2_EVENT_SCROLLTO, (_event: any, payload: IEventPayload_R2_EVENT_
     resetLocationHashOverrideInfo();
 
     if (delayScrollIntoView) {
-        setTimeout(() => {
+        win.setTimeout(() => {
             if (DEBUG_TRACE) debug("R2_EVENT_SCROLLTO: delayScrollIntoView + scrollToHashRaw()...");
             // CONTEXT: R2_EVENT_SCROLLTO
             scrollToHashRaw(false, true);
@@ -1078,7 +1078,7 @@ function onEventPageTurn(payload: IEventPayload_R2_EVENT_PAGE_TURN) {
                     //     vwm ?
                     //     `translateY(${unit}px)` :
                     //     `translateX(${(isRTL() ? -1 : 1) * unit}px)`;
-                    // setTimeout(() => {
+                    // win.setTimeout(() => {
                     //     (targetObj as HTMLElement).style.transition = "";
                     //     (targetObj as HTMLElement).style.transform = "none";
                     //     targetObj[targetProp] = scrollOffset;
@@ -1276,7 +1276,7 @@ ipcRenderer.on(R2_EVENT_PAGE_TURN, (_event: any, payload: IEventPayload_R2_EVENT
     // mediaOverlaysClickDebounced.clear();
 
     // Because 'r2_leftrightKeyboardTimeStamp' is set AFTER the main window left/right keyboard handler!
-    setTimeout(() => { // we could debounce too?
+    win.setTimeout(() => { // we could debounce too?
         if (DEBUG_TRACE) debug("R2_EVENT_PAGE_TURN: onEventPageTurn()...");
         onEventPageTurn(payload);
     }, 100);
@@ -1393,12 +1393,12 @@ const tempLinkTargetOutline = (element: Element, time: number, alt: boolean) => 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((element as any)._timeoutTargetClass) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        clearTimeout((element as any)._timeoutTargetClass);
+        win.clearTimeout((element as any)._timeoutTargetClass);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (element as any)._timeoutTargetClass = undefined;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (element as any)._timeoutTargetClass = setTimeout(() => {
+    (element as any)._timeoutTargetClass = win.setTimeout(() => {
         // debug("ANIMATION TIMEOUT REMOVE");
         // (element as HTMLElement).style.animationPlayState = "paused";
         element.classList.remove(LINK_TARGET_CLASS);
@@ -1434,7 +1434,7 @@ function scrollElementIntoView(element: Element, doFocus: boolean, animate: bool
         focusElement(element, !!domRect /*, focusHost */);
     }
 
-    setTimeout(() => {
+    win.setTimeout(() => {
         const isPaged = isPaginated(win.document);
         if (isPaged) {
             if (DEBUG_TRACE) debug("scrollElementIntoView: isPaged + scrollIntoView()");
@@ -1501,7 +1501,7 @@ function scrollElementIntoView(element: Element, doFocus: boolean, animate: bool
                         //     isVerticalWritingMode() ?
                         //     `translateY(${unit}px)` :
                         //     `translateX(${(isRTL() ? -1 : 1) * unit}px)`;
-                        // setTimeout(() => {
+                        // win.setTimeout(() => {
                         //     (targetObj as HTMLElement).style.transition = "";
                         //     (targetObj as HTMLElement).style.transform = "none";
                         //     targetObj[targetProp] = offset;
@@ -1705,7 +1705,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
                 win.READIUM2.locationHashOverride = undefined;
                 resetLocationHashOverrideInfo();
 
-                setTimeout(() => {
+                win.setTimeout(() => {
 
                     // relative to fixed window top-left corner
                     // const y = (isPaged ?
@@ -1735,7 +1735,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
                         notifyReadingLocationDebounced();
                     }
 
-                    setTimeout(() => {
+                    win.setTimeout(() => {
                         _ignoreScrollEvent = false;
                     }, 10);
                 }, 60);
@@ -1807,7 +1807,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
                     notifyReadingLocationDebounced();
 
                     if (doHyperlink && selected.tagName?.toLowerCase() === "a") {
-                        setTimeout(() => {
+                        win.setTimeout(() => {
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             (selected as any).__skipHistory = true;
                             (selected as HTMLLinkElement).click();
@@ -1857,7 +1857,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
                         scrollElement.scrollTop = 0;
                         scrollElement.scrollLeft = scrollOffsetPaged;
                     }
-                    setTimeout(() => {
+                    win.setTimeout(() => {
                         _ignoreScrollEvent = false;
                     }, 10);
 
@@ -1900,7 +1900,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
                     scrollElement.scrollTop = scrollOffset;
                     scrollElement.scrollLeft = 0;
                 }
-                setTimeout(() => {
+                win.setTimeout(() => {
                     _ignoreScrollEvent = false;
                 }, 10);
 
@@ -1933,7 +1933,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
         _ignoreScrollEvent = true;
         scrollElement.scrollLeft = 0;
         scrollElement.scrollTop = 0;
-        setTimeout(() => {
+        win.setTimeout(() => {
             _ignoreScrollEvent = false;
         }, 10);
 
@@ -2180,6 +2180,7 @@ ipcRenderer.on(R2_EVENT_READIUMCSS, (_event: any, payload: IEventPayload_R2_EVEN
 
 let _docTitle: string | undefined;
 
+let _readyLoadedTimeout: number | undefined;
 win.addEventListener("DOMContentLoaded", () => {
     debug("############# DOMContentLoaded");
 
@@ -2411,10 +2412,65 @@ win.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // sometimes the load event does not occur! (some weird FXL edge case?)
-    setTimeout(() => {
-        loaded(true);
-    }, 500);
+    // win.document.documentElement.classList.contains(ROOT_CLASS_MATHJAX) ===> user activated, but not necessarily with MathJax in doc
+    if (!!(win as any).MathJax || !!win.document.getElementById("thorium_mathJax_script") || !!win.document.getElementById("__thorium_mathJax_script")) {
+        debug("|||| LOAD EVENT wait for MathJax ...");
+
+        _readyLoadedTimeout = undefined; // see "load" event listener
+
+        new Promise<boolean>((resolve, _rej) => {
+
+            let _MathJaxReadyTimeout = win.setTimeout(() => {
+                if (!_MathJaxReadyTimeout) {
+                    // the "MathJaxReady" event won the race
+                    return;
+                }
+
+                // the timeout won the race
+                _MathJaxReadyTimeout = undefined;
+                debug("|||| LOAD EVENT wait for MathJax failed ==> force");
+                resolve(true);
+            }, 2000);
+
+            const func = (_ev: CustomEvent) => {
+                if (!_MathJaxReadyTimeout) {
+                    // the timeout won the race
+                    return;
+                }
+
+                // the "MathJaxReady" event won the race
+                win.clearTimeout(_MathJaxReadyTimeout);
+                _MathJaxReadyTimeout = undefined;
+
+                // @ts-expect-error custom event
+                win.document.documentElement.removeEventListener("MathJaxReady", func);
+
+                debug("|||| LOAD EVENT wait for MathJax success ==> go!");
+                resolve(false);
+            };
+            // @ts-expect-error custom event
+            win.document.documentElement.addEventListener("MathJaxReady", func, true);
+
+        }).then((forced) => {
+            debug("|||| LOAD EVENT MathJax ready FORCED: ", forced);
+            loaded(forced);
+        }).catch((err) => {
+            debug("|||| LOAD EVENT MathJax ready ERR??? ", err);
+        });
+    } else {
+        // sometimes the load event does not occur! (some weird FXL edge case?)
+        _readyLoadedTimeout = win.setTimeout(() => {
+            if (!_readyLoadedTimeout) {
+                // the "load" event won the race
+                return;
+            }
+
+            // the "DOMContentLoaded" event timeout won the race
+            _readyLoadedTimeout = undefined;
+
+            loaded(true);
+        }, 1000);
+    }
 });
 
 // let _cancelInitialScrollCheck = false;
@@ -2475,7 +2531,7 @@ function checkSoundtrack(documant: Document) {
     // (works-ish, because broken playback flow when "turning pages" in the book,
     // and possibility of concurrent multiple playback streams with two-page spreads)
     // audio.setAttribute("loop", "loop");
-    // setTimeout(() => {
+    // win.setTimeout(() => {
     //     await audio.play();
     // }, 500);
 
@@ -2733,7 +2789,7 @@ async function hydrateHighlightsConsume(b64Highlights: string): Promise<void> {
         // debug(jsonStr);
         const highlights = JSON.parse(jsonStr);
 
-        debug("################## HIGHLIGHTS hydrate PARSE ...", b64Highlights.length, JSON.stringify(highlights, null, 4));
+        debug("################## HIGHLIGHTS hydrate PARSE ...", b64Highlights.length); // JSON.stringify(highlights, null, 4)
 
         setDrawMargin(win, highlights.margin, highlights.list || []); // calls recreateAllHighlightsRaw()
         // if (highlights.list?.length) {
@@ -2757,6 +2813,7 @@ function loaded(forced: boolean) {
         return;
     }
     _loaded = true;
+
     if (forced) {
         debug(">>> LOAD EVENT WAS FORCED!");
     } else {
@@ -2784,7 +2841,7 @@ function loaded(forced: boolean) {
         // tslint:disable-next-line:no-string-literal
         const b64Highlights = win.READIUM2.urlQueryParams[URL_PARAM_HIGHLIGHTS];
         if (b64Highlights) {
-            setTimeout(() => {
+            win.setTimeout(() => {
                 hydrateHighlightsConsume(b64Highlights).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
             }, 10);
         }
@@ -2824,7 +2881,7 @@ function loaded(forced: boolean) {
                 focusLink.setAttribute("href", "javascript:;");
                 focusLink.setAttribute("tabindex", "0");
                 win.document.body.insertAdjacentElement("afterbegin", focusLink);
-                setTimeout(() => {
+                win.setTimeout(() => {
                     focusLink.addEventListener("click", (ev) => {
                         ev.preventDefault();
                         if (DEBUG_TRACE) debug("focusLink CLICK: focusCurrentReadingLocationElement()...");
@@ -2833,18 +2890,18 @@ function loaded(forced: boolean) {
                     });
                 }, 200);
                 // Does not work! :(
-                // setTimeout(() => {
+                // win.setTimeout(() => {
                 //     console.log("TEST AUTOFOCUS");
                 //     focusLink.focus();
                 // }, 2000);
             }
 
-            // setTimeout(() => {
+            // win.setTimeout(() => {
             //     debug("++++ scrollToHashRaw FROM LOAD");
             //     scrollToHashRaw();
             // }, 100);
             // _cancelInitialScrollCheck = false;
-            // setTimeout(() => {
+            // win.setTimeout(() => {
             //     if (_cancelInitialScrollCheck) {
             //         return;
             //     }
@@ -2886,7 +2943,7 @@ function loaded(forced: boolean) {
         // if (win.READIUM2.isFixedLayout) {
         //     mediaOverlaysClickRaw(undefined, false);
         // } else {
-        //     setTimeout(() => {
+        //     win.setTimeout(() => {
         //         const element = findFirstVisibleElement(win.document.body);
         //         mediaOverlaysClickDebounced(element, false);
         //     }, 200);
@@ -3009,7 +3066,7 @@ function loaded(forced: boolean) {
 
     const useResizeObserver = !win.READIUM2.isFixedLayout;
     if (useResizeObserver && win.document.body) {
-        setTimeout(() => {
+        win.setTimeout(() => {
             const debouncedResizeObserverCallback = debounce((entries: ResizeObserverEntry[]) => {
                 if (DEBUG_TRACE) debug("ResizeObserver ...");
                 for (const entry of entries) {
@@ -3029,11 +3086,14 @@ function loaded(forced: boolean) {
                 if (_firstResizeObserver) {
                     _firstResizeObserver = false;
                     debug("ResizeObserver SKIP FIRST ...");
-                    if (!!(win as any).MathJax || !!win.document.getElementById("thorium_mathJax_script") || !!win.document.getElementById("__thorium_mathJax_script")) {
-                        debug("ResizeObserver SKIP FIRST ... nope because MathJax async fonts etc.");
-                    } else {
-                        return;
-                    }
+                    return;
+
+                    // // win.document.documentElement.classList.contains(ROOT_CLASS_MATHJAX) ===> user activated, but not necessarily with MathJax in doc
+                    // if (!!(win as any).MathJax || !!win.document.getElementById("thorium_mathJax_script") || !!win.document.getElementById("__thorium_mathJax_script")) {
+                    //     debug("ResizeObserver SKIP FIRST ... nope because MathJax async fonts etc.");
+                    // } else {
+                    //     return;
+                    // }
                 }
                 // debug("ResizeObserver");
 
@@ -3044,7 +3104,7 @@ function loaded(forced: boolean) {
                 const elPad = win.document.getElementById(EXTRA_COLUMN_PAD_ID);
                 if (elPad) {
                     debug("ResizeObserver appendExtraColumnPadIfNecessary EXTRA_COLUMN_PAD_ID will remove...");
-                    setTimeout(() => {
+                    win.setTimeout(() => {
                         debug("ResizeObserver appendExtraColumnPadIfNecessary EXTRA_COLUMN_PAD_ID removing");
                         debouncedResizeObserverCallback.clear();
                         // _firstResizeObserver = true;
@@ -3845,7 +3905,7 @@ function loaded(forced: boolean) {
         _wheelTimeStamp = -1;
     });
 
-    setTimeout(() => {
+    win.setTimeout(() => {
         win.addEventListener("scroll", (_ev: Event) => {
 
             if (_ignoreScrollEvent) {
@@ -3982,7 +4042,7 @@ function loaded(forced: boolean) {
                 if (str) {
                     evt.preventDefault();
 
-                    setTimeout(() => {
+                    win.setTimeout(() => {
                         const payload: IEventPayload_R2_EVENT_CLIPBOARD_COPY = {
                             locator: win.READIUM2.locationHashOverrideInfo, // see notifyReadingLocationRaw()
                             txt: str,
@@ -4001,8 +4061,15 @@ function loaded(forced: boolean) {
 // after DOMContentLoaded, but sometimes fail to occur (e.g. some fixed layout docs with single image in body!)
 win.addEventListener("load", () => {
     debug("############# load");
-    // console.log(win.location);
-    loaded(false);
+    if (_readyLoadedTimeout) {
+        // the "load" event won the race
+        win.clearTimeout(_readyLoadedTimeout);
+        _readyLoadedTimeout = undefined;
+        loaded(false);
+    } else {
+        // the "DOMContentLoaded" event timeout won the race, or the MathJax promise that was waiting
+        // loaded(false);
+    }
 });
 
 // // does not occur when re-using same webview (src="href")
@@ -5765,7 +5832,7 @@ if (!win.READIUM2.isAudio) {
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             (utterance as any)._textToSpeechPayload = payload;
 
-                            // setTimeout(() => {
+                            // win.setTimeout(() => {
                             win.speechSynthesis.speak(utterance);
                             // }, 0);
                         } else {

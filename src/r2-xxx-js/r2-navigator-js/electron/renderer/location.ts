@@ -1704,7 +1704,7 @@ ${coverLink ? `<img id="${AUDIO_COVER_ID}" src="${coverLink.Href}" alt="" ${cove
             const eq = activeWebView.READIUM2.link === pubLink;
             const highlights = eq ? activeWebView.READIUM2.highlights : undefined;
             if (IS_DEV) {
-                debug(`pre-hydrateHighlightsBuild SRC LOAD: ${eq} ... ${activeWebView.READIUM2.link?.HrefDecoded} -----  ${pubLink?.HrefDecoded} ===== ${activeWebView.READIUM2.highlights?.length} /// ${JSON.stringify(activeWebView.READIUM2.highlights, null, 4)}`);
+                debug(`pre-hydrateHighlightsBuild SRC LOAD: ${eq} ... ${activeWebView.READIUM2.link?.HrefDecoded} -----  ${pubLink?.HrefDecoded} ===== ${activeWebView.READIUM2.highlights?.length}`); /// ${JSON.stringify(activeWebView.READIUM2.highlights, null, 4)}
             }
             setTimeout(() => {
 
