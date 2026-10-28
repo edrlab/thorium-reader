@@ -297,7 +297,11 @@
         "import": {
             "alreadyImport": "{{- title}} ja estava importat",
             "fail": "La importació de {{- path}} ha fallat. {{- err}}",
-            "success": "La importació de {{- title}} ha acabat."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "La importació de {{- title}} ha acabat.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

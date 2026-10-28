@@ -297,7 +297,11 @@
         "import": {
             "alreadyImport": "",
             "fail": "",
-            "success": ""
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

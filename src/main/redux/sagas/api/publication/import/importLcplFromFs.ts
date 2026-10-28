@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { ImportFailure } from "./importFailure";
 import * as fs from "node:fs";
 import moment from "moment";
 import * as path from "node:path";
@@ -40,7 +41,7 @@ export function* importLcplFromFS(
     const r2LCPJson = JSON.parse(r2LCPStr);
 
     if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
-        throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
+        throw new ImportFailure("invalidLicense", `LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
     }
 
     const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);

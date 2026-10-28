@@ -6,6 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import * as path from "node:path";
+import { importFailureMessage } from "./importFailure";
 import { getUrlHost } from "readium-desktop/utils/url";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
@@ -262,12 +264,11 @@ export function* importFromLink(
 
     } catch (e: any) {
 
-        debug("importFromLink failed", link.url, e.toString(), e.stack ?? e.trace);
+        debug("importFromLink failed", link.url, e);
         yield put(
             toastActions.openRequest.build(
                 ToastType.Error,
-                translate("message.import.fail",
-                    { path: getUrlHost(link.url) || link.url, err: e instanceof Error ? e.message : String(e) }),
+                importFailureMessage(e, pub?.documentTitle || link.title || getUrlHost(link.url) || link.url),
             ),
         );
     }
@@ -417,8 +418,7 @@ export function* importFromFs(
                     yield put(
                         toastActions.openRequest.build(
                             ToastType.Error,
-                            translate("message.import.fail",
-                                { path: filePath, err: error?.toString() }),
+                            importFailureMessage(error, path.basename(fpath)),
                         ),
                     );
                 }

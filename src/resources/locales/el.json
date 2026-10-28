@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "{{- title}} έχει ήδη εισαχθεί.",
             "fail": "Η εισαγωγή του {{- path}} απέτυχε. {{- err}}",
-            "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

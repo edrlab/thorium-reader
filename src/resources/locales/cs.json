@@ -302,7 +302,11 @@
         "import": {
             "alreadyImport": "Publikace „{{- title}}“ je již nahráná.",
             "fail": "Import [{{- path}}] selhal: [{{- err}}]",
-            "success": "Import publikace „{{- title}}“ dokončen."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "Import publikace „{{- title}}“ dokončen.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

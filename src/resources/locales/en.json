@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "[{{- title}}] was already imported.",
             "fail": "Importing [{{- path}}] failed: [{{- err}}]",
-            "success": "Importing [{{- title}}] completed."
+            "failed": "Could not import “{{- name}}”.",
+            "invalidLicense": "Could not import “{{- name}}”. The publication’s license is invalid.",
+            "invalidPublication": "Could not import “{{- name}}”. The publication manifest is missing.",
+            "success": "Importing [{{- title}}] completed.",
+            "unsupportedFormat": "Could not import “{{- name}}”. This file format is not supported."
         },
         "notifications": {
             "annotationImportFailed": "Unable to import annotations. Check that the file is a valid annotation export.",

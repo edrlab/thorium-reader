@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "[{{- title}}] zaten içe aktarılmış.",
             "fail": "[{{- path}}] İçe aktarması başarısız: [{{- err}}]",
-            "success": "[{{- title}}]: İçe aktarımı tamamlandı."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "[{{- title}}]: İçe aktarımı tamamlandı.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "[{{- title}}] ஏற்கனவே இறக்குமதி செய்யப்பட்டது.",
             "fail": "இறக்குமதி [{{- path}}] தோல்வியுற்றது: [{{- err}}]",
-            "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

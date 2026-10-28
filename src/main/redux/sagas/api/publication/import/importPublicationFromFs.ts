@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { ImportFailure } from "./importFailure";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -197,7 +198,7 @@ export async function importPublicationFromFS(
                     const r2LCPJson = JSON.parse(r2LCPStr);
 
                     if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
-                        throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
+                        throw new ImportFailure("invalidLicense", `LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
                     }
 
                     const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
@@ -214,13 +215,13 @@ export async function importPublicationFromFS(
 
         default:
             debug("extension not recognized", ext);
-            throw new Error(getTranslator().translate("dialog.importError", {
+            throw new ImportFailure("unsupportedFormat", getTranslator().translate("dialog.importError", {
                 acceptedExtension: `[${ext}] ${acceptedExtensionArray.join(" ")}`,
             }));
     }
 
     if (!r2Publication) {
-        throw new Error("publication manifest not defined");
+        throw new ImportFailure("invalidPublication", "publication manifest not defined");
     }
 
     // const r2PublicationJson = TaJsonSerialize(r2Publication);

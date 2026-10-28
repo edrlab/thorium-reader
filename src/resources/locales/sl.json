@@ -302,7 +302,11 @@
         "import": {
             "alreadyImport": "{{- title}} je že uvožen.",
             "fail": "Uvoz {{- path}} ni uspel: {{- err}}",
-            "success": "Uvoz {{- title}} je končan."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "Uvoz {{- title}} je končan.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

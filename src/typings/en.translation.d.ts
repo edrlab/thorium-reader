@@ -681,7 +681,11 @@ declare namespace typed_i18n {
   readonly "import": {
     readonly "alreadyImport": string,
     readonly "fail": string,
-    readonly "success": string
+    readonly "failed": string,
+    readonly "invalidLicense": string,
+    readonly "invalidPublication": string,
+    readonly "success": string,
+    readonly "unsupportedFormat": string
   },
   readonly "notifications": {
     readonly "annotationImportFailed": string,
@@ -775,11 +779,19 @@ declare namespace typed_i18n {
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
   readonly "fail": string,
-  readonly "success": string
+  readonly "failed": string,
+  readonly "invalidLicense": string,
+  readonly "invalidPublication": string,
+  readonly "success": string,
+  readonly "unsupportedFormat": string
 };
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
+  (_: "message.import.failed", __?: {}): string;
+  (_: "message.import.invalidLicense", __?: {}): string;
+  (_: "message.import.invalidPublication", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.import.unsupportedFormat", __?: {}): string;
   (_: "message.notifications", __?: {}): {
   readonly "annotationImportFailed": string,
   readonly "annotationPublicationUnavailable": string,

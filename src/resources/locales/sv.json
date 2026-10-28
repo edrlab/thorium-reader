@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "{{- title}} var redan importerad.",
             "fail": "Importen av {{- path}} misslyckades. {{- err}}",
-            "success": "Importen av {{- title}} är slutförd."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "Importen av {{- title}} är slutförd.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

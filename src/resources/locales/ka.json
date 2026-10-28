@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "{{- title}} უკვე შემოტანილია.",
             "fail": "{{- path}} მისამართის შემოტანა უშედეგოდ დასრულდა. {{- err}}",
-            "success": "{{- title}} შემოტანა წარმატებით დასრულდა."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "{{- title}} შემოტანა წარმატებით დასრულდა.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

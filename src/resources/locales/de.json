@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "Es scheint, dass Sie die Publikation [{{- title}}] bereits in Ihren Katalog aufgenommen haben.",
             "fail": "Der Import von {{- path}} ist fehlgeschlagen. {{- err}}",
-            "success": "Der Import von {{- title}} ist abgeschlossen."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "Der Import von {{- title}} ist abgeschlossen.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

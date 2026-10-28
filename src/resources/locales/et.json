@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "„{{- title}}“ on juba imporditud.",
             "fail": "„{{- path}}“ objekti importimine ei õnnestunud: {{- err}}",
-            "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

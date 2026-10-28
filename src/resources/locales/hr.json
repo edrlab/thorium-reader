@@ -297,7 +297,11 @@
         "import": {
             "alreadyImport": "{{- title}} je već uvezen",
             "fail": "Neuspjeli uvoz {{- path}}. {{- err}}",
-            "success": "Uvoz {{- title}} je završen."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "Uvoz {{- title}} je završen.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

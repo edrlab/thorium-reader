@@ -297,7 +297,11 @@
         "import": {
             "alreadyImport": "{{- title}} a déjà été ajouté.",
             "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
-            "success": "L'ajout de {{- title}} est achevé."
+            "failed": "Impossible d’importer « {{- name}} ».",
+            "invalidLicense": "Impossible d’importer « {{- name}} ». La licence de la publication est invalide.",
+            "invalidPublication": "Impossible d’importer « {{- name}} ». Le manifeste de la publication est manquant.",
+            "success": "L'ajout de {{- title}} est achevé.",
+            "unsupportedFormat": "Impossible d’importer « {{- name}} ». Ce format de fichier n’est pas pris en charge."
         },
         "notifications": {
             "annotationImportFailed": "Impossible d’importer les annotations. Vérifiez que le fichier est un export d’annotations valide.",

@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "{{- title}} is al toegevoegd.",
             "fail": "Het toevoegen van {{- path}} is mislukt. {{- err}}",
-            "success": "Het toevoegen van {{- title}} is gelukt."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "Het toevoegen van {{- title}} is gelukt.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

@@ -302,7 +302,11 @@
         "import": {
             "alreadyImport": "[{{- title}}] уже импортировано.",
             "fail": "Импорт {{- path}} не удался. {{- err}}",
-            "success": "Импорт {{- title}} закончен."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "Импорт {{- title}} закончен.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "Не удалось импортировать заметки. Убедитесь в валидности файла экспорта заметок.",

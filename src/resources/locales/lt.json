@@ -302,7 +302,11 @@
         "import": {
             "alreadyImport": "[{{- title}}] jau importuotas.",
             "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
-            "success": "[{{- title}}] importas baigtas."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "[{{- title}}] importas baigtas.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

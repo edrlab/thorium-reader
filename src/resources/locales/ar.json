@@ -312,7 +312,11 @@
         "import": {
             "alreadyImport": "تم استيراد [{{- title}}] مسبقًا.",
             "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
-            "success": "اكتمل استيراد [{{- title}}]."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "اكتمل استيراد [{{- title}}].",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

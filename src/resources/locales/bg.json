@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "{{- title}} вече е била добавена.",
             "fail": "Добавянето на {{- path}} се провали. {{- err}}",
-            "success": "Добавянето на {{- title}} завърши."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "Добавянето на {{- title}} завърши.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

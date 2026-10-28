@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
             "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
-            "success": "Julkaisun {{- title}} tuonti on valmis."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "Julkaisun {{- title}} tuonti on valmis.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

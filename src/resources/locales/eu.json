@@ -292,7 +292,11 @@
         "import": {
             "alreadyImport": "{- title}} inportatuta zegoen",
             "fail": "{- path}}-ren inportazioak huts egin du. {{- Err}}",
-            "success": "{- title}}-ren inportazioa amaitu da."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "{- title}}-ren inportazioa amaitu da.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

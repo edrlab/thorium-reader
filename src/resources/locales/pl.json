@@ -302,7 +302,11 @@
         "import": {
             "alreadyImport": "[{{- title}}] został już zaimportowany.",
             "fail": "Importowanie [{{- path}}] nie powiodło się: [{{- err}}]",
-            "success": "Importowanie [{{- title}}] zakończone."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "Importowanie [{{- title}}] zakończone.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",

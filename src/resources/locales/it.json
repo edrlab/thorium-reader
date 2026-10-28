@@ -297,7 +297,11 @@
         "import": {
             "alreadyImport": "{{- title}} è già stato importato.",
             "fail": "L'importazione di {{- path}} è fallita. {{- err}}",
-            "success": "L'importazione di {{- title}} è terminata."
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "L'importazione di {{- title}} è terminata.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "Impossibile importare le annotazioni. Controlla che sia possibile esportare il file.",

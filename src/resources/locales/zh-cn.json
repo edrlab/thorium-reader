@@ -287,7 +287,11 @@
         "import": {
             "alreadyImport": "[{{- title}}] 已被导入。",
             "fail": "导入{{- path}}失败。{{- err}}",
-            "success": "导入{{- title}}完成。"
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "success": "导入{{- title}}完成。",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
