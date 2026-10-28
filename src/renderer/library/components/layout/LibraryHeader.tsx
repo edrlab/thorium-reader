@@ -258,13 +258,17 @@ const Header = () => {
             anchorId="xxx"
             label={__("settings.screenReaderActivate.invite")}
             onClick={screenReaderToggle}
-            tooltip={ keyboardShortcutScreenReader }
+            tooltip={keyboardShortcutScreenReader}
+            tooltipSubline={__("settings.keyboard.list.ToggleScreenReaderOptimize.name")}
+            tooltipExtended={ __("settings.keyboard.list.ToggleScreenReaderOptimize.description") }
         /> : <></>}
         <SkipLink
             className={stylesHeader.skip_link}
             anchorId="main-content"
             label={__("accessibility.skipLink")}
             tooltip={ keyboardShortcutFocusMain }
+            tooltipSubline={__("settings.keyboard.list.FocusMain.name")}
+            tooltipExtended={ __("settings.keyboard.list.FocusMain.description") }
         />
 
         <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>

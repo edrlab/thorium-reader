@@ -458,7 +458,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                 </div>
             </label>
         </Focusable>
-        <Tooltip placement="top" offset={0} className={"tooltipsearch"}>
+        <Tooltip placement="top" offset={0} className={"tooltipKeyboardShortcut"}>
         <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg>
         </OverlayArrow>{keyboardShortcutFocusSearch}</Tooltip></TooltipTrigger>
             <i><SVG ariaHidden svg={SearchIcon} /></i>

@@ -5,7 +5,7 @@
 @use './partials/focus';
 
 /* .react-aria-Tooltip */
-.tooltipskiplink, .tooltipsearch {
+.tooltipKeyboardShortcut {
   border-radius: 0.5em;
   border: 0.15em solid var(--color-text-primary);
   background: var(--color-neutral-base);
@@ -13,13 +13,17 @@
   forced-color-adjust: none;
   outline: none;
   padding: 0.5em;
-  max-width: 10em;
   /* fixes FF gap */
   transform: translate3d(0, 0, 0);
   transition:
     transform 200ms,
     opacity 200ms;
   font: 100% system-ui;
+  max-width: 10em;
+
+  .tooltipKeyboardShortcutSubline {
+    max-width: 20em;
+  }
 
   &[data-entering],
   &[data-exiting] {

@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
 
@@ -14,6 +15,8 @@ interface IBaseProps {
     label: string;
     className?: string;
     tooltip?: string;
+    tooltipSubline?: string;
+    tooltipExtended?: string;
     onClick?: () => void;
 }
 
@@ -33,7 +36,7 @@ export default class SkipLink extends React.Component<IProps, undefined> {
 
     //
     public render(): React.ReactElement<{}>  {
-        const { onClick, label, className, tooltip } = this.props;
+        const { onClick, label, className, tooltip, tooltipSubline } = this.props; // tooltipExtended
         if (tooltip) {
             return (
                 <TooltipTrigger delay={500} closeDelay={0} trigger="hover">
@@ -42,14 +45,14 @@ export default class SkipLink extends React.Component<IProps, undefined> {
                     onClick={onClick || (() => this.onClick())}
                     aria-hidden={false}
                     className={className}
-                    aria-label={`${label} (${tooltip})`}
+                    aria-label={`${label} [${tooltip}]` + (tooltipSubline ? ` (${tooltipSubline})` : "")}
                 >
                     { label }
                 </button>
                 </Focusable>
-                <Tooltip placement="bottom" offset={0} className={"tooltipskiplink"}>
+                <Tooltip placement="bottom" offset={0} className={classNames("tooltipKeyboardShortcut", tooltipSubline ? "tooltipKeyboardShortcutSubline" : undefined)}>
                 <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg>
-                </OverlayArrow>{tooltip}</Tooltip></TooltipTrigger>
+                        </OverlayArrow><b>{tooltip}</b>{tooltipSubline ? (<p style={{ fontSize: "80%"}}>{ tooltipSubline }</p>) : (<></>) }</Tooltip></TooltipTrigger>
             );
         } else {
             return (
