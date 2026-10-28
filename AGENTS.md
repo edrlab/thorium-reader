@@ -1,10 +1,6 @@
-# Project technologies
 
-This is an Electron software development project, combining the NodeJS and Web APIs / standard libraries. The code is written in TypeScript. The build system uses Webpack. Key technologies in the software stack are:
-- React
-- Redux Saga
 
-# How to install software dependencies, SBOM (Software Bill Of Materials)
+## How to install software dependencies, SBOM (Software Bill Of Materials)
 
 This project uses NPM (not PNPM, not Bun, not Yarn, etc.)
 
@@ -45,7 +41,7 @@ The shell command to reset the global NPM cache is `npm cache clear --force`. Th
 
 Sometimes the `--ignore-scripts` NPM argument can cause warning messages such as "packages had install scripts blocked because they are not covered by allowScripts". In this case, run the command `npm install-scripts ls` to review packages and subsequently as the user to decide to run `npm install-scripts [approve|deny] PACKAGE_NAME`. The local `.npmrc` NPM configuration file can be edited to include `allow-scripts=PACKAGE_NAME`, or the command line argument `--allow-scripts=PACKAGE_NAME` can be added after `--ignore-scripts`.
 
-# How to build the software
+## How to build the software
 
 - The shell command `npm run typescript-check-GO` performs fast TypeScript type-checking over the entire codebase, using the TypeScript version 7 compiler implemented in Go. Use this command to quickly check code changes.
 - The shell command `npm run typescript-check` performs slow TypeScript type-checking over the entire codebase, using the TypeScript version 6 compiler implemented in Javascript. You do not need to use this command, use the fast one instead as there is now complete parity between the Go and Javascript capabilities. Only use the slow command if you need to compare the output or the performance timings.
@@ -63,18 +59,28 @@ Important instruction: if in doubt about which compilation command to call when 
 
 - When CSS styling files are changed, the command `npm run style-typed` must be called in order to generate the TypeScript typings that are used during compilation to validate the usage of CSS classes inside TypeScript JSX / TSX.
 
-- When localization JSON locale files are changed, the command `npm run i18n-json` must be used to ensure that the JSON files are canonically serialised (tab indenting / formatting conventions, key sorting / ordering, automatic injection of missing keys with empty values). The command `npm run i18n-typed` should also be called to update the TypeScript typings that are used during compilation to validate the usage of the locales hierarchical JSON keys (usage is via the software dependency `i18next`).
+## Localization
 
-# How to run the software
+- Use explicit quoted translation keys, e.g. `__("catalog.userProfile.loans")`; `scripts/translate-scan.js` cannot discover dynamically constructed keys.
+- Before synchronization, run `node scripts/translate-scan.js <temporary-json-path>` and verify changed keys. Its empty values are a key inventory, never replacement translations; plural siblings come from `src/resources/locales/en.json`.
+- Use only the required synchronization:
+  - `npm run i18n-scan`: scanned keys → English; supply meaningful English values afterward.
+  - `npm run i18n-check`: English → other locales.
+  - `npm run i18n-json`: scanned keys → all locales; required after locale JSON edits for canonical tab formatting, key ordering, and missing-key injection.
+- These commands mutate locales and run `i18n-sort`. Preserve translations, plural forms, and runtime-used keys even when scanning misses them; review `src/resources/locales/*.json` diffs for unintended changes.
+- After locale edits, especially English key changes, run `npm run i18n-typed` and review `src/typings/en.translation.d.ts` and `src/typings/en.translation-keys.d.ts`.
+- Verify changed labels in English and one translated locale, including missing and empty translations. Confirm `src/common/services/translator.ts` falls back to meaningful English text, never raw keys or blank labels.
+
+## How to run the software
 
 - The shell command `npm run start:dev:quick` launches the application in debugging mode with a Webpack dev server that supports hot module reloading for the Electron renderer processes (including CSS styles). However the application must be restarted to take into account code changes in the main NodeJS process.
 - The shell command `npm run start` launches the application in slow bundling mode (including full type checking and linting), without the fast dev server. This closely emulates a production packaged application. Recommendation: use the quick variant for most troubleshooting tasks.
 
-# Source code organisation
+## Source code organisation
 
 The Typescript source tree is located in the `./src` directory, there are tests in a separate `./test` folder.
 
-You must ignore the `./.flox/`, `./.git/`, `./pi/` and `./node_modules/` directories inside the current working directory, unless explicitly instructed by the user to do so.
+You must ignore the `./.flox/`, `./.git/`, `./pi/` directories inside the current working directory, unless explicitly instructed by the user to do so.
 
 You are not allowed to read or write files outside the project folder. Your access to the filesystem is strictly limited to the current working directory.
 
@@ -130,12 +136,3 @@ The current runtime separation is enforced during Webpack builds by `scripts/web
 - `webpack.config.renderer-pdf.js`, `webpack.config.renderer-pdf-extract.js`, and `webpack.config.preload.js` apply stricter webview/preload isolation rules.
 
 When changing a boundary, update the relevant Webpack config and this file together. After touching imports across runtime-adjacent code, run the relevant Webpack config so the scope checker can catch direct runtime-to-runtime imports.
-
-## Localization (l10n)
-
-- `scripts/translate-scan.js` scans TypeScript source for translation calls with explicit single- or double-quoted keys. Use explicit calls such as `__("catalog.userProfile.loans")` and `__("catalog.userProfile.holds")` rather than dynamically constructed template literals, which the scanner cannot discover.
-- Before synchronizing locales, run `node scripts/translate-scan.js <temporary-json-path>` and verify that changed keys appear in the output. The generated JSON contains empty values and is a key inventory, not a replacement for existing translations. English plural siblings are detected from `src/resources/locales/en.json`.
-- `npm run i18n-scan` synchronizes scanned keys into English through a temporary `und.json`; then supply meaningful English values. `npm run i18n-check` synchronizes the other locales from English. `npm run i18n-json` synchronizes all locales directly from scanned keys. These commands mutate locale files and run `i18n-sort`; use only the synchronization needed for the change.
-- Preserve existing locale translations. Do not remove keys still used at runtime merely because scanning misses them. Review diffs in `src/resources/locales/*.json` after synchronization for accidental key deletions or overwritten translations, including plural forms.
-- After changing the English key structure, run `npm run i18n-typed` to regenerate `src/typings/en.translation.d.ts` and `src/typings/en.translation-keys.d.ts`, and review those diffs too.
-- Check changed labels in English and a translated locale, including missing and empty-string translations. `src/common/services/translator.ts` uses English fallback and explicitly retries English for empty results; ensure labels resolve to meaningful text rather than raw keys or blank strings.
