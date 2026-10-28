@@ -207,11 +207,12 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                 }
                 {
                     displayScreenReaderInvite ?
-                        <div className={stylesGlobal.new_version} style={{textDecoration:"none", color: "revert"}}
-                    aria-live="assertive"
-                    role="alert">
-                        <div><SVG ariaHidden svg={CheckIcon} /><p>
-                                    <span>{`${this.props.__("settings.screenReaderActivate.invite")}`}</span> <a href=""
+                        <div className={stylesGlobal.new_version}
+                            style={{ textDecoration: "none", color: "revert" }}
+                            aria-live="assertive"
+                            role="alert">
+                            <div><SVG ariaHidden svg={CheckIcon} />
+                                <p><span>{`${this.props.__("settings.screenReaderActivate.invite")}`}</span> &#x21e2; <a href=""
                             // ref={this.screenReaderLinkRef}
                             onClick={(ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style

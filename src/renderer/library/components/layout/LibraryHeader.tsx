@@ -177,6 +177,7 @@ const Header = () => {
     const dispatch = useDispatch();
 
     const keyboardShortcutScreenReader = textualizeKeyboardShortcut(keyboardShortcuts.ToggleScreenReaderOptimize);
+    const keyboardShortcutFocusMain = textualizeKeyboardShortcut(keyboardShortcuts.FocusMain);
 
     const screenReaderToggle = React.useCallback(() => {
         dispatch(screenReaderActions.save.build(!screenReaderActivate));
@@ -250,17 +251,20 @@ const Header = () => {
 
     const displayScreenReaderInvite = !screenReaderActivate && isAccessibilitySupportEnabled;
 
+    //
     return (<>
         {displayScreenReaderInvite ? <SkipLink
             className={stylesHeader.skip_link}
             anchorId="xxx"
-            label={__("settings.screenReaderActivate.invite") + ` [${keyboardShortcutScreenReader}]`}
+            label={__("settings.screenReaderActivate.invite")}
             onClick={screenReaderToggle}
+            tooltip={ keyboardShortcutScreenReader }
         /> : <></>}
         <SkipLink
             className={stylesHeader.skip_link}
             anchorId="main-content"
             label={__("accessibility.skipLink")}
+            tooltip={ keyboardShortcutFocusMain }
         />
 
         <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>

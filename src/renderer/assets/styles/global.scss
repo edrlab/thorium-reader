@@ -4,6 +4,71 @@
 @use './partials/mixin' as mx;
 @use './partials/focus';
 
+/* .react-aria-Tooltip */
+.tooltipskiplink, .tooltipsearch {
+  border-radius: 0.5em;
+  border: 0.15em solid var(--color-text-primary);
+  background: var(--color-neutral-base);
+  color: var(--color-text-primary);
+  forced-color-adjust: none;
+  outline: none;
+  padding: 0.5em;
+  max-width: 10em;
+  /* fixes FF gap */
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 200ms,
+    opacity 200ms;
+  font: 100% system-ui;
+
+  &[data-entering],
+  &[data-exiting] {
+    transform: var(--origin);
+    opacity: 0;
+  }
+
+  &[data-placement='top'] {
+    margin-bottom: 0.5em;
+
+    --origin: translateY(0.25em);
+  }
+
+  &[data-placement='bottom'] {
+    margin-top: 0.5em;
+
+    --origin: translateY(-0.25em);
+
+    & .react-aria-OverlayArrow svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  &[data-placement='right'] {
+    margin-left: 0.5em;
+
+    --origin: translateX(-0.25em);
+
+    & .react-aria-OverlayArrow svg {
+      transform: rotate(90deg);
+    }
+  }
+
+  &[data-placement='left'] {
+    margin-right: 0.5em;
+
+    --origin: translateX(0.25em);
+
+    & .react-aria-OverlayArrow svg {
+      transform: rotate(-90deg);
+    }
+  }
+
+  .react-aria-OverlayArrow svg {
+    display: block;
+    fill: var(--color-text-primary);
+  }
+}
+
 .CSS_START_global {
   display: none;
 }
@@ -317,7 +382,7 @@ nav + nav + .breadcrumb + .main {
       margin: 0;
       font-size: 14px;
       color: var(--color-brand-primary);
-      
+
       &:visited {
         color: var(--color-brand-primary);
       }
