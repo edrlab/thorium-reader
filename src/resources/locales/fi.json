@@ -22,7 +22,7 @@
         "publicationDetails": "{{- field}}: {{- title}}",
         "resetSetting": "Nollaa {{- setting}}",
         "rightSlideButton": "Siirry listalla oikealle",
-        "searching": "",
+        "searching": "Etsitään…",
         "skipLink": "Hyppää sisältöön",
         "toolbar": "Työkalurivi"
     },
