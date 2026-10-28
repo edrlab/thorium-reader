@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { notificationSource } from "readium-desktop/main/tools/notificationSource";
 import { getUrlHost } from "readium-desktop/utils/url";
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -92,10 +93,12 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
 
         if (linkHrefArray.some(shouldAnnounceDownload)) {
             const translate = getTranslator().translate;
+            const source = linkHrefArray.find(shouldAnnounceDownload);
+            const title = source ? notificationSource(typeof source === "string" ? source : source.href) : undefined;
             yield* putTyped(toastActions.openRequest.build(
                 ToastType.Info,
-                downloadLabel
-                    ? translate("message.download.startedWithTitle", { title: downloadLabel })
+                title
+                    ? translate("message.download.startedWithTitle", { title })
                     : translate("message.download.started"),
             ));
         }

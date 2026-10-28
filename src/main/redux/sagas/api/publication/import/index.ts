@@ -6,9 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as path from "node:path";
 import { importFailureMessage } from "./importFailure";
-import { getUrlHost } from "readium-desktop/utils/url";
+import { notificationSource } from "readium-desktop/main/tools/notificationSource";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
@@ -237,7 +236,7 @@ export function* importFromLink(
                         toastActions.openRequest.build(
                             ToastType.Info,
                             translate("message.import.alreadyImport",
-                                { title: publicationView.documentTitle }),
+                                { title: notificationSource(link.url) || "" }),
                         ),
                     );
                 }
@@ -253,7 +252,7 @@ export function* importFromLink(
                 toastActions.openRequest.build(
                     ToastType.Success,
                     translate("message.import.success",
-                        { title: publicationView.documentTitle }),
+                        { title: notificationSource(link.url) || "" }),
                 ),
             );
             yield* logPublicationImport(publicationView);
@@ -268,7 +267,7 @@ export function* importFromLink(
         yield put(
             toastActions.openRequest.build(
                 ToastType.Error,
-                importFailureMessage(e, pub?.documentTitle || link.title || getUrlHost(link.url) || link.url),
+                importFailureMessage(e, notificationSource(link.url) || ""),
             ),
         );
     }
@@ -389,7 +388,7 @@ export function* importFromFs(
                                     toastActions.openRequest.build(
                                         ToastType.Info,
                                         translate("message.import.alreadyImport",
-                                            { title: publicationView.documentTitle }),
+                                            { title: notificationSource(fpath) || "" }),
                                     ),
                                 );
                             }
@@ -404,7 +403,7 @@ export function* importFromFs(
                             toastActions.openRequest.build(
                                 ToastType.Success,
                                 translate("message.import.success",
-                                    { title: publicationView.documentTitle }),
+                                    { title: notificationSource(fpath) || "" }),
                             ),
                         );
                         yield* logPublicationImport(publicationView);
@@ -418,7 +417,7 @@ export function* importFromFs(
                     yield put(
                         toastActions.openRequest.build(
                             ToastType.Error,
-                            importFailureMessage(error, path.basename(fpath)),
+                            importFailureMessage(error, notificationSource(fpath) || ""),
                         ),
                     );
                 }
