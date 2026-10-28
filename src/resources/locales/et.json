@@ -325,7 +325,9 @@
         },
         "open": {
             "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
-            "folderNotFound": "Valjaande kausta leidmine ei õnnestu. Impordi ta uuesti või seadista andmeruumi siit „Seadistused“ → „Andmeruum“."
+            "failed": "",
+            "folderNotFound": "Valjaande kausta leidmine ei õnnestu. Impordi ta uuesti või seadista andmeruumi siit „Seadistused“ → „Andmeruum“.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

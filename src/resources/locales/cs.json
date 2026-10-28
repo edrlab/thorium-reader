@@ -335,7 +335,9 @@
         },
         "open": {
             "error": "Načítání publikace sehlalo: [{{- err}}]",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

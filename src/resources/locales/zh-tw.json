@@ -320,7 +320,9 @@
         },
         "open": {
             "error": "無法打開出版物：[{{- err}}]",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

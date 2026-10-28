@@ -330,7 +330,9 @@
         },
         "open": {
             "error": "",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

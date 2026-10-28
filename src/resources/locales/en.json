@@ -325,7 +325,9 @@
         },
         "open": {
             "error": "Loading publication failed: [{{- err}}]",
-            "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage."
+            "failed": "Could not open this publication.",
+            "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage.",
+            "missingLicense": "Could not open this publication. It is encrypted but its LCP license is missing."
         },
         "storage": {
             "recovery": {

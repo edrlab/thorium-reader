@@ -325,7 +325,9 @@
         },
         "open": {
             "error": "Eser yüklemesi başarısız: [{{- err}}]",
-            "folderNotFound": "Eser dizini bulunamıyor. Yeniden içe aktarın veya Ayarlar > Depolama'dan ilave depolamayı yapılandırın."
+            "failed": "",
+            "folderNotFound": "Eser dizini bulunamıyor. Yeniden içe aktarın veya Ayarlar > Depolama'dan ilave depolamayı yapılandırın.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

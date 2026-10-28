@@ -325,7 +325,9 @@
         },
         "open": {
             "error": "De publicatie kan niet worden geopend: {{- err}}",
-            "folderNotFound": "De publicatiemap kan niet worden gevonden. Importeer deze opnieuw of configureer de extra opslagruimte in Instellingen > Opslag."
+            "failed": "",
+            "folderNotFound": "De publicatiemap kan niet worden gevonden. Importeer deze opnieuw of configureer de extra opslagruimte in Instellingen > Opslag.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

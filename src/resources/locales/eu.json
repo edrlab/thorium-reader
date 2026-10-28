@@ -325,7 +325,9 @@
         },
         "open": {
             "error": "Ezin da argitalpena ireki: {{- err}}",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

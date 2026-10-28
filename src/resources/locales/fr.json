@@ -330,7 +330,9 @@
         },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
-            "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage."
+            "failed": "Impossible d’ouvrir cette publication.",
+            "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage.",
+            "missingLicense": "Impossible d’ouvrir cette publication. Elle est chiffrée, mais sa licence LCP est manquante."
         },
         "storage": {
             "recovery": {

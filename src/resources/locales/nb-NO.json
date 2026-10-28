@@ -325,7 +325,9 @@
         },
         "open": {
             "error": "Boken kan ikke åpnes: {{- err}}",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

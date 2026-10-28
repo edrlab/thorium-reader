@@ -330,7 +330,9 @@
         },
         "open": {
             "error": "Građa se ne može otvoriti: {{- err}}",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

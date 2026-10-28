@@ -330,7 +330,9 @@
         },
         "open": {
             "error": "No es pot obrir la publicació: {{- err}}",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

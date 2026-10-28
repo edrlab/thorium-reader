@@ -335,7 +335,9 @@
         },
         "open": {
             "error": "Nepavyko atverti leidinio : [{{- err}}]",
-            "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“."
+            "failed": "",
+            "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

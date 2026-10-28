@@ -714,7 +714,9 @@ declare namespace typed_i18n {
   },
   readonly "open": {
     readonly "error": string,
-    readonly "folderNotFound": string
+    readonly "failed": string,
+    readonly "folderNotFound": string,
+    readonly "missingLicense": string
   },
   readonly "storage": {
     readonly "recovery": {
@@ -840,9 +842,16 @@ declare namespace typed_i18n {
   (_: "message.notifications.returnFailed", __?: {}): string;
   (_: "message.notifications.storageRefreshFailed", __?: {}): string;
   (_: "message.notifications.tagsFailed", __?: {}): string;
-  (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
+  (_: "message.open", __?: {}): {
+  readonly "error": string,
+  readonly "failed": string,
+  readonly "folderNotFound": string,
+  readonly "missingLicense": string
+};
   (_: "message.open.error", __?: {}): string;
+  (_: "message.open.failed", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;
+  (_: "message.open.missingLicense", __?: {}): string;
   (_: "message.storage", __?: {}): {
   readonly "recovery": {
     readonly "failure": string,

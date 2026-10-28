@@ -325,7 +325,9 @@
         },
         "open": {
             "error": "Die Publikation kann nicht geöffnet werden: {{- err}}",
-            "folderNotFound": "Das Publikationsverzeichnis wurde nicht gefunden. Importieren Sie es erneut oder richten Sie den zusätzlichen Speicher unter Einstellungen > Speicher ein."
+            "failed": "",
+            "folderNotFound": "Das Publikationsverzeichnis wurde nicht gefunden. Importieren Sie es erneut oder richten Sie den zusätzlichen Speicher unter Einstellungen > Speicher ein.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

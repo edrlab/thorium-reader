@@ -325,7 +325,9 @@
         },
         "open": {
             "error": "Ekki tókst að opna bókina: [{{- err}}]",
-            "folderNotFound": "Mappa bókarinnar fannst ekki. Bættu bókinni við aftur eða stilltu viðbótargeymslu í Stillingar > Geymsla."
+            "failed": "",
+            "folderNotFound": "Mappa bókarinnar fannst ekki. Bættu bókinni við aftur eða stilltu viðbótargeymslu í Stillingar > Geymsla.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

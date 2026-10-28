@@ -325,7 +325,9 @@
         },
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}",
-            "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila."
+            "failed": "",
+            "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

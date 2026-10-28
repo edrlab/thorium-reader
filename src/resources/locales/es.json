@@ -330,7 +330,9 @@
         },
         "open": {
             "error": "No se puede abrir la publicación: {{- err}}",
-            "folderNotFound": "No se encuentra el directorio de esta publicación. Vuelve a importarla, o configura el almacenamiento adicional en Opciones > Almacenamiento."
+            "failed": "",
+            "folderNotFound": "No se encuentra el directorio de esta publicación. Vuelve a importarla, o configura el almacenamiento adicional en Opciones > Almacenamiento.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

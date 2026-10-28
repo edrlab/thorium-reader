@@ -325,7 +325,9 @@
         },
         "open": {
             "error": "Publikationen kan inte öppnas: {{- err}}",
-            "folderNotFound": "Mappen för boken kan inte hittas. Importera den igen eller ändra i Inställningar > Lagring."
+            "failed": "",
+            "folderNotFound": "Mappen för boken kan inte hittas. Importera den igen eller ändra i Inställningar > Lagring.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

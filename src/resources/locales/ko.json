@@ -320,7 +320,9 @@
         },
         "open": {
             "error": "지원하지 않는 형식의 출판물입니다: {{- err}}",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

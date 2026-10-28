@@ -330,7 +330,9 @@
         },
         "open": {
             "error": "La pubblicazione non può essere aperta: {{- err}}",
-            "folderNotFound": "La cartella della pubblicazione non si trova. Reimportala o configura uno spazio d'archiviazione aggiuntivo in Impostazioni > Spazio d'archiviazione."
+            "failed": "",
+            "folderNotFound": "La cartella della pubblicazione non si trova. Reimportala o configura uno spazio d'archiviazione aggiuntivo in Impostazioni > Spazio d'archiviazione.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

@@ -325,7 +325,9 @@
         },
         "open": {
             "error": "Bogen kan ikke åbnes: {{- err}}",
-            "folderNotFound": "Bogmappen kan ikke findes. Importer den igen, eller konfigurer ekstra lagerplads i Indstillinger under Lagerplads."
+            "failed": "",
+            "folderNotFound": "Bogmappen kan ikke findes. Importer den igen, eller konfigurer ekstra lagerplads i Indstillinger under Lagerplads.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {

@@ -335,7 +335,9 @@
         },
         "open": {
             "error": "Publikacije ni mogoče odpreti: {{- err}}",
-            "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba."
+            "failed": "",
+            "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
