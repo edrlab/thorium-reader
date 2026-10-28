@@ -6,15 +6,17 @@
 // ==LICENSE-END==
 
 import {
-    IEventPayload_R2_EVENT_HIGHLIGHT_CLICK, IEventPayload_R2_EVENT_HIGHLIGHT_CREATE,
-    IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE, IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE_ALL, R2_EVENT_HIGHLIGHT_CLICK, R2_EVENT_HIGHLIGHT_CREATE,
-    R2_EVENT_HIGHLIGHT_REMOVE, R2_EVENT_HIGHLIGHT_REMOVE_ALL,
-    IEventPayload_R2_EVENT_HIGHLIGHT_DRAW_MARGIN, R2_EVENT_HIGHLIGHT_DRAW_MARGIN,
     IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
+    IEventPayload_R2_EVENT_HIGHLIGHT_CLICK, IEventPayload_R2_EVENT_HIGHLIGHT_CREATE,
+    IEventPayload_R2_EVENT_HIGHLIGHT_DRAW_MARGIN,
+    IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE, IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE_ALL,
     R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
+    R2_EVENT_HIGHLIGHT_CLICK, R2_EVENT_HIGHLIGHT_CREATE,
+    R2_EVENT_HIGHLIGHT_DRAW_MARGIN,
+    R2_EVENT_HIGHLIGHT_REMOVE, R2_EVENT_HIGHLIGHT_REMOVE_ALL,
 } from "../common/events";
 import { IHighlight, IHighlightDefinition } from "../common/highlight";
-import { ReadiumElectronBrowserWindow, IReadiumElectronWebview } from "./webview/state";
+import { IReadiumElectronWebview, ReadiumElectronBrowserWindow } from "./webview/state";
 
 // import debug_ from "debug";
 // const debug = debug_("r2:navigator#electron/renderer/index");
@@ -84,8 +86,10 @@ export function highlightsRemoveAll(href: string, groups: string[] | undefined) 
                         return !h.group || !groups.includes(h.group);
                     });
                 }
+                console.log("pre-hydrateHighlightsBuild REMOVEALL groups", activeWebView.READIUM2.highlights?.length);
             } else {
                 activeWebView.READIUM2.highlights = undefined;
+                console.log("pre-hydrateHighlightsBuild REMOVEALL");
             }
             activeWebView.send(R2_EVENT_HIGHLIGHT_REMOVE_ALL, payload).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
         }
@@ -108,6 +112,7 @@ export function highlightsRemove(href: string, highlightIDs: string[]) {
                     return !highlightIDs.includes(h.id);
                 });
             }
+            console.log("pre-hydrateHighlightsBuild REMOVE", activeWebView.READIUM2.highlights?.length);
             activeWebView.send(R2_EVENT_HIGHLIGHT_REMOVE, payload).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
         }
     }
@@ -151,6 +156,7 @@ export async function highlightsCreate(
                                 webview.READIUM2.highlights = [];
                             }
                             webview.READIUM2.highlights.push(...(payloadPong.highlights.filter((h) => !!h) as IHighlight[]));
+                            console.log(`pre-hydrateHighlightsBuild CREATE: ${webview.READIUM2.link?.HrefDecoded} -----  ${activeWebView.READIUM2.link?.HrefDecoded} ===== ${webview.READIUM2.highlights?.length} /// ${JSON.stringify(webview.READIUM2.highlights, null, 4)}`);
                             resolve(payloadPong.highlights);
                         }
                     }

@@ -2700,7 +2700,7 @@ function focusCurrentReadingLocationElement(invert: boolean) {
 }
 
 // see hydrateHighlightsBuild() in location.ts
-async function hydrateHighlights(b64Highlights: string): Promise<void> {
+async function hydrateHighlightsConsume(b64Highlights: string): Promise<void> {
     let jsonStr: string | undefined;
     try {
         const buff = Buffer.from(b64Highlights, "base64");
@@ -2727,20 +2727,22 @@ async function hydrateHighlights(b64Highlights: string): Promise<void> {
         const buffer = Buffer.from(await new Response(cs.readable).arrayBuffer());
         // const buffer = await streamToBufferPromise(cs.readable as ReadableStream<any>);
 
-        const jsonStr = new TextDecoder().decode(buffer); // buffer.toString("utf8");
+        jsonStr = new TextDecoder().decode(buffer); // buffer.toString("utf8");
 
         // debug("--HIGH LOAD PARAM OUT--");
         // debug(jsonStr);
         const highlights = JSON.parse(jsonStr);
 
-        debug("################## HIGHLIGHTS hydrate ...");
+        debug("################## HIGHLIGHTS hydrate PARSE ...", b64Highlights.length, JSON.stringify(highlights, null, 4));
 
-        setDrawMargin(win, highlights.margin);
-        recreateAllHighlightsRaw(win, highlights.list);
+        setDrawMargin(win, highlights.margin, highlights.list || []); // calls recreateAllHighlightsRaw()
+        // if (highlights.list?.length) {
+        //     recreateAllHighlightsRaw(win, highlights.list);
+        // }
     } catch (err) {
         debug("################## HIGHLIGHTS hydrate PARSE ERROR?!");
-        debug(b64Highlights);
         debug(err);
+        debug(b64Highlights.length);
         debug(jsonStr);
     }
 }
@@ -2783,7 +2785,7 @@ function loaded(forced: boolean) {
         const b64Highlights = win.READIUM2.urlQueryParams[URL_PARAM_HIGHLIGHTS];
         if (b64Highlights) {
             setTimeout(() => {
-                hydrateHighlights(b64Highlights).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+                hydrateHighlightsConsume(b64Highlights).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
             }, 10);
         }
     }
@@ -3026,8 +3028,12 @@ function loaded(forced: boolean) {
 
                 if (_firstResizeObserver) {
                     _firstResizeObserver = false;
-                    debug("ResizeObserver SKIP FIRST");
-                    return;
+                    debug("ResizeObserver SKIP FIRST ...");
+                    if (!!(win as any).MathJax || !!win.document.getElementById("thorium_mathJax_script") || !!win.document.getElementById("__thorium_mathJax_script")) {
+                        debug("ResizeObserver SKIP FIRST ... nope because MathJax async fonts etc.");
+                    } else {
+                        return;
+                    }
                 }
                 // debug("ResizeObserver");
 
