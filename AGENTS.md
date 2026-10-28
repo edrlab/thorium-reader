@@ -1,4 +1,10 @@
+## Project stack and targets
 
+- Desktop application targeting Windows, macOS, and Linux.
+- TypeScript with Electron, Node.js, and Chromium/Web APIs.
+- React UI; Redux state management and Redux Saga side effects.
+- SCSS styles; Webpack builds; electron-builder packaging.
+- Keep changes compatible with all three operating systems, especially filesystem paths, keyboard shortcuts, shell commands, and native integrations.
 
 ## How to install software dependencies, SBOM (Software Bill Of Materials)
 
