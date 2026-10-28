@@ -8,21 +8,23 @@
 
 ## Dependencies and SBOM
 
-Use Socket Security Firewall (`sfw`) for npm install/ci/update to block known malicious packages. Keep npm's minimum release age and Taze's maturity period at 2 days.
+Use Socket Security Firewall (`sfw`) for npm install/ci/update to block known malicious packages. Keep npm's minimum release age and Taze's maturity period at 3 days, matching `.npmrc`.
 
 Install missing dependencies, or refresh `package-lock.json` and `node_modules/` after approved `package.json` edits, with:
 
 ```sh
-sfw --verbose npm install --ignore-scripts --min-release-age=2 --allow-git=root --foreground-scripts
+sfw --verbose npm install --ignore-scripts --min-release-age=3 --allow-git=root --foreground-scripts
 ```
 
 Replace `install` with `ci` to respect the existing lockfile; `install` may update it within declared version ranges. Alternatively, use the same flags with `update [PACKAGE_NAME]`.
 
+Exception: `npm run build` runs a plain `npm ci` inside `dist` against the copied `src/package-lock.json`, with scripts disabled. This existing locked packaging step may run without `sfw`; project dependency installations and updates still require it.
+
 For dependency reports, run these commands verbatim, minor first, then major:
 
 ```sh
-npm exec --no --offline -- taze --maturity-period 2 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .
-npm exec --no --offline -- taze major --maturity-period 2 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .
+npm exec --no --offline -- taze --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .
+npm exec --no --offline -- taze major --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .
 ```
 
 Summarize reports and wait for user instructions before editing `package.json` or installing updates. The user must assess upgrade safety: majors may break compatibility; minors can carry supply-chain risks. `npm audit` reports known vulnerabilities; published artifacts can be compared at `https://npmx.dev/diff/react/v/19.2.8...19.3.0` (substitute package/versions).
@@ -39,7 +41,7 @@ Troubleshooting:
 ## Build and run
 
 - Fast whole-project type check: `npm run typescript-check-GO` (TypeScript 7, Go). Use `npm run typescript-check` (TypeScript 6, JavaScript) only to compare output/performance; capabilities are at parity.
-- Before committing, run `npm run build` (all bundles) and `npm run lint` (whole source tree). During development, lint may be deferred; compilation must pass.
+- Before committing code changes, run `npm run build` (all bundles) and `npm run lint` (whole source tree). During development, lint may be deferred; compilation must pass. Documentation-only changes require diff review and `git diff --check`, not build/lint.
 - A full build is required after changes in `src/common`, `src/utils`, `src/typings`, `src/third_party`, or `src/resources`.
 - For runtime-specific compilation, use `./node_modules/.bin/webpack-cli --config <config>` with the table below. Shared `src/renderer/common` or `src/renderer/assets` changes affect both library and reader. Ask the user if the required compilation command is unclear.
 - After CSS/SCSS edits, run `npm run style-typed` to regenerate CSS class typings before compilation.
@@ -81,12 +83,12 @@ Shared areas:
 
 ## Localization
 
-- Use explicit single- or double-quoted translation keys, e.g. `__("catalog.userProfile.loans")`; `scripts/translate-scan.js` cannot discover dynamic keys.
+- Use explicit double-quoted translation keys, e.g. `__("catalog.userProfile.loans")`; avoid dynamically constructed keys that `scripts/translate-scan.js` cannot reliably discover.
 - Before synchronization, run `node scripts/translate-scan.js <temporary-json-path>` and verify changed keys. Empty values form a key inventory, never replacement translations; English plural siblings come from `src/resources/locales/en.json`.
 - Use only the required synchronization; all commands below mutate locales and run `i18n-sort`:
   - `npm run i18n-scan`: scanned keys → English; then supply meaningful English values.
   - `npm run i18n-check`: English → other locales.
-  - `npm run i18n-json`: scanned keys → all locales; required after locale JSON edits for canonical tabs, key ordering, and missing keys with empty values.
+  - `npm run i18n-json`: scanned keys → all locales; required after locale JSON edits for canonical four-space indentation, key ordering, and missing keys with empty values.
 - Preserve translations, plural forms, and runtime-used keys even when scanning misses them. Review `src/resources/locales/*.json` diffs for accidental deletions/overwrites.
 - After locale edits, including English key changes, run `npm run i18n-typed`; review `src/typings/en.translation.d.ts` and `src/typings/en.translation-keys.d.ts`.
 - Verify changed labels in English and one translated locale, including missing/empty translations. `src/common/services/translator.ts` uses English fallback and explicitly retries English for empty results; labels must resolve to meaningful text, never raw keys or blanks.
