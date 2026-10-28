@@ -29,7 +29,7 @@ Summarize reports and wait for user instructions before editing `package.json` o
 
 Never use `npx` or allow implicit tool installation. Prefer existing `npm run` scripts; otherwise verify the tool is installed locally and use `npm exec --no --offline -- <tool>`. If missing, ask the user before installing it through the dependency workflow above.
 
-If install scripts are blocked, run `npm install-scripts ls`, then ask the user to decide on `npm install-scripts [approve|deny] PACKAGE_NAME`. Approved exceptions can use `.npmrc`'s `allow-scripts=PACKAGE_NAME` or `--allow-scripts=PACKAGE_NAME` after `--ignore-scripts`.
+If dependency install scripts are blocked, run `npm install-scripts ls` and summarize which packages need them and why. Ask the user before running `npm install-scripts approve <package>` or `npm install-scripts deny <package>`. Approval does not override `--ignore-scripts`; obtain user authorization before rerunning an installation or rebuild with scripts enabled.
 
 Troubleshooting:
 
