@@ -18,7 +18,6 @@ function read(value: object, key: string): unknown {
 
 function redact(value: string): string {
     return value.slice(0, MAX_LENGTH)
-        .replace(/(LCP license malformed:)[^\r\n]*/g, "$1 [license data omitted]")
         .replace(/\b(?:https?|thoriumhttps|ftp|file):\/\/[^\s<>"']+/gi, (text) => {
             try {
                 const url = new URL(text);

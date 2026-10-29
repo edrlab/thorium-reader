@@ -15,14 +15,12 @@ describe("import clipboard diagnostics", () => {
         expect(text).toContain(cause.stack);
     });
 
-    it("keeps URL paths, non-sensitive queries and fragments while redacting credentials and license data", () => {
+    it("keeps URL paths, non-sensitive queries and fragments while redacting credentials", () => {
         const error = new Error("Request https://user:password@example.org:8443/book?page=2&token=secret#chapter Authorization: Bearer credential");
         const text = formatImportDiagnostics("Safe message", error);
         for (const secret of ["user:password", "token=secret", "credential"]) expect(text).not.toContain(secret);
         expect(text).toContain("https://example.org:8443/book?page=2&token=%5Bredacted%5D#chapter");
-        const license = formatImportDiagnostics("Safe message", new Error('LCP license malformed: {"email":"private@example.org"}'));
-        expect(license).not.toContain("private@example.org");
-        expect(license).toContain("[license data omitted]");
+
     });
 
     it("retains HTTP status and the non-enumerable original transport stack without dumping a response", () => {
