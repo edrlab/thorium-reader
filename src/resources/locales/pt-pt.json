@@ -280,16 +280,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -298,7 +294,6 @@
                 "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -338,7 +333,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "Falha ao importar {{- path}}. Erro: {{- err}}",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -372,7 +366,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Não foi possível carregar o documento: {{- err}}",
             "failed": "",
             "folderNotFound": "A pasta da publicação não foi encontrada. Importe-a novamente ou configure o armazenamento adicional em Configurações > Armazenamento.",
             "missingLicense": ""
@@ -794,7 +787,6 @@
         "duration": {
             "title": "Duração"
         },
-        "encryptedNoLicense": "A publicação está encriptada, mas não tem uma licença PCL!",
         "expired": "Empréstimo expirado",
         "expiredLcp": "A licença PCL deste documento está expirada.",
         "incorrectPassphrase": "Nenhuma frase-passe armazenada corresponde à publicação ou a frase-passe introduzida está errada.",

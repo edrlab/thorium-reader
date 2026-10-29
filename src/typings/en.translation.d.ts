@@ -664,16 +664,12 @@ declare namespace typed_i18n {
   },
   readonly "diagnostics": {
     readonly "category": string,
-    readonly "causeDepthLimit": string,
     readonly "causedBy": string,
-    readonly "circularCause": string,
     readonly "downloadSource": string,
     readonly "error": string,
     readonly "httpStatus": string,
     readonly "invalidUrl": string,
-    readonly "nonErrorDetails": string,
     readonly "source": string,
-    readonly "truncated": string,
     readonly "url": string
   },
   readonly "download": {
@@ -682,7 +678,6 @@ declare namespace typed_i18n {
       readonly "failed": string,
       readonly "hashMismatch": string,
       readonly "httpGet": string,
-      readonly "idleTimeout": string,
       readonly "invalidFilename": string,
       readonly "invalidLink": string,
       readonly "invalidTempDirectory": string,
@@ -722,7 +717,6 @@ declare namespace typed_i18n {
       readonly "profileMissing": string,
       readonly "profileNotZip": string
     },
-    readonly "fail": string,
     readonly "failed": string,
     readonly "invalidLicense": string,
     readonly "invalidPublication": string,
@@ -756,7 +750,6 @@ declare namespace typed_i18n {
     readonly "tagsFailed": string
   },
   readonly "open": {
-    readonly "error": string,
     readonly "failed": string,
     readonly "folderNotFound": string,
     readonly "missingLicense": string
@@ -784,29 +777,21 @@ declare namespace typed_i18n {
   (_: "message.annotations.success", __?: {}): string;
   (_: "message.diagnostics", __?: {}): {
   readonly "category": string,
-  readonly "causeDepthLimit": string,
   readonly "causedBy": string,
-  readonly "circularCause": string,
   readonly "downloadSource": string,
   readonly "error": string,
   readonly "httpStatus": string,
   readonly "invalidUrl": string,
-  readonly "nonErrorDetails": string,
   readonly "source": string,
-  readonly "truncated": string,
   readonly "url": string
 };
   (_: "message.diagnostics.category", __?: {}): string;
-  (_: "message.diagnostics.causeDepthLimit", __?: {}): string;
   (_: "message.diagnostics.causedBy", __?: {}): string;
-  (_: "message.diagnostics.circularCause", __?: {}): string;
   (_: "message.diagnostics.downloadSource", __?: {}): string;
   (_: "message.diagnostics.error", __?: {}): string;
   (_: "message.diagnostics.httpStatus", __?: {}): string;
   (_: "message.diagnostics.invalidUrl", __?: {}): string;
-  (_: "message.diagnostics.nonErrorDetails", __?: {}): string;
   (_: "message.diagnostics.source", __?: {}): string;
-  (_: "message.diagnostics.truncated", __?: {}): string;
   (_: "message.diagnostics.url", __?: {}): string;
   (_: "message.download", __?: {}): {
   readonly "cancelled": string,
@@ -814,7 +799,6 @@ declare namespace typed_i18n {
     readonly "failed": string,
     readonly "hashMismatch": string,
     readonly "httpGet": string,
-    readonly "idleTimeout": string,
     readonly "invalidFilename": string,
     readonly "invalidLink": string,
     readonly "invalidTempDirectory": string,
@@ -838,7 +822,6 @@ declare namespace typed_i18n {
   readonly "failed": string,
   readonly "hashMismatch": string,
   readonly "httpGet": string,
-  readonly "idleTimeout": string,
   readonly "invalidFilename": string,
   readonly "invalidLink": string,
   readonly "invalidTempDirectory": string,
@@ -852,7 +835,6 @@ declare namespace typed_i18n {
   (_: "message.download.errors.failed", __?: {}): string;
   (_: "message.download.errors.hashMismatch", __?: {}): string;
   (_: "message.download.errors.httpGet", __?: {}): string;
-  (_: "message.download.errors.idleTimeout", __?: {}): string;
   (_: "message.download.errors.invalidFilename", __?: {}): string;
   (_: "message.download.errors.invalidLink", __?: {}): string;
   (_: "message.download.errors.invalidTempDirectory", __?: {}): string;
@@ -890,7 +872,6 @@ declare namespace typed_i18n {
     readonly "profileMissing": string,
     readonly "profileNotZip": string
   },
-  readonly "fail": string,
   readonly "failed": string,
   readonly "invalidLicense": string,
   readonly "invalidPublication": string,
@@ -935,7 +916,6 @@ declare namespace typed_i18n {
   (_: "message.import.errors.profileEntryMissing", __?: {}): string;
   (_: "message.import.errors.profileMissing", __?: {}): string;
   (_: "message.import.errors.profileNotZip", __?: {}): string;
-  (_: "message.import.fail", __?: {}): string;
   (_: "message.import.failed", __?: {}): string;
   (_: "message.import.invalidLicense", __?: {}): string;
   (_: "message.import.invalidPublication", __?: {}): string;
@@ -991,12 +971,10 @@ declare namespace typed_i18n {
   (_: "message.notifications.storageRefreshFailed", __?: {}): string;
   (_: "message.notifications.tagsFailed", __?: {}): string;
   (_: "message.open", __?: {}): {
-  readonly "error": string,
   readonly "failed": string,
   readonly "folderNotFound": string,
   readonly "missingLicense": string
 };
-  (_: "message.open.error", __?: {}): string;
   (_: "message.open.failed", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;
   (_: "message.open.missingLicense", __?: {}): string;
@@ -1991,7 +1969,6 @@ declare namespace typed_i18n {
   readonly "day": string,
   readonly "days": string,
   readonly "duration": { readonly "title": string },
-  readonly "encryptedNoLicense": string,
   readonly "expired": string,
   readonly "expiredLcp": string,
   readonly "incorrectPassphrase": string,
@@ -2119,7 +2096,6 @@ declare namespace typed_i18n {
   (_: "publication.days", __?: {}): string;
   (_: "publication.duration", __?: {}): { readonly "title": string };
   (_: "publication.duration.title", __?: {}): string;
-  (_: "publication.encryptedNoLicense", __?: {}): string;
   (_: "publication.expired", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.incorrectPassphrase", __?: {}): string;

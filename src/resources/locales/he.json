@@ -280,16 +280,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -298,7 +294,6 @@
                 "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -338,7 +333,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -372,7 +366,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "",
             "failed": "",
             "folderNotFound": "",
             "missingLicense": ""
@@ -794,7 +787,6 @@
         "duration": {
             "title": ""
         },
-        "encryptedNoLicense": "",
         "expired": "",
         "expiredLcp": "",
         "incorrectPassphrase": "",

@@ -38,12 +38,9 @@ export function formatImportDiagnostics(message: string, error: unknown, source?
     const seen = new Set<object>();
     let current = error;
     for (let depth = 0; current !== undefined && depth < MAX_DEPTH; depth++) {
+        const detailStart = lines.length;
         if (current && typeof current === "object") {
-            if (seen.has(current)) {
-                lines.push(translate("message.diagnostics.circularCause"));
-                current = undefined;
-                break;
-            }
+            if (seen.has(current)) break;
             seen.add(current);
             const reason = read(current, "reason");
             if (typeof reason === "string" && ["network", "http", "timeout", "integrity", "storage",
@@ -55,26 +52,21 @@ export function formatImportDiagnostics(message: string, error: unknown, source?
             const stack = read(current, "stack");
             const detail = read(current, "message");
             const name = read(current, "name");
-            if (typeof stack === "string") lines.push(stack.slice(0, MAX_LENGTH));
-            else if (typeof detail === "string") lines.push(`${typeof name === "string" ? name.slice(0, 200) : translate("message.diagnostics.error")}: ${detail.slice(0, MAX_LENGTH)}`);
+            if (typeof stack === "string" && stack.length) lines.push(stack.slice(0, MAX_LENGTH));
+            else if (typeof detail === "string" && detail.length) lines.push(`${typeof name === "string" ? name.slice(0, 200) : translate("message.diagnostics.error")}: ${detail.slice(0, MAX_LENGTH)}`);
             else {
                 const value = read(current, "responseUrl") ?? read(current, "url");
                 const url = typeof value === "string" ? value : value instanceof URL ? read(value, "href") : undefined;
                 if (typeof url === "string") lines.push(translate("message.diagnostics.url", { url: sourceText(url) }));
                 const status = read(current, "statusCode");
                 if (typeof status === "number") lines.push(translate("message.diagnostics.httpStatus", { status }));
-                if (status === undefined && url === undefined) lines.push(translate("message.diagnostics.nonErrorDetails"));
             }
             current = read(current, "cause");
         } else {
-            lines.push(typeof current === "string" ? current.slice(0, MAX_LENGTH) : translate("message.diagnostics.nonErrorDetails"));
+            if (typeof current === "string" && current.length) lines.push(current.slice(0, MAX_LENGTH));
             current = undefined;
         }
-        if (current !== undefined) lines.push(translate("message.diagnostics.causedBy"));
+        if (depth > 0 && lines.length > detailStart) lines.splice(detailStart, 0, translate("message.diagnostics.causedBy"));
     }
-    if (current !== undefined) lines.push(translate("message.diagnostics.causeDepthLimit"));
-    const text = lines.join("\n\n");
-    if (text.length <= MAX_LENGTH) return text;
-    const suffix = `\n${translate("message.diagnostics.truncated")}`.slice(0, MAX_LENGTH);
-    return text.slice(0, MAX_LENGTH - suffix.length) + suffix;
+    return lines.join("\n\n").slice(0, MAX_LENGTH);
 }

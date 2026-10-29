@@ -275,16 +275,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -293,7 +289,6 @@
                 "failed": "",
                 "hashMismatch": "Heilleikapróf niðurhalaðrar skrár mistókst: búist var við SHA-256-gildinu {{- expected}}, en niðurstaðan var {{- actual}}.",
                 "httpGet": "HTTP-niðurhal mistókst: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Bráðabirgðaskráarheitið er ógilt.",
                 "invalidLink": "Niðurhalstengillinn er ógildur.",
                 "invalidTempDirectory": "Bráðabirgðamappan er ógild.",
@@ -333,7 +328,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "Ekki tókst að bæta [{{- path}}] við: [{{- err}}]",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -367,7 +361,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Ekki tókst að opna bókina: [{{- err}}]",
             "failed": "",
             "folderNotFound": "Mappa bókarinnar fannst ekki. Bættu bókinni við aftur eða stilltu viðbótargeymslu í Stillingar > Geymsla.",
             "missingLicense": ""
@@ -788,7 +781,6 @@
         "duration": {
             "title": "Lengd"
         },
-        "encryptedNoLicense": "Bókin er dulkóðuð en LCP-leyfi vantar.",
         "expired": "Lánstími liðinn",
         "expiredLcp": "LCP-leyfi bókarinnar er útrunnið.",
         "incorrectPassphrase": "Ekkert vistað lykilorð passar við bókina eða lykilorðið sem var slegið inn er rangt.",

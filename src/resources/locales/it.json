@@ -280,16 +280,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -298,7 +294,6 @@
                 "failed": "",
                 "hashMismatch": "Verifica di integrità del file scaricato non riuscita: previsto SHA-256 hash {{- expected}}, ottenuto {{- actual}}.",
                 "httpGet": "Download HTTP fallito: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "Download in stallo: nessun dato ricevuto per 30 secondi. Si prega di riprovare.",
                 "invalidFilename": "Il nome temporaneo del file di download non è valido.",
                 "invalidLink": "Il link per il download non è valido.",
                 "invalidTempDirectory": "La directory di download temporanea non è valida.",
@@ -338,7 +333,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "L'importazione di {{- path}} è fallita. {{- err}}",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -372,7 +366,6 @@
             "tagsFailed": "Impossibile salvare le tag delle pubblicazioni. Riprova."
         },
         "open": {
-            "error": "La pubblicazione non può essere aperta: {{- err}}",
             "failed": "",
             "folderNotFound": "La cartella della pubblicazione non si trova. Reimportala o configura uno spazio d'archiviazione aggiuntivo in Impostazioni > Spazio d'archiviazione.",
             "missingLicense": ""
@@ -794,7 +787,6 @@
         "duration": {
             "title": "Durata"
         },
-        "encryptedNoLicense": "La pubblicazione è criptata ma manca la licenza LCP!",
         "expired": "Prestito scaduto",
         "expiredLcp": "Questa pubblicazione non può essere letta perché la licenza LCP è scaduta.",
         "incorrectPassphrase": "Nessuna passphrase memorizzata è associata alla pubblicazione, oppure la passphrase inserita è errata.",

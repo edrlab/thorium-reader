@@ -285,16 +285,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -303,7 +299,6 @@
                 "failed": "",
                 "hashMismatch": "Ошибка проверки целостности загруженного файла: ожидаемый хэш SHA-256 {{- expected}}, полученный {{- actual}}.",
                 "httpGet": "Ошибка загрузки по протоколу HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "Скачивание прервалась: данные не получены в течение 30 секунд. Пожалуйста, попробуйте ещё раз.",
                 "invalidFilename": "Неверное имя временного скачиваемого файла.",
                 "invalidLink": "Ссылка для скачивания недействительна.",
                 "invalidTempDirectory": "Временный каталог загрузки недействителен.",
@@ -343,7 +338,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "Импорт {{- path}} не удался. {{- err}}",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -377,7 +371,6 @@
             "tagsFailed": "Не удалось сохранить теги публикации. Попробуйте ещё раз."
         },
         "open": {
-            "error": "Книга не может быть открыта : {{- err}}",
             "failed": "",
             "folderNotFound": "Каталог публикации не найден. Повторно импортируйте его или настройте дополнительное хранилище в разделе Настройки > Хранилище.",
             "missingLicense": ""
@@ -800,7 +793,6 @@
         "duration": {
             "title": "Продолжительность"
         },
-        "encryptedNoLicense": "Публикация зашифрована, но не имеет лицензии LCP!",
         "expired": "Срок абонемента истёк",
         "expiredLcp": "Эту книгу нельзя прочитать, потому что срок действия лицензии LCP истек.",
         "incorrectPassphrase": "Ни один из сохранённых паролей не подходит к публикации, или введённый пароль неверен.",

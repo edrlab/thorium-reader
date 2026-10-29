@@ -285,16 +285,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -303,7 +299,6 @@
                 "failed": "",
                 "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
                 "httpGet": "HTTP atsiuntimas nepavyko: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Laikino atsiuntimo failo pavadinimas netaisyklingas.",
                 "invalidLink": "Atsiuntimo nuoroda netaisyklinga.",
                 "invalidTempDirectory": "Netaisyklingas laikinas atsiuntimo aplankas.",
@@ -343,7 +338,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -377,7 +371,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Nepavyko atverti leidinio : [{{- err}}]",
             "failed": "",
             "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“.",
             "missingLicense": ""
@@ -800,7 +793,6 @@
         "duration": {
             "title": "Trukmė"
         },
-        "encryptedNoLicense": "Leidinys yra užšifruotas, tačiau stokoja LCP licencijos!",
         "expired": "Skolinimo terminas baigėsi",
         "expiredLcp": "Šio leidinio LCP licencijos galiojimo laikas baigėsi.",
         "incorrectPassphrase": "Jokia išsaugota slaptafrazė neatitinka leidinio arba įvesta neteisinga slaptafrazė.",

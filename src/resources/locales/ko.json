@@ -270,16 +270,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -288,7 +284,6 @@
                 "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -328,7 +323,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "{{- path}} 열기를 실패하였습니다. {{- err}}",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -362,7 +356,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "지원하지 않는 형식의 출판물입니다: {{- err}}",
             "failed": "",
             "folderNotFound": "",
             "missingLicense": ""
@@ -782,7 +775,6 @@
         "duration": {
             "title": "트랙 시간"
         },
-        "encryptedNoLicense": "",
         "expired": "",
         "expiredLcp": "이 책은 LCP 라이선스가 만료되어서 읽을 수 없습니다",
         "incorrectPassphrase": "",

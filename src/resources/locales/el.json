@@ -275,16 +275,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -293,7 +289,6 @@
                 "failed": "",
                 "hashMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενος κωδικός SHA-256 {{- expected}}, βρέθηκε {{- actual}}.",
                 "httpGet": "Αποτυχία λήψης μέσω HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Το προσωρινό όνομα του αρχείου λήψης δεν είναι έγκυρο.",
                 "invalidLink": "Ο σύνδεσμος λήψης δεν είναι έγκυρος.",
                 "invalidTempDirectory": "Ο προσωρινός φάκελος λήψης δεν είναι έγκυρος.",
@@ -333,7 +328,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "Η εισαγωγή του {{- path}} απέτυχε. {{- err}}",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -367,7 +361,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Η δημοσίευση δεν μπορεί να ανοίξει: {{- err}}",
             "failed": "",
             "folderNotFound": "Δεν εντοπίστηκε ο φάκελος δημοσιεύσεων. Εισάγετέ τον ξανά ή ρυθμίστε τον επιπλέον χώρο αποθήκευσης από τις Ρυθμίσεις > Αποθήκευση.",
             "missingLicense": ""
@@ -788,7 +781,6 @@
         "duration": {
             "title": "Διάρκεια"
         },
-        "encryptedNoLicense": "Η δημοσίευση είναι κρυπτογραφημένη, αλλά δεν έχει άδεια LCP!",
         "expired": "Ο δανεισμός έχει λήξει",
         "expiredLcp": "Αυτό το βιβλίο δεν μπορεί να διαβαστεί επειδή η άδεια χρήσης LCP έχει λήξει.",
         "incorrectPassphrase": "Καμία αποθηκευμένη συνθηματική φράση δεν ταιριάζει με το βιβλίο ή η εισαχθείσα συνθηματική φράση είναι λανθασμένη.",

@@ -275,16 +275,12 @@
         },
         "diagnostics": {
             "category": "Category: {{- category}}",
-            "causeDepthLimit": "[cause depth limit reached]",
             "causedBy": "Caused by:",
-            "circularCause": "[circular cause omitted]",
             "downloadSource": "Download source: {{- source}}",
             "error": "Error",
             "httpStatus": "HTTP status: {{- status}}",
             "invalidUrl": "[invalid URL]",
-            "nonErrorDetails": "[non-Error details omitted]",
             "source": "Source: {{- source}}",
-            "truncated": "[diagnostics truncated]",
             "url": "URL: {{- url}}"
         },
         "download": {
@@ -293,7 +289,6 @@
                 "failed": "Download failed.",
                 "hashMismatch": "Downloaded file integrity check failed: expected SHA-256 hash {{- expected}}, got {{- actual}}.",
                 "httpGet": "HTTP download failed: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "Download stalled: no data received for 30 seconds. Please try again.",
                 "invalidFilename": "The temporary download filename is invalid.",
                 "invalidLink": "The download link is invalid.",
                 "invalidTempDirectory": "The temporary download directory is invalid.",
@@ -333,7 +328,6 @@
                 "profileMissing": "Custom profile not found: {{- id}}",
                 "profileNotZip": "The custom profile is not a ZIP archive."
             },
-            "fail": "Importing [{{- path}}] failed: [{{- err}}]",
             "failed": "Could not import “{{- name}}”.",
             "invalidLicense": "Could not import “{{- name}}”. The publication’s license is invalid.",
             "invalidPublication": "Could not import “{{- name}}”. The publication manifest is missing.",
@@ -367,7 +361,6 @@
             "tagsFailed": "Unable to save the publication tags. Try again."
         },
         "open": {
-            "error": "Loading publication failed: [{{- err}}]",
             "failed": "Could not open this publication.",
             "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage.",
             "missingLicense": "Could not open this publication. It is encrypted but its LCP license is missing."
@@ -788,7 +781,6 @@
         "duration": {
             "title": "Duration"
         },
-        "encryptedNoLicense": "Publication is encrypted but lacks an LCP license!",
         "expired": "Loan expired",
         "expiredLcp": "This publication's LCP license is expired.",
         "incorrectPassphrase": "No stored passphrase fits the publication, or the entered passphrase is wrong.",

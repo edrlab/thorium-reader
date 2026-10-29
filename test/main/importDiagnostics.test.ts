@@ -51,10 +51,10 @@ describe("import clipboard diagnostics", () => {
     it("handles circular causes, missing stacks, thrown strings, and unknown values", () => {
         const cyclic = new Error("Circular");
         Object.defineProperty(cyclic, "cause", { value: cyclic });
-        expect(formatImportDiagnostics("Safe", cyclic)).toContain("[circular cause omitted]");
+        expect(formatImportDiagnostics("Safe", cyclic)).toBe(`Safe\n\n${cyclic.stack}`);
         expect(formatImportDiagnostics("Safe", { name: "CustomError", message: "No stack" })).toContain("CustomError: No stack");
         expect(formatImportDiagnostics("Safe", "Thrown string")).toContain("Thrown string");
-        expect(formatImportDiagnostics("Safe", { password: "do not serialize" })).not.toContain("do not serialize");
+        expect(formatImportDiagnostics("Safe", { password: "do not serialize" })).toBe("Safe");
         expect(() => formatImportDiagnostics("Safe", null)).not.toThrow();
     });
 
@@ -63,7 +63,8 @@ describe("import clipboard diagnostics", () => {
         let error = new Error("Deepest");
         for (let n = 0; n < 10; n++) error = new Error(`Level ${n}`, { cause: error });
         const text = formatImportDiagnostics("Safe", error);
-        expect(text).toContain("[cause depth limit reached]");
+        expect(text.match(/Caused by:/g)).toHaveLength(5);
+        expect(text.endsWith("Caused by:")).toBe(false);
         expect(text).not.toContain("Deepest");
     });
 
@@ -119,4 +120,14 @@ it("uses English fallback for empty diagnostic translations", async () => {
     } finally {
         await setLocale("en");
     }
+});
+
+
+it("silently omits unknown causes and truncates diagnostics without markers", () => {
+    const error = new Error("Failure", { cause: { privateValue: "Do not copy" } });
+    expect(formatImportDiagnostics("Safe", error)).toBe(`Safe\n\n${error.stack}`);
+    const long = formatImportDiagnostics("Safe", new Error("x".repeat(30000)));
+    expect(long).toHaveLength(24000);
+    expect(long).not.toContain("[diagnostics truncated]");
+    expect(formatImportDiagnostics("Safe", { stack: "", cause: "" })).toBe("Safe");
 });

@@ -285,16 +285,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -303,7 +299,6 @@
                 "failed": "",
                 "hashMismatch": "Preverjanje celovitosti prenesene datoteke ni uspelo: pričakovani izvleček SHA-256 je {{- expected}}, pridobljeni {{- actual}}.",
                 "httpGet": "Prenos HTTP ni uspel: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Ime začasne datoteke za prenos ni veljavno.",
                 "invalidLink": "Povezava za prenos ni veljavna.",
                 "invalidTempDirectory": "Začasni direktorij za prenose ni veljaven.",
@@ -343,7 +338,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "Uvoz {{- path}} ni uspel: {{- err}}",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -377,7 +371,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Publikacije ni mogoče odpreti: {{- err}}",
             "failed": "",
             "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba.",
             "missingLicense": ""
@@ -800,7 +793,6 @@
         "duration": {
             "title": "Trajanje"
         },
-        "encryptedNoLicense": "Publikacija je šifrirana, vendar nima licence LCP!",
         "expired": "Rok izposoje je potekel",
         "expiredLcp": "Licenca LCP za to publikacijo je potekla.",
         "incorrectPassphrase": "Nobeno shranjeno geslo ne ustreza publikaciji ali pa je vneseno geslo napačno.",

@@ -285,16 +285,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -303,7 +299,6 @@
                 "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -343,7 +338,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "Import [{{- path}}] selhal: [{{- err}}]",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -377,7 +371,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Načítání publikace sehlalo: [{{- err}}]",
             "failed": "",
             "folderNotFound": "",
             "missingLicense": ""
@@ -800,7 +793,6 @@
         "duration": {
             "title": "Trvání"
         },
-        "encryptedNoLicense": "Publikace je šifrovaná, ale postrádá LCP licenci!",
         "expired": "Výpůjčka vypršela",
         "expiredLcp": "Licence LCP této publikace vypršela.",
         "incorrectPassphrase": "",

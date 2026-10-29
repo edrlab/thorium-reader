@@ -270,16 +270,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -288,7 +284,6 @@
                 "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -328,7 +323,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -362,7 +356,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "無法打開出版物：[{{- err}}]",
             "failed": "",
             "folderNotFound": "",
             "missingLicense": ""
@@ -782,7 +775,6 @@
         "duration": {
             "title": "播放時長"
         },
-        "encryptedNoLicense": "出版物已加密，但缺少 LCP 許可證！",
         "expired": "出借到期",
         "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
         "incorrectPassphrase": "有符合此出版物的已儲存密語，或輸入的密語不正確。",

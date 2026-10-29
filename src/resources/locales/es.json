@@ -280,16 +280,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -298,7 +294,6 @@
                 "failed": "",
                 "hashMismatch": "Falló la comprobación de integridad para el archivo descargado: hash SHA-256 esperado {{- expected}}, obtenido {{- actual}}.",
                 "httpGet": "\"Falló la descarga HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "El nombre del archivo temporal de descarga no es válido.",
                 "invalidLink": "El enlace de descarga no es válido.",
                 "invalidTempDirectory": "El directorio temporal de descarga no es válido.",
@@ -338,7 +333,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "La importación de {{- path}} falló. {{- err}}",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -372,7 +366,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "No se puede abrir la publicación: {{- err}}",
             "failed": "",
             "folderNotFound": "No se encuentra el directorio de esta publicación. Vuelve a importarla, o configura el almacenamiento adicional en Opciones > Almacenamiento.",
             "missingLicense": ""
@@ -794,7 +787,6 @@
         "duration": {
             "title": "Duración"
         },
-        "encryptedNoLicense": "¡La publicación está encriptada pero sin licencia LCP!",
         "expired": "Préstamo vencido",
         "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
         "incorrectPassphrase": "No hay contraseñas almacenadas para esta publicación o la contraseña es incorrecta.",

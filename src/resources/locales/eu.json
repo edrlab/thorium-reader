@@ -275,16 +275,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -293,7 +289,6 @@
                 "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -333,7 +328,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "{- path}}-ren inportazioak huts egin du. {{- Err}}",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -367,7 +361,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Ezin da argitalpena ireki: {{- err}}",
             "failed": "",
             "folderNotFound": "",
             "missingLicense": ""
@@ -788,7 +781,6 @@
         "duration": {
             "title": "Iraupena"
         },
-        "encryptedNoLicense": "",
         "expired": "Mailegua iraungi",
         "expiredLcp": "Liburu hau ezin da irakurri LCP lizentzia iraungi delako.",
         "incorrectPassphrase": "",

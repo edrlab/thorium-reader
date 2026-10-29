@@ -275,16 +275,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -293,7 +289,6 @@
                 "failed": "",
                 "hashMismatch": "İndirilen dosyanın bütünlük denetimi başarısız: Beklenen SHA-256 değeri {{- expected}}, alınan {{- actual}}.",
                 "httpGet": "HTTP indirme hatası: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Geçici indirme dosya adı geçersiz.",
                 "invalidLink": "İndirme bağlantısı geçersiz.",
                 "invalidTempDirectory": "Geçici indirme dizini geçersiz.",
@@ -333,7 +328,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "[{{- path}}] İçe aktarması başarısız: [{{- err}}]",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -367,7 +361,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Eser yüklemesi başarısız: [{{- err}}]",
             "failed": "",
             "folderNotFound": "Eser dizini bulunamıyor. Yeniden içe aktarın veya Ayarlar > Depolama'dan ilave depolamayı yapılandırın.",
             "missingLicense": ""
@@ -788,7 +781,6 @@
         "duration": {
             "title": "Süre"
         },
-        "encryptedNoLicense": "Eser şifrelenmiş ancak bir LCP lisansı bulunmuyor!",
         "expired": "Ödünç alma süresi doldu",
         "expiredLcp": "Bu eserin LCP lisans süresi doldu.",
         "incorrectPassphrase": "Eserle eşleşen kayıtlı bir şifre yok veya girilen şifre hatalı.",

@@ -270,16 +270,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -288,7 +284,6 @@
                 "failed": "",
                 "hashMismatch": "下载文件完整性检查失败：预期SHA-256哈希值为 {{- expected}}，实际为 {{- actual}}。",
                 "httpGet": "HTTP协议下载失败： {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "当前下载文件的文件名无效。",
                 "invalidLink": "下载链接无效。",
                 "invalidTempDirectory": "当前下载文件的路径无效。",
@@ -328,7 +323,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "导入{{- path}}失败。{{- err}}",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -362,7 +356,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "无法打开出版物: {{- err}}",
             "failed": "",
             "folderNotFound": "出版物文件路径无法找到。重新导入，或者在“设置>储存”选项中调整附加储存位置。",
             "missingLicense": ""
@@ -782,7 +775,6 @@
         "duration": {
             "title": "播放时长"
         },
-        "encryptedNoLicense": "出版物已加密，但缺少 LCP 许可证！",
         "expired": "借阅已到期",
         "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
         "incorrectPassphrase": "没有任何已存储的密码与该出版物匹配，或输入的密码错误。",

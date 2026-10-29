@@ -280,16 +280,12 @@
         },
         "diagnostics": {
             "category": "Catégorie : {{- category}}",
-            "causeDepthLimit": "[limite de profondeur des causes atteinte]",
             "causedBy": "Causé par :",
-            "circularCause": "[cause circulaire omise]",
             "downloadSource": "Source du téléchargement : {{- source}}",
             "error": "Erreur",
             "httpStatus": "Statut HTTP : {{- status}}",
             "invalidUrl": "[URL invalide]",
-            "nonErrorDetails": "[détails non liés à une erreur omis]",
             "source": "Source : {{- source}}",
-            "truncated": "[diagnostic tronqué]",
             "url": "URL : {{- url}}"
         },
         "download": {
@@ -298,7 +294,6 @@
                 "failed": "Le téléchargement a échoué.",
                 "hashMismatch": "Erreur de vérification de l'intégrité du fichier téléchargé  : SHA-256 attendu {{- expected}}, obtenu {{- actual}}.",
                 "httpGet": "Téléchargement HTTP échoué : {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "Le téléchargement est bloqué : aucune donnée reçue depuis 30 secondes. Veuillez réessayer.",
                 "invalidFilename": "Le nom du fichier temporaire téléchargé est invalide.",
                 "invalidLink": "Le lien de téléchargement est invalide.",
                 "invalidTempDirectory": "Le répertoire de téléchargement temporaire est invalide.",
@@ -338,7 +333,6 @@
                 "profileMissing": "Profil personnalisé introuvable : {{- id}}",
                 "profileNotZip": "Le profil personnalisé n’est pas une archive ZIP."
             },
-            "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
             "failed": "Impossible d’importer « {{- name}} ».",
             "invalidLicense": "Impossible d’importer « {{- name}} ». La licence de la publication est invalide.",
             "invalidPublication": "Impossible d’importer « {{- name}} ». Le manifeste de la publication est manquant.",
@@ -372,7 +366,6 @@
             "tagsFailed": "Impossible d’enregistrer les étiquettes de la publication. Réessayez."
         },
         "open": {
-            "error": "Le livre ne peut pas être ouvert : {{- err}}",
             "failed": "Impossible d’ouvrir cette publication.",
             "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage.",
             "missingLicense": "Impossible d’ouvrir cette publication. Elle est chiffrée, mais sa licence LCP est manquante."
@@ -794,7 +787,6 @@
         "duration": {
             "title": "Durée"
         },
-        "encryptedNoLicense": "La publication est encryptée mais aucune licence LCP trouvée !",
         "expired": "Prêt expiré",
         "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
         "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",

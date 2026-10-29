@@ -285,16 +285,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -303,7 +299,6 @@
                 "failed": "",
                 "hashMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wartość hasha SHA-256 to {{- expected}}, a obliczona to {{- actual}}.",
                 "httpGet": "Nie udało się pobrać pliku przez HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Tymczasowa nazwa pliku do pobrania jest nieprawidłowa.",
                 "invalidLink": "Link do pobrania jest nieprawidłowy.",
                 "invalidTempDirectory": "Tymczasowy katalog do pobierania jest nieprawidłowy.",
@@ -343,7 +338,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "Importowanie [{{- path}}] nie powiodło się: [{{- err}}]",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -377,7 +371,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Ładowanie publikacji nie powiodło się: [{{- err}}]",
             "failed": "",
             "folderNotFound": "Nie można znaleźć katalogu publikacji. Zaimportuj go ponownie lub skonfiguruj dodatkową przestrzeń dyskową w sekcji Ustawienia > Przestrzeń dyskowa.",
             "missingLicense": ""
@@ -800,7 +793,6 @@
         "duration": {
             "title": "Czas trwania"
         },
-        "encryptedNoLicense": "Publikacja jest zaszyfrowana, ale nie posiada licencji LCP!",
         "expired": "Wypożyczenie wygasło",
         "expiredLcp": "Licencja LCP tej publikacji wygasła.",
         "incorrectPassphrase": "Żadne zapisane hasło dostępu nie pasuje do publikacji lub wprowadzone hasło jest nieprawidłowe.",

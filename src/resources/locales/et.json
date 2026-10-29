@@ -275,16 +275,12 @@
         },
         "diagnostics": {
             "category": "",
-            "causeDepthLimit": "",
             "causedBy": "",
-            "circularCause": "",
             "downloadSource": "",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
-            "nonErrorDetails": "",
             "source": "",
-            "truncated": "",
             "url": ""
         },
         "download": {
@@ -293,7 +289,6 @@
                 "failed": "",
                 "hashMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: faili eeldatud SHA-256 räsi oleks pidanud olema {{- expected}}, kuid tegelikult oli {{- actual}}.",
                 "httpGet": "Allalaadimine ei õnnestunud: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Allalaadimise ajutine failinimi on vale või vigane.",
                 "invalidLink": "Allalaadimislink pole õige.",
                 "invalidTempDirectory": "Allalaaditava sisu ajutine kaust on vale või vigane.",
@@ -333,7 +328,6 @@
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "fail": "„{{- path}}“ objekti importimine ei õnnestunud: {{- err}}",
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
@@ -367,7 +361,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
             "failed": "",
             "folderNotFound": "Valjaande kausta leidmine ei õnnestu. Impordi ta uuesti või seadista andmeruumi siit „Seadistused“ → „Andmeruum“.",
             "missingLicense": ""
@@ -788,7 +781,6 @@
         "duration": {
             "title": "Kestus"
         },
-        "encryptedNoLicense": "Väljaanne on krüptitud, kuid LCP-litsents on puudu!",
         "expired": "Laenutus on aegunud",
         "expiredLcp": "Selle väljaande LCP-litsents on aegunud.",
         "incorrectPassphrase": "Mitte ükski salvestatud salasõna/salafraas ei sobi selle väljaandega või on sisestus vigane.",
