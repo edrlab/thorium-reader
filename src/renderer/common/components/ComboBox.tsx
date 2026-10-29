@@ -9,7 +9,7 @@ import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import classNames from "classnames";
 import * as React from "react";
 import { Focusable, TooltipTriggerProps } from "react-aria";
-import { Button, ComboBox as ComboBoxReactAria, FieldError, Group, Input, Label, ListBox, ListBoxItem, OverlayArrow, Popover, Text, Tooltip, TooltipTrigger, ValidationResult } from "react-aria-components";
+import { Button, ComboBox as ComboBoxReactAria, FieldError, Group, Input, Label, ListBox, ListBoxItem, Popover, Text, TooltipTrigger, ValidationResult } from "react-aria-components";
 import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
@@ -17,9 +17,9 @@ import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
-import { PrettifyKeyboardShortcut } from "./Keyboard";
 import { OVERLAY_Z_INDEX } from "./overlayHelpers";
 import SVG, { ISVGProps } from "./SVG";
+import { ToolTippy } from "./Tooltippy";
 
 type TComboBoxReactAriaProps<T extends object> = Parameters<typeof ComboBoxReactAria<T>>[0];
 export interface MyComboBoxProps_ {
@@ -134,7 +134,7 @@ const ToolTipButton: React.FC<React.PropsWithChildren<TooltipTriggerProps & MyCo
 //             state.open(true);
 //         }}
 //         style={{ width: "15px", height: "15px", float: "right", marginRight: "10px" }}
-//         aria-label={label + tooltipkeyboardShortcuts.reduce((prev, cur, i) => (prev + " /// " +
+//         aria-label={label + tooltipkeyboardShortcuts.reduce((prev, cur, i) => (prev + " // " +
 //             `[${textualizeKeyboardShortcut(cur)}]` +
 //             (tooltipkeyboardShortcutsNames?.[i] ? ` (${tooltipkeyboardShortcutsNames?.[i]})` : "") +
 //             (tooltipkeyboardShortcutsDescriptions?.[i] ? ` <${tooltipkeyboardShortcutsDescriptions?.[i]}>` : "")
@@ -167,31 +167,21 @@ const ToolTipButton: React.FC<React.PropsWithChildren<TooltipTriggerProps & MyCo
                     setIsOpen(true);
                 }}
                 style={{ width: "15px", height: "15px", float: "right", marginRight: "10px" }}
-                aria-label={label + tooltipkeyboardShortcuts.reduce((prev, cur, i) => (prev + " /// " +
+                aria-label={label + tooltipkeyboardShortcuts.reduce((prev, cur, i) => (prev + " // " +
                     `[${textualizeKeyboardShortcut(cur)}]` +
                     (tooltipkeyboardShortcutsNames?.[i] ? ` (${tooltipkeyboardShortcutsNames?.[i]})` : "") +
                     (tooltipkeyboardShortcutsDescriptions?.[i] ? ` <${tooltipkeyboardShortcutsDescriptions?.[i]}>` : "")
-                ), "")}>
+                ), "")}
+            >
                 {props.children}
             </button>
         </Focusable>
-        <Tooltip aria-hidden placement="bottom" offset={0} className={classNames("tooltipKeyboardShortcut")}>
-            <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
-            {tooltipkeyboardShortcuts?.length ? <>
-                {
-                    tooltipkeyboardShortcuts.map((tooltipkeyboardShortcut, i) => {
-                        return <div key={`tooltipkeyboardShortcuts_${i}`}>
-                            <p><PrettifyKeyboardShortcut hideFromScreenReaders={false} def={tooltipkeyboardShortcut} /></p>
-                            {
-                                (tooltipkeyboardShortcutsNames?.[i] ? (<p>{tooltipkeyboardShortcutsNames?.[i]}</p>) : (<></>))
-                            }{
-                                (tooltipkeyboardShortcutsDescriptions?.[i] ? (<p>{tooltipkeyboardShortcutsDescriptions?.[i]}</p>) : (<></>))
-                            }
-                        </div>;
-                    })
-                }</>
-                : <></>}
-        </Tooltip>
+        <ToolTippy
+            placement="bottom"
+            label={ label }
+            tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
+            tooltipkeyboardShortcutsNames={tooltipkeyboardShortcutsNames}
+            tooltipkeyboardShortcutsDescriptions={tooltipkeyboardShortcutsDescriptions} />
     </TooltipTrigger>;
 };
 
@@ -212,9 +202,11 @@ export function ComboBox<T extends object>(
                     <div style={{width: customWidth ? `${customWidth}px` : ""}}>
                     <Label dir={isRTL ? "rtl" : "ltr"} className={StylesCombobox.react_aria_Label}>{label}</Label>
                     <ToolTipButton
-                        tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
-                        tooltipkeyboardShortcutsNames={tooltipkeyboardShortcutsNames}
-                        tooltipkeyboardShortcutsDescriptions={tooltipkeyboardShortcutsDescriptions}>
+                    tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
+                    tooltipkeyboardShortcutsNames={tooltipkeyboardShortcutsNames}
+                    tooltipkeyboardShortcutsDescriptions={tooltipkeyboardShortcutsDescriptions}
+                    label={ label }
+                    >
                     <SVG ariaHidden svg={InfoIcon} />
                     </ToolTipButton>
                     </div>

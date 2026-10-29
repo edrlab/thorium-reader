@@ -5,13 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
-import { Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
+import { Focusable, TooltipTrigger } from "react-aria-components";
 import { connect } from "react-redux";
 import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { PrettifyKeyboardShortcut } from "readium-desktop/renderer/common/components/Keyboard";
+import { ToolTippy } from "./Tooltippy";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -47,31 +46,26 @@ class SkipLink extends React.Component<IProps, undefined> {
                 <Focusable>
                 <button
                     onClick={onClick || (() => this.onClick())}
-                    aria-hidden={false}
                     className={className}
 
-                    aria-label={`${label}`}
+                    // aria-label={`${label}`}
                     /* aria-label={`${label} [${textualizeKeyboardShortcut(tooltipkeyboardShortcut)}]` + (tooltipkeyboardShortcutName ? ` (${tooltipkeyboardShortcutName})` : "") + (tooltipkeyboardShortcutDescription ? ` <${tooltipkeyboardShortcutDescription}>` : "")} */
                 >
                     { label }
                 </button>
                 </Focusable>
-                <Tooltip placement="bottom" offset={0} className={classNames("tooltipKeyboardShortcut")}>
-                <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
-                <p><PrettifyKeyboardShortcut hideFromScreenReaders={false} def={tooltipkeyboardShortcut} /></p>
-                {
-                    (tooltipkeyboardShortcutName ? (<p>{tooltipkeyboardShortcutName}</p>) : (<></>))
-                }{
-                    (tooltipkeyboardShortcutDescription ? (<p>{tooltipkeyboardShortcutDescription}</p>) : (<></>))
-                }
-                </Tooltip>
+                <ToolTippy
+                    placement="bottom"
+                    // label={label}
+                    tooltipkeyboardShortcuts={[tooltipkeyboardShortcut]}
+                    tooltipkeyboardShortcutsNames={[tooltipkeyboardShortcutName]}
+                    tooltipkeyboardShortcutsDescriptions={[tooltipkeyboardShortcutDescription]} />
                 </TooltipTrigger>
             );
         } else {
             return (
                 <button
                     onClick={onClick || (() => this.onClick())}
-                    aria-hidden={false}
                     className={className}
                 >
                     { label }

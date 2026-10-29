@@ -5,14 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { FocusScope, mergeProps, Overlay } from "react-aria";
-import { Button, Dialog, DialogProps, DialogTrigger, DialogTriggerProps, Focusable, Modal, ModalOverlay, OverlayArrow, OverlayTriggerStateContext, Pressable, Tooltip, TooltipTrigger } from "react-aria-components";
+import { Button, Dialog, DialogProps, DialogTrigger, DialogTriggerProps, Focusable, Modal, ModalOverlay, OverlayTriggerStateContext, Pressable, TooltipTrigger } from "react-aria-components";
 import { useOverlayTriggerState } from "react-stately";
 import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
-import { PrettifyKeyboardShortcut } from "readium-desktop/renderer/common/components/Keyboard";
 import { OVERLAY_Z_INDEX } from "./overlayHelpers";
+import { ToolTippy } from "./Tooltippy";
 
 export interface RootProps extends DialogTriggerProps {
     modal?: boolean;
@@ -44,11 +43,12 @@ export function Root({ modal = true, alert = false, triggerless = false, ...prop
 }
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean } & {
-   tooltipkeyboardShortcut?: TKeyboardShortcut;
-   tooltipkeyboardShortcutName?: string;
-   tooltipkeyboardShortcutDescription?: string; };
+    label?: string;
+    tooltipkeyboardShortcuts?: TKeyboardShortcut[];
+    tooltipkeyboardShortcutsNames?: string[];
+    tooltipkeyboardShortcutsDescriptions?: string[]; };
 
-function buttonChild({ asChild, children, tooltipkeyboardShortcut: _tooltipkeyboardShortcut, tooltipkeyboardShortcutName: _tooltipkeyboardShortcutName, tooltipkeyboardShortcutDescription: _tooltipkeyboardShortcutDescription, ...props }: ButtonProps) {
+function buttonChild({ asChild, children, tooltipkeyboardShortcuts: _tooltipkeyboardsShortcuts, tooltipkeyboardShortcutsNames: _tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions: _tooltipkeyboardShortcutsDescriptions, ...props }: ButtonProps) {
     if (asChild) {
         const child = React.Children.only(children) as React.ReactElement<React.ButtonHTMLAttributes<HTMLButtonElement>>;
         return React.cloneElement(child, mergeProps(child.props, props));
@@ -69,12 +69,9 @@ function DialogButton({ onPress, ...props }: ButtonProps & { onPress?: () => voi
     </Button>;
 }
 
-export function Trigger(props: ButtonProps) {
+export function Trigger({ label, tooltipkeyboardShortcuts, tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions, ...props }: ButtonProps) {
     const { modal, panelId } = React.useContext(Context);
     const state = React.useContext(OverlayTriggerStateContext);
-    const propstooltipkeyboardShortcut = props.tooltipkeyboardShortcut;
-    const propstooltipkeyboardShortcutName = props.tooltipkeyboardShortcutName;
-    const propstooltipkeyboardShortcutDescription = props.tooltipkeyboardShortcutDescription;
     if (!modal) {
         // Docked panels use native button activation for mouse, Enter and Space.
         const c = buttonChild(mergeProps(props, {
@@ -82,7 +79,7 @@ export function Trigger(props: ButtonProps) {
             "aria-expanded": state?.isOpen,
             "aria-controls": state?.isOpen ? panelId : undefined,
         }));
-        if (!propstooltipkeyboardShortcut) {
+        if (!tooltipkeyboardShortcuts?.length) {
             return c;
         }
         return (
@@ -90,34 +87,28 @@ export function Trigger(props: ButtonProps) {
         <Focusable>
         {c}
         </Focusable>
-        <Tooltip placement="bottom" offset={0} className={classNames("tooltipKeyboardShortcut")}>
-        <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
-                    <p><PrettifyKeyboardShortcut hideFromScreenReaders={false}  def={propstooltipkeyboardShortcut} /></p>
-        {
-            (propstooltipkeyboardShortcutName ? (<p>{propstooltipkeyboardShortcutName}</p>) : (<></>))
-        }{
-            (propstooltipkeyboardShortcutDescription ? (<p>{propstooltipkeyboardShortcutDescription}</p>) : (<></>))
-        }
-        </Tooltip>
+        <ToolTippy
+            placement="bottom"
+            label={ label }
+            tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
+            tooltipkeyboardShortcutsNames={tooltipkeyboardShortcutsNames}
+            tooltipkeyboardShortcutsDescriptions={tooltipkeyboardShortcutsDescriptions} />
         </TooltipTrigger>
         );
     }
     const c = <DialogButton {...props} />;
-    if (!propstooltipkeyboardShortcut) {
+    if (!tooltipkeyboardShortcuts?.length) {
         return c;
     }
     return (
     <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
     {c}
-    <Tooltip placement="bottom" offset={0} className={classNames("tooltipKeyboardShortcut")}>
-    <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
-    <p><PrettifyKeyboardShortcut hideFromScreenReaders={false} def={propstooltipkeyboardShortcut} /></p>
-    {
-        (propstooltipkeyboardShortcutName ? (<p>{propstooltipkeyboardShortcutName}</p>) : (<></>))
-    }{
-        (propstooltipkeyboardShortcutDescription ? (<p>{propstooltipkeyboardShortcutDescription}</p>) : (<></>))
-    }
-    </Tooltip>
+    <ToolTippy
+        placement="bottom"
+        label={ label }
+        tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
+        tooltipkeyboardShortcutsNames={tooltipkeyboardShortcutsNames}
+        tooltipkeyboardShortcutsDescriptions={tooltipkeyboardShortcutsDescriptions} />
     </TooltipTrigger>
     );
 }

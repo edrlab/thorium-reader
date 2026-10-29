@@ -36,6 +36,18 @@
       opacity 200ms;
   */
 
+  > section {
+    text-align: center;
+    font-weight: bolder;
+    margin-top: 0.15em;
+    margin-bottom: 0.15em;
+    padding: 0.4em;
+    padding-bottom: 0.8em;
+    border-radius: 0.25em;
+    border: 1px solid transparent;
+    border-bottom: 1px dotted var(--color-text-primary);
+  }
+
   > p, > div > p {
     margin-top: 0.15em;
     margin-bottom: 0.15em;
@@ -56,6 +68,12 @@
         }
       }
     }
+  }
+
+  > div:not(:last-child) > p:last-child {
+    padding-bottom: 1.5em;
+    border-bottom: 0.15em dashed var(--color-text-primary);
+    margin-bottom: 0.8em;
   }
 
   > p:nth-child(2), > div > p:nth-child(2) {
