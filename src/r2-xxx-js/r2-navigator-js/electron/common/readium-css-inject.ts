@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { cssFontFamilyName } from "./css-font-family";
 
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { parseDOM, serializeDOM } from "./dom";
@@ -531,7 +532,7 @@ export function readiumCSSSet(
         } else if (font === "JA-V-SANS" || font === "sans-serif-ja-v") {
             fontValue = "var(--RS__sans-serif-ja-v)";
         } else if (typeof font === "string") {
-            fontValue = font;
+            fontValue = cssFontFamilyName(font);
         }
         if (fontValue) {
             docElement.style.setProperty("--USER__fontFamily", fontValue);
