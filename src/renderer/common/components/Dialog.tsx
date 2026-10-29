@@ -6,13 +6,12 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import {
-    Button, Dialog, DialogProps, DialogTrigger, DialogTriggerProps, Modal, ModalOverlay,
-    OverlayTriggerStateContext, Pressable,
-} from "react-aria-components";
 import { FocusScope, mergeProps, Overlay } from "react-aria";
-import { OVERLAY_Z_INDEX } from "./overlayHelpers";
+import { Button, Dialog, DialogProps, DialogTrigger, DialogTriggerProps, Focusable, Modal, ModalOverlay, OverlayTriggerStateContext, Pressable, TooltipTrigger } from "react-aria-components";
 import { useOverlayTriggerState } from "react-stately";
+import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
+import { OVERLAY_Z_INDEX } from "./overlayHelpers";
+import { ToolTippy } from "./Tooltippy";
 
 export interface RootProps extends DialogTriggerProps {
     modal?: boolean;
@@ -43,9 +42,13 @@ export function Root({ modal = true, alert = false, triggerless = false, ...prop
     </Context.Provider>;
 }
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean };
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean } & {
+    label?: string;
+    tooltipkeyboardShortcuts?: TKeyboardShortcut[];
+    tooltipkeyboardShortcutsNames?: string[];
+    tooltipkeyboardShortcutsDescriptions?: string[]; };
 
-function buttonChild({ asChild, children, ...props }: ButtonProps) {
+function buttonChild({ asChild, children, tooltipkeyboardShortcuts: _tooltipkeyboardsShortcuts, tooltipkeyboardShortcutsNames: _tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions: _tooltipkeyboardShortcutsDescriptions, ...props }: ButtonProps) {
     if (asChild) {
         const child = React.Children.only(children) as React.ReactElement<React.ButtonHTMLAttributes<HTMLButtonElement>>;
         return React.cloneElement(child, mergeProps(child.props, props));
@@ -66,18 +69,48 @@ function DialogButton({ onPress, ...props }: ButtonProps & { onPress?: () => voi
     </Button>;
 }
 
-export function Trigger(props: ButtonProps) {
+export function Trigger({ label, tooltipkeyboardShortcuts, tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions, ...props }: ButtonProps) {
     const { modal, panelId } = React.useContext(Context);
     const state = React.useContext(OverlayTriggerStateContext);
     if (!modal) {
         // Docked panels use native button activation for mouse, Enter and Space.
-        return buttonChild(mergeProps(props, {
+        const c = buttonChild(mergeProps(props, {
             onClick: () => state?.toggle(),
             "aria-expanded": state?.isOpen,
             "aria-controls": state?.isOpen ? panelId : undefined,
         }));
+        if (!tooltipkeyboardShortcuts?.length) {
+            return c;
+        }
+        return (
+        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+        <Focusable>
+        {c}
+        </Focusable>
+        <ToolTippy
+            placement="bottom"
+            label={ label }
+            tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
+            tooltipkeyboardShortcutsNames={tooltipkeyboardShortcutsNames}
+            tooltipkeyboardShortcutsDescriptions={tooltipkeyboardShortcutsDescriptions} />
+        </TooltipTrigger>
+        );
     }
-    return <DialogButton {...props} />;
+    const c = <DialogButton {...props} />;
+    if (!tooltipkeyboardShortcuts?.length) {
+        return c;
+    }
+    return (
+    <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+    {c}
+    <ToolTippy
+        placement="bottom"
+        label={ label }
+        tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
+        tooltipkeyboardShortcutsNames={tooltipkeyboardShortcutsNames}
+        tooltipkeyboardShortcutsDescriptions={tooltipkeyboardShortcutsDescriptions} />
+    </TooltipTrigger>
+    );
 }
 Trigger.displayName = "DialogTrigger";
 

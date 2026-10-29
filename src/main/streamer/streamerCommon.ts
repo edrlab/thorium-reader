@@ -373,6 +373,14 @@ startup: {
                     }
                 }
             });
+
+            const event = new CustomEvent("MathJaxReady", {
+              bubbles: true,
+              cancelable: true,
+              detail: {},
+            });
+            console.log("Thorium MathJax MathJaxReady");
+            document.documentElement.dispatchEvent(event);
         });
 
         window.MathJax.startup.defaultReady();

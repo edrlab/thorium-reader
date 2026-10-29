@@ -4,22 +4,91 @@
 @use './partials/mixin' as mx;
 @use './partials/focus';
 
+@keyframes popIntoView {
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
 /* .react-aria-Tooltip */
-.tooltipskiplink, .tooltipsearch {
+.tooltipKeyboardShortcut:not(.tooltipKeyboardShortcutImmediate) {
+  opacity: 0;
+  visibility: hidden;
+  animation: popIntoView 0s 0.7s step-end forwards;
+}
+
+.tooltipKeyboardShortcut {
+  max-width: 15em;
   border-radius: 0.5em;
   border: 0.15em solid var(--color-text-primary);
   background: var(--color-neutral-base);
   color: var(--color-text-primary);
   forced-color-adjust: none;
   outline: none;
-  padding: 0.5em;
-  max-width: 10em;
+  padding: 0 0.15em;
+  font: 100% system-ui;
   /* fixes FF gap */
   transform: translate3d(0, 0, 0);
-  transition:
-    transform 200ms,
-    opacity 200ms;
-  font: 100% system-ui;
+
+  /*
+    transition:
+      transform 200ms,
+      opacity 200ms;
+  */
+
+  > section {
+    text-align: center;
+    font-weight: bolder;
+    margin-top: 0.15em;
+    margin-bottom: 0.15em;
+    padding: 0.4em;
+    padding-bottom: 0.8em;
+    border-radius: 0.25em;
+    border: 1px solid transparent;
+    border-bottom: 1px dotted var(--color-text-primary);
+  }
+
+  > p, > div > p {
+    margin-top: 0.15em;
+    margin-bottom: 0.15em;
+    padding: 0.4em;
+    border-radius: 0.25em;
+    border: 1px solid transparent;
+
+    > span {
+      display: flex;
+      gap: 0.5em;
+      align-items: center;
+
+      > span {
+        font-weight: bolder;
+
+        > svg {
+          width: 1.25em;
+        }
+      }
+    }
+  }
+
+  > div:not(:last-child) > p:last-child {
+    padding-bottom: 1.5em;
+    border-bottom: 0.15em dashed var(--color-text-primary);
+    margin-bottom: 0.8em;
+  }
+
+  > p:nth-child(2), > div > p:nth-child(2) {
+    border: 1px solid #aaa;
+  }
+
+  > p:nth-child(3), > div > p:nth-child(3) {
+    font-size: 90%;
+    font-weight: bold;
+  }
+
+  > p:nth-child(4), > div > p:nth-child(4) {
+    font-size: 90%;
+    opacity: 0.8;
+  }
 
   &[data-entering],
   &[data-exiting] {

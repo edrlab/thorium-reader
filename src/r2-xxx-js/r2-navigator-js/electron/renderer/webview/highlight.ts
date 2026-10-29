@@ -721,12 +721,12 @@ const drawMargin = (h: IHighlight) => {
     }
     return _drawMargin;
 };
-export const setDrawMargin = (win: ReadiumElectronWebviewWindow, drawMargin: boolean | string[]) => {
+export const setDrawMargin = (win: ReadiumElectronWebviewWindow, drawMargin: boolean | string[], highlights?: IHighlight[]) => {
     _drawMargin = drawMargin;
     if (IS_DEV) {
         console.log("--HIGH WEBVIEW-- _drawMargin: " + JSON.stringify(_drawMargin, null, 4));
     }
-    recreateAllHighlightsRaw(win);
+    recreateAllHighlightsRaw(win, highlights);
 };
 
 interface IWithRect {
@@ -1626,24 +1626,90 @@ export function destroyHighlightsGroup(documant: Document, group: string) {
     }
 }
 
-export function recreateAllHighlightsRaw(win: ReadiumElectronWebviewWindow, highlights?: IHighlight[]) {
+let _lastHydrationHighlights: IHighlight[] | undefined;
+export function recreateAllHighlightsRaw(win: ReadiumElectronWebviewWindow, hydrationHighlights?: IHighlight[]) {
     if (IS_DEV) {
-        console.log("--HIGH WEBVIEW-- recreateAllHighlightsRaw: " + _highlights.length + " ==> " + highlights?.length);
+        console.log("--HIGH WEBVIEW-- recreateAllHighlightsRaw: " +  _highlights.length + " ==> " + hydrationHighlights?.length);
+    }
+    const fromHydration = !!hydrationHighlights; // empty array is truthy --- typeof highlights !== "undefined"; // !!highlights.length;
+    if (fromHydration) {
+        console.log("--HIGH WEBVIEW-- fromHydration...");
+        _lastHydrationHighlights = hydrationHighlights;
+    } else {
+        console.log("--HIGH WEBVIEW-- NOT fromHydration...");
+        if (_lastHydrationHighlights) {
+            console.log("--HIGH WEBVIEW-- _lastHydrationHighlights...");
+            let thereIsHighlightsDiff = true;
+            if (_lastHydrationHighlights?.length === _highlights.length) {
+                let allFound = true;
+                for (const _h of _highlights) {
+                    const found = _lastHydrationHighlights.find((h) => {
+                        return h.id === _h.id // isn't that sufficient? (immutable by design?)
+                            && h.color?.blue === _h.color?.blue
+                            && h.color?.green === _h.color?.green
+                            && h.color?.red === _h.color?.red
+                            && h.drawType === _h.drawType
+                            && h.expand === _h.expand
+                            && h.group === _h.group
+                            && h.marginText === _h.marginText
+                            && h.pointerInteraction === _h.pointerInteraction
+                            && h.textPopup?.dir === _h.textPopup?.dir
+                            && h.textPopup?.lang === _h.textPopup?.lang
+                            && h.textPopup?.text === _h.textPopup?.text
+                            // && h.selectionInfo?.cleanAfter === _h.selectionInfo?.cleanAfter
+                            // && h.selectionInfo?.cleanBefore === _h.selectionInfo?.cleanBefore
+                            // && h.selectionInfo?.cleanText === _h.selectionInfo?.cleanText
+                            // && h.selectionInfo?.rawAfter === _h.selectionInfo?.rawAfter
+                            // && h.selectionInfo?.rawBefore === _h.selectionInfo?.rawBefore
+                            // && h.selectionInfo?.rawText === _h.selectionInfo?.rawText
+                            // && h.selectionInfo?.textFragment?.prefix === _h.selectionInfo?.textFragment?.prefix
+                            // && h.selectionInfo?.textFragment?.suffix === _h.selectionInfo?.textFragment?.suffix
+                            // && h.selectionInfo?.textFragment?.textEnd === _h.selectionInfo?.textFragment?.textEnd
+                            // && h.selectionInfo?.textFragment?.textStart === _h.selectionInfo?.textFragment?.textStart
+                            // && h.selectionInfo?.rangeInfo?.cfi === _h.selectionInfo?.rangeInfo?.cfi
+                            && h.selectionInfo?.rangeInfo?.endContainerChildTextNodeIndex === _h.selectionInfo?.rangeInfo?.endContainerChildTextNodeIndex
+                            && h.selectionInfo?.rangeInfo?.endContainerElementCssSelector === _h.selectionInfo?.rangeInfo?.endContainerElementCssSelector
+                            && h.selectionInfo?.rangeInfo?.endContainerElementXPath === _h.selectionInfo?.rangeInfo?.endContainerElementXPath
+                            && h.selectionInfo?.rangeInfo?.endOffset === _h.selectionInfo?.rangeInfo?.endOffset
+                            && h.selectionInfo?.rangeInfo?.startContainerChildTextNodeIndex === _h.selectionInfo?.rangeInfo?.startContainerChildTextNodeIndex
+                            && h.selectionInfo?.rangeInfo?.startContainerElementCssSelector === _h.selectionInfo?.rangeInfo?.startContainerElementCssSelector
+                            && h.selectionInfo?.rangeInfo?.startContainerElementXPath === _h.selectionInfo?.rangeInfo?.startContainerElementXPath
+                            && h.selectionInfo?.rangeInfo?.startOffset === _h.selectionInfo?.rangeInfo?.startOffset
+                            // && h.rangeCssHighlight === _h.rangeCssHighlight
+                            // && h.range === _h.range
+                            ;
+                    });
+                    allFound = allFound && !!found;
+                }
+                if (allFound) {
+                    thereIsHighlightsDiff = false;
+                }
+            }
+            if (thereIsHighlightsDiff) {
+                console.log("--HIGH WEBVIEW-- recreateAllHighlightsRaw thereIsHighlightsDiff ==> no skip, request post-hydration via URL query param is not duplicate");
+            } else {
+                console.log("--HIGH WEBVIEW-- recreateAllHighlightsRaw !thereIsHighlightsDiff ==> skip duplicate request post-hydration via URL query param");
+
+                _lastHydrationHighlights = undefined;
+                return;
+            }
+        }
+        _lastHydrationHighlights = undefined;
     }
 
     const documant = win.document;
 
-    if (highlights?.length) {
+    if (hydrationHighlights?.length) {
         if (_highlights.length) {
             if (IS_DEV) {
-                console.log("--HIGH WEBVIEW-- recreateAllHighlightsRaw DESTROY OLD BEFORE RESTORE BACKUP: " + _highlights.length + " ==> " + highlights.length);
+                console.log("--HIGH WEBVIEW-- recreateAllHighlightsRaw DESTROY OLD BEFORE RESTORE FROM HYDRATION: " + _highlights.length + " ==> " + hydrationHighlights.length);
             }
             destroyAllhighlights(documant);
         }
         if (IS_DEV) {
-            console.log("--HIGH WEBVIEW-- recreateAllHighlightsRaw RESTORE BACKUP: " + _highlights.length + " ==> " + highlights.length);
+            console.log("--HIGH WEBVIEW-- recreateAllHighlightsRaw RESTORE FROM HYDRATION: " + _highlights.length + " ==> " + hydrationHighlights.length);
         }
-        _highlights.push(...highlights);
+        _highlights.push(...hydrationHighlights);
     }
 
     if (!_highlights.length) {
@@ -2354,6 +2420,10 @@ https://blackorwhite.lloydk.ca
     const textClientRects = textClientRects_[0];
     const atLeastOneIsInsideClosedDetails = textClientRects_[1];
 
+    if (!textClientRects.length) {
+        return null;
+    }
+
     let clientRects: IRect[] | undefined;
 
     if (doNotMergeHorizontallyAlignedRects) {
@@ -2480,6 +2550,10 @@ https://blackorwhite.lloydk.ca
             //     clientRects = [clientRects[clientRects.length - 1]];
             // }
         }
+    }
+
+    if (!clientRects.length) {
+        return null;
     }
 
     // let highlightAreaSVGDocFrag: DocumentFragment | undefined;

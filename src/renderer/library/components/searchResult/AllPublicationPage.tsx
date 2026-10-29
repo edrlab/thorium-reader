@@ -6,14 +6,14 @@
 // ==LICENSE-END==
 
 import { Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
-import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
-
 import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+import { PrettifyKeyboardShortcut } from "readium-desktop/renderer/common/components/Keyboard";
+import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
 
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
@@ -98,7 +98,8 @@ import classNames from "classnames";
 import { ipcRenderer } from "electron";
 import { keyboardShortcutsMatch, TKeyboardShortcutsMap } from "readium-desktop/common/keyboard";
 import {
-    ensureKeyboardListenerIsInstalled, registerKeyboardListener, textualizeKeyboardShortcut, unregisterKeyboardListener,
+    ensureKeyboardListenerIsInstalled, registerKeyboardListener,
+    unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { DisplayType, resolveDisplayType } from "readium-desktop/renderer/library/routing";
 import PublicationCard from "../publication/PublicationCard";
@@ -442,14 +443,17 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
         props.setGlobalFilter(searchText || undefined);
     }, 500);
 
-    const keyboardShortcutFocusSearch = textualizeKeyboardShortcut(props.keyboardShortcuts.FocusSearch);
+    const keyboardShortcuts = useSelector((state: ILibraryRootState) => state.keyboard.shortcuts);
+    // const keyboardShortcutFocusSearch = textualizeKeyboardShortcut(props.keyboardShortcuts.FocusSearch);
     return (
         <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>
-        <TooltipTrigger delay={500} closeDelay={0} trigger="hover">
+        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
         <Focusable excludeFromTabOrder>
             <label
                 id="globalSearchLabel"
                 htmlFor="globalSearchInput"
+                aria-label={`${props.__("header.searchPlaceholder")}`}
+                /* aria-label={`${props.__("header.searchPlaceholder")}` + ` [${keyboardShortcutFocusSearch}]` + ` (${props.__("settings.keyboard.list.FocusSearch.name")})` + ` <${props.__("settings.keyboard.list.FocusSearch.description")}>`} */
                 style={{ display: "flex", gap: "2px" }}>
                 {`${props.__("header.searchPlaceholder")}`}
                 <div
@@ -458,9 +462,13 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                 </div>
             </label>
         </Focusable>
-        <Tooltip placement="top" offset={0} className={"tooltipsearch"}>
-        <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg>
-        </OverlayArrow>{keyboardShortcutFocusSearch}</Tooltip></TooltipTrigger>
+        <Tooltip placement="top" offset={0} className={classNames("tooltipKeyboardShortcut")}>
+        <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
+        <p><PrettifyKeyboardShortcut hideFromScreenReaders={false} def={keyboardShortcuts.FocusSearch} /></p>
+        <p>{props.__("settings.keyboard.list.FocusSearch.name")}</p>
+        <p>{props.__("settings.keyboard.list.FocusSearch.description")}</p>
+        </Tooltip>
+        </TooltipTrigger>
             <i><SVG ariaHidden svg={SearchIcon} /></i>
             {/*
             value={value || ""}

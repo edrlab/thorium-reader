@@ -31,6 +31,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { downloader } from "../../../downloader";
 import { manifestContext } from "./context";
+import { normalizeAudiobookManifestType } from "./normalizeAudiobookManifestType";
 
 import isURL from "readium-desktop/common/utils/isURL";
 
@@ -263,6 +264,7 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
 export function* packageFromLink(
     href: string,
     isHtml: boolean,
+    isAudiobook = false,
 ): SagaGenerator<string | undefined> {
 
     const [manifest, manifestUrl] = yield* callTyped(packageGetManifestBuffer, href, isHtml);
@@ -270,13 +272,14 @@ export function* packageFromLink(
         throw new Error(getTranslator().translate("message.import.errors.manifestNotFound", { url: href }));
     }
 
-    return yield* callTyped(packageFromManifestBuffer, href, manifest, manifestUrl);
+    return yield* callTyped(packageFromManifestBuffer, href, manifest, manifestUrl, isAudiobook);
 }
 
 export function* packageFromManifestBuffer(
     baseUrl: string, // 'file://' for local resources
     manifest: Buffer,
     manifestPath?: string,
+    isAudiobook = false,
 ) {
     // DEPRECATED API (watch for the inverse function parameter order!):
     // url.resolve(baseUrl, manifestPath)
@@ -287,6 +290,8 @@ export function* packageFromManifestBuffer(
     if (!r2Publication) {
         throw new Error(getTranslator().translate("message.import.errors.manifestParsingFailed", { url: manifestUrlAbsolutized }));
     }
+
+    normalizeAudiobookManifestType(r2Publication, isAudiobook);
 
     debug("ready to package the r2Publication");
     debug(r2Publication);

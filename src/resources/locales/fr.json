@@ -16,7 +16,7 @@
         "leftSlideButton": "Faire défiler vers la gauche",
         "loading": "Chargement…",
         "mainContent": "Contenu principal",
-        "notificationCopied": "Notification copiée",
+        "notificationCopied": "Copié dans le presse-papiers :",
         "notificationCopyFailed": "Impossible de copier la notification",
         "printPage": "Page {{page}}",
         "publicationDetails": "{{- field}} : {{- title}}",

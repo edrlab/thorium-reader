@@ -74,13 +74,18 @@ export function getTextClientRects(range: Range, elementNamesToSkip?: string[]):
             acceptNode: (node: Node) => { // Text -- node.nodeType === Node.TEXT_NODE
                 if (node.nodeType === Node.TEXT_NODE && range.intersectsNode(node)) {
 
+                    let isInsideMathJax = false;
                     let isInsideSummary = false;
                     let isInsideDetails = false;
                     let closedDetails = false;
                     let curEl = node as Element;
                     do {
                         if (curEl.nodeType === Node.ELEMENT_NODE) {
-                            if (curEl.tagName?.toLowerCase() === "summary") {
+                            if (curEl.tagName?.toLowerCase() === "mjx-container") {
+                                isInsideMathJax = true;
+                                // console.log("TTS getTextClientRects -- isInsideMathJax");
+                                break;
+                            } else if (curEl.tagName?.toLowerCase() === "summary") {
                                 isInsideSummary = true;
                                 // console.log("TTS getTextClientRects -- isInsideSummary");
                             } else if (curEl.tagName?.toLowerCase() === "details") {
@@ -101,7 +106,7 @@ export function getTextClientRects(range: Range, elementNamesToSkip?: string[]):
                         }
                     } while (curEl.parentNode && curEl.parentNode.nodeType === Node.ELEMENT_NODE &&
                         (curEl = curEl.parentNode as Element));
-                    if (!isInsideSummary && isInsideDetails && closedDetails) {
+                    if (isInsideMathJax || !isInsideSummary && isInsideDetails && closedDetails) {
                         return NodeFilter.FILTER_REJECT;
                     }
 

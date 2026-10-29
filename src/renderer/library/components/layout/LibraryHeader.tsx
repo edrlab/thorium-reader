@@ -11,7 +11,7 @@ import { screenReaderActions, toastActions } from "readium-desktop/common/redux/
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
+// import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import classNames from "classnames";
@@ -176,8 +176,8 @@ const Header = () => {
 
     const dispatch = useDispatch();
 
-    const keyboardShortcutScreenReader = textualizeKeyboardShortcut(keyboardShortcuts.ToggleScreenReaderOptimize);
-    const keyboardShortcutFocusMain = textualizeKeyboardShortcut(keyboardShortcuts.FocusMain);
+    // const keyboardShortcutScreenReader = textualizeKeyboardShortcut(keyboardShortcuts.ToggleScreenReaderOptimize);
+    // const keyboardShortcutFocusMain = textualizeKeyboardShortcut(keyboardShortcuts.FocusMain);
 
     const screenReaderToggle = React.useCallback(() => {
         dispatch(screenReaderActions.save.build(!screenReaderActivate));
@@ -258,13 +258,17 @@ const Header = () => {
             anchorId="xxx"
             label={__("settings.screenReaderActivate.invite")}
             onClick={screenReaderToggle}
-            tooltip={ keyboardShortcutScreenReader }
+            tooltipkeyboardShortcut={keyboardShortcuts.ToggleScreenReaderOptimize}
+            tooltipkeyboardShortcutName={__("settings.keyboard.list.ToggleScreenReaderOptimize.name")}
+            tooltipkeyboardShortcutDescription={ __("settings.keyboard.list.ToggleScreenReaderOptimize.description") }
         /> : <></>}
         <SkipLink
             className={stylesHeader.skip_link}
             anchorId="main-content"
             label={__("accessibility.skipLink")}
-            tooltip={ keyboardShortcutFocusMain }
+            tooltipkeyboardShortcut={ keyboardShortcuts.FocusMain }
+            tooltipkeyboardShortcutName={__("settings.keyboard.list.FocusMain.name")}
+            tooltipkeyboardShortcutDescription={ __("settings.keyboard.list.FocusMain.description") }
         />
 
         <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>

@@ -1,28 +1,28 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Nota de anotação",
         "bookMenu": "Menu",
-        "bookmarkNote": "",
-        "cancelDownload": "",
+        "bookmarkNote": "Nota de marcador",
+        "cancelDownload": "Cancelar download: {{- title}}",
         "closeDialog": "Fechar",
-        "closeNotification": "",
-        "copyNotificationInstruction": "",
-        "decreaseSetting": "",
-        "downloadProgress": "",
-        "downloadProgressUnknown": "",
-        "editTag": "",
-        "favoriteCatalog": "",
-        "increaseSetting": "",
+        "closeNotification": "Fechar notificação",
+        "copyNotificationInstruction": "Copiar notificação",
+        "decreaseSetting": "Diminuir {{- setting}}",
+        "downloadProgress": "Progresso do download: {{- title}}",
+        "downloadProgressUnknown": "O progresso do download é desconhecido.",
+        "editTag": "Editar etiqueta {{- tag}}",
+        "favoriteCatalog": "Catálogo favorito: {{- title}}",
+        "increaseSetting": "Aumentar {{- setting}}",
         "leftSlideButton": "Deslizar para a esquerda",
-        "loading": "",
+        "loading": "Carregando…",
         "mainContent": "conteúdo principal",
-        "notificationCopied": "",
-        "notificationCopyFailed": "",
-        "printPage": "",
-        "publicationDetails": "",
-        "resetSetting": "",
+        "notificationCopied": "Copiado para a área de transferência:",
+        "notificationCopyFailed": "Não foi possível copiar a notificação",
+        "printPage": "Página {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Redefinir {{- setting}}",
         "rightSlideButton": "Deslizar para a direita",
-        "searching": "",
+        "searching": "Pesquisando…",
         "skipLink": "Ir para o conteúdo",
         "toolbar": "barra de ferramentas"
     },
@@ -61,12 +61,12 @@
         "update": {
             "message": "Nova versão disponível, clique para saber mais.",
             "title": "Atualização de software da {{- appName}}.",
-            "whatsnew": ""
+            "whatsnew": "Uma nova versão foi instalada; clique para saber mais"
         },
         "window": {
             "showLibrary": "Mostrar biblioteca / estante",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "O {{- appName}} continua em execução na área de notificação. Clique no ícone na bandeja para exibir a biblioteca.",
+            "trayTooltip": "{{- appName}} - clique para exibir ou ocultar a biblioteca"
         }
     },
     "catalog": {
@@ -96,7 +96,7 @@
         "deleteBook": "Remover",
         "deleteTag": "Apagar a tag",
         "description": "Descrição",
-        "downloaded": "",
+        "downloaded": "Baixado",
         "emptyTagList": "Você não tem livro marcado.",
         "entry": {
             "continueReading": "Retomar a leitura",
@@ -110,8 +110,8 @@
         "lastRead": "Última leitura",
         "login": "Login",
         "logout": "Logout",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "Arquivos ausentes",
+        "missingUnavailableDescription": "Não é possível abrir esta publicação porque os arquivos armazenados nela estão indisponíveis. Importe-a novamente ou acesse Configurações e, em seguida, Armazenamento, para adicionar ou alterar o armazenamento adicional.",
         "moreInfo": "Detalhes da publicação",
         "myBooks": "Meus livros",
         "noPublicationHelpL1": "Solte um arquivo aqui",
@@ -128,8 +128,8 @@
                 "password": "Senha",
                 "register": "Registrar-se",
                 "retry": "Tente novamente",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Não autorizado",
+                "unauthorizedUnsupportedType": "Não autorizado (tipo de WWWAuthenticate não suportado: '{{- type}}')",
                 "username": "Usuário / E-mail"
             },
             "info": {
@@ -151,27 +151,27 @@
                 "state": "Estado"
             }
         },
-        "openFolder": "",
+        "openFolder": "Abrir diretório",
         "publisher": "Editora",
         "readBook": "Ler",
         "released": "Publicado em",
         "removeFromFavorites": "Remover dos favoritos",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "Selecionar colunas para exibir",
         "sort": "Ordenar por",
         "tag": "Tag",
         "tags": "Tags",
         "update": "Editar",
         "userProfile": {
-            "available": "",
-            "bookshelf": "",
-            "edit": "",
-            "holds": "",
-            "loading": "",
-            "loans": "",
-            "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "available": "Disponível: {{count}}",
+            "bookshelf": "Abrir estante",
+            "edit": "Editar perfil",
+            "holds": "Retenções",
+            "loading": "Carregando conta…",
+            "loans": "Empréstimos",
+            "title": "Conta",
+            "total": "Limite: {{count}}",
+            "unavailable": "As informações do perfil não estão disponíveis.",
+            "used": "{{used}} de {{total}} utilizados"
         }
     },
     "dialog": {
@@ -179,14 +179,14 @@
             "descAuthor": "por '{{- author}} '",
             "descCreator": "criado por",
             "descList_one": "{{- count}} A nota de {{- creator}} será importada em '{{- title}}' {{- author}}",
-            "descList_many": "",
-            "descList_other": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
+            "descList_many": "{{- count}} As notas de {{- creator}} serão importadas em '{{- title}}' {{- author}}",
+            "descList_other": "{{- count}} As notas de {{- creator}} serão importadas em '{{- title}}' {{- author}}",
             "descNewer_one": "Conflito: {{- count}} nota mais recente",
-            "descNewer_many": "",
-            "descNewer_other": "Conflito(s): {{- count}} nota(s) mais recente(s)",
+            "descNewer_many": "Conflito(s): {{- count}} notas mais recentes",
+            "descNewer_other": "Conflito(s): {{- count}} notas mais recentes",
             "descOlder_one": "Conflito: {{- count}} nota mais antiga",
-            "descOlder_many": "",
-            "descOlder_other": "Conflito(s): {{- count}} nota(s) mais antiga(s)",
+            "descOlder_many": "Conflito(s): {{- count}} notas mais antigas",
+            "descOlder_other": "Conflito(s): {{- count}} notas mais antigas",
             "descTitle": "Título de anotações: ",
             "importAll": "Importar todas as notas",
             "importWithoutConflict": "Importar apenas notas sem conflito",
@@ -203,12 +203,12 @@
             }
         },
         "deleteAnnotations": "Excluir anotações?",
-        "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} notas?",
-        "deleteAnnotationsText_many": "",
-        "deleteAnnotationsText_other": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
+        "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} nota?",
+        "deleteAnnotationsText_many": "Tem certeza de que deseja excluir {{- count}} notas?",
+        "deleteAnnotationsText_other": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteBookmarks": "Excluir marcadores?",
-        "deleteBookmarksText_one": "Tem certeza de que deseja excluir {{- count}} marcadore?",
-        "deleteBookmarksText_many": "",
+        "deleteBookmarksText_one": "Tem certeza de que deseja excluir {{- count}} marcador?",
+        "deleteBookmarksText_many": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteBookmarksText_other": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteFeed": "Deseja excluir este catálogo?",
         "deletePublication": "Deseja excluir esta publicação?",
@@ -241,14 +241,14 @@
         "searchPlaceholder": "Buscar",
         "searchTitle": "Iniciar uma busca",
         "settings": "Configurações",
-        "settingsLabel": "",
+        "settingsLabel": "Configurações do aplicativo",
         "viewMode": "Modo de visualização"
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Adicionar filtros",
+            "filterBy": "Filtrar por",
+            "selectOption": "Selecionar um item"
         },
         "lcp": {
             "hidePassphrase": "Esconder a senha",
@@ -263,12 +263,12 @@
             "whatIsLcpInfoDetailsLink": "Para saber mais, clique neste link para o site do EDRLab."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Adicionar ordenação",
+            "author": "Autor",
+            "language": "Idioma",
+            "readingState": "Estado da leitura",
+            "sortBy": "Ordenar por: ",
+            "title": "Título"
         }
     },
     "message": {
@@ -289,25 +289,25 @@
             "url": ""
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Download cancelado.",
             "errors": {
                 "failed": "",
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
+                "hashMismatch": "Falha na verificação de integridade do arquivo baixado: hash SHA-256 esperado {{- expected}}, obtido {{- actual}}.",
+                "httpGet": "Falha no download HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "O nome do arquivo de download temporário é inválido.",
+                "invalidLink": "O link de download é inválido.",
+                "invalidTempDirectory": "O diretório temporário de download é inválido.",
+                "lengthMismatch": "Falha na verificação de integridade do arquivo baixado: esperavam-se {{- expected}} bytes, foram obtidos {{- actual}} bytes.",
                 "pathMissing": "",
                 "publicationLinkMissing": "",
-                "readStreamMissing": "",
+                "readStreamMissing": "O fluxo de download está indisponível.",
                 "streamClosed": "",
-                "tooManyFilenameAttempts": ""
+                "tooManyFilenameAttempts": "Não foi possível criar um nome de arquivo temporário exclusivo para download: {{- path}}"
             },
             "failed": "",
             "integrityFailed": "",
             "saveFailed": "",
-            "startedWithTitle": ""
+            "startedWithTitle": "Baixando {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} já foi importado.",
@@ -338,45 +338,45 @@
             "unsupportedFormat": ""
         },
         "notifications": {
-            "annotationImportFailed": "",
-            "annotationPublicationUnavailable": "",
-            "annotationStopPlayback": "",
-            "authenticationFailed": "",
-            "catalogLinkFailed": "",
-            "catalogUpdateFailed": "",
-            "copyLimit": "",
-            "deleteFailed": "",
-            "exportFailed": "",
-            "openFileFailed": "",
-            "openLinkFailed": "",
-            "printLimit": "",
-            "profileActivationFailed": "",
-            "profileBusy": "",
-            "profileProvisionFailed": "",
-            "profileTimeout": "",
-            "publicationUnavailable": "",
-            "readingPositionFailed": "",
-            "recoveryPartialFailure": "",
-            "renewFailed": "",
-            "returnFailed": "",
-            "storageRefreshFailed": "",
-            "tagsFailed": ""
+            "annotationImportFailed": "Não foi possível importar as anotações. Verifique se o arquivo é uma exportação de anotações válido.",
+            "annotationPublicationUnavailable": "Não foi possível importar as anotações porque a publicação está indisponível. Tente importar a publicação novamente.",
+            "annotationStopPlayback": "Interrompa a leitura em voz alta ou a reprodução de áudio antes de criar uma anotação.",
+            "authenticationFailed": "Não foi possível entrar neste catálogo. Verifique sua conexão e tente novamente.",
+            "catalogLinkFailed": "Não foi possível adicionar este catálogo. Verifique o link e sua conexão.",
+            "catalogUpdateFailed": "Não foi possível atualizar este catálogo. Verifique as configurações dele e tente novamente.",
+            "copyLimit": "A cota de exemplares para esta publicação foi esgotada.",
+            "deleteFailed": "Não foi possível excluir esta publicação. Tente novamente.",
+            "exportFailed": "Não é possível exportar esta publicação. Verifique a pasta de destino e o espaço em disco disponível.",
+            "openFileFailed": "Não é possível abrir este arquivo. Verifique se ele está disponível e se utiliza um formato compatível.",
+            "openLinkFailed": "Não foi possível abrir este link de publicação. Verifique o link e tente novamente.",
+            "printLimit": "A cota de impressão para esta publicação foi esgotada.",
+            "profileActivationFailed": "Não é possível ativar este perfil. Verifique o pacote do perfil ou entre em contato com o fornecedor dele.",
+            "profileBusy": "Outra operação de perfil está em andamento. Aguarde a conclusão e tente novamente.",
+            "profileProvisionFailed": "Não foi possível instalar este perfil. Verifique o pacote do perfil ou entre em contato com o fornecedor dele.",
+            "profileTimeout": "A instalação do perfil excedeu o tempo limite. Verifique sua conexão e tente novamente.",
+            "publicationUnavailable": "Esta publicação está indisponível. Tente importá-la novamente.",
+            "readingPositionFailed": "Não foi possível determinar sua posição de leitura. Tente novamente.",
+            "recoveryPartialFailure": "{{- recovered}} publicações recuperadas; {{- failed}} publicações não puderam ser recuperadas.",
+            "renewFailed": "Não é possível renovar este empréstimo. Tente novamente ou entre em contato com sua biblioteca.",
+            "returnFailed": "Não foi possível devolver este empréstimo. Tente novamente ou entre em contato com sua biblioteca.",
+            "storageRefreshFailed": "A configuração de armazenamento foi salva, mas não foi possível atualizar a biblioteca. Tente atualizar a biblioteca.",
+            "tagsFailed": "Não foi possível salvar as etiquetas da publicação. Tente novamente."
         },
         "open": {
             "failed": "",
-            "folderNotFound": "",
+            "folderNotFound": "O diretório de publicação não pôde ser encontrado. Importe-o novamente ou configure o armazenamento adicional em Configurações > Armazenamento.",
             "missingLicense": ""
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_many": "",
-                "success_other": ""
+                "failure": "A recuperação da publicação falhou.",
+                "success_one": "{{- count}} publicação recuperada.",
+                "success_many": "{{- count}} publicações recuperadas.",
+                "success_other": "{{- count}} publicações recuperadas."
             },
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Diretório de publicação removido.",
+            "updateFailed": "Falha ao atualizar o diretório de publicação: {{- message}}",
+            "updated": "Diretório de publicações atualizado."
         },
         "wipeData": "Os dados de login foram limpos (tokens e cookies de acesso)"
     },
@@ -394,15 +394,15 @@
         "addMenu": "Adicionar origem OPDS",
         "breadcrumbRoot": "Catálogos",
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Azul",
+            "gray": "Cinza",
+            "green": "Verde",
+            "orange": "Laranja",
+            "pink": "Rosa",
+            "purple": "Roxo",
+            "red": "Vermelho",
+            "title": "Cor do catálogo",
+            "yellow": "Amarelo"
         },
         "documentation": "Site oficial do OPDS",
         "empty": "Nenhuma publicação encontrada",
@@ -412,28 +412,28 @@
         "menu": {
             "aboutBook": "Sobre este livro",
             "addExtract": "Importar o excerto",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Cancelar retenção",
+            "cancelHoldError": "Não é possível cancelar esta retenção. Tente novamente.",
             "goBuyBook": "Comprar este livro",
             "goLoanBook": "Emprestar publicação",
             "goRevokeLoanBook": "Revogar empréstimo",
             "goSubBook": "Subscrever",
-            "placeHold": ""
+            "placeHold": "Colocar retenção"
         },
         "network": {
-            "error": "Incapaz de acessar a origem OPDS",
+            "error": "Erro ao acessar o feed",
             "noInternet": "Sem Internet",
             "noInternetMessage": "Tente: checar o cabo de rede, modem, router ou wifi",
-            "reject": "Desculpe, houve um erro inesperado tentando processar a origem OPDS!",
+            "reject": "Desculpe, erro inesperado!",
             "timeout": "Houve um timeout na rede, por favor tente novamente mais tarde"
         },
         "next": "Próximo",
         "previous": "Anterior",
         "registry": {
-            "empty": "",
-            "error": "",
-            "loading": "",
-            "title": ""
+            "empty": "Nenhum catálogo encontrado.",
+            "error": "Não foi possível pesquisar no registro. Tente novamente.",
+            "loading": "Pesquisando em catálogos…",
+            "title": "Pesquisar em catálogos"
         },
         "resumeBrowsing": "Retornar à navegação",
         "shelf": "Estante",
@@ -499,8 +499,8 @@
                 "descriptive": "Objetos táteis em 3D"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "Dicas de texto-para-fala (TTS) fornecidas",
-                "descriptive": "Dicas de texto-para-fala (TTS) fornecidas"
+                "compact": "Dicas de texto-para-fala fornecidas",
+                "descriptive": "Dicas de texto-para-fala fornecidas"
             },
             "additional-accessibility-information-title": "Informações adicionais de acessibilidade"
         },
@@ -731,15 +731,15 @@
                 "descriptive": "Nenhuma informação sobre a capacidade de modificação da aparência está disponível"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A aparência não pode ser modificada",
+                "descriptive": "O texto e a diagramação da página não podem ser alterados, uma vez que a experiência de leitura se aproxima da de uma versão impressa; contudo, os sistemas de leitura ainda podem oferecer opções de ampliação"
             }
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Amigável a TTS e leitor de tela"
+                "textual": "Todo o conteúdo pode ser lido por meio de voz sintetizada ou em braile dinâmico"
             },
             "accessibilityFeature": {
                 "alternativeText": "Contém texto alternativo",
@@ -777,7 +777,7 @@
         "certificateSignatureInvalid": "A assinatura do certificado é inválida.",
         "cover": {
             "img": "imagem de capa",
-            "zoom": ""
+            "zoom": "Ampliar imagem da capa"
         },
         "day": "dia",
         "days": "dias",
@@ -787,7 +787,7 @@
         "expired": "Empréstimo expirado",
         "expiredLcp": "A licença LCP desta publicação expirou.",
         "incorrectPassphrase": "Nenhuma senha armazenada funciona na publicação, ou a senha inserida é errada.",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "AVISO: esta é uma versão de pré-lançamento do leitor Thorium Desktop que não oferece suporte a licenças LCP de produção; ela suporta apenas a descriptografia LCP de 'perfil básico', sem validação de certificado.",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Iniciar",
@@ -800,21 +800,21 @@
         "notStarted": "Não iniciado",
         "onGoing": "Em andamento",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "Uma posição de leitura mais recente em {{- device}} está disponível em {{- progression}}%.",
+            "remoteTitle": "Retomar de outro dispositivo?",
             "title": "Andamento",
-            "useRemote": ""
+            "useRemote": "Ir para a posição"
         },
         "read": "Finalizado",
         "remainingTime": "Empréstimos (dias restantes)",
         "remoteProgression": {
-            "checking": "",
-            "disabled": "",
-            "empty": "",
-            "position": "",
-            "ready": "",
-            "title": "",
-            "unavailable": ""
+            "checking": "Ativado e verificando o serviço...",
+            "disabled": "Não habilitado para esta publicação.",
+            "empty": "Nenhum progresso remoto salvo.",
+            "position": "Progresso remoto: {{percent}}% ({{device}}).",
+            "ready": "Ativado e pronto.",
+            "title": "Sincronização do progresso de leitura:",
+            "unavailable": "Ativado, mas o serviço está indisponível."
         },
         "renewButton": "Renovar",
         "returnButton": "Retornar",
@@ -839,7 +839,7 @@
             "date": "Data de modificação",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Não foi possível criar uma anotação em PDF a partir desta seleção."
                 }
             },
             "export": "Salvar notas como...",
@@ -854,7 +854,7 @@
             },
             "hide": "Não mostrar",
             "highlight": "Destaque",
-            "noSelectionToast": "Nenhuma seleção",
+            "noSelectionToast": "Selecione o texto antes de criar uma anotação.",
             "note": "Nota {{- color}}",
             "quickAnnotations": "Criação rápida (pular editor)",
             "saveNote": "Salvar",
@@ -880,9 +880,9 @@
             "unmute": "ativar áudio"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Exibir painel como uma janela modal",
+            "dockLeft": "Ancorar painel à esquerda",
+            "dockRight": "Ancorar painel à direita"
         },
         "fxl": {
             "fit": "Ajustar"
@@ -924,8 +924,8 @@
             "speed": "Velocidade de reprodução da narração",
             "stop": "Parar narração",
             "title": "Narração",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Destaque personalizado",
+            "useTTSHighlightsForMODescription": "Desativar estilos definidos pelo autor"
         },
         "navigation": {
             "ZenModeExit": "Sair do modo Zen",
@@ -951,13 +951,13 @@
             "printDisabled": "Impressão proibida",
             "screenNext": "Avançar",
             "screenPrevious": "Retornar",
-            "settingsTitle": "Configurações"
+            "settingsTitle": "Configurações do leitor"
         },
         "notes": {
             "colors": {
                 "cyan": "Azul-ciano",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Laranja escuro",
+                "darkyellow": "Amarelo escuro",
                 "green": "Verde",
                 "orange": "Laranja",
                 "purple": "Roxo",
@@ -968,8 +968,8 @@
         "picker": {
             "search": {
                 "founds_one": "{{- count}} correspondência",
-                "founds_many": "",
-                "founds_other": "{{- count}} correspondência(s)",
+                "founds_many": "{{- count}} correspondências",
+                "founds_other": "{{- count}} correspondências",
                 "input": "texto para correspondência",
                 "next": "Próximo",
                 "notFound": "sem correspondências",
@@ -1011,10 +1011,10 @@
             "disposition": {
                 "title": "Layout"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Exibir quebras de página na margem",
             "font": "Fonte",
             "fontSize": "Tamanho de fonte",
-            "increaseFontSize": "",
+            "increaseFontSize": "Aumentar o tamanho da fonte",
             "infoCustomFont": "Selecione a fonte personalizada do sistema operacional digitando seu nome",
             "justification": "Alinhamento",
             "justify": "Justificar",
@@ -1051,7 +1051,7 @@
                 "title": "Referências"
             },
             "preview": "pré-visualização",
-            "reduceFontSize": "",
+            "reduceFontSize": "Diminuir o tamanho da fonte",
             "reduceMotion": "Reduzir o movimento",
             "scrolled": "Escroleável",
             "spacing": "Espaçamento",
@@ -1153,16 +1153,16 @@
                     "name": "Segmento anterior de áudio (pular)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Reduzir a velocidade da reprodução de áudio do EPUB3 Media Overlays ou a taxa de leitura em voz alta (TTS)",
+                    "name": "Diminuir a velocidade do áudio"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aumentar a velocidade da reprodução de áudio do EPUB3 Media Overlays ou a taxa de leitura em voz alta (TTS)",
+                    "name": "Aumentar a velocidade do áudio"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Redefinir a velocidade de reprodução de áudio do EPUB3 Media Overlays ou taxa de fala de leitura em voz alta (TTS)",
+                    "name": "Redefinir velocidade do áudio"
                 },
                 "AudioStop": {
                     "description": "Parar o áudio atual (Media Overlays do EPUB 3, leitura em voz alta por texto-para-fala ou audiolivro pré-gravado)",
@@ -1173,7 +1173,7 @@
                     "name": "Fechar o leitor"
                 },
                 "FXLZoomIn": {
-                    "description": "Aplicar zoom em uma página única ou dupla de layout fixo",
+                    "description": "Aplicar zoom em uma página única ou dupla de layout fixo.",
                     "name": "Ampliar zoom em FXL"
                 },
                 "FXLZoomOut": {
@@ -1349,12 +1349,12 @@
                     "name": "Ativar/desativar Tela Cheia"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "Na janela de leitura, ativar ou sair do modo zen, simplificando a interface do usuário durante a leitura",
+                    "name": "Alternar modo Zen"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "Na janela da biblioteca, alterna o suporte otimizado para leitores de tela",
+                    "name": "Alternar otimizações para leitor de tela"
                 }
             },
             "loadUserJson": "Carregar de arquivo de usuário",
@@ -1387,7 +1387,7 @@
         },
         "screenReaderActivate": {
             "help": "Quando o aplicativo detecta a presença de tecnologia assistiva, a interface do usuário funciona melhor com leitores de tela",
-            "invite": "",
+            "invite": "Otimizar para leitor de tela",
             "message": "Suporte otimizado para leitores de tela",
             "title": "Melhorar a experiência do leitor de tela"
         },
@@ -1395,86 +1395,86 @@
             "title": "Salvar sessão"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Remover automaticamente publicações expiradas e dados de usuário associados",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Garante que empréstimos expirados sejam excluídos automaticamente (incluindo anotações pessoais, marcadores de leitura, etc.). Isso é útil em ambientes com \"computadores compartilhados\", como bibliotecas ou salas em universidades.",
+            "title": "Modo de computador compartilhado"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Selecionar um armazenamento adicional",
+                "changeDirectory": "Atualizar armazenamento adicional",
+                "removeStorageDirectory": "Remover armazenamento adicional"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Este recurso funciona apenas com versões recentes do Thorium; livros em pastas externas não aparecerão no Thorium 3.4 ou em versões anteriores.",
+                "integrity": "Você deve manter este diretório seguro e acessível. Evite excluí-lo, restringir o acesso a ele ou utilizar um armazenamento lento ou instável, como unidades de rede.",
+                "migration": "O Thorium não transfere seus livros automaticamente: se você atualizar o armazenamento adicional, deverá mover manualmente suas publicações para o novo local. Se você removê-lo, deverá mover manualmente suas publicações para o armazenamento original.",
+                "summary": "Saiba mais sobre este recurso, atualmente em versão beta",
+                "warning": "Não altere manualmente os arquivos nesta pasta, pois isso pode causar problemas com seus livros ou com o leitor. Considere esta pasta como uma biblioteca segura gerenciada pelo Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Escolha o diretório que o Thorium deve usar como armazenamento adicional.",
+                "configuredDescription": "O armazenamento adicional está configurado e pronto para uso para publicações recém-armazenadas.",
+                "notConfiguredDescription": "As publicações importadas para o Thorium Reader serão armazenadas no diretório selecionado. As publicações importadas anteriormente permanecerão no local de armazenamento original do sistema."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Continuar",
+                    "description": "Esta funcionalidade está atualmente em versão beta. Deseja continuar e configurar um armazenamento adicional selecionando um diretório?",
+                    "title": "Selecionar um armazenamento adicional"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Editar diretório",
+                    "description": "A atualização do armazenamento adicional exige cuidado. O Thorium não migrará as publicações existentes para você; será necessário fazer isso manualmente. Deseja continuar?",
+                    "title": "Atualizar o armazenamento adicional"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Remover diretório",
+                    "description": "A remoção do armazenamento adicional exige cuidado. O Thorium não migrará as publicações existentes para você; será necessário fazer isso manualmente. Deseja continuar?",
+                    "title": "Remover armazenamento adicional"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "As publicações gerenciadas pelo aplicativo são, por padrão, armazenadas em:",
+                "defaultInternal": "Armazenamento do sistema",
+                "externalStorage": "Armazenamento externo",
+                "title": "Locais"
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Verificar se há publicações recuperáveis",
+                    "checkAgain": "Verificar novamente",
+                    "recover": "Recuperar publicações",
+                    "recovering": "Recuperando..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Uma ou mais publicações foram encontradas no disco, mas não constam no banco de dados. A recuperação é possível.",
+                "checking": "Verificando o armazenamento de publicações...",
+                "description": "Verifica o armazenamento de publicações para encontrar publicações que possam ser recuperadas com segurança.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
-                    "description_many": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Recuperar",
+                    "description_one": "O Thorium encontrou {{- count}} publicação no disco que não constam no banco de dados. Você deseja importá-la novamente para o Thorium?",
+                    "description_many": "O Thorium encontrou {{- count}} publicações no disco que não constam no banco de dados. Você deseja importá-las novamente para o Thorium?",
+                    "description_other": "O Thorium encontrou {{- count}} publicações no disco que não constam no banco de dados. Você deseja importá-las novamente para o Thorium?",
+                    "title": "Recuperar publicações"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_many": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Não foram encontradas publicações recuperáveis.",
+                "recoverableCount_one": "{{- count}} publicação pode ser recuperada com o identificador de armazenamento original.",
+                "recoverableCount_many": "{{- count}} publicações podem ser recuperadas com o identificador de armazenamento original.",
+                "recoverableCount_other": "{{- count}} publicações podem ser recuperadas com o identificador de armazenamento original.",
+                "title": "Recuperação"
             }
         },
         "tabs": {
-            "advanced": "",
+            "advanced": "Avançado",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos do teclado",
             "profiles": "Perfis",
-            "storage": ""
+            "storage": "Armazenamento"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Desativar medições de telemetria",
+            "disableTelemetryMeasurementsDescription": "Quando ativado, o Thorium não envia medições de telemetria.",
+            "title": "Telemetria"
         },
         "theme": {
             "auto": "Automático",

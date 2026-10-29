@@ -16,7 +16,7 @@
         "leftSlideButton": "Slide to the left",
         "loading": "Loading…",
         "mainContent": "main content",
-        "notificationCopied": "Notification copied",
+        "notificationCopied": "Copied into the clipboard:",
         "notificationCopyFailed": "Could not copy notification",
         "printPage": "Page {{page}}",
         "publicationDetails": "{{- field}}: {{- title}}",

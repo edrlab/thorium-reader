@@ -54,6 +54,7 @@ import SVG from "../../../common/components/SVG";
 
 import os from "node:os";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
+import { PrettifyKeyboardShortcut } from "readium-desktop/renderer/common/components/Keyboard";
 import { useDispatch } from "../../../common/hooks/useDispatch";
 import { useTranslator } from "../../../common/hooks/useTranslator";
 
@@ -82,6 +83,7 @@ interface IState {
     displayKeyboardShortcuts: boolean;
     editKeyboardShortcutId: TKeyboardShortcutId | undefined;
     editKeyboardShortcutData: TKeyboardShortcut | undefined;
+    tooltipOpen: TKeyboardShortcutId | undefined;
     searchItem: string | undefined;
     refresh: number;
 }
@@ -155,6 +157,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             displayKeyboardShortcuts: false,
             editKeyboardShortcutId: undefined,
             editKeyboardShortcutData: undefined,
+            tooltipOpen: undefined,
             searchItem: undefined,
             refresh: 0,
         };
@@ -588,17 +591,28 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 const heading = <div style={{display: "flex", border: isDuplicated ? "2px solid red" : undefined}}>
                                         <h3 className={stylesKeys.keyshortElement_title}>{cname}</h3>
                                     {    cleanNames[id].description.length ?
-                                        <TooltipTrigger>
-                                            <Button style={{ width: "15px", height: "15px", marginLeft: "3px" }} aria-label={cdesc}>
+                                        <TooltipTrigger
+                                            isOpen={this.state.tooltipOpen === id}
+                                            onOpenChange={(open) => this.setState({tooltipOpen: open ? id : undefined})}
+                                            >
+                                            <Button
+                                                onClick={() => {
+                                                    this.setState({ tooltipOpen: id });
+                                                }}
+                                                style={{ width: "15px", height: "15px", marginLeft: "3px" }}
+                                                aria-label={cdesc}>
                                                 <SVG ariaHidden svg={InfoIcon} />
                                             </Button>
-                                            <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)"}}>
-                                                <OverlayArrow>
-                                                <svg width={8} height={8} viewBox="0 0 8 8">
-                                                    <path d="M0 0 L4 4 L8 0" />
-                                                </svg>
-                                                </OverlayArrow>
-                                                {cdesc}
+                                            <Tooltip
+                                                aria-hidden
+                                                placement="top"
+                                                offset={0}
+                                                dir={isRTL ? "rtl" : "ltr"}
+                                                className={classNames("tooltipKeyboardShortcut")}
+                                                // style={{ border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)" }}
+                                            >
+                                            <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
+                                                <p>{cdesc}</p>
                                             </Tooltip>
                                         </TooltipTrigger>
                                         : ""
@@ -609,7 +623,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                         style={{border: isDuplicated ? "2px solid orange" : undefined}}
                                         className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
                                         <div className={stylesKeys.keyshortElement_shortcut}>
-                                            {this.prettifyKeyboardShortcut(def)}
+                                            <PrettifyKeyboardShortcut hideFromScreenReaders={true} def={def} />
                                             <button
                                                 id={`keyEditButt_${id}`}
                                                 onClick={(_ev) => {
@@ -809,17 +823,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     // private onClickKeyboardShortcutsReload(defaults: boolean) {
     //     this.props.reloadKeyboardShortcuts(defaults);
     // }
-    private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
-        const alt = def.alt ? <span title={DETECTED_OS === "MacOS" ? "Option" : "Alt"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"} + </span> : null;
-        const shift = def.shift ? <span title="Shift"><SVG ariaHidden svg={ShiftIcon} /> + </span> : null;
-        const control = def.control ? <span title="Control">CTRL + </span> : null;
-        const meta = def.meta ? <span title={DETECTED_OS === "MacOS" ? "Command" : "Meta"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : <SVG ariaHidden svg={WindowsIcon} />} + </span> : null;
-        // const { layoutMap } = this.state;
-        // const softKeyRaw = layoutMap?.get(def.key as KeyMapCode) ?? def.key;
-        const softKeyRaw = applyKeyboardLayoutMap(def.key);
-        const softKey = toUpperIfSimpleLowerCase(softKeyRaw);
-        return <span aria-hidden>{shift}{control}{alt}{meta}<span>{softKey}</span></span>;
-    }
+
     private stringifyKeyboardShortcut(def: TKeyboardShortcut) {
         return textualizeKeyboardShortcut(def);
     }

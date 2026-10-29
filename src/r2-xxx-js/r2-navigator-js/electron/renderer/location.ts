@@ -7,7 +7,6 @@
 
 import debug_ from "debug";
 import { ipcRenderer, shell } from "electron";
-import * as path from "node:path";
 import { URL } from "node:url";
 
 // import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
@@ -46,6 +45,7 @@ import {
     WebViewSlotEnum,
 } from "../common/styles";
 import { getCurrentAudioPlaybackRate, setCurrentAudioPlaybackRate } from "./audiobook";
+import { isAudiobookResource } from "./common/audiobook-resource";
 import {
     FRAG_ID_CSS_SELECTOR,
     URL_PARAM_A11Y_SUPPORT_ENABLED,
@@ -919,21 +919,7 @@ function loadLink(
         activeWebView.READIUM2.readiumCss = actualReadiumCss;
     }
 
-    const fileName = path.basename(linkPath);
-    const ext = path.extname(fileName);
-    const isAudio =
-        publication.Metadata &&
-        publication.Metadata.RDFType &&
-        /https?:\/\/schema\.org\/Audiobook$/.test(publication.Metadata.RDFType) &&
-        ((pubLink.TypeLink && pubLink.TypeLink.startsWith("audio/")) ||
-        // fallbacks:
-        /\.mp[3|4]$/i.test(ext) ||
-        /\.wav$/i.test(ext) ||
-        /\.aac$/i.test(ext) ||
-        /\.og[g|b|a]$/i.test(ext) ||
-        /\.aiff$/i.test(ext) ||
-        /\.wma$/i.test(ext) ||
-        /\.flac$/i.test(ext));
+    const isAudio = isAudiobookResource(publication.Metadata?.RDFType, pubLink.TypeLink, linkPath);
 
     let webViewSlot = WebViewSlotEnum.center;
 
@@ -1701,7 +1687,11 @@ ${coverLink ? `<img id="${AUDIO_COVER_ID}" src="${coverLink.Href}" alt="" ${cove
                 // }, 0);
             }
         } else {
-            const highlights = activeWebView.READIUM2.link === pubLink ? activeWebView.READIUM2.highlights : undefined;
+            const eq = activeWebView.READIUM2.link === pubLink;
+            const highlights = eq ? activeWebView.READIUM2.highlights : undefined;
+            if (IS_DEV) {
+                debug(`pre-hydrateHighlightsBuild SRC LOAD: ${eq} ... ${activeWebView.READIUM2.link?.HrefDecoded} -----  ${pubLink?.HrefDecoded} ===== ${activeWebView.READIUM2.highlights?.length}`); /// ${JSON.stringify(activeWebView.READIUM2.highlights, null, 4)}
+            }
             setTimeout(() => {
 
                 hydrateHighlightsBuild(highlights, hrefToLoadHttpUri).then((_v) => { /* if (IS_DEV) debug("LOAD...?", hrefToLoadHttpUri); */ }).catch((err) => { debug("LOAD...!!", hrefToLoadHttpUri, err); }).finally(() => {
@@ -1781,15 +1771,15 @@ ${coverLink ? `<img id="${AUDIO_COVER_ID}" src="${coverLink.Href}" alt="" ${cove
     return true;
 }
 
-// see hydrateHighlights() in preload.ts
+// see hydrateHighlightsConsume() in preload.ts
 const hydrateHighlightsBuild = async (highlights: IHighlight[] | undefined, hrefToLoadHttpUri: URI): Promise<void> => {
-    if (!highlights) {
-        return;
-    }
+    // if (!highlights) {
+    //     return;
+    // }
 
     const jsonStr = JSON.stringify({
-        margin: win.READIUM2.highlightsDrawMargin,
-        list: highlights,
+        margin: win.READIUM2.highlightsDrawMargin || false,
+        list: highlights || [],
     });
     try {
         // debug("--HIGH LOAD PARAM IN--");
@@ -1824,6 +1814,12 @@ const hydrateHighlightsBuild = async (highlights: IHighlight[] | undefined, href
 
         // debug(" **** " + b64Highlights.length + " VS " + b64Highlights_.length);
 
+        debug("################## HIGHLIGHTS hydrate BUILD ...", b64Highlights.length);
+
+        // https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/security/url_display_guidelines/url_display_guidelines.md#url-length
+        // In general, the web platform does not have limits on the length of URLs (although 2^31 is a common limit).
+        // Chrome limits URLs to a maximum length of 2MB for practical reasons and to avoid causing denial-of-service problems in inter-process communication.
+
         // TODO: urijs types broke this! (lib remains unchanged)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (hrefToLoadHttpUri as any).search((data: any) => {
@@ -1834,6 +1830,7 @@ const hydrateHighlightsBuild = async (highlights: IHighlight[] | undefined, href
     } catch (err) {
         debug("################## HIGHLIGHTS hydrate BUILD ERROR?!");
         debug(err);
+        debug(jsonStr.length);
         debug(jsonStr);
     }
 };

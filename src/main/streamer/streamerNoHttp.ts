@@ -57,6 +57,7 @@ import { isUUIDv4 } from "readium-desktop/utils/uuid";
 import { customizationWellKnownFolder } from "../customization/provisioning";
 import { diMainGet } from "../di";
 import { getNotesFromMainWinState } from "../redux/sagas/note";
+import { transformPublicationStream } from "./transformPublicationStream";
 
 // import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 import { clearSessions, initPermissions, initProtocols } from "readium-desktop/main/sessions";
@@ -1448,7 +1449,7 @@ const streamProtocolHandler = async (
 
             let transformedStream: IStreamAndLength;
             try {
-                transformedStream = await Transformers.tryStream(
+                transformedStream = await transformPublicationStream(
                     publication,
                     link,
                     fullUrl,
