@@ -141,3 +141,34 @@ test("unmounting cancels the pending announcement timer", async () => {
     await React.act(async () => root.render(null));
     expect(jest.getTimerCount()).toBe(0);
 });
+
+test("explicit reading positions are repeatable with enhanced navigation disabled and keep focus", async () => {
+    const positionAnnouncement = React.createRef<NavigationAnnouncementHandle>();
+    const input = document.createElement("input");
+    document.body.appendChild(input);
+    input.focus();
+    try {
+        await React.act(async () => root.render(<>
+            <NavigationAnnouncement ref={announcement} enabled={false} />
+            <NavigationAnnouncement ref={positionAnnouncement} enabled />
+        </>));
+        const regions = host.querySelectorAll("[role=alert]");
+        expect(regions).toHaveLength(2);
+        const position = "Page 12 -- Progression = 25% -- H1 Chapter 2 / H2 Introduction";
+        for (let attempt = 0; attempt < 2; attempt++) {
+            await React.act(async () => {
+                announcement.current!.announce("Screen next");
+                positionAnnouncement.current!.announce(position);
+            });
+            expect(regions[1].textContent).toBe("");
+            await advance(800);
+            expect(regions[0].textContent).toBe("");
+            expect(regions[1].textContent).toBe(position);
+            expect(host.querySelectorAll("[role=alert]")[1]).toBe(regions[1]);
+            expect(host.querySelector("button, [role=alertdialog]")).toBeNull();
+            expect(document.activeElement).toBe(input);
+        }
+    } finally {
+        input.remove();
+    }
+});

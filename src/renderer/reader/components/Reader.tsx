@@ -335,6 +335,7 @@ class Reader extends React.Component<IProps, IState> {
     // private blackoutDebounced: () => void;
 
     private navigationAnnouncementRef = React.createRef<NavigationAnnouncementHandle>();
+    private readingPositionAnnouncementRef = React.createRef<NavigationAnnouncementHandle>();
     private readiumPositionList: IReadiumPositionList | undefined;
 
     constructor(props: IProps) {
@@ -1142,6 +1143,7 @@ class Reader extends React.Component<IProps, IState> {
         return (
             <>
                 <NavigationAnnouncement ref={this.navigationAnnouncementRef} enabled={this.state.accessibilitySupportEnabled} />
+                <NavigationAnnouncement ref={this.readingPositionAnnouncementRef} enabled />
             <div className={classNames(
                 this.props.readerConfig.theme === "night" ? stylesReader.nightMode :
                 this.props.readerConfig.theme === "sepia" ? stylesReader.sepiaMode :
@@ -2287,7 +2289,8 @@ class Reader extends React.Component<IProps, IState> {
                 }
             }
 
-            this.props.toasty(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
+            // This explicit speech request must also work outside enhanced accessibility mode.
+            this.readingPositionAnnouncementRef.current?.announce(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
 
         } catch (_err) {
             this.props.toastError(this.props.__("message.notifications.readingPositionFailed"));
@@ -3782,9 +3785,6 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             if (!!href1) {
                 dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
             }
-        },
-        toasty: (msg: string) => {
-            dispatch(toastActions.openRequest.build(ToastType.Success, msg));
         },
         toastInfo: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Info, msg));
