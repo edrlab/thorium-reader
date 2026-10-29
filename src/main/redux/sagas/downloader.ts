@@ -692,7 +692,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
 
     if (!readStream) {
         throw new DownloadFailure("network", typeof data.url === "string" ? data.url : data.url.toString(),
-            new Error("Download response has no readable stream"));
+            new Error(getTranslator().translate("message.download.errors.readStreamMissing")));
     }
 
     const channel = downloadReadStreamProgression(readStream, contentLength, filename, typeof data.url === "string" ? data.url : data.url.toString());
