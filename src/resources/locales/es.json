@@ -304,8 +304,8 @@
                 "streamClosed": "",
                 "tooManyFilenameAttempts": "No se puede crear un único nombre para el archivo temporal de descarga: {{- path}}"
             },
-            "failedWithHost": "",
-            "integrityFailedWithHost": "",
+            "failed": "",
+            "integrityFailed": "",
             "saveFailed": "",
             "startedWithTitle": ""
         },

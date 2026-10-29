@@ -319,8 +319,8 @@
                 "streamClosed": "",
                 "tooManyFilenameAttempts": "لم نتمكن من إنشاء اسم ملف محمًّل غير مكرر: {{- path}}"
             },
-            "failedWithHost": "",
-            "integrityFailedWithHost": "",
+            "failed": "",
+            "integrityFailed": "",
             "saveFailed": "",
             "startedWithTitle": ""
         },

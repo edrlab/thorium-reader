@@ -309,8 +309,8 @@
                 "streamClosed": "",
                 "tooManyFilenameAttempts": "Nie można utworzyć unikalnej tymczasowej nazwy pliku do pobrania: {{- path}}"
             },
-            "failedWithHost": "",
-            "integrityFailedWithHost": "",
+            "failed": "",
+            "integrityFailed": "",
             "saveFailed": "",
             "startedWithTitle": ""
         },

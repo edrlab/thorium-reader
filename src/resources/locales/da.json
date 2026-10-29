@@ -299,8 +299,8 @@
                 "streamClosed": "",
                 "tooManyFilenameAttempts": "Var ikke i stand til at lave en unik midlertidig fil til download: {{- path}}"
             },
-            "failedWithHost": "",
-            "integrityFailedWithHost": "",
+            "failed": "",
+            "integrityFailed": "",
             "saveFailed": "",
             "startedWithTitle": ""
         },

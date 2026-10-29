@@ -688,8 +688,8 @@ declare namespace typed_i18n {
       readonly "streamClosed": string,
       readonly "tooManyFilenameAttempts": string
     },
-    readonly "failedWithHost": string,
-    readonly "integrityFailedWithHost": string,
+    readonly "failed": string,
+    readonly "integrityFailed": string,
     readonly "saveFailed": string,
     readonly "startedWithTitle": string
   },
@@ -806,8 +806,8 @@ declare namespace typed_i18n {
     readonly "streamClosed": string,
     readonly "tooManyFilenameAttempts": string
   },
-  readonly "failedWithHost": string,
-  readonly "integrityFailedWithHost": string,
+  readonly "failed": string,
+  readonly "integrityFailed": string,
   readonly "saveFailed": string,
   readonly "startedWithTitle": string
 };
@@ -838,8 +838,8 @@ declare namespace typed_i18n {
   (_: "message.download.errors.readStreamMissing", __?: {}): string;
   (_: "message.download.errors.streamClosed", __?: {}): string;
   (_: "message.download.errors.tooManyFilenameAttempts", __?: {}): string;
-  (_: "message.download.failedWithHost", __?: {}): string;
-  (_: "message.download.integrityFailedWithHost", __?: {}): string;
+  (_: "message.download.failed", __?: {}): string;
+  (_: "message.download.integrityFailed", __?: {}): string;
   (_: "message.download.saveFailed", __?: {}): string;
   (_: "message.download.startedWithTitle", __?: {}): string;
   (_: "message.import", __?: {}): {

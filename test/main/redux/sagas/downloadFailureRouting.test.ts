@@ -68,7 +68,7 @@ describe("download failure routing", () => {
         expect(actions.filter(a => a.type === "TOAST_OPEN_REQUEST" && a.payload.type === "toast-error")).toHaveLength(0);
         expect(actions.at(-1).type).toBe("DOWNLOAD_DONE");
         expect(importFailureMessage(failure, "license.lcpl")).toBe(JSON.stringify({
-            key: "message.download.failedWithHost", args: { hostname: "example.org" },
+            key: "message.download.failed", args: { hostname: "example.org" },
         }));
     });
 
@@ -76,7 +76,7 @@ describe("download failure routing", () => {
         jest.mocked(httpGet).mockResolvedValue(response());
         const { failure } = await execute([{ href: source, length: 100 }]);
         expect(failure).toMatchObject({ reason: "integrity", source });
-        expect(importFailureMessage(failure, "license.lcpl")).toContain("message.download.integrityFailedWithHost");
+        expect(importFailureMessage(failure, "license.lcpl")).toContain("message.download.integrityFailed");
     });
 
     it("routes SHA-256 mismatches as integrity failures", async () => {

@@ -22,9 +22,9 @@ export function importFailureMessage(error: unknown, name: string): string {
         }
         const hostname = new URL(error.source).hostname;
         if (error.reason === "integrity") {
-            return translate("message.download.integrityFailedWithHost", { hostname });
+            return translate("message.download.integrityFailed", { hostname });
         }
-        return translate("message.download.failedWithHost", { hostname });
+        return translate("message.download.failed", { hostname });
     }
     if (error instanceof ImportFailure) {
         switch (error.reason) {

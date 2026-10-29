@@ -294,8 +294,8 @@
                 "streamClosed": "",
                 "tooManyFilenameAttempts": "无法创建特定临时下载文件名：{{- path}}"
             },
-            "failedWithHost": "",
-            "integrityFailedWithHost": "",
+            "failed": "",
+            "integrityFailed": "",
             "saveFailed": "",
             "startedWithTitle": ""
         },

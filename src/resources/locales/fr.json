@@ -304,8 +304,8 @@
                 "streamClosed": "Le flux de téléchargement a été fermé avant la fin.",
                 "tooManyFilenameAttempts": "Impossible de créer un fichier de téléchargement temporaire unique : {{- path}}"
             },
-            "failedWithHost": "Impossible de télécharger depuis « {{- hostname}} ». Veuillez réessayer.",
-            "integrityFailedWithHost": "Le téléchargement depuis « {{- hostname}} » est incomplet ou endommagé. Veuillez réessayer.",
+            "failed": "Impossible de télécharger depuis « {{- hostname}} ». Veuillez réessayer.",
+            "integrityFailed": "Le téléchargement depuis « {{- hostname}} » est incomplet ou endommagé. Veuillez réessayer.",
             "saveFailed": "Impossible d’enregistrer le téléchargement. Vérifiez l’espace de stockage disponible et les autorisations.",
             "startedWithTitle": "Téléchargement de {{- title}}."
         },

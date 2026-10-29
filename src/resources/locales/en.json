@@ -299,8 +299,8 @@
                 "streamClosed": "Download stream closed before completion.",
                 "tooManyFilenameAttempts": "Unable to create a unique temporary download filename: {{- path}}"
             },
-            "failedWithHost": "Could not download from “{{- hostname}}”. Please try again.",
-            "integrityFailedWithHost": "The download from “{{- hostname}}” is incomplete or damaged. Please try again.",
+            "failed": "Could not download from “{{- hostname}}”. Please try again.",
+            "integrityFailed": "The download from “{{- hostname}}” is incomplete or damaged. Please try again.",
             "saveFailed": "Could not save the download. Check available storage and permissions.",
             "startedWithTitle": "Downloading {{- title}}."
         },

@@ -309,8 +309,8 @@
                 "streamClosed": "",
                 "tooManyFilenameAttempts": ""
             },
-            "failedWithHost": "",
-            "integrityFailedWithHost": "",
+            "failed": "",
+            "integrityFailed": "",
             "saveFailed": "",
             "startedWithTitle": ""
         },
