@@ -5,21 +5,24 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 
-import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
-import { OverlayTriggerStateContext, VisuallyHidden } from "react-aria-components";
 import debug_ from "debug";
 import * as React from "react";
+import { OverlayTriggerStateContext, VisuallyHidden } from "react-aria-components";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import TagManager from "./TagManager";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { URL_HOST_COMMON, URL_PATH_PREFIX_PUB, URL_PROTOCOL_THORIUMHTTPS } from "readium-desktop/common/streamerProtocol";
+import { convertHttpUrlToCustomScheme } from "readium-desktop/r2-xxx-js/r2-navigator-js/electron/common/sessions";
+import { encodeURIComponent_RFC3986 } from "readium-desktop/r2-xxx-js/r2-utils-js/_utils/http/UrlUtils";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { PublicationInfoContent } from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoContent";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import TagManager from "./TagManager";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:publication-info");
@@ -93,8 +96,19 @@ PublicationInfoReaderWithRACContent.displayName = "PublicationInfoReaderWithRACC
 
 const PublicationInfoWithRACContent = () => {
     const data = React.useContext(context);
+
+    // const manifestUrlR2Protocol_ = useSelector((state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol);
+    // const manifestUrlHttp_ = useSelector((state: IReaderRootState) => state.reader.info.manifestUrlHttp);
+    // const manifestUrlHttp = manifestUrlHttp_.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ? convertCustomSchemeToHttpUrl(manifestUrlHttp_) : manifestUrlHttp_;
+    // const filesystemPath = useSelector((state: IReaderRootState) => state.reader.info.filesystemPath);
+    // const pubPathBase64 = decodeURIComponent(manifestUrlHttp.replace(/\/manifest.json$/, "").replace(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUB}/`, ""));
+    // const filesystemPath_ = Buffer.from(pubPathBase64, "base64").toString();
+    const publicationIdentifier = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
+    const publicationViewIdentifier = useSelector((state: IReaderRootState) => state.reader.info.publicationView.identifier);
+    const manifestUrlR2Protocol_pub_id_not_path = convertHttpUrlToCustomScheme(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUB}/${encodeURIComponent_RFC3986(Buffer.from(publicationIdentifier || publicationViewIdentifier, "utf8").toString("base64"))}/manifest.json`);
+
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
-    const manifestUrlR2Protocol = useSelector((state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol);
+
     const dialogState = React.useContext(OverlayTriggerStateContext);
 
     if (!data) {
@@ -108,7 +122,7 @@ const PublicationInfoWithRACContent = () => {
         <PublicationInfoContent
             publicationViewMaybeOpds={data.publication}
             r2Publication={r2Publication}
-            manifestUrlR2Protocol={manifestUrlR2Protocol}
+            manifestUrlR2Protocol={manifestUrlR2Protocol_pub_id_not_path}
             handleLinkUrl={data.handleLinkUrl}
             // toggleCoverZoomCb={toggleCoverZoom}
             TagManagerComponent={TagManager}
