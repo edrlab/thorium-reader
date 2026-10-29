@@ -9,14 +9,12 @@ import * as stylesModals from "readium-desktop/renderer/assets/styles/components
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
-import { VisuallyHidden } from "react-aria-components";
+import { OverlayTriggerStateContext, VisuallyHidden } from "react-aria-components";
 import debug_ from "debug";
 import * as React from "react";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import TagManager from "./TagManager";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
@@ -97,7 +95,7 @@ const PublicationInfoWithRACContent = () => {
     const data = React.useContext(context);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const manifestUrlR2Protocol = useSelector((state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol);
-    const dispatch = useDispatch();
+    const dialogState = React.useContext(OverlayTriggerStateContext);
 
     if (!data) {
         return <></>;
@@ -120,7 +118,8 @@ const PublicationInfoWithRACContent = () => {
             divinaNumberOfPages={data.divinaNumberOfPages}
             divinaContinousEqualTrue={data.divinaContinousEqualTrue}
             readerReadingLocation={data.readerReadingLocation}
-            closeDialogCb={() => dispatch(dialogActions.closeRequest.build())}
+            // Use the same close path as Escape and the close button so reader shortcuts are restored.
+            closeDialogCb={() => dialogState?.close()}
         >
         </PublicationInfoContent>
     );
