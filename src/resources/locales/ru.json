@@ -1,10 +1,28 @@
 {
     "accessibility": {
+        "annotationNote": "Аннотации",
         "bookMenu": "Меню",
+        "bookmarkNote": "",
+        "cancelDownload": "Отменить скачивание: {{- title}}",
         "closeDialog": "Закрыть",
+        "closeNotification": "Закрыть уведомление",
+        "copyNotificationInstruction": "Копировать уведомление",
+        "decreaseSetting": "Уменьшить {{- setting}}",
+        "downloadProgress": "Прогресс скачивания: {{- title}}",
+        "downloadProgressUnknown": "Прогресс скачивания неизвестен.",
+        "editTag": "Редактировать тег: {{- tag}}",
+        "favoriteCatalog": "Избранное: {{- title}}",
+        "increaseSetting": "Увеличить {{- setting}}",
         "leftSlideButton": "Сдвиньте список влево",
+        "loading": "Загрузка…",
         "mainContent": "основное содержимое",
+        "notificationCopied": "Уведомление скопировано",
+        "notificationCopyFailed": "Не удалось скопировать уведомление",
+        "printPage": "Страница {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Сбросить {{- setting}}",
         "rightSlideButton": "Сдвиньте список вправо",
+        "searching": "",
         "skipLink": "Перейти к содержимому",
         "toolbar": "панель инструментов"
     },
@@ -142,7 +160,19 @@
         "sort": "Сортировать по",
         "tag": "Тег",
         "tags": "Теги",
-        "update": "Изменить"
+        "update": "Изменить",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "Редактировать профиль",
+            "holds": "",
+            "loading": "Загрузка учётной записи…",
+            "loans": "",
+            "title": "Учётная запись",
+            "total": "Лимит: {{count}}",
+            "unavailable": "Информация о профиле недоступна.",
+            "used": "Использовано {{used}} из {{total}}"
+        }
     },
     "dialog": {
         "annotations": {
@@ -250,32 +280,97 @@
         "annotations": {
             "alreadyImported": "Все заметки уже импортированы.",
             "emptyFile": "В этом файле нет заметок.",
-            "errorParsing": "Ошибка при анализе файла: ",
             "nothing": "Нет ни одной готовой к импорту заметки, импорт прерван",
             "success": "Импорт успешно завершён."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Загрузка отменена.",
-            "error": "Загрузка {{- title}} не удалась: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Ошибка проверки целостности загруженного файла: ожидаемый хэш SHA-256 {{- expected}}, полученный {{- actual}}.",
                 "httpGet": "Ошибка загрузки по протоколу HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "invalidFilename": "Неверное имя временного загружаемого файла.",
+                "invalidFilename": "Неверное имя временного скачиваемого файла.",
                 "invalidLink": "Ссылка для скачивания недействительна.",
                 "invalidTempDirectory": "Временный каталог загрузки недействителен.",
-                "lengthMismatch": "Ошибка проверки целостности загруженного файла: ожидалось {{- expected}} байт, получено {{- actual}} байт.",
+                "lengthMismatch": "Ошибка проверки целостности скаченного файла: ожидалось {{- expected}} байт, получено {{- actual}} байт.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Поток загрузки недоступен.",
-                "tooManyFilenameAttempts": "Не удалось создать уникальное имя временного файла для загрузки: {{- path}}"
-            }
+                "streamClosed": "",
+                "tooManyFilenameAttempts": "Не удалось создать уникальное имя временного файла для скачивания: {{- path}}"
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": "Скачивание {{- title}}."
         },
         "import": {
             "alreadyImport": "[{{- title}}] уже импортировано.",
-            "fail": "Импорт {{- path}} не удался. {{- err}}",
-            "success": "Импорт {{- title}} закончен."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Импорт {{- title}} закончен.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "Не удалось импортировать заметки. Убедитесь в валидности файла экспорта заметок.",
+            "annotationPublicationUnavailable": "Не удалось импортировать заметки, поскольку публикация недоступна. Попробуйте повторно импортировать публикацию.",
+            "annotationStopPlayback": "Остановите чтение вслух или воспроизведение аудио перед созданием аннотации.",
+            "authenticationFailed": "Не удаётся войти в этот каталог. Проверьте соединение и попробуйте снова.",
+            "catalogLinkFailed": "Не удалось добавить этот каталог. Проверьте ссылку и соединение.",
+            "catalogUpdateFailed": "Не удалось обновить этот каталог. Проверьте его настройки и попробуйте снова.",
+            "copyLimit": "Лимит на количество экземпляров данной публикации исчерпан.",
+            "deleteFailed": "Удалить эту публикацию не удалось. Попробуйте ещё раз.",
+            "exportFailed": "Не удалось экспортировать публикацию. Проверьте папку назначения и доступное место на диске.",
+            "openFileFailed": "Не удаётся открыть этот файл. Проверьте, доступен ли он и используется ли поддерживаемый формат.",
+            "openLinkFailed": "Не удалось открыть ссылку на эту публикацию. Проверьте ссылку и попробуйте снова.",
+            "printLimit": "Лимит на печать данного издания исчерпан.",
+            "profileActivationFailed": "Не удалось активировать этот профиль. Проверьте пакет профиля или свяжитесь с его поставщиком.",
+            "profileBusy": "Выполняется ещё одна операция профилирования. Дождитесь её завершения, затем попробуйте снова.",
+            "profileProvisionFailed": "Не удалось установить этот профиль. Проверьте пакет профиля или свяжитесь с его поставщиком.",
+            "profileTimeout": "Время установки профиля истекло. Проверьте соединение и повторите попытку.",
+            "publicationUnavailable": "Данная публикация недоступна. Попробуйте импортировать её повторно.",
+            "readingPositionFailed": "Не удаётся определить, где вы остановились при чтении. Попробуйте ещё раз.",
+            "recoveryPartialFailure": "Восстановлено публикаций: {{- recovered}}; не удалось восстановить публикаций: {{- failed}}.",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "Настройки хранилища сохранены, но обновить библиотеку не удалось. Попробуйте обновить библиотеку.",
+            "tagsFailed": "Не удалось сохранить теги публикации. Попробуйте ещё раз."
         },
         "open": {
-            "error": "Книга не может быть открыта : {{- err}}",
-            "folderNotFound": "Каталог публикации не найден. Повторно импортируйте его или настройте дополнительное хранилище в разделе Настройки > Хранилище."
+            "failed": "",
+            "folderNotFound": "Каталог публикации не найден. Повторно импортируйте его или настройте дополнительное хранилище в разделе Настройки > Хранилище.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -340,6 +435,12 @@
         },
         "next": "Следующая",
         "previous": "Предыдущая",
+        "registry": {
+            "empty": "Каталоги не найдены.",
+            "error": "Не удалось выполнить поиск в реестре. Пожалуйста, попробуйте ещё раз.",
+            "loading": "Поиск по каталогам…",
+            "title": "Поиск в каталогах"
+        },
         "resumeBrowsing": "Продолжить просмотр",
         "shelf": "Полка",
         "updateForm": {
@@ -688,18 +789,17 @@
         "certificateRevoked": "Сертификат LCP отозван.",
         "certificateSignatureInvalid": "Неверная подпись сертификата лицензии LCP.",
         "cover": {
-            "img": "обложка"
+            "img": "обложка",
+            "zoom": "Увеличить изображение обложки"
         },
         "day": "день",
         "days": "дней",
         "duration": {
             "title": "Продолжительность"
         },
-        "encryptedNoLicense": "Публикация зашифрована, но не имеет лицензии LCP!",
         "expired": "Срок абонемента истёк",
         "expiredLcp": "Эту книгу нельзя прочитать, потому что срок действия лицензии LCP истек.",
         "incorrectPassphrase": "Ни один из сохранённых паролей не подходит к публикации, или введённый пароль неверен.",
-        "lcpEnd": "Конец",
         "lcpNotSupported": "ПРЕДУПРЕЖДЕНИЕ: это предварительная версия Thorium Desktop, которая не поддерживает лицензии production LCP и поддерживает только расшифровку «базового профиля» LCP без проверки сертификата.",
         "lcpRightsCopy": "Количество символов для копирования",
         "lcpRightsPrint": "Количество страниц, разрешенных для печати",
@@ -713,21 +813,21 @@
         "notStarted": "Не начато",
         "onGoing": "В процессе",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "Новая позиция чтения с {{- device}} доступна по {{- progression}}%.",
+            "remoteTitle": "Продолжить с другого устройства?",
             "title": "Прогресс",
-            "useRemote": ""
+            "useRemote": "Перейти к позиции"
         },
         "read": "Закончено",
         "remainingTime": "Абонемент (оставшиеся дни)",
         "remoteProgression": {
-            "checking": "",
-            "disabled": "",
-            "empty": "",
-            "position": "",
-            "ready": "",
-            "title": "",
-            "unavailable": ""
+            "checking": "Служба включена и проверяется...",
+            "disabled": "Для данной публикации эта функция недоступна.",
+            "empty": "Удаленный прогресс не сохранён.",
+            "position": "Удаленный прогресс: {{percent}}% ({{device}}).",
+            "ready": "Включено и готово.",
+            "title": "Синхронизация прогресса чтения:",
+            "unavailable": "Сервис включён, но недоступен."
         },
         "renewButton": "Продлить",
         "returnButton": "Вернуть",
@@ -767,7 +867,7 @@
             },
             "hide": "Не отображать",
             "highlight": "Выделить",
-            "noSelectionToast": "Ничего не выделено",
+            "noSelectionToast": "Выделите текст перед созданием аннотации.",
             "note": "{{- color}} заметка",
             "quickAnnotations": "Быстрое создание (пропуск редактора)",
             "saveNote": "Сохранить",
@@ -884,7 +984,7 @@
                 "founds_few": "{{- count}} найдено",
                 "founds_many": "{{- count}} найдено",
                 "founds_other": "",
-                "input": "подходящий текст",
+                "input": "текст для поиска",
                 "next": "Далее",
                 "notFound": "нет совпадений",
                 "previous": "Назад",
@@ -920,7 +1020,6 @@
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
             "customizeReader": "Настройка форматирования текста",
-            "defaultValue": "значение по умолчанию",
             "disabled": "отключено",
             "display": "Отображение",
             "disposition": {
@@ -1302,7 +1401,7 @@
         },
         "screenReaderActivate": {
             "help": "Пользовательский интерфейс лучше работает с программами чтения с экрана, когда приложение обнаруживает наличие вспомогательных технологий",
-            "invite": "Оптимизация для программ чтения с экрана ({{- status}}) [{{- keyboard}}]",
+            "invite": "Оптимизация для программ чтения с экрана",
             "message": "Улучшенная поддержка программ чтения с экрана",
             "title": "Улучшить работу программы чтения с экрана"
         },

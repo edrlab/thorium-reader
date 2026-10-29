@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { withErrorNotification } from "../withErrorNotification";
 import { IPublicationApi } from "readium-desktop/common/api/interface/publicationApi.interface";
 
 import { deletePublication } from "./delete";
@@ -22,19 +23,20 @@ import { SagaGenerator } from "typed-redux-saga";
 export const publicationApi: IPublicationApi = {
     findAll,
     get: getPublication,
-    delete: deletePublication,
+    delete: withErrorNotification(deletePublication, "message.notifications.deleteFailed"),
     findByTag,
     search,
-    exportPublication,
+    exportPublication: withErrorNotification(exportPublication, "message.notifications.exportFailed"),
     importFromFs,
-    selectFiles,
+    selectFiles: withErrorNotification(selectFiles, "message.notifications.openFileFailed"),
     importFromLink,
-    importFromString,
+    importFromString: withErrorNotification(importFromString, "message.notifications.openFileFailed", true,
+        (_manifest, _open, baseFileUrl) => baseFileUrl),
     searchEqTitle,
-    updateTags,
+    updateTags: withErrorNotification(updateTags, "message.notifications.tagsFailed"),
 
     // used as a fake refresh signal for components subscribing around publication/findAll
     findAllRefresh: function* (): SagaGenerator<void> { },
     findAllRecoverable,
-    recover,
+    recover: withErrorNotification(recover, "message.storage.recovery.failure"),
 };

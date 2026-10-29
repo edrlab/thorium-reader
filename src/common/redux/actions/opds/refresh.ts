@@ -10,13 +10,15 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "OPDS_REFRESH_CATALOG";
 
 export interface Payload {
+    cachedAuthentication?: boolean;
 }
 
-export function build(): Action<typeof ID, Payload> {
+export function build(cachedAuthentication?: boolean): Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
+            ...(cachedAuthentication ? { cachedAuthentication } : {}),
         },
     };
 }

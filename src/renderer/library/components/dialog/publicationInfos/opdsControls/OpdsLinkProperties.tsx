@@ -54,7 +54,6 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
                 <span className={stylesBookDetailsDialog.allowUserSelect}>
                     {children}
                 </span>
-                <br />
             </div>;
 
         const stateInfo = (
@@ -92,7 +91,7 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
             <>
                 {
                     properties.indirectAcquisitionTypes?.top === findMimeTypeWithExtension(ADOBE_ADEPT_XML) ?
-                        <><span title={properties.indirectAcquisitionTypes.top.replace(/application\//, "")} style={{ textDecoration: "line-through" }}>(Adobe Adept)</span><br /><br /></> : <></>
+                        <span title={properties.indirectAcquisitionTypes.top.replace(/application\//, "")} style={{ textDecoration: "line-through" }}>(Adobe Adept)</span> : <></>
                 }
                 {properties.numberOfItems ?
                     <MetadataLineComponent text={__("catalog.opds.info.numberOfItems")}>

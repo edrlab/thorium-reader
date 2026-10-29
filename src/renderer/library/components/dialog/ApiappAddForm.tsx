@@ -43,16 +43,19 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
 const context = React.createContext<{
     selectSearchResult: IApiappSearchResultView;
-    setSelectSearchResult: React.Dispatch<React.SetStateAction<IApiappSearchResultView>>;
+    selectResult: (result: IApiappSearchResultView) => void;
     submitAction: () => void;
 }>(undefined);
 
 const Item = ({v}: {v: IApiappSearchResultView}) => {
-
-    const {selectSearchResult, setSelectSearchResult, submitAction } = React.useContext(context);
+    const {selectSearchResult, selectResult, submitAction } = React.useContext(context);
     return <li>
-                <a style={{
+                <button type="button" style={{
                     display: "block",
+                    width: "100%",
+                    height: "auto",
+                    minHeight: "48px",
+                    textAlign: "start",
                     cursor: "pointer",
                     padding: "8px",
                     marginTop: "1rem",
@@ -60,34 +63,17 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
                     border: selectSearchResult === v ? "2px solid var(--color-brand-primary)" : "2px solid transparent",
                     borderRadius: "8px",
                 }}
-                    role="option"
-                    aria-selected={selectSearchResult === v}
-                    tabIndex={0}
-                    onClick={() => setSelectSearchResult(v)}
-                    onDoubleClick={(_e) => {
-                        // e.preventDefault();
-                        setSelectSearchResult(v);
-                        setTimeout(() => {
-                            submitAction();
-                        }, 0);
-                    }}
-                    onKeyUp={(e) => {
-                        if (e.key === "Enter") {
-                            // e.preventDefault();
-                            // e.stopPropagation();
-                            setSelectSearchResult(v);
-                            setTimeout(() => {
-                                submitAction();
-                            }, 0);
-                        }
+                    aria-pressed={selectSearchResult === v}
+                    onClick={() => selectResult(v)}
+                    onDoubleClick={() => {
+                        selectResult(v);
+                        setTimeout(() => submitAction(), 0);
                     }}
                 >
-                    <strong>
-                        {v.name}
-                    </strong>
+                    <strong>{v.name}</strong>
                     <br />
                     <span>{v.address}</span>
-                </a>
+                </button>
             </li>;
 };
 
@@ -99,32 +85,37 @@ export const ApiappHowDoesItWorkInfoBox = () => {
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = langStringIsRTL(locale);
     const [infoOpen, setInfoOpen] = React.useState(false);
+    const helpId = React.useId();
 
     return (
         <div>
-            <button dir={isRTL ? "rtl" : "ltr"} className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+            <button
+                type="button"
+                aria-expanded={infoOpen}
+                aria-controls={helpId}
+                dir={isRTL ? "rtl" : "ltr"} className={classNames("button_catalog_infos")}
+                onClick={() => setInfoOpen(open => !open)}
+            >
                 <SVG ariaHidden svg={InfoIcon} />
                 {__("apiapp.howItWorks")}
                 <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
             </button>
-            {infoOpen ?
-                <div className={classNames("catalog_infos_text")}>
-                    <p dir={isRTL ? "rtl" : "ltr"}>
-                        {__("apiapp.informations")}
-                    </p>
-                    <a dir={isRTL ? "rtl" : "ltr"} href=""
-                        onClick={(ev) => {
-                            ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                            const href = "https://support.thoriumreader.com/";
-                            // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                            shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
-                            // }
-                        }}>
-                        {__("apiapp.documentation")}
-                        <SVG ariaHidden svg={FollowLinkIcon} />
-                    </a>
-                </div>
-                : <></>}
+            <div id={helpId} hidden={!infoOpen} className={classNames("catalog_infos_text")}>
+                <p dir={isRTL ? "rtl" : "ltr"}>
+                    {__("apiapp.informations")}
+                </p>
+                <a dir={isRTL ? "rtl" : "ltr"} href=""
+                    onClick={(ev) => {
+                        ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                        const href = "https://support.thoriumreader.com/";
+                        // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                        shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
+                        // }
+                    }}>
+                    {__("apiapp.documentation")}
+                    <SVG ariaHidden svg={FollowLinkIcon} />
+                </a>
+            </div>
         </div>
     );
 };
@@ -156,7 +147,7 @@ const ApiappAddForm = () => {
                 <div
                     style={{ marginBottom: "0" }}
                     className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
-                        <label htmlFor="apiapp-search">{__("header.searchPlaceholder")}</label>
+                        <label htmlFor="apiapp_search">{__("header.searchPlaceholder")}</label>
                     <input
                         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                         ref={searchInputRef}
@@ -212,7 +203,11 @@ export const ApiappAddFormDialog = () => {
     }, [selectSearchResult, apiAddFeedAction]);
 
     const submitButtonRef = React.useRef<HTMLButtonElement>();
-    const contextValue = {selectSearchResult, setSelectSearchResult, submitAction: () => submitButtonRef.current.click()};
+    const selectResult = (result: IApiappSearchResultView) => {
+        setSelectSearchResult(result);
+        submitButtonRef.current?.focus();
+    };
+    const contextValue = {selectSearchResult, selectResult, submitAction: () => submitButtonRef.current.click()};
 
     const enableAPIAPP = useSelector((state: ILibraryRootState) => state.settings.enableAPIAPP);
 

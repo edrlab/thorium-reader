@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { WindowReaderDestination, WithDestination } from "readium-desktop/common/models/sync";
 import { Action } from "readium-desktop/common/models/redux";
 import { ToastType } from "readium-desktop/common/models/toast";
 
@@ -13,17 +14,20 @@ export const ID = "TOAST_OPEN_REQUEST";
 export interface Payload {
     type: ToastType;
     data: string | undefined;
+    copyText?: string;
     publicationIdentifier: string | undefined;
 }
 
-export function build(type: ToastType, data: string, publicationIdentifier?: string):
-    Action<typeof ID, Payload> {
+export function build(type: ToastType, data: string, publicationIdentifier?: string, windowIdentifier?: string, copyText?: string):
+    Action<typeof ID, Payload> & Partial<WithDestination<WindowReaderDestination>> {
 
     return {
         type: ID,
+        ...(windowIdentifier ? { destination: { identifier: windowIdentifier } } : {}),
         payload: {
             type,
             data,
+            ...(copyText !== undefined ? { copyText } : {}),
             publicationIdentifier,
         },
     };

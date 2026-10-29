@@ -59,6 +59,11 @@ export function* browseWatcher(action: routerActions.locationChanged.TAction) {
     if (path.startsWith("/opds") && path.indexOf("/browse") > 0) {
         const parsedResult = parseOpdsBrowserRoute(path);
         debug("request opds browse", path, parsedResult);
+        if (!parsedResult) {
+            debug("Invalid OPDS browse route", path);
+            yield put(replace("/opds"));
+            return;
+        }
         // parsedResult.title can for example be a search terms "この世界の謎 %2F %20 % ?abc=def&zz=yyé"
         // which is escaped by encodeURIComponent() to
         // %E3%81%93%E3%81%AE%E4%B8%96%E7%95%8C%E3%81%AE%E8%AC%8E%20%252F%20%2520%20%25%20%3Fabc%3Ddef%26zz%3Dyy%C3%A9

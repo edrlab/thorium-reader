@@ -1,10 +1,28 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "메뉴",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "닫기",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "목록 왼쪽으로 밀기 ",
+        "loading": "",
         "mainContent": "메인 콘텐츠",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "목록 오른쪽으로 밀기",
+        "searching": "",
         "skipLink": "콘텐츠로 건너뛰기",
         "toolbar": "툴바"
     },
@@ -142,12 +160,27 @@
         "sort": "정렬 기준",
         "tag": "",
         "tags": "태그",
-        "update": "편집"
+        "update": "편집",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
+            "descList": "",
+            "descNewer": "",
+            "descOlder": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -164,7 +197,9 @@
             }
         },
         "deleteAnnotations": "",
+        "deleteAnnotationsText": "",
         "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "deletePublicationWithNotes": "",
@@ -230,36 +265,102 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
-            "error": "{{- title}} 다운로드 실패하였습니다: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}}는 이미 추가된 도서입니다",
-            "fail": "{{- path}} 열기를 실패하였습니다. {{- err}}",
-            "success": "{{- title}} 열기를 성공하였습니다."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "{{- title}} 열기를 성공하였습니다.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "지원하지 않는 형식의 출판물입니다: {{- err}}",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -316,6 +417,12 @@
         },
         "next": "다음",
         "previous": "이전",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "내서재",
         "updateForm": {
@@ -664,18 +771,17 @@
         "certificateRevoked": "인증서가 취소되었습니다",
         "certificateSignatureInvalid": "인증서 서명이 유효하지 않습니다",
         "cover": {
-            "img": "표지"
+            "img": "표지",
+            "zoom": ""
         },
         "day": "",
         "days": "",
         "duration": {
             "title": "트랙 시간"
         },
-        "encryptedNoLicense": "",
         "expired": "",
         "expiredLcp": "이 책은 LCP 라이선스가 만료되어서 읽을 수 없습니다",
         "incorrectPassphrase": "",
-        "lcpEnd": "종료",
         "lcpNotSupported": "",
         "lcpRightsCopy": "복사된 문자",
         "lcpRightsPrint": "인쇄된 페이지",
@@ -893,7 +999,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "디스플레이",
             "disposition": {
@@ -1340,9 +1445,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

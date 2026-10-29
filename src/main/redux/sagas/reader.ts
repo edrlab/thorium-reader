@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { clipboard } from "electron";
+import { readerClipboardCopy } from "./publication/clipboardCopy";
 import { Action } from "readium-desktop/common/models/redux";
 import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -26,7 +26,6 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { all, call, put, take } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped, put as putTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
-import { types } from "node:util";
 
 import {
     ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, ERROR_MESSAGE_ENCRYPTED_NO_LICENSE, streamerOpenPublicationAndReturnManifestUrl,
@@ -147,25 +146,16 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
     } catch (e) {
 
-        const errMsg = e.toString();
-        if (errMsg === ERROR_MESSAGE_ENCRYPTED_NO_LICENSE) {
+        debug("Unable to open publication", publicationIdentifier, e);
+        if (e !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
+            const translate = getTranslator().translate;
             yield put(
                 toastActions.openRequest.build(
                     ToastType.Error,
-                    getTranslator().translate("message.open.error", { err: getTranslator().translate("publication.encryptedNoLicense") }),
-                ),
-            );
-        } else if (errMsg !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
-
-            if (types.isNativeError(e)) {
-                // disable "Error: "
-                e.name = "";
-            }
-
-            yield put(
-                toastActions.openRequest.build(
-                    ToastType.Error,
-                    getTranslator().translate("message.open.error", { err: errMsg }),
+                    e === ERROR_MESSAGE_ENCRYPTED_NO_LICENSE
+                        ? translate("message.open.missingLicense")
+                        : translate("message.open.failed"),
+                    undefined, (action as unknown as ActionWithSender).sender?.identifier,
                 ),
             );
         }
@@ -374,69 +364,18 @@ function* readerPrint(action: readerActions.print.TAction) {
         const actionToSend = readerActions.print.build(publicationIdentifier, pagesToPrint, (action as unknown as ActionWithSender)?.sender?.identifier);
         yield* putTyped(actionToSend);
 
-        yield* putTyped(toastActions.openRequest.build(ToastType.Success,
+        const partialPrint = pagesToPrint.length < pageRange.length;
+        yield* putTyped(toastActions.openRequest.build(partialPrint ? ToastType.Info : ToastType.Success,
             `LCP [${translator.translate("app.edit.print")}] [${pagesToPrint}] / ${publicationDocument.lcp.rights.print}`,
-            publicationIdentifier));
+            publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     } else {
         yield* putTyped(toastActions.openRequest.build(ToastType.Error,
-            `LCP [${translator.translate("app.edit.print")}] ${publicationDocument.lcpRightsPrints.length} / ${publicationDocument.lcp.rights.print}`,
-            publicationIdentifier));
+            translator.translate("message.notifications.printLimit"),
+            publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     }
 }
 
-function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
 
-    const { publicationIdentifier, clipboardData } = action.payload;
-    const clipBoardType = "clipboard";
-
-    let textToCopy = clipboardData.txt;
-
-    const publicationRepository = diMainGet("publication-repository");
-    const translator = getTranslator();
-    const publicationDocument = yield* callTyped(() => publicationRepository.get(
-        publicationIdentifier,
-    ));
-
-    debug("LCP RIGHTS", JSON.stringify(publicationDocument.lcp?.rights, null, 4));
-
-    if (!publicationDocument.lcp ||
-        !publicationDocument.lcp.rights ||
-        publicationDocument.lcp.rights.copy === null ||
-        typeof publicationDocument.lcp.rights.copy === "undefined" ||
-        publicationDocument.lcp.rights.copy < 0) {
-
-        clipboard.writeText(textToCopy, clipBoardType);
-        return ;
-    }
-
-    const lcpRightsCopies = publicationDocument.lcpRightsCopies ?
-        publicationDocument.lcpRightsCopies : 0;
-    const lcpRightsCopiesRemain = publicationDocument.lcp.rights.copy - lcpRightsCopies;
-    if (lcpRightsCopiesRemain <= 0) {
-        yield* putTyped(toastActions.openRequest.build(ToastType.Error,
-            `LCP [${translator.translate("app.edit.copy")}] ${publicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-            publicationIdentifier));
-    }
-    const nCharsToCopy = textToCopy.length > lcpRightsCopiesRemain ?
-        lcpRightsCopiesRemain : textToCopy.length;
-    if (nCharsToCopy < textToCopy.length) {
-        textToCopy = textToCopy.substr(0, nCharsToCopy);
-    }
-    const newPublicationDocument: PublicationDocument = Object.assign(
-        {},
-        publicationDocument,
-        {
-            lcpRightsCopies: lcpRightsCopies + nCharsToCopy,
-        },
-    );
-    yield* callTyped(() => publicationRepository.save(newPublicationDocument));
-
-    clipboard.writeText(`${textToCopy}`, clipBoardType);
-
-    yield* putTyped(toastActions.openRequest.build(ToastType.Success,
-        `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-        publicationIdentifier));
-}
 
 export function saga() {
     return all([

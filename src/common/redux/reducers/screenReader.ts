@@ -12,6 +12,7 @@ import { IScreenReaderState } from "../states/screenReader";
 
 const initialState: IScreenReaderState = {
     activate: false,
+    denied: false,
 };
 
 function screenReaderReducer_(
@@ -23,6 +24,7 @@ function screenReaderReducer_(
             return {
                 // state: state.state,
                 activate: action.payload.value,
+                denied: action.payload.denied,
             };
         default:
             return state;

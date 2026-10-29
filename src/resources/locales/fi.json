@@ -1,10 +1,28 @@
 {
     "accessibility": {
+        "annotationNote": "Muistiinpanomerkintä",
         "bookMenu": "Valikko",
+        "bookmarkNote": "Kirjanmerkkimerkintä",
+        "cancelDownload": "Peruuta lataus: {{- title}}",
         "closeDialog": "Sulje",
+        "closeNotification": "Sulje ilmoitus",
+        "copyNotificationInstruction": "Kopioi ilmoitus",
+        "decreaseSetting": "Pienennä {{- setting}}",
+        "downloadProgress": "Latauksen eteneminen: {{- title}}",
+        "downloadProgressUnknown": "Latauksen eteneminen ei tiedossa.",
+        "editTag": "Muokkaa tunnistetta: {{- tag}}",
+        "favoriteCatalog": "Suosikkiluettelo: {{- title}}",
+        "increaseSetting": "Suurenna {{- setting}}",
         "leftSlideButton": "Siirry listalla vasemmalle",
+        "loading": "Ladataan…",
         "mainContent": "Pääsisältö",
+        "notificationCopied": "Ilmoitus kopioitu",
+        "notificationCopyFailed": "Ilmoitusta ei voitu kopioida",
+        "printPage": "Sivu {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Nollaa {{- setting}}",
         "rightSlideButton": "Siirry listalla oikealle",
+        "searching": "Etsitään…",
         "skipLink": "Hyppää sisältöön",
         "toolbar": "Työkalurivi"
     },
@@ -142,7 +160,19 @@
         "sort": "Lajittele",
         "tag": "Tunniste",
         "tags": "Tunnisteet",
-        "update": "Muokkaa"
+        "update": "Muokkaa",
+        "userProfile": {
+            "available": "Saatavilla: {{count}}",
+            "bookshelf": "Avaa kirjahylly",
+            "edit": "Muokkaa profiilia",
+            "holds": "Varaukset",
+            "loading": "Ladataan tiliä…",
+            "loans": "Lainat",
+            "title": "Tili",
+            "total": "Rajoitus: {{count}}",
+            "unavailable": "Profiilitietoja ei ole saatavilla",
+            "used": "{{used}} /{{total}} käytetty"
+        }
     },
     "dialog": {
         "annotations": {
@@ -240,32 +270,97 @@
         "annotations": {
             "alreadyImported": "Kaikki muistiinpanot on jo tuotu.",
             "emptyFile": "Tiedostossa ei ole muistiinpanoja.",
-            "errorParsing": "Virhe tiedoston jäsentämisessä: ",
             "nothing": "Yhtään muistiinpanoa ei ole valmiina tuontiin, tuonti keskeytetty.",
             "success": "Tuonti onnistui."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Lataus peruttu.",
-            "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",
                 "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Väliaikaisen lataustiedoston nimi ei kelpaa.",
                 "invalidLink": "Latauslinkki ei kelpaa.",
                 "invalidTempDirectory": "Väliaikainen lataushakemisto ei kelpaa.",
                 "lengthMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu {{- expected}} tavua, todellinen määrä {{- actual}} tavua.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Suoratoiston lataaminen ei onnistu.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": "Ladataan {{- title}}."
         },
         "import": {
             "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
-            "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
-            "success": "Julkaisun {{- title}} tuonti on valmis."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Julkaisun {{- title}} tuonti on valmis.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "Merkintöjä ei voitu tuoda. Varmista, että tiedosto on kelvollinen",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "Julkaisua ei voi avata: {{- err}}",
-            "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila."
+            "failed": "",
+            "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -328,6 +423,12 @@
         },
         "next": "Seuraava",
         "previous": "Edellinen",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Palaa selailuun",
         "shelf": "Hylly",
         "updateForm": {
@@ -676,18 +777,17 @@
         "certificateRevoked": "Varmenne on kumottu.",
         "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa.",
         "cover": {
-            "img": "kansikuva"
+            "img": "kansikuva",
+            "zoom": ""
         },
         "day": "päivä",
         "days": "päivää",
         "duration": {
             "title": "Kesto"
         },
-        "encryptedNoLicense": "Julkaisu on suojattu, mutta siitä puuttuu LCP-lisenssi.",
         "expired": "Laina-aika on päättynyt",
         "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
         "incorrectPassphrase": "Yksikään tallennettu salasana ei käy julkaisuun tai annettu salasana on väärä.",
-        "lcpEnd": "Loppu",
         "lcpNotSupported": "VAROITUS: Tämä on Thorium Desktop -ohjelman ennakkoversio, joka ei tue tuotantokäyttöön tarkoitettuja LCP-lisenssejä, vaan ainoastaan LCP ”basic profile” -salauksen purkua ilman varmenteen vahvistusta.",
         "lcpRightsCopy": "Kopioidut merkit",
         "lcpRightsPrint": "Tulostetut sivut",
@@ -906,7 +1006,6 @@
             },
             "customFontSelected": "Olet valinnut oman fontin",
             "customizeReader": "Mukauta tekstin ulkoasua",
-            "defaultValue": "oletusarvo",
             "disabled": "ei käytössä",
             "display": "Näyttöasetukset",
             "disposition": {
@@ -1288,7 +1387,7 @@
         },
         "screenReaderActivate": {
             "help": "Kun sovellus havaitsee, että käytössä on avustavaa teknologiaa, käyttöliittymä mukautuu toimimaan paremmin yhteen ruudunlukuohjelmien kanssa.",
-            "invite": "Optimoi ruudunlukuohjelmaa varten ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimoi ruudunlukuohjelmaa varten",
             "message": "Parannettu tuki ruudunlukuohjelmille",
             "title": "Paranna ruudunlukukokemusta"
         },

@@ -42,6 +42,7 @@ declare module "*.svg" {
 // }
 
 declare const __TH__IS_DEV__: boolean;
+declare const __TH__SEARCH_CATALOGS_ENABLED__: boolean;
 declare const __TH__IS_PACKAGED__: boolean;
 declare const __TH__SKIP_LCP_LSD__: boolean;
 declare const __TH__IS_VSCODE_LAUNCH__: boolean;

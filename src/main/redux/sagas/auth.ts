@@ -279,6 +279,7 @@ const opdsAuthFlow =
                             return;
                         } else {
                             yield put(historyActions.refresh.build());
+                            yield put(opdsActions.refresh.build());
                             yield put(authActions.done.build());
                         }
                     }

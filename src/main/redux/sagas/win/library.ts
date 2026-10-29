@@ -12,19 +12,19 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import {
     closeProcessLock, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi,
 } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
+import { error } from "readium-desktop/main/tools/error";
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, delay, put, spawn } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped, take as takeTyped, delay as delayTyped, race as raceTyped } from "typed-redux-saga/macro";
+import { call as callTyped, delay as delayTyped, race as raceTyped, select as selectTyped, take as takeTyped } from "typed-redux-saga/macro";
 
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { IWinSessionReaderState } from "../../states/win/session/reader";
+import { getCatalog } from "../catalog";
 import { getAppActivateEventChannel } from "../getEventChannel";
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
-import { getCatalog } from "../catalog";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:library";
@@ -137,6 +137,7 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
         },
         screenReader: {
             activate: state.screenReader.activate,
+            denied: state.screenReader.denied,
         },
         creator: state.creator,
         settings: state.settings,

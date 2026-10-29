@@ -6,13 +6,13 @@
 // ==LICENSE-END==
 
 import { clearDefaultSession, clearSession, clearWebviewSession, getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
-import { SESSION_PARTITION_AUTH, SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
-import { URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_FILEX, URL_PROTOCOL_STORE, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import debug_ from "debug";
 import { net, session } from "electron";
-import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
-import { pathToFileURL } from "node:url";
 import * as path from "node:path";
+import { pathToFileURL } from "node:url";
+import { SESSION_PARTITION_AUTH, SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
+import { URL_HOST_COMMON, URL_PROTOCOL_FILEX, URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
+import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { diMainGet } from "readium-desktop/main/di";
 
 // const debug = (..._: any[]) => {};
@@ -109,7 +109,11 @@ export const initPermissions = () => {
             debug("setPermissionRequestHandler session.defaultSession");
             debug(wc.getURL());
             debug(permission);
-            callback(false);
+            if (permission === "clipboard-sanitized-write") { // toast.tsx `navigator.clipboard.writeText`
+                callback(true);
+            } else {
+                callback(false);
+            }
         });
         session.defaultSession.setPermissionCheckHandler((wc, permission, origin) => {
             debug("setPermissionCheckHandler session.defaultSession");

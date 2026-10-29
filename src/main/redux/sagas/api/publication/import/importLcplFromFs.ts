@@ -6,17 +6,17 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { getTranslator } from "readium-desktop/common/services/translator";
+import { ImportFailure } from "./importFailure";
 import * as fs from "node:fs";
 import moment from "moment";
 import * as path from "node:path";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { toastActions } from "readium-desktop/common/redux/actions";
 import { extractCrc32OnZip } from "readium-desktop/main/tools/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { call, put } from "redux-saga/effects";
+import { call } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped } from "typed-redux-saga/macro";
 
@@ -42,7 +42,7 @@ export function* importLcplFromFS(
     const r2LCPJson = JSON.parse(r2LCPStr);
 
     if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
-        throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
+        throw new ImportFailure("invalidLicense", getTranslator().translate("message.import.lcpLicenseMalformed"));
     }
 
     const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
@@ -76,11 +76,6 @@ export function* importLcplFromFS(
             }
             if (res) {
                 const msg = lcpManager.convertUnlockPublicationResultToString(res, r2LCP.Issued?.toISOString() || "");
-                yield put(
-                    toastActions.openRequest.build(
-                        ToastType.Error, msg,
-                    ),
-                );
                 throw new Error(`[${msg}] (${filePath})`);
             }
         }
@@ -95,11 +90,6 @@ export function* importLcplFromFS(
                 // LICENSE_CERTIFICATE_DATE_INVALID (was LICENSE_SIGNATURE_DATE_INVALID) = 111
                 // LICENSE_SIGNATURE_INVALID = 112
                 const msg = lcpManager.convertUnlockPublicationResultToString(err, r2LCP.Issued?.toISOString() || "");
-                yield put(
-                    toastActions.openRequest.build(
-                        ToastType.Error, msg,
-                    ),
-                );
                 throw new Error(`[${msg}] (${filePath})`);
             }
         }
@@ -144,10 +134,10 @@ export function* importLcplFromFS(
             return [publicationDocument, false];
 
         } else {
-            throw new Error("download path undefined");
+            throw new Error(getTranslator().translate("message.download.errors.pathMissing"));
         }
 
     } else {
-        throw new Error("no download publication link");
+        throw new Error(getTranslator().translate("message.download.errors.publicationLinkMissing"));
     }
 }

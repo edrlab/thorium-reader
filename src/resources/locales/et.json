@@ -1,10 +1,28 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menüü",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Sulge",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Viipa vasakule",
+        "loading": "",
         "mainContent": "põhiline sisu",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Viipa paremale",
+        "searching": "",
         "skipLink": "Mine sisu juurde",
         "toolbar": "tööriistariba"
     },
@@ -142,7 +160,19 @@
         "sort": "Järjestus",
         "tag": "Silt",
         "tags": "Sildid",
-        "update": "Muuda"
+        "update": "Muuda",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -240,32 +270,97 @@
         "annotations": {
             "alreadyImported": "Kõik märkmed on juba imporditud.",
             "emptyFile": "Failis pole märkmeid.",
-            "errorParsing": "Viga faili töötlemisel: ",
             "nothing": "Pole ühtegi imporditavat märget, katkestan impordi",
             "success": "Importimine õnnestus kenasti."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Allalaadimine on katkestatud.",
-            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: faili eeldatud SHA-256 räsi oleks pidanud olema {{- expected}}, kuid tegelikult oli {{- actual}}.",
                 "httpGet": "Allalaadimine ei õnnestunud: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Allalaadimise ajutine failinimi on vale või vigane.",
                 "invalidLink": "Allalaadimislink pole õige.",
                 "invalidTempDirectory": "Allalaaditava sisu ajutine kaust on vale või vigane.",
                 "lengthMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: andmemaht oleks pidanud olema {{- expected}} baiti, kuid tegelikult oli {{- actual}} baiti.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Allalaadimise andmevoog pole saadaval.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Ei suuda luua ajutist failinime allalaaditavale sisule: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "„{{- title}}“ on juba imporditud.",
-            "fail": "„{{- path}}“ objekti importimine ei õnnestunud: {{- err}}",
-            "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
-            "folderNotFound": "Valjaande kausta leidmine ei õnnestu. Impordi ta uuesti või seadista andmeruumi siit „Seadistused“ → „Andmeruum“."
+            "failed": "",
+            "folderNotFound": "Valjaande kausta leidmine ei õnnestu. Impordi ta uuesti või seadista andmeruumi siit „Seadistused“ → „Andmeruum“.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -328,6 +423,12 @@
         },
         "next": "Järgmine",
         "previous": "Eelmine",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Jätka sirvimist",
         "shelf": "Raamaturiiul",
         "updateForm": {
@@ -676,18 +777,17 @@
         "certificateRevoked": "LCP-litsentsi sertifikaat on tühistatud.",
         "certificateSignatureInvalid": "Vigane LCP-litsentsi sertifikaadi allkiri.",
         "cover": {
-            "img": "kaanepilt"
+            "img": "kaanepilt",
+            "zoom": ""
         },
         "day": "päev",
         "days": "päeva",
         "duration": {
             "title": "Kestus"
         },
-        "encryptedNoLicense": "Väljaanne on krüptitud, kuid LCP-litsents on puudu!",
         "expired": "Laenutus on aegunud",
         "expiredLcp": "Selle väljaande LCP-litsents on aegunud.",
         "incorrectPassphrase": "Mitte ükski salvestatud salasõna/salafraas ei sobi selle väljaandega või on sisestus vigane.",
-        "lcpEnd": "Lõpp",
         "lcpNotSupported": "HOIATUS: tegemist on Thoriumi töölauarakenduse (Thorium Desktop Reader) eelversiooniga, mis ei toeta tegelikuks kasutuseks mõeldud LCP-litsentse ning toetab ainult LCP „põhiprofiili“ dekodeerimist ilma sertifikaadi õigsuse kontrollimiseta.",
         "lcpRightsCopy": "Kopeeritud tähemärke",
         "lcpRightsPrint": "Trükitud lehti",
@@ -906,7 +1006,6 @@
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
             "customizeReader": "Kohenda teksti vormindust",
-            "defaultValue": "vaikmisi väärtus",
             "disabled": "pole kasutusel",
             "display": "Ekraanivaade",
             "disposition": {

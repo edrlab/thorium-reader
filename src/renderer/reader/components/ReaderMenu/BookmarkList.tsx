@@ -16,7 +16,7 @@ import * as StylesCombobox from "readium-desktop/renderer/assets/styles/componen
 import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
 import classNames from "classnames";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow, CloseOnAnchorRemoval } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -249,7 +249,6 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                         >
                             <PopoverDialog>
                                 <FocusScope autoFocus>
-                                    <CloseOnAnchorRemoval />
                                     <PopoverArrow
                                         className={stylesDropDown.PopoverArrow}
                                         aria-hidden
@@ -360,7 +359,6 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                         >
                             <PopoverDialog>
                                 <FocusScope autoFocus>
-                                    <CloseOnAnchorRemoval />
                                     <PopoverArrow
                                         className={stylesDropDown.PopoverArrow}
                                         aria-hidden
@@ -473,7 +471,6 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                         >
                             <PopoverDialog>
                                 <FocusScope autoFocus>
-                                    <CloseOnAnchorRemoval />
                                     <div className={stylesAnnotations.annotations_checkbox}>
                                         <input
                                             type="checkbox"

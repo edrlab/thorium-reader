@@ -8,12 +8,12 @@
 import { Readable } from "node:stream";
 import { ReadableStream } from "node:stream/web";
 
-import * as crypto from "node:crypto";
 import debug_ from "debug";
+import * as crypto from "node:crypto";
 // BeforeSendResponse, HeadersReceivedResponse, OnBeforeSendHeadersListenerDetails, OnHeadersReceivedListenerDetails
 import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
-import * as fs from "node:fs";
 import * as mime from "mime-types";
+import * as fs from "node:fs";
 import * as path from "node:path";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
@@ -48,15 +48,16 @@ import {
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
 // import { URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/main/redux/sagas/getEventChannel";
-import { URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PATH_PREFIX_PUBNOTES, URL_PATH_PREFIX_MATHJAX, URL_PATH_PREFIX_READIUMCSS, URL_PATH_PREFIX_PUB, URL_PATH_PREFIX_PDFJS, URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
+import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
+import { URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PATH_PREFIX_MATHJAX, URL_PATH_PREFIX_PDFJS, URL_PATH_PREFIX_PUB, URL_PATH_PREFIX_PUBNOTES, URL_PATH_PREFIX_READIUMCSS, URL_PROTOCOL_FILEX, URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_THORIUMHTTPS } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
+import { isUUIDv4 } from "readium-desktop/utils/uuid";
+import { customizationWellKnownFolder } from "../customization/provisioning";
 import { diMainGet } from "../di";
 import { getNotesFromMainWinState } from "../redux/sagas/note";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
-import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
-import { customizationWellKnownFolder } from "../customization/provisioning";
-import { SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
-import { isUUIDv4 } from "readium-desktop/utils/uuid";
+import { transformPublicationStream } from "./transformPublicationStream";
 
 // import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 import { clearSessions, initPermissions, initProtocols } from "readium-desktop/main/sessions";
@@ -213,7 +214,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
     Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
 
     setupMathJaxTransformer(
-        () => `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_MATHJAX}/es5/tex-mml-chtml.js`,
+        () => `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_MATHJAX}/tex-mml-chtml.js`,
     );
 }
 
@@ -1448,7 +1449,7 @@ const streamProtocolHandler = async (
 
             let transformedStream: IStreamAndLength;
             try {
-                transformedStream = await Transformers.tryStream(
+                transformedStream = await transformPublicationStream(
                     publication,
                     link,
                     fullUrl,

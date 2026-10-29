@@ -1,10 +1,28 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Meny",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Stäng",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Gå till vänster",
+        "loading": "",
         "mainContent": "huvudinnehåll",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Gå till höger",
+        "searching": "",
         "skipLink": "Hoppa till innehåll",
         "toolbar": "verktygsfält"
     },
@@ -142,7 +160,19 @@
         "sort": "Sortera efter",
         "tag": "Tagg",
         "tags": "Taggar",
-        "update": "Redigera"
+        "update": "Redigera",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "Öppna bokhylla",
+            "edit": "Redigera användarprofil",
+            "holds": "",
+            "loading": "Läser in konto…",
+            "loans": "Lån",
+            "title": "Konto",
+            "total": "",
+            "unavailable": "",
+            "used": "{{used}} av {{total}} använda"
+        }
     },
     "dialog": {
         "annotations": {
@@ -240,32 +270,97 @@
         "annotations": {
             "alreadyImported": "Alla anteckningar har redan importerats.",
             "emptyFile": "Det finns inga anteckningar i filen.",
-            "errorParsing": "Fel vid tolkning av fil: ",
             "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen",
             "success": "Importen lyckades."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Nedladdning avbruten.",
-            "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Integritetskontroll för filen misslyckades. Förväntad SHA-256-hash: {{- expected}}, fick {{- actual}}.",
                 "httpGet": "HTTP-nedladdning misslyckades: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Det tillfälliga filnamnet för den nedladdade filen är ogiltigt.",
                 "invalidLink": "Nedladdningslänken är ogiltig.",
                 "invalidTempDirectory": "Mappen för den tillfälliga nedladdningen är ogiltig.",
                 "lengthMismatch": "Integritetskontroll för den nedladdade filen misslyckades. Förväntade {{- expected}} bytes, fick {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Nedladdningsströmmen går inte att nå.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Kunde inte skapa ett unikt filnamn för den nedladdade filen: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": "Laddar ner {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} var redan importerad.",
-            "fail": "Importen av {{- path}} misslyckades. {{- err}}",
-            "success": "Importen av {{- title}} är slutförd."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Importen av {{- title}} är slutförd.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "Kunde inte ta bort den här boken. Försök igen.",
+            "exportFailed": "Kunde inte exportera den här boken. Kontrollera destinationen och tillgängligt diskutrymme.",
+            "openFileFailed": "Kunde inte öppna den här filen. Kontrollera att den är tillgänglig och att den använder ett format som stöds.",
+            "openLinkFailed": "Kunde inte öppna länken till den här boken. Kontrollera länken och försök igen.",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "Publikationen kan inte öppnas: {{- err}}",
-            "folderNotFound": "Mappen för boken kan inte hittas. Importera den igen eller ändra i Inställningar > Lagring."
+            "failed": "",
+            "folderNotFound": "Mappen för boken kan inte hittas. Importera den igen eller ändra i Inställningar > Lagring.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -328,6 +423,12 @@
         },
         "next": "Nästa",
         "previous": "Föregående",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Fortsätt bläddra",
         "shelf": "Hylla",
         "updateForm": {
@@ -676,18 +777,17 @@
         "certificateRevoked": "LCP-certifikatet är återkallat.",
         "certificateSignatureInvalid": "LCP-certifikatets signatur är ogiltig.",
         "cover": {
-            "img": "omslagsbild"
+            "img": "omslagsbild",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dagar",
         "duration": {
             "title": "Längd"
         },
-        "encryptedNoLicense": "Publikationen är krypterad men saknar LCP-licens!",
         "expired": "Lånetiden har gått ut",
         "expiredLcp": "Bokens LCP-licens har löpt ut.",
         "incorrectPassphrase": "Inget sparat lösenord passar för boken, eller så är det angivna lösenordet fel.",
-        "lcpEnd": "Slut",
         "lcpNotSupported": "VARNING: detta är en förhandsversion av Thorium Desktop som inte stödjer produktionsversioner av LCP-licenser, utan stödjer bara dekryptering av LCP \"basic profile\" utan certifikatvalidering.",
         "lcpRightsCopy": "Kopierade tecken",
         "lcpRightsPrint": "Utskrivna sidor",
@@ -755,7 +855,7 @@
             },
             "hide": "Visa inte",
             "highlight": "Markering",
-            "noSelectionToast": "Ingen markering",
+            "noSelectionToast": "Välj text innan du skapar en markering.",
             "note": "{{- color}} anteckning",
             "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
             "saveNote": "Spara",
@@ -906,7 +1006,6 @@
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
             "customizeReader": "Anpassa textformatering",
-            "defaultValue": "standard",
             "disabled": "inaktiverad",
             "display": "Visning",
             "disposition": {
@@ -1288,7 +1387,7 @@
         },
         "screenReaderActivate": {
             "help": "När programmet upptäcker hjälpmedelsteknik så anpassas gränssnittet för att fungera bättre med skärmläsare",
-            "invite": "Optimera för skärmläsare ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimera för skärmläsare",
             "message": "Förbättrat stöd för skärmläsare",
             "title": "Förbättra skärmläsarupplevelsen"
         },

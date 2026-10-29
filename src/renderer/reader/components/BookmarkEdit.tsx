@@ -101,6 +101,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
             `${bookmark.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : bookmark.locatorExtended.selectionInfo.cleanText) : ""}</p> */}
             <p><BookmarkLocatorInfo fallback="" locatorExtended={locatorExtended}/></p>
             <div>
+                <label htmlFor={`${uuid}_edit`}>{__("accessibility.bookmarkNote")}</label>
                 <textarea
                     id={`${uuid}_edit`}
                     value={textAreaValue}

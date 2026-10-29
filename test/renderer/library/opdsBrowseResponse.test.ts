@@ -7,12 +7,14 @@ import { handOffBrowseResponse, takeBrowseResponse } from "readium-desktop/rende
 import { routerActions } from "readium-desktop/renderer/library/redux/actions";
 import { browseWatcher } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/httpBrowser";
+import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { replace } from "redux-first-history";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 
 jest.mock("electron", () => ({ shell: { openExternal: jest.fn() } }));
 jest.mock("typed-redux-saga/macro", () => jest.requireActual("typed-redux-saga"));
 jest.mock("readium-desktop/renderer/library/opds/route", () => ({
-    parseOpdsBrowserRoute: () => ({ rootFeedIdentifier: "catalog", level: 3, title: "Borrow", url: "https://example.org/borrow" }),
+    parseOpdsBrowserRoute: jest.fn(() => ({ rootFeedIdentifier: "catalog", level: 3, title: "Borrow", url: "https://example.org/borrow" })),
     extractParamFromOpdsRoutePathname: () => ({ opdsId: "catalog", level: "2", name: "Qm9ycm93" }),
     buildOpdsBrowserRoute: () => "/opds/catalog/browse/3/borrow/url",
 }));
@@ -56,4 +58,16 @@ test("still fetches ordinary navigation without a handed-off response", async ()
     }, Action.Push)).toPromise();
     expect(opdsBrowse).toHaveBeenCalledTimes(1);
     expect(opdsBrowse).toHaveBeenCalledWith("https://example.org/borrow", "browseOpdsApiResult");
+});
+
+test("returns to catalogs without browsing an invalid route", async () => {
+    jest.mocked(parseOpdsBrowserRoute).mockReturnValueOnce(undefined);
+    jest.mocked(opdsBrowse).mockClear();
+    const dispatched: unknown[] = [];
+    await runSaga({ dispatch: (action: unknown) => dispatched.push(action) }, browseWatcher,
+        routerActions.locationChanged.build({
+            pathname: "/opds/catalog/browse/1/Books/dW5kZWZpbmVk", search: "", hash: "", state: undefined, key: "invalid",
+        }, Action.Push)).toPromise();
+    expect(opdsBrowse).not.toHaveBeenCalled();
+    expect(dispatched).toContainEqual(replace("/opds"));
 });

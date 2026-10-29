@@ -5,39 +5,39 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
-import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import { TDispatch } from "readium-desktop/typings/redux";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
-import { I18nFunction } from "readium-desktop/common/services/translator";
-
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
+import { I18nFunction } from "readium-desktop/common/services/translator";
+import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 import LibraryHeader from "./LibraryHeader";
 
-import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh-icon.svg";
+import { Link, matchPath } from "react-router-dom";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { IOpdsBrowse, resolveDisplayType, routes } from "readium-desktop/renderer/library/routing";
-import { Link, matchPath } from "react-router-dom";
+import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { dispatchHistoryPush, IOpdsBrowse, resolveDisplayType, routes } from "readium-desktop/renderer/library/routing";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -114,6 +114,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             <div role="region" aria-label={__("accessibility.toolbar")}>
                 <a
                     role="heading"
+                    aria-level={2}
                     className={stylesGlobal.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
@@ -160,6 +161,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         : <></>}
                         <a
                             role="heading"
+                            aria-level={2}
                             className={stylesGlobal.anchor_link}
                             ref={this.fastLinkRef}
                             id="main-content"
@@ -210,7 +212,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         }
     };
     private onKeyboardToggleScreenReaderOptimize = () => {
-        const keyboardShortcutScreenReader = `${(this.props.keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + this.props.keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
+        const keyboardShortcutScreenReader = textualizeKeyboardShortcut(this.props.keyboardShortcuts.ToggleScreenReaderOptimize);
         this.props.toggleScreenReader(this.props.screenReaderActivate, keyboardShortcutScreenReader, this.props.__);
     };
 
@@ -348,102 +350,27 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         const { self } = this.props.headerLinks;
         const { __ } = this.props;
 
-        let refreshComponet = <></>;
+        let pathname = this.props.location.pathname;
         if (self) {
-
             const param = matchPath<keyof IOpdsBrowse, string>(
                 routes["/opds/browse"].path,
-                this.props.location.pathname,
+                pathname,
             ).params;
-
             const lvl = parseInt(param.level, 10);
-
             const i = (lvl > 1) ? (lvl - 1) : lvl;
-            const name = this.props.breadcrumb[i]?.name;
-
-            const route = buildOpdsBrowserRoute(
-                param.opdsId,
-                name,
-                self,
-                lvl,
-            );
-
-            refreshComponet = (
-                <button className={stylesButtons.button_nav_tertiary} style={{ width: "20px", height: "20px" }}>
-                    <Link
-                        to={{
-                            ...this.props.location,
-                            pathname: route,
-                        }}
-                        style={{ height: "unset" }}
-                        state={this.linkState()}
-                        className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
-                        onClick={(e) => {
-                            if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
-                                e.preventDefault();
-                                e.currentTarget.click();
-                            }
-                        }}
-                        onKeyDown={(e) => {
-                            // if (e.code === "Space") {
-                            if (e.key === " " || e.altKey || e.ctrlKey) {
-                                e.preventDefault(); // prevent scroll
-                            }
-                        }}
-                        onKeyUp={(e) => {
-                            // Includes screen reader tests:
-                            // if (e.code === "Space") { WORKS
-                            // if (e.key === "Space") { DOES NOT WORK
-                            // if (e.key === "Enter") { WORKS
-                            if (e.key === " ") { // WORKS
-                                e.preventDefault();
-                                e.currentTarget.click();
-                            }
-                        }}
-                    >
-                        <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
-                    </Link>
-                </button>
-            );
-        } else {
-            refreshComponet = (
-                <button className={stylesButtons.button_nav_tertiary}>
-                    <Link
-                        to={{
-                            ...this.props.location,
-                        }}
-                        state={this.linkState()}
-                        className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
-                        onClick={(e) => {
-                            if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
-                                e.preventDefault();
-                                e.currentTarget.click();
-                            }
-                        }}
-                        onKeyDown={(e) => {
-                            // if (e.code === "Space") {
-                            if (e.key === " " || e.altKey || e.ctrlKey) {
-                                e.preventDefault(); // prevent scroll
-                            }
-                        }}
-                        onKeyUp={(e) => {
-                            // Includes screen reader tests:
-                            // if (e.code === "Space") { WORKS
-                            // if (e.key === "Space") { DOES NOT WORK
-                            // if (e.key === "Enter") { WORKS
-                            if (e.key === " ") { // WORKS
-                                e.preventDefault();
-                                e.currentTarget.click();
-                            }
-                        }}
-                    >
-                        <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
-                    </Link>
-                </button>
-            );
+            pathname = buildOpdsBrowserRoute(param.opdsId, this.props.breadcrumb[i]?.name, self, lvl);
         }
 
-        return refreshComponet;
+        return (
+            <button
+                type="button"
+                className={classNames(stylesButtons.button_nav_tertiary, stylesButtons.button_refresh)}
+                aria-label={__("header.refreshTitle")}
+                onClick={() => this.props.historyPush({ ...this.props.location, pathname }, this.linkState())}
+            >
+                <SVG ariaHidden svg={RefreshIcon} />
+            </button>
+        );
     };
 }
 
@@ -456,13 +383,15 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     locale: state.i18n.locale, // refresh
     libraryView: state.settings.libraryView,
     screenReaderActivate: state.screenReader.activate,
+    screenReaderDenied: state.screenReader.denied,
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        toggleScreenReader: (screenReaderActivate: boolean, keyboard: string, __: I18nFunction) => {
+        historyPush: dispatchHistoryPush(dispatch),
+        toggleScreenReader: (screenReaderActivate: boolean, _keyboard: string, __: I18nFunction) => {
             dispatch(screenReaderActions.save.build(!screenReaderActivate));
-            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));
+            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite") + ` (${!screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no")})`));
         },
     };
 };

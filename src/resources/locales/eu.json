@@ -1,10 +1,28 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu nagusia",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Itxi",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Mugitu zerrenda ezkerrera",
+        "loading": "",
         "mainContent": "Eduki nagusia",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Mugitu zerrenda eskuinera",
+        "searching": "",
         "skipLink": "Pasatu edukira",
         "toolbar": "Tresna-barra"
     },
@@ -142,7 +160,19 @@
         "sort": "Ordenatu honen arabera",
         "tag": "Etiketa",
         "tags": "Etiketak",
-        "update": "Editatu"
+        "update": "Editatu",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -240,32 +270,97 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
-            "error": "{- title}}-ren deskargak huts egin du [{- err}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{- title}} inportatuta zegoen",
-            "fail": "{- path}}-ren inportazioak huts egin du. {{- Err}}",
-            "success": "{- title}}-ren inportazioa amaitu da."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "{- title}}-ren inportazioa amaitu da.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "Ezin da argitalpena ireki: {{- err}}",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -328,6 +423,12 @@
         },
         "next": "Hurrengoa",
         "previous": "Aurrekoa",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "Apala",
         "updateForm": {
@@ -676,18 +777,17 @@
         "certificateRevoked": "Ziurtagiria ezeztatuta dago",
         "certificateSignatureInvalid": "Ziurtagiriaren sinadura ez da baliozkoa",
         "cover": {
-            "img": "Azaleko irudia"
+            "img": "Azaleko irudia",
+            "zoom": ""
         },
         "day": "eguna",
         "days": "egunak",
         "duration": {
             "title": "Iraupena"
         },
-        "encryptedNoLicense": "",
         "expired": "Mailegua iraungi",
         "expiredLcp": "Liburu hau ezin da irakurri LCP lizentzia iraungi delako.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Amaiera",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Pertsonaien kopia",
         "lcpRightsPrint": "Inprimagailuaren kopia",
@@ -906,7 +1006,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "Pertsonalizatu testuaren formatua",
-            "defaultValue": "",
             "disabled": "desgaituta",
             "display": "Bistaratzea",
             "disposition": {

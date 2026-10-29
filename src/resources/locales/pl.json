@@ -1,10 +1,28 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Zamknij",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Przesuń w lewo",
+        "loading": "",
         "mainContent": "główna treść",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Przesuń w prawo",
+        "searching": "",
         "skipLink": "Przejdź do treści",
         "toolbar": "pasek narzędzi"
     },
@@ -142,7 +160,19 @@
         "sort": "Sortuj według",
         "tag": "Etykieta",
         "tags": "Etykiety",
-        "update": "Edytuj"
+        "update": "Edytuj",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -250,32 +280,97 @@
         "annotations": {
             "alreadyImported": "Wszystkie notatki są już zaimportowane.",
             "emptyFile": "Brak notatek w pliku.",
-            "errorParsing": "Błąd podczas analizowania pliku: ",
             "nothing": "Brak notatek gotowych do zaimportowania, przerywam import",
             "success": "Import zakończony pomyślnie."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Pobieranie pliku zostało anulowane.",
-            "error": "Pobieranie [{{- title}}] nie powiodło się: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wartość hasha SHA-256 to {{- expected}}, a obliczona to {{- actual}}.",
                 "httpGet": "Nie udało się pobrać pliku przez HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Tymczasowa nazwa pliku do pobrania jest nieprawidłowa.",
                 "invalidLink": "Link do pobrania jest nieprawidłowy.",
                 "invalidTempDirectory": "Tymczasowy katalog do pobierania jest nieprawidłowy.",
                 "lengthMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wielkość pliku to {{- expected}} bajtów, pobrany plik ma {{- actual}} bajtów.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Transmisja danych nie jest dostępna.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Nie można utworzyć unikalnej tymczasowej nazwy pliku do pobrania: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] został już zaimportowany.",
-            "fail": "Importowanie [{{- path}}] nie powiodło się: [{{- err}}]",
-            "success": "Importowanie [{{- title}}] zakończone."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Importowanie [{{- title}}] zakończone.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "Ładowanie publikacji nie powiodło się: [{{- err}}]",
-            "folderNotFound": "Nie można znaleźć katalogu publikacji. Zaimportuj go ponownie lub skonfiguruj dodatkową przestrzeń dyskową w sekcji Ustawienia > Przestrzeń dyskowa."
+            "failed": "",
+            "folderNotFound": "Nie można znaleźć katalogu publikacji. Zaimportuj go ponownie lub skonfiguruj dodatkową przestrzeń dyskową w sekcji Ustawienia > Przestrzeń dyskowa.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -340,6 +435,12 @@
         },
         "next": "Następna",
         "previous": "Poprzednia",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "Wznów przeglądanie",
         "shelf": "Półka",
         "updateForm": {
@@ -688,18 +789,17 @@
         "certificateRevoked": "Certyfikat licencji LCP został unieważniony.",
         "certificateSignatureInvalid": "Nieprawidłowy podpis certyfikatu licencji LCP.",
         "cover": {
-            "img": "okładka"
+            "img": "okładka",
+            "zoom": ""
         },
         "day": "dzień",
         "days": "dni",
         "duration": {
             "title": "Czas trwania"
         },
-        "encryptedNoLicense": "Publikacja jest zaszyfrowana, ale nie posiada licencji LCP!",
         "expired": "Wypożyczenie wygasło",
         "expiredLcp": "Licencja LCP tej publikacji wygasła.",
         "incorrectPassphrase": "Żadne zapisane hasło dostępu nie pasuje do publikacji lub wprowadzone hasło jest nieprawidłowe.",
-        "lcpEnd": "Koniec",
         "lcpNotSupported": "UWAGA: jest to wersja przedpremierowa czytnika Thorium Desktop, która nie obsługuje produkcyjnych licencji LCP i umożliwia jedynie odszyfrowywanie plików LCP w „profilu podstawowym” bez weryfikacji certyfikatu.",
         "lcpRightsCopy": "Skopiowane znaki",
         "lcpRightsPrint": "Wydrukowane strony",
@@ -920,7 +1020,6 @@
             },
             "customFontSelected": "Wybrano własną czcionkę",
             "customizeReader": "Dostosuj formatowanie tekstu",
-            "defaultValue": "domyślna wartość",
             "disabled": "wyłączone",
             "display": "Wyświetlanie",
             "disposition": {
@@ -1302,7 +1401,7 @@
         },
         "screenReaderActivate": {
             "help": "Gdy aplikacja wykryje obecność technologii wspomagającej, interfejs użytkownika lepiej współpracuje z czytnikami ekranu",
-            "invite": "Optymalizacja wsparcia dla czytników ekranu: ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optymalizacja wsparcia dla czytników ekranu",
             "message": "Ulepszona obsługa czytników ekranu",
             "title": "Popraw doświadczenie z czytnikami ekranu"
         },

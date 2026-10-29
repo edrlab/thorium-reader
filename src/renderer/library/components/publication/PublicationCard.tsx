@@ -79,6 +79,7 @@ class PublicationCard extends React.Component<IProps> {
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+        const publicationLabel = `${pubTitleStr}${authors ? ` - ${authors}` : ""}`;
 
         const publicationView = publicationViewMaybeOpds as PublicationView;
         const opdsPublicationView = publicationViewMaybeOpds as IOpdsPublicationView;
@@ -158,7 +159,8 @@ class PublicationCard extends React.Component<IProps> {
                                    className={classNames(
                                         stylesPublications.publication_main_container,
                                     )}
-                                    title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
+                                    aria-label={publicationLabel}
+                                    title={publicationLabel}
                                     tabIndex={0}
                                 >
                                     <Cover
@@ -188,7 +190,8 @@ class PublicationCard extends React.Component<IProps> {
                                     (e) =>
                                         (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
                                 }
-                                title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
+                                aria-label={publicationLabel}
+                                title={publicationLabel}
                                 className={classNames(
                                             stylesPublications.publication_main_container,
                                             { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },
@@ -215,7 +218,8 @@ class PublicationCard extends React.Component<IProps> {
                             <AlertDialog.Root>
                                 <AlertDialog.Trigger asChild>
                                     <a
-                                        title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
+                                        aria-label={publicationLabel}
+                                        title={publicationLabel}
                                         className={classNames(
                                                     stylesPublications.publication_main_container,
                                                     { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },

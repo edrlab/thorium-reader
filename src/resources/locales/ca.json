@@ -1,10 +1,28 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menú",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Tancar",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "downloadProgressUnknown": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Lliscar llista a l'esquerra",
+        "loading": "",
         "mainContent": "Contingut principal",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Lliscar llista a la dreta",
+        "searching": "",
         "skipLink": "Passar el contingut",
         "toolbar": "Barra d'eines"
     },
@@ -142,7 +160,19 @@
         "sort": "Ordenar per",
         "tag": "Etiqueta",
         "tags": "Etiquetes",
-        "update": "Editar"
+        "update": "Editar",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -245,32 +275,97 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
-            "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} ja estava importat",
-            "fail": "La importació de {{- path}} ha fallat. {{- err}}",
-            "success": "La importació de {{- title}} ha acabat."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "La importació de {{- title}} ha acabat.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "No es pot obrir la publicació: {{- err}}",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -334,6 +429,12 @@
         },
         "next": "Següent",
         "previous": "Anterior",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "Prestatge",
         "updateForm": {
@@ -682,18 +783,17 @@
         "certificateRevoked": "El certificat està cancel·lat",
         "certificateSignatureInvalid": "La firma del certificat no és vàlida",
         "cover": {
-            "img": "Imatge de portada"
+            "img": "Imatge de portada",
+            "zoom": ""
         },
         "day": "dia",
         "days": "dies",
         "duration": {
             "title": "Duració"
         },
-        "encryptedNoLicense": "",
         "expired": "Préstec expirat",
         "expiredLcp": "Aquest llibre no es pot llegir perquè la llicència LCP ha expirat.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Fi",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Còpia de personatges",
         "lcpRightsPrint": "Còpia d'impressora",
@@ -913,7 +1013,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "Personalitza el format del text",
-            "defaultValue": "",
             "disabled": "desactivat",
             "display": "Visualització",
             "disposition": {

@@ -9,7 +9,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow, CloseOnAnchorRemoval } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import type { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 
@@ -47,6 +47,7 @@ const FilterPopover = (props: FilterPopoverProps) => {
         <DialogTrigger isOpen={props.filterOpen} onOpenChange={(open) => props.setFilterOpen(open)}>
             <Pressable>
                 <button
+                    type="button"
                     aria-label={__("reader.annotations.filter.filterOptions")}
                     className={stylesAnnotations.annotations_filter_trigger_button}
                     title={__("reader.annotations.filter.filterOptions")}
@@ -78,7 +79,6 @@ const FilterPopover = (props: FilterPopoverProps) => {
             >
                 <PopoverDialog>
                     <FocusScope autoFocus>
-                        <CloseOnAnchorRemoval />
                         <PopoverArrow
                             className={stylesDropDown.PopoverArrow}
                             aria-hidden
@@ -92,7 +92,7 @@ const FilterPopover = (props: FilterPopoverProps) => {
                             aria-label={__("reader.annotations.filter.filterByTag")}
                             style={{ marginBottom: "20px" }}
                         >
-                            <details open id="annotationListTagDetails">
+                            <details className={stylesAnnotations.annotations_filter_section} open id="annotationListTagDetails">
                                 <summary
                                     className={stylesAnnotations.annotations_filter_tagGroup}
                                     style={{
@@ -104,39 +104,37 @@ const FilterPopover = (props: FilterPopoverProps) => {
                                     <Label style={{ fontSize: "13px" }}>
                                         {__("reader.annotations.filter.filterByTag")}
                                     </Label>
-                                    <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
-                                        <button
-                                            disabled={!props.selectTagOption.length}
-                                            style={{ width: "fit-content", minWidth: "unset" }}
-                                            className={
-                                                props.tagArrayFilter === "all"
-                                                    ? stylesButtons.button_primary_blue
-                                                    : stylesButtons.button_secondary_blue
-                                            }
-                                            onClick={() => {
-                                                props.setTagArrayFilter("all");
-                                                const detailsElement = document.getElementById(
-                                                    "annotationListTagDetails",
-                                                ) as HTMLDetailsElement;
-                                                if (detailsElement) {
-                                                    detailsElement.open = true;
-                                                }
-                                            }}
-                                        >
-                                            {__("reader.annotations.filter.all")}
-                                        </button>
-                                        <button
-                                            disabled={!props.selectTagOption.length}
-                                            style={{ width: "fit-content", minWidth: "unset" }}
-                                            className={stylesButtons.button_secondary_blue}
-                                            onClick={() => {
-                                                props.setTagArrayFilter(new Set([]));
-                                            }}
-                                        >
-                                            {__("reader.annotations.filter.none")}
-                                        </button>
-                                    </div>
                                 </summary>
+                                <div className={stylesAnnotations.annotations_filter_actions}>
+                                    <button
+                                        type="button"
+                                        aria-label={`${__("reader.annotations.filter.all")}: ${__("reader.annotations.filter.filterByTag")}`}
+                                        disabled={!props.selectTagOption.length}
+                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                        className={
+                                            props.tagArrayFilter === "all"
+                                                ? stylesButtons.button_primary_blue
+                                                : stylesButtons.button_secondary_blue
+                                        }
+                                        onClick={() => {
+                                            props.setTagArrayFilter("all");
+                                        }}
+                                    >
+                                        {__("reader.annotations.filter.all")}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        aria-label={`${__("reader.annotations.filter.none")}: ${__("reader.annotations.filter.filterByTag")}`}
+                                        disabled={!props.selectTagOption.length}
+                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                        className={stylesButtons.button_secondary_blue}
+                                        onClick={() => {
+                                            props.setTagArrayFilter(new Set([]));
+                                        }}
+                                    >
+                                        {__("reader.annotations.filter.none")}
+                                    </button>
+                                </div>
                                 {props.selectTagOption.length ? (
                                     <TagList
                                         items={props.selectTagOption}
@@ -165,42 +163,40 @@ const FilterPopover = (props: FilterPopoverProps) => {
                             aria-label={__("reader.annotations.filter.filterByColor")}
                             style={{ marginBottom: "20px" }}
                         >
-                            <details open id="annotationListColorDetails">
+                            <details className={stylesAnnotations.annotations_filter_section} open id="annotationListColorDetails">
                                 <summary className={stylesAnnotations.annotations_filter_tagGroup}>
                                     <Label style={{ fontSize: "13px" }}>
                                         {__("reader.annotations.filter.filterByColor")}
                                     </Label>
-                                    <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
-                                        <button
-                                            style={{ width: "fit-content", minWidth: "unset" }}
-                                            className={
-                                                props.colorArrayFilter === "all"
-                                                    ? stylesButtons.button_primary_blue
-                                                    : stylesButtons.button_secondary_blue
-                                            }
-                                            onClick={() => {
-                                                props.setColorArrayFilter("all");
-                                                const detailsElement = document.getElementById(
-                                                    "annotationListColorDetails",
-                                                ) as HTMLDetailsElement;
-                                                if (detailsElement) {
-                                                    detailsElement.open = true;
-                                                }
-                                            }}
-                                        >
-                                            {__("reader.annotations.filter.all")}
-                                        </button>
-                                        <button
-                                            style={{ width: "fit-content", minWidth: "unset" }}
-                                            className={stylesButtons.button_secondary_blue}
-                                            onClick={() => {
-                                                props.setColorArrayFilter(new Set([]));
-                                            }}
-                                        >
-                                            {__("reader.annotations.filter.none")}
-                                        </button>
-                                    </div>
                                 </summary>
+                                <div className={stylesAnnotations.annotations_filter_actions}>
+                                    <button
+                                        type="button"
+                                        aria-label={`${__("reader.annotations.filter.all")}: ${__("reader.annotations.filter.filterByColor")}`}
+                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                        className={
+                                            props.colorArrayFilter === "all"
+                                                ? stylesButtons.button_primary_blue
+                                                : stylesButtons.button_secondary_blue
+                                        }
+                                        onClick={() => {
+                                            props.setColorArrayFilter("all");
+                                        }}
+                                    >
+                                        {__("reader.annotations.filter.all")}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        aria-label={`${__("reader.annotations.filter.none")}: ${__("reader.annotations.filter.filterByColor")}`}
+                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                        className={stylesButtons.button_secondary_blue}
+                                        onClick={() => {
+                                            props.setColorArrayFilter(new Set([]));
+                                        }}
+                                    >
+                                        {__("reader.annotations.filter.none")}
+                                    </button>
+                                </div>
                                 <TagList items={props.colorSet} className={stylesAnnotations.annotations_filter_taglist}>
                                     {(item) => (
                                         <Tag
@@ -226,42 +222,40 @@ const FilterPopover = (props: FilterPopoverProps) => {
                                 aria-label={__("reader.annotations.filter.filterByDrawtype")}
                                 style={{ marginBottom: "20px" }}
                             >
-                                <details open id="annotationListDrawDetails">
+                                <details className={stylesAnnotations.annotations_filter_section} open id="annotationListDrawDetails">
                                     <summary className={stylesAnnotations.annotations_filter_tagGroup}>
                                         <Label style={{ fontSize: "13px" }}>
                                             {__("reader.annotations.filter.filterByDrawtype")}
                                         </Label>
-                                        <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
-                                            <button
-                                                style={{ width: "fit-content", minWidth: "unset" }}
-                                                className={
-                                                    props.drawTypeArrayFilter === "all"
-                                                        ? stylesButtons.button_primary_blue
-                                                        : stylesButtons.button_secondary_blue
-                                                }
-                                                onClick={() => {
-                                                    props.setDrawTypeArrayFilter("all");
-                                                    const detailsElement = document.getElementById(
-                                                        "annotationListDrawDetails",
-                                                    ) as HTMLDetailsElement;
-                                                    if (detailsElement) {
-                                                        detailsElement.open = true;
-                                                    }
-                                                }}
-                                            >
-                                                {__("reader.annotations.filter.all")}
-                                            </button>
-                                            <button
-                                                style={{ width: "fit-content", minWidth: "unset" }}
-                                                className={stylesButtons.button_secondary_blue}
-                                                onClick={() => {
-                                                    props.setDrawTypeArrayFilter(new Set([]));
-                                                }}
-                                            >
-                                                {__("reader.annotations.filter.none")}
-                                            </button>
-                                        </div>
                                     </summary>
+                                    <div className={stylesAnnotations.annotations_filter_actions}>
+                                        <button
+                                            type="button"
+                                            aria-label={`${__("reader.annotations.filter.all")}: ${__("reader.annotations.filter.filterByDrawtype")}`}
+                                            style={{ width: "fit-content", minWidth: "unset" }}
+                                            className={
+                                                props.drawTypeArrayFilter === "all"
+                                                    ? stylesButtons.button_primary_blue
+                                                    : stylesButtons.button_secondary_blue
+                                            }
+                                            onClick={() => {
+                                                props.setDrawTypeArrayFilter("all");
+                                            }}
+                                        >
+                                            {__("reader.annotations.filter.all")}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            aria-label={`${__("reader.annotations.filter.none")}: ${__("reader.annotations.filter.filterByDrawtype")}`}
+                                            style={{ width: "fit-content", minWidth: "unset" }}
+                                            className={stylesButtons.button_secondary_blue}
+                                            onClick={() => {
+                                                props.setDrawTypeArrayFilter(new Set([]));
+                                            }}
+                                        >
+                                            {__("reader.annotations.filter.none")}
+                                        </button>
+                                    </div>
                                     <TagList
                                         items={props.selectDrawtypesOptions}
                                         className={stylesAnnotations.annotations_filter_taglist}
@@ -288,7 +282,7 @@ const FilterPopover = (props: FilterPopoverProps) => {
                             aria-label={__("reader.annotations.filter.filterByCreator")}
                             style={{ marginBottom: "20px" }}
                         >
-                            <details id="annotationListCreator" open={!!props.selectCreatorOptions.length}>
+                            <details className={stylesAnnotations.annotations_filter_section} id="annotationListCreator" open={!!props.selectCreatorOptions.length}>
                                 <summary
                                     className={stylesAnnotations.annotations_filter_tagGroup}
                                     style={{
@@ -300,39 +294,37 @@ const FilterPopover = (props: FilterPopoverProps) => {
                                     <Label style={{ fontSize: "13px" }}>
                                         {__("reader.annotations.filter.filterByCreator")}
                                     </Label>
-                                    <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
-                                        <button
-                                            tabIndex={!props.selectCreatorOptions.length ? -1 : 0}
-                                            style={{ width: "fit-content", minWidth: "unset" }}
-                                            className={
-                                                props.creatorArrayFilter === "all"
-                                                    ? stylesButtons.button_primary_blue
-                                                    : stylesButtons.button_secondary_blue
-                                            }
-                                            onClick={() => {
-                                                props.setCreatorArrayFilter("all");
-                                                const detailsElement = document.getElementById(
-                                                    "annotationListCreator",
-                                                ) as HTMLDetailsElement;
-                                                if (detailsElement) {
-                                                    detailsElement.open = true;
-                                                }
-                                            }}
-                                        >
-                                            {__("reader.annotations.filter.all")}
-                                        </button>
-                                        <button
-                                            tabIndex={!props.selectCreatorOptions.length ? -1 : 0}
-                                            style={{ width: "fit-content", minWidth: "unset" }}
-                                            className={stylesButtons.button_secondary_blue}
-                                            onClick={() => {
-                                                props.setCreatorArrayFilter(new Set([]));
-                                            }}
-                                        >
-                                            {__("reader.annotations.filter.none")}
-                                        </button>
-                                    </div>
                                 </summary>
+                                <div className={stylesAnnotations.annotations_filter_actions}>
+                                    <button
+                                        type="button"
+                                        aria-label={`${__("reader.annotations.filter.all")}: ${__("reader.annotations.filter.filterByCreator")}`}
+                                        disabled={!props.selectCreatorOptions.length}
+                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                        className={
+                                            props.creatorArrayFilter === "all"
+                                                ? stylesButtons.button_primary_blue
+                                                : stylesButtons.button_secondary_blue
+                                        }
+                                        onClick={() => {
+                                            props.setCreatorArrayFilter("all");
+                                        }}
+                                    >
+                                        {__("reader.annotations.filter.all")}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        aria-label={`${__("reader.annotations.filter.none")}: ${__("reader.annotations.filter.filterByCreator")}`}
+                                        disabled={!props.selectCreatorOptions.length}
+                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                        className={stylesButtons.button_secondary_blue}
+                                        onClick={() => {
+                                            props.setCreatorArrayFilter(new Set([]));
+                                        }}
+                                    >
+                                        {__("reader.annotations.filter.none")}
+                                    </button>
+                                </div>
                                 <TagList
                                     items={props.selectCreatorOptions}
                                     className={stylesAnnotations.annotations_filter_taglist}

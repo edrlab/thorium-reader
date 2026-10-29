@@ -20,6 +20,7 @@ import {
     _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
+import { DocumentLanguage } from "readium-desktop/renderer/common/components/DocumentLanguage";
 
 // import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
 // import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
@@ -285,6 +286,7 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
         return (
             <Provider store={getStore()}>
                 <TranslatorContext.Provider value={getTranslator()}>
+                    <DocumentLanguage />
                     <Reader />
                     <ToastManager />
                     <ImageClickManagerImgViewerOnly />

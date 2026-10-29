@@ -16,6 +16,7 @@ It is currently localized in following 28 languages:
 * (de) Deutsch (German)
 * (es) Español (Spanish)
 * (nl) Nederlands (Dutch)
+* (nb-NO) Bokmål (Norwegian)
 * (ja) 日本語 (Japanese)
 * (ka) ქართული (Georgian)
 * (lt) Lietuvių (Lithuanian)
@@ -50,7 +51,7 @@ Since february 2025 we use Weblate project Thorium as the main tool for localisa
 
 ## Prerequisites
 
-1) NodeJS 22 (check with `node --version`)
+1) NodeJS 22 (check with `node --version`); running Jest tests requires NodeJS 24.9 or later for native loading of ESM dependencies.
 2) NPM 11 (check with `npm --version`)
 
 

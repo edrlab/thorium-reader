@@ -6,30 +6,10 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { OverlayArrow, OverlayTriggerStateContext, PopoverContext, useSlottedContext } from "react-aria-components";
+import { OverlayArrow } from "react-aria-components";
 
 // Default portals share a layer; later-mounted overlays appear above their parents.
 export const OVERLAY_Z_INDEX = 102;
-
-/** Mounted inside a native popover only while open, for virtualized/scrolled lists. */
-export function CloseOnAnchorRemoval(): undefined {
-    const context = useSlottedContext(PopoverContext);
-    const state = React.useContext(OverlayTriggerStateContext);
-    React.useEffect(() => {
-        const trigger = context?.triggerRef?.current;
-        if (!trigger || !state) {
-            return undefined;
-        }
-        const observer = new MutationObserver(() => {
-            if (!trigger.isConnected) {
-                state.close();
-            }
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-        return () => observer.disconnect();
-    }, [context?.triggerRef, state]);
-    return undefined;
-}
 
 /** The shared artwork; positioning and centering belong to RAC's OverlayArrow. */
 export function PopoverArrow({ width = 10, height = 5, style, ...props }: React.SVGProps<SVGSVGElement>) {

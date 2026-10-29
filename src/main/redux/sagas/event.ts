@@ -6,16 +6,15 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
+import { getCatalogUrls } from "readium-desktop/main/catalogUrls";
 import {
-    OPDS_FEED_ICON_DATA_URL_PREFIX,
-    OPDS_FEED_ICON_SVG_DATA_URL_PREFIX,
     OPDS_FEED_DEFAULT_COLOR,
     getOpdsFeedColor,
     getOpdsFeedIconUrl,
     isOpdsFeedColor,
     type TOpdsFeedColor,
 } from "readium-desktop/common/models/opds";
-import { imageSize } from "image-size";
+
 import { customizationActions, historyActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -28,7 +27,7 @@ import {
 import { all, put, spawn } from "redux-saga/effects";
 import { call as callTyped, take as takeTyped, /*select as selectTyped*/ put as putTyped /*race as raceTyped, delay as delayTyped*/ } from "typed-redux-saga/macro";
 import { browse } from "./api/browser/browse";
-import { addFeed } from "./api/opds/feed";
+import { addFeed, downloadOpdsFeedIcon } from "./api/opds/feed";
 
 import { importFromFs, importFromLink } from "./api/publication/import";
 import { search } from "./api/publication/search";
@@ -48,9 +47,8 @@ import { customizationWellKnownFolder } from "readium-desktop/main/customization
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
-import { TCatalogAddAnalyticsOrigin } from "src/common/analytics/catalog";
-import { nativeImage } from "electron";
-import { httpGetWithAuth } from "readium-desktop/main/network/http";
+import { TCatalogAddAnalyticsOrigin } from "readium-desktop/common/analytics/catalog";
+
 import { getLcpHashedPassphrase } from "readium-desktop/utils/lcp";
 
 // Logger
@@ -67,113 +65,9 @@ const appLogs = path.join(
     folderPath,
     PROCESS_LOGS,
 );
-const OPDS_FEED_ICON_REQUEST_TIMEOUT = 2000;
-const OPDS_FEED_ICON_MAX_BYTES = 1024 * 1024;
-const OPDS_FEED_ICON_SIZE = 128;
 
 if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
-};
-
-const isSvgImage = (buffer: Buffer, contentType: string | undefined): boolean =>
-    (contentType?.toLowerCase().includes("image/svg+xml") || buffer.toString(
-        "utf8",
-        0,
-        Math.min(buffer.length, 4096),
-    ).toLowerCase().includes("<svg"));
-
-const getOpdsFeedIconImageSize = (iconBuffer: Buffer, iconUrl: string): { width: number; height: number } | undefined => {
-    try {
-        return imageSize(iconBuffer);
-    } catch (e) {
-        debug("OPDS feed icon size parsing failed", iconUrl, e);
-        return undefined;
-    }
-};
-
-const getOpdsFeedSvgIconDataUrl = (iconBuffer: Buffer, iconUrl: string): string | undefined => {
-    const size = getOpdsFeedIconImageSize(iconBuffer, iconUrl);
-    if (!size?.width || !size.height) {
-        debug("OPDS feed SVG icon has invalid dimensions", iconUrl, size);
-        return undefined;
-    }
-    if (size.width !== size.height) {
-        debug("OPDS feed SVG icon is not square", iconUrl, size);
-        return undefined;
-    }
-
-    return `${OPDS_FEED_ICON_SVG_DATA_URL_PREFIX}${iconBuffer.toString("base64")}`;
-};
-
-const normalizeOpdsFeedIcon = (iconImage: Electron.NativeImage, iconUrl: string): string | undefined => {
-    const size = iconImage.getSize();
-    if (!size.width || !size.height) {
-        debug("OPDS feed icon has invalid dimensions", iconUrl, size);
-    } else if (size.width !== size.height) {
-        debug("OPDS feed icon is not square, resizing to common square size", iconUrl, size);
-    }
-
-    const resizedImage = iconImage.resize({
-        height: OPDS_FEED_ICON_SIZE,
-        quality: "best",
-        width: OPDS_FEED_ICON_SIZE,
-    });
-    const resizedSize = resizedImage.getSize();
-    if (resizedImage.isEmpty() || resizedSize.width !== OPDS_FEED_ICON_SIZE || resizedSize.height !== OPDS_FEED_ICON_SIZE) {
-        debug("OPDS feed icon resize failed", iconUrl, resizedSize);
-        return undefined;
-    }
-
-    const iconDataUrl = resizedImage.toDataURL({ scaleFactor: 1 });
-    if (!iconDataUrl.startsWith(OPDS_FEED_ICON_DATA_URL_PREFIX)) {
-        debug("OPDS feed icon PNG data URL conversion failed", iconUrl);
-        return undefined;
-    }
-
-    return iconDataUrl;
-};
-
-const downloadOpdsFeedIcon = async (iconUrl: string | undefined): Promise<string | undefined> => {
-    if (!iconUrl) {
-        return undefined;
-    }
-
-    try {
-        const response = await httpGetWithAuth(false)(iconUrl, {
-            headers: {
-                accept: "image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.1",
-            },
-            size: OPDS_FEED_ICON_MAX_BYTES,
-            timeout: OPDS_FEED_ICON_REQUEST_TIMEOUT,
-        });
-        if (!response.isSuccess || !response.response?.buffer) {
-            debug("OPDS feed icon download failed", iconUrl, response.statusCode, response.statusMessage);
-            return undefined;
-        }
-
-        const iconBuffer = await response.response.buffer();
-        if (!iconBuffer.length || iconBuffer.length > OPDS_FEED_ICON_MAX_BYTES) {
-            debug("OPDS feed icon invalid size", iconUrl, iconBuffer.length);
-            return undefined;
-        }
-
-        if (isSvgImage(iconBuffer, response.contentType)) {
-            // https://www.electronjs.org/docs/latest/api/native-image#nativeimagecreatefromdataurldataurl
-            // SVG cannot be converted to PNG
-            return getOpdsFeedSvgIconDataUrl(iconBuffer, iconUrl);
-        }
-
-        const iconImage = nativeImage.createFromBuffer(iconBuffer);
-        if (iconImage.isEmpty()) {
-            debug("OPDS feed icon could not be decoded", iconUrl);
-            return undefined;
-        }
-
-        return normalizeOpdsFeedIcon(iconImage, iconUrl);
-    } catch (e) {
-        debug("OPDS feed icon download error", iconUrl, e);
-        return undefined;
-    }
 };
 
 export function saga() {
@@ -235,7 +129,7 @@ export function saga() {
 
                     debug("ERROR to importFromFs and to open the publication");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `CLI open file ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.openFileFailed")));
                 }
             }
 
@@ -355,7 +249,7 @@ export function saga() {
 
                     debug("ERROR to importFromLink and to open the publication");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `THORIUM Deep link ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.openLinkFailed")));
                 }
             }
 
@@ -407,6 +301,7 @@ export function saga() {
                         let title = url;
                         let feedColor: TOpdsFeedColor = OPDS_FEED_DEFAULT_COLOR;
                         let feedIcon: string | undefined;
+                        let authenticationUrl: string | undefined;
                         let lcpHashedPassphrase: string | undefined;
 
                         // https://www.thoriumreader.com/en/badge/catalog/
@@ -419,9 +314,10 @@ export function saga() {
                             url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP}:/add/catalog`) // single slash!
                         ) {
                             const u = new URL(url);
-                            theUrl = u.searchParams.get("main");
+                            const catalogUrls = getCatalogUrls(u.searchParams);
+                            theUrl = catalogUrls.url;
+                            authenticationUrl = catalogUrls.authenticationUrl;
                             title = u.searchParams.get("title") || theUrl;
-                            // const bookshelf = u.searchParams.get("bookshelf");
                             lcpHashedPassphrase = getLcpHashedPassphrase(
                                 u.searchParams.get("passphrase"),
                                 u.searchParams.get("hashed_passphrase"),
@@ -447,7 +343,7 @@ export function saga() {
                             }
                         }
 
-                        const feed = yield* callTyped(addFeed, { title, url: theUrl, color: feedColor, icon: feedIcon }, "deeplink" as TCatalogAddAnalyticsOrigin);
+                        const feed = yield* callTyped(addFeed, { title, url: theUrl, authenticationUrl, color: feedColor, icon: feedIcon }, "deeplink" as TCatalogAddAnalyticsOrigin);
                         if (feed) {
 
                             yield* callTyped(appActivate);
@@ -464,7 +360,7 @@ export function saga() {
                 } catch (e) {
                     debug("OPDS Deep link error");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `OPDS Deep link ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.catalogLinkFailed")));
                 } finally {
                     try { appendFileSyncWithRotation(appLogs, dump); } catch { }
                 }
