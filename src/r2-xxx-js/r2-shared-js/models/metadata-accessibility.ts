@@ -16,8 +16,12 @@ import { AccessibilityCertification } from "./metadata-accessibility-certificati
 @JsonObject()
 export class AccessibilityMetadata {
 
-    // tslint:disable-next-line:max-line-length
-    // https://github.com/readium/webpub-manifest/blob/03d7681cf1ff689bad76efaabc9c77423296a94c/schema/a11y.schema.json#L18-L31
+    // a11y:exemption (repeatable EPUB metadata; also accepts a singular manifest string)
+    @JsonProperty("exemption")
+    @JsonConverter(JsonStringConverter)
+    @JsonElementType(String)
+    public Exemption!: string[];
+
     @JsonProperty("certification")
     public Certification!: AccessibilityCertification;
 

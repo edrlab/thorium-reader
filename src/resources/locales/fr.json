@@ -622,6 +622,13 @@
                 "descriptive": "La présence de risques liés aux flashs lumineux, sensations de mouvement ou sons est inconnue"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Index",
