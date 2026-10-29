@@ -162,8 +162,8 @@
         "tags": "Tunnisteet",
         "update": "Muokkaa",
         "userProfile": {
-            "available": "",
-            "bookshelf": "",
+            "available": "Saatavilla: {{count}}",
+            "bookshelf": "Avaa kirjahylly",
             "edit": "Muokkaa profiilia",
             "holds": "Varaukset",
             "loading": "Ladataan tiliä…",
@@ -171,7 +171,7 @@
             "title": "Tili",
             "total": "Rajoitus: {{count}}",
             "unavailable": "Profiilitietoja ei ole saatavilla",
-            "used": ""
+            "used": "{{used}} /{{total}} käytetty"
         }
     },
     "dialog": {
@@ -278,7 +278,7 @@
             "errors": {
                 "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",
                 "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
+                "idleTimeout": "Lataaminen keskeytyi: tietoja ei ole vastaanotettu 30 sekuntiin. Yritä uudelleen.",
                 "invalidFilename": "Väliaikaisen lataustiedoston nimi ei kelpaa.",
                 "invalidLink": "Latauslinkki ei kelpaa.",
                 "invalidTempDirectory": "Väliaikainen lataushakemisto ei kelpaa.",
@@ -286,8 +286,8 @@
                 "readStreamMissing": "Suoratoiston lataaminen ei onnistu.",
                 "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
             },
-            "started": "",
-            "startedWithTitle": ""
+            "started": "Lataaminen aloitettu.",
+            "startedWithTitle": "Ladataan {{- title}}."
         },
         "import": {
             "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
@@ -295,7 +295,7 @@
             "success": "Julkaisun {{- title}} tuonti on valmis."
         },
         "notifications": {
-            "annotationImportFailed": "",
+            "annotationImportFailed": "Merkintöjä ei voitu tuoda. Varmista, että tiedosto on kelvollinen",
             "annotationPublicationUnavailable": "",
             "annotationStopPlayback": "",
             "authenticationFailed": "",

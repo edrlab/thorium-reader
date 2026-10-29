@@ -16,7 +16,7 @@
         "leftSlideButton": "Faire défiler vers la gauche",
         "loading": "Chargement…",
         "mainContent": "Contenu principal",
-        "notificationCopied": "Notification copiée",
+        "notificationCopied": "Copié dans le presse-papiers :",
         "notificationCopyFailed": "Impossible de copier la notification",
         "printPage": "Page {{page}}",
         "publicationDetails": "{{- field}} : {{- title}}",
@@ -178,14 +178,14 @@
         "annotations": {
             "descAuthor": "par {{- author}}",
             "descCreator": "créées par",
-            "descList_one": "{{- count}} note {{- creator}} sera importée vers {{- title}} {{- author}}",
             "descList_many": "",
+            "descList_one": "{{- count}} note {{- creator}} sera importée vers {{- title}} {{- author}}",
             "descList_other": "{{- count}} notes {{- creator}} seront importées vers {{- title}} {{- author}}",
-            "descNewer_one": "{{- count}} conflit : une note associée à la publication est plus récente",
             "descNewer_many": "",
+            "descNewer_one": "{{- count}} conflit : une note associée à la publication est plus récente",
             "descNewer_other": "{{- count}} conflits : certaines notes associées à la publication sont plus récentes",
-            "descOlder_one": "{{- count}} conflit : une note associée à la publication est plus ancienne",
             "descOlder_many": "",
+            "descOlder_one": "{{- count}} conflit : une note associée à la publication est plus ancienne",
             "descOlder_other": "{{- count}} conflits : certaines notes associées à la publication sont plus anciennes",
             "descTitle": "Titre de la liste de notes : ",
             "importAll": "Importer toutes les notes",
@@ -203,12 +203,12 @@
             }
         },
         "deleteAnnotations": "Supprimer les notes ?",
-        "deleteAnnotationsText_one": "Voulez-vous supprimer {{- count}} note ?",
         "deleteAnnotationsText_many": "",
+        "deleteAnnotationsText_one": "Voulez-vous supprimer {{- count}} note ?",
         "deleteAnnotationsText_other": "Voulez-vous supprimer {{- count}} notes ?",
         "deleteBookmarks": "Supprimer les marque-pages ?",
-        "deleteBookmarksText_one": "Êtes-vous certain de vouloir supprimer {{- count}} marque-page ?",
         "deleteBookmarksText_many": "",
+        "deleteBookmarksText_one": "Êtes-vous certain de vouloir supprimer {{- count}} marque-page ?",
         "deleteBookmarksText_other": "Êtes-vous certain de vouloir supprimer {{- count}} marque-pages ?",
         "deleteFeed": "Supprimer ce catalogue ?",
         "deletePublication": "Supprimer ce livre ?",
@@ -331,8 +331,8 @@
         "storage": {
             "recovery": {
                 "failure": "La récupération des publications a échoué.",
-                "success_one": "{{- count}} publication récupérée.",
                 "success_many": "",
+                "success_one": "{{- count}} publication récupérée.",
                 "success_other": "{{- count}} publications récupérées."
             },
             "removed": "Le répertoire des publications a été supprimé.",
@@ -929,8 +929,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} correspondance",
                 "founds_many": "",
+                "founds_one": "{{- count}} correspondance",
                 "founds_other": "{{- count}} correspondances",
                 "input": "Texte à trouver",
                 "next": "Suivant",
@@ -1414,14 +1414,14 @@
                 "description": "Vérifiez le stockage des publications pour trouver celles qui peuvent être récupérées en toute sécurité.",
                 "dialog": {
                     "confirm": "Récupérer",
-                    "description_one": "Thorium a trouvé {{- count}} publication sur le disque, absente de la base de données. Voulez-vous la réimporter dans Thorium ?",
                     "description_many": "",
+                    "description_one": "Thorium a trouvé {{- count}} publication sur le disque, absente de la base de données. Voulez-vous la réimporter dans Thorium ?",
                     "description_other": "Thorium a trouvé {{- count}} publications sur le disque, absentes de la base de données. Voulez-vous les réimporter dans Thorium ?",
                     "title": "Récupérer les publications"
                 },
                 "none": "Aucune publication récupérable n'a été trouvée.",
-                "recoverableCount_one": "{{- count}} publication peut être récupérée avec son identifiant de stockage d'origine.",
                 "recoverableCount_many": "",
+                "recoverableCount_one": "{{- count}} publication peut être récupérée avec son identifiant de stockage d'origine.",
                 "recoverableCount_other": "{{- count}} publications peuvent être récupérées avec leur identifiant de stockage d'origine.",
                 "title": "Récupération"
             }
