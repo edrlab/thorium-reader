@@ -236,6 +236,14 @@ export interface IEventPayload_R2_EVENT_SHIFT_VIEW_X {
 
 // in RENDERER: webview.send()
 // in WEBVIEW: ipcRenderer.on()
+export const R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS = "R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS";
+// tslint:disable-next-line:class-name
+export interface IEventPayload_R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS {
+    doEnable: boolean;
+}
+
+// in RENDERER: webview.send()
+// in WEBVIEW: ipcRenderer.on()
 export const R2_EVENT_TTS_CLICK_ENABLE = "R2_EVENT_TTS_CLICK_ENABLE";
 // tslint:disable-next-line:class-name
 export interface IEventPayload_R2_EVENT_TTS_CLICK_ENABLE {
