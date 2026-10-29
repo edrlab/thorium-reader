@@ -30,7 +30,7 @@ export const publicationApi: IPublicationApi = {
     importFromFs,
     selectFiles: withErrorNotification(selectFiles, "message.notifications.openFileFailed"),
     importFromLink,
-    importFromString: withErrorNotification(importFromString, "message.notifications.openFileFailed"),
+    importFromString: withErrorNotification(importFromString, "message.notifications.openFileFailed", true),
     searchEqTitle,
     updateTags: withErrorNotification(updateTags, "message.notifications.tagsFailed"),
 

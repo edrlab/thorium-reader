@@ -35,6 +35,7 @@ function toastReducer_(
                     open: true,
                     type: action.payload.type,
                     data: action.payload.data,
+                    copyText: action.payload.copyText,
                     publicationIdentifier: action.payload.publicationIdentifier,
                 },
             );

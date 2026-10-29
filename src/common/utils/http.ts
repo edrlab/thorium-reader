@@ -34,6 +34,8 @@ export interface IHttpGetResult<TData> {
     readonly responseUrl?: string;
     readonly statusCode?: number;
     readonly statusMessage?: string;
+    /** Non-enumerable original transport error, retained for main-process diagnostics. */
+    readonly cause?: unknown;
     contentType?: string;
     // cookies?: string;
     body?: NodeJS.ReadableStream;
