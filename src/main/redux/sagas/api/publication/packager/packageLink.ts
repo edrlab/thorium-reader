@@ -7,6 +7,7 @@
 
 import * as crypto from "node:crypto";
 import debug_ from "debug";
+import { DownloadFailure, checkDownloadResponse } from "readium-desktop/main/tools/downloadFailure";
 import * as path from "node:path";
 import { ok } from "readium-desktop/common/utils/assert";
 import { httpGet } from "readium-desktop/main/network/http";
@@ -19,7 +20,6 @@ import {
 import { findHtmlTocInRessources } from "readium-desktop/main/w3c/audiobooks/toc";
 import { createWebpubZip, TResourcesFSCreateZip } from "readium-desktop/main/zip/create";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
-import { contentTypeisApiProblem, parseContentType } from "readium-desktop/utils/contentType";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped } from "typed-redux-saga/macro";
 
@@ -327,15 +327,14 @@ export function* packageGetManifestBuffer(
         throw new Error("fetch URL error [" + href + "]");
     }
     const data = yield* callTyped(httpGet, href);
-    const { response, isFailure } = data;
+    checkDownloadResponse(data, href);
+    const { response } = data;
 
-    const rawData = yield* callTyped(() => response?.text());
-    if (isFailure) {
-        if (contentTypeisApiProblem(parseContentType(data.contentType))) {
-            throw new Error(`HTTP ${data.statusCode}: ${data.statusMessage || "Unable to fetch publication manifest"}`);
-        }
-        throw new Error("fetch error [" + href + "](" + response?.status + " " + response?.statusText + " " + rawData + "]");
-        // we can add a toast notification here like the downloader
+    let rawData: string;
+    try {
+        rawData = yield* callTyped(() => response?.text());
+    } catch (error) {
+        throw new DownloadFailure("network", href, error);
     }
 
     if (rawData) {

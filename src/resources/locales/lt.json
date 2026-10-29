@@ -296,6 +296,11 @@
                 "readStreamMissing": "Neprieinamas atsiuntimo srautas.",
                 "tooManyFilenameAttempts": "Nepavyko sukurti unikalaus laikino atsiuntimo failo pavadinimo: {{- path}}"
             },
+            "failed": "",
+            "failedWithHost": "",
+            "integrityFailed": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "started": "Atsiuntimas pradėtas.",
             "startedWithTitle": "Atsiunčiama „{{- title}}“."
         },

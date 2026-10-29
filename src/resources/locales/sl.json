@@ -296,6 +296,11 @@
                 "readStreamMissing": "Pretok prenosa ni na voljo.",
                 "tooManyFilenameAttempts": "Ni mogoče ustvariti edinstvenega imena začasne datoteke za prenos: {{- path}}"
             },
+            "failed": "",
+            "failedWithHost": "",
+            "integrityFailed": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "started": "",
             "startedWithTitle": ""
         },

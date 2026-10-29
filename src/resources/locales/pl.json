@@ -296,6 +296,11 @@
                 "readStreamMissing": "Transmisja danych nie jest dostępna.",
                 "tooManyFilenameAttempts": "Nie można utworzyć unikalnej tymczasowej nazwy pliku do pobrania: {{- path}}"
             },
+            "failed": "",
+            "failedWithHost": "",
+            "integrityFailed": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "started": "",
             "startedWithTitle": ""
         },

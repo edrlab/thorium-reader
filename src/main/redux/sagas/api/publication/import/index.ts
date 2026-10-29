@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { DownloadCancelled } from "readium-desktop/main/tools/downloadFailure";
 import { importFailureMessage } from "./importFailure";
 import { notificationSource } from "readium-desktop/main/tools/notificationSource";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -264,6 +265,7 @@ export function* importFromLink(
     } catch (e: any) {
 
         debug("importFromLink failed", link.url, e);
+        if (e instanceof DownloadCancelled) return undefined;
         yield put(
             toastActions.openRequest.build(
                 ToastType.Error,
@@ -414,6 +416,7 @@ export function* importFromFs(
                 } catch (error) {
 
                     debug("importFromFs (hash + import) fail with :" + filePath, error);
+                    if (error instanceof DownloadCancelled) return undefined;
                     yield put(
                         toastActions.openRequest.build(
                             ToastType.Error,

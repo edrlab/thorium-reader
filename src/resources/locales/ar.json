@@ -306,6 +306,11 @@
                 "readStreamMissing": "مسار التحميل غير متاح.",
                 "tooManyFilenameAttempts": "لم نتمكن من إنشاء اسم ملف محمًّل غير مكرر: {{- path}}"
             },
+            "failed": "",
+            "failedWithHost": "",
+            "integrityFailed": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "started": "",
             "startedWithTitle": ""
         },

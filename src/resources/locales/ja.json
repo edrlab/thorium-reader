@@ -281,6 +281,11 @@
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
             },
+            "failed": "",
+            "failedWithHost": "",
+            "integrityFailed": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "started": "",
             "startedWithTitle": ""
         },

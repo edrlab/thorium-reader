@@ -286,6 +286,11 @@
                 "readStreamMissing": "Download stream is unavailable.",
                 "tooManyFilenameAttempts": "Unable to create a unique temporary download filename: {{- path}}"
             },
+            "failed": "Could not download the publication. Please try again.",
+            "failedWithHost": "Could not download from “{{- hostname}}”. Please try again.",
+            "integrityFailed": "The download is incomplete or damaged. Please try again.",
+            "integrityFailedWithHost": "The download from “{{- hostname}}” is incomplete or damaged. Please try again.",
+            "saveFailed": "Could not save the download. Check available storage and permissions.",
             "started": "Download started.",
             "startedWithTitle": "Downloading {{- title}}."
         },

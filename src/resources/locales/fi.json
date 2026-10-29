@@ -286,6 +286,11 @@
                 "readStreamMissing": "Suoratoiston lataaminen ei onnistu.",
                 "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
             },
+            "failed": "",
+            "failedWithHost": "",
+            "integrityFailed": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "started": "",
             "startedWithTitle": ""
         },

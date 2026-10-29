@@ -291,6 +291,11 @@
                 "readStreamMissing": "Le flux de téléchargement n'est pas disponible.",
                 "tooManyFilenameAttempts": "Impossible de créer un fichier de téléchargement temporaire unique : {{- path}}"
             },
+            "failed": "Impossible de télécharger la publication. Veuillez réessayer.",
+            "failedWithHost": "Impossible de télécharger depuis « {{- hostname}} ». Veuillez réessayer.",
+            "integrityFailed": "Le téléchargement est incomplet ou endommagé. Veuillez réessayer.",
+            "integrityFailedWithHost": "Le téléchargement depuis « {{- hostname}} » est incomplet ou endommagé. Veuillez réessayer.",
+            "saveFailed": "Impossible d’enregistrer le téléchargement. Vérifiez l’espace de stockage disponible et les autorisations.",
             "started": "Téléchargement commencé.",
             "startedWithTitle": "Téléchargement de {{- title}}."
         },

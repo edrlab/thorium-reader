@@ -296,6 +296,11 @@
                 "readStreamMissing": "Поток загрузки недоступен.",
                 "tooManyFilenameAttempts": "Не удалось создать уникальное имя временного файла для скачивания: {{- path}}"
             },
+            "failed": "",
+            "failedWithHost": "",
+            "integrityFailed": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "started": "Скачивание началось.",
             "startedWithTitle": "Скачивание {{- title}}."
         },
