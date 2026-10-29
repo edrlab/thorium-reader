@@ -245,7 +245,7 @@ export function* importFromLinkService(
         if (isHtml || isJson) {
             debug("the link need to be packaged");
 
-            return yield* callTyped(packageFromLink, url.toString(), isHtml);
+            return yield* callTyped(packageFromLink, url.toString(), isHtml, contentTypeArray.includes(ContentType.AudioBook));
 
         } else if (isCustomizationProfilePublication) {
             const _contentType = parseContentType(link.type);

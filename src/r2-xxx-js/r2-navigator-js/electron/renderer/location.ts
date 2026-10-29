@@ -7,7 +7,6 @@
 
 import debug_ from "debug";
 import { ipcRenderer, shell } from "electron";
-import * as path from "node:path";
 import { URL } from "node:url";
 
 // import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
@@ -46,6 +45,7 @@ import {
     WebViewSlotEnum,
 } from "../common/styles";
 import { getCurrentAudioPlaybackRate, setCurrentAudioPlaybackRate } from "./audiobook";
+import { isAudiobookResource } from "./common/audiobook-resource";
 import {
     FRAG_ID_CSS_SELECTOR,
     URL_PARAM_A11Y_SUPPORT_ENABLED,
@@ -919,21 +919,7 @@ function loadLink(
         activeWebView.READIUM2.readiumCss = actualReadiumCss;
     }
 
-    const fileName = path.basename(linkPath);
-    const ext = path.extname(fileName);
-    const isAudio =
-        publication.Metadata &&
-        publication.Metadata.RDFType &&
-        /https?:\/\/schema\.org\/Audiobook$/.test(publication.Metadata.RDFType) &&
-        ((pubLink.TypeLink && pubLink.TypeLink.startsWith("audio/")) ||
-        // fallbacks:
-        /\.mp[3|4]$/i.test(ext) ||
-        /\.wav$/i.test(ext) ||
-        /\.aac$/i.test(ext) ||
-        /\.og[g|b|a]$/i.test(ext) ||
-        /\.aiff$/i.test(ext) ||
-        /\.wma$/i.test(ext) ||
-        /\.flac$/i.test(ext));
+    const isAudio = isAudiobookResource(publication.Metadata?.RDFType, pubLink.TypeLink, linkPath);
 
     let webViewSlot = WebViewSlotEnum.center;
 
