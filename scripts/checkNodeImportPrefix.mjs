@@ -21,7 +21,7 @@ async function processDir(folderPath) {
             for (const match of matches) {
                 // console.log("--> ", JSON.stringify(match, null, 4));
                 let captured = match[4];
-                if (captured.startsWith("src/")) {
+                if (captured.startsWith("src/") || captured.startsWith("node_modules/")) {
                     console.log("------------------------");
                     console.log(captured);
                     console.log(filePath);

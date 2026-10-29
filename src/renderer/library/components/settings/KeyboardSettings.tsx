@@ -54,6 +54,7 @@ import SVG from "../../../common/components/SVG";
 
 import os from "node:os";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
+import { PrettifyKeyboardShortcut } from "readium-desktop/renderer/common/components/Keyboard";
 import { useDispatch } from "../../../common/hooks/useDispatch";
 import { useTranslator } from "../../../common/hooks/useTranslator";
 
@@ -609,7 +610,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                         style={{border: isDuplicated ? "2px solid orange" : undefined}}
                                         className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
                                         <div className={stylesKeys.keyshortElement_shortcut}>
-                                            {this.prettifyKeyboardShortcut(def)}
+                                            <PrettifyKeyboardShortcut def={def} />
                                             <button
                                                 id={`keyEditButt_${id}`}
                                                 onClick={(_ev) => {
@@ -809,17 +810,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     // private onClickKeyboardShortcutsReload(defaults: boolean) {
     //     this.props.reloadKeyboardShortcuts(defaults);
     // }
-    private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
-        const alt = def.alt ? <span title={DETECTED_OS === "MacOS" ? "Option" : "Alt"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"} + </span> : null;
-        const shift = def.shift ? <span title="Shift"><SVG ariaHidden svg={ShiftIcon} /> + </span> : null;
-        const control = def.control ? <span title="Control">CTRL + </span> : null;
-        const meta = def.meta ? <span title={DETECTED_OS === "MacOS" ? "Command" : "Meta"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : <SVG ariaHidden svg={WindowsIcon} />} + </span> : null;
-        // const { layoutMap } = this.state;
-        // const softKeyRaw = layoutMap?.get(def.key as KeyMapCode) ?? def.key;
-        const softKeyRaw = applyKeyboardLayoutMap(def.key);
-        const softKey = toUpperIfSimpleLowerCase(softKeyRaw);
-        return <span aria-hidden>{shift}{control}{alt}{meta}<span>{softKey}</span></span>;
-    }
+
     private stringifyKeyboardShortcut(def: TKeyboardShortcut) {
         return textualizeKeyboardShortcut(def);
     }

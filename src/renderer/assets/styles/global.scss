@@ -5,21 +5,57 @@
 @use './partials/focus';
 
 /* .react-aria-Tooltip */
-.tooltipskiplink, .tooltipsearch {
+.tooltipKeyboardShortcut {
+  max-width: 15em;
   border-radius: 0.5em;
   border: 0.15em solid var(--color-text-primary);
   background: var(--color-neutral-base);
   color: var(--color-text-primary);
   forced-color-adjust: none;
   outline: none;
-  padding: 0.5em;
-  max-width: 10em;
+  padding: 0 0.15em;
   /* fixes FF gap */
   transform: translate3d(0, 0, 0);
   transition:
     transform 200ms,
     opacity 200ms;
   font: 100% system-ui;
+
+  > p {
+    margin-top: 0.15em;
+    margin-bottom: 0.15em;
+    padding: 0.4em;
+    border-radius: 0.25em;
+    border: 1px solid transparent;
+
+    > span {
+      display: flex;
+      gap: 0.5em;
+      align-items: center;
+
+      > span {
+        font-weight: bolder;
+
+        > svg {
+          width: 1.25em;
+        }
+      }
+    }
+  }
+
+  > p:nth-child(2) {
+    border: 1px solid #aaa;
+  }
+
+  > p:nth-child(3) {
+    font-size: 90%;
+    font-weight: bold;
+  }
+
+  > p:nth-child(4) {
+    font-size: 90%;
+    opacity: 0.8;
+  }
 
   &[data-entering],
   &[data-exiting] {

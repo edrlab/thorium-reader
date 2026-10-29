@@ -5,82 +5,90 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
-import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/print.scss";
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
-
-import classNames from "classnames";
-import debug_ from "debug";
-import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
-import { FocusScope } from "react-aria";
-import { useOverlayTriggerState } from "react-stately";
-import { OverlayTriggerStateContext, DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, VisuallyHidden, Tooltip, TooltipTrigger, Focusable } from "react-aria-components";
-import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
-
 // import * as ReactDOM from "react-dom";
-import { ReaderConfig } from "readium-desktop/common/models/reader";
-import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
-import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
-import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
-import * as PauseIcon from "readium-desktop/renderer/assets/icons/audio-pause-icon.svg";
-import * as PlayIcon from "readium-desktop/renderer/assets/icons/audio-play-icon.svg";
-import * as SkipNext from "readium-desktop/renderer/assets/icons/audio-next-icon.svg";
-import * as SkipPrevious from "readium-desktop/renderer/assets/icons/audio-previous-icon.svg";
-import * as StopIcon from "readium-desktop/renderer/assets/icons/audio-stop-icon.svg";
-import * as AudioIcon from "readium-desktop/renderer/assets/icons/speaker-icon.svg";
-import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-icon.svg";
-import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
-import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
-import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 // import * as BookmarkFullIcon from "readium-desktop/renderer/assets/icons/.unused-icons/outline-bookmark-24px.svg";
 // import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
-import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
-import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
-import * as ExitFullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
 // import * as FloppyDiskIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 // import * as ChevronUpIcon from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 // import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-
 // import { fixedLayoutZoomPercent,
 //     // stealFocusDisable
 // } from "@r2-navigator-js/electron/renderer/dom";
-import {
-    keyboardFocusRequest,
-    MediaOverlaysStateEnum, TTSStateEnum,
-} from "@r2-navigator-js/electron/renderer/index";
-import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-
-import { IPdfPlayerScale, TPdfAnnotationDraftTransport } from "../pdf/common/pdfReader.type";
-import HeaderSearch from "./header/HeaderSearch";
-import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
-import { ReaderMenu } from "./ReaderMenu/ReaderMenu";
 // import {
 //     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 // } from "readium-desktop/renderer/common/keyboard";
 // import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+// import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import {
+    keyboardFocusRequest,
+    MediaOverlaysStateEnum, TTSStateEnum,
+} from "@r2-navigator-js/electron/renderer/index";
+import classNames from "classnames";
+import debug_ from "debug";
+import * as React from "react";
+import { FocusScope } from "react-aria";
+import { DialogTrigger, Focusable, OverlayArrow, OverlayTriggerStateContext, Popover, Dialog as PopoverDialog, Pressable, Tooltip, TooltipTrigger, VisuallyHidden } from "react-aria-components";
 import { connect } from "react-redux";
+import { useOverlayTriggerState } from "react-stately";
+import { isAudiobookFn } from "readium-desktop/common/isManifestType";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
+import { DockTypeName } from "readium-desktop/common/models/dock";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { TDispatch } from "readium-desktop/typings/redux";
-import { PublicationInfoReaderWithRAC, PublicationInfoReaderWithRACContent, PublicationInfoReaderWithRACTrigger } from "./dialog/publicationInfos/PublicationInfo";
-import {ReaderSettings}  from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
-import {ReadingAudio} from "readium-desktop/renderer/reader/components/ReadingAudio";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
+import * as SkipNext from "readium-desktop/renderer/assets/icons/audio-next-icon.svg";
+import * as PauseIcon from "readium-desktop/renderer/assets/icons/audio-pause-icon.svg";
+import * as PlayIcon from "readium-desktop/renderer/assets/icons/audio-play-icon.svg";
+import * as SkipPrevious from "readium-desktop/renderer/assets/icons/audio-previous-icon.svg";
+import * as StopIcon from "readium-desktop/renderer/assets/icons/audio-stop-icon.svg";
+import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
+import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
+import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
+import * as ExitFullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
+import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-icon.svg";
+import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
+import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
+import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
+import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
+import * as AudioIcon from "readium-desktop/renderer/assets/icons/speaker-icon.svg";
+import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/print.scss";
+import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import { PrettifyKeyboardShortcut } from "readium-desktop/renderer/common/components/Keyboard";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
+import { ReaderSettings } from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
+import { ReadingAudio } from "readium-desktop/renderer/reader/components/ReadingAudio";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import { triggerPdfAnnotation } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
-import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
-import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { IPdfPlayerScale, TPdfAnnotationDraftTransport } from "../pdf/common/pdfReader.type";
 import { readerLocalActionAnnotations, readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../redux/actions";
 import { AnnotationEdit } from "./AnnotationEdit";
-import { isAudiobookFn } from "readium-desktop/common/isManifestType";
-import { VoiceSelection } from "./header/voiceSelection";
+import { PublicationInfoReaderWithRAC, PublicationInfoReaderWithRACContent, PublicationInfoReaderWithRACTrigger } from "./dialog/publicationInfos/PublicationInfo";
+import { BookmarkButton } from "./header/BookmarkButton";
+import HeaderSearch from "./header/HeaderSearch";
 import type { TLanguage } from "./header/voiceSelection";
-// import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import { VoiceSelection } from "./header/voiceSelection";
+import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
+import { PrintContainer } from "./Print";
+import { ReaderMenu } from "./ReaderMenu/ReaderMenu";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -91,18 +99,8 @@ import type { TLanguage } from "./header/voiceSelection";
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
 // e__slint-disable-next-line @typescript-eslint/ban-ts-comment
 // @__ts-ignore TS1479
-import { WebSpeechVoiceManager } from "@readium/speech";
 import type { ReadiumSpeechVoice } from "@readium/speech";
-
-import { BookmarkButton } from "./header/BookmarkButton";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { DockTypeName } from "readium-desktop/common/models/dock";
-import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import { PrintContainer } from "./Print";
-import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
-import { PublicationView } from "readium-desktop/common/views/publication";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { WebSpeechVoiceManager } from "@readium/speech";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -569,26 +567,42 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             >
                 <div>
                     <ul>
-                        <li >
+                        <li>
+                        <TooltipTrigger delay={500} closeDelay={0} trigger="hover">
+                        <Focusable>
                             <button
                                 className={stylesReader.menu_button}
                                 onClick={this.props.handleReaderClose}
-                                title={__("reader.navigation.backHomeTitle")}
+                                aria-label={`${__("reader.navigation.backHomeTitle")} [${textualizeKeyboardShortcut(this.props.keyboardShortcuts.CloseReader)}]` + ` (${this.props.__("settings.keyboard.list.CloseReader.name")})` + ` <${this.props.__("settings.keyboard.list.CloseReader.description")}>`}
                             >
                                 <SVG ariaHidden={true} svg={BackIcon} />
                             </button>
+                        </Focusable>
+                        <Tooltip placement="bottom" offset={0} className={classNames("tooltipKeyboardShortcut")}>
+                        <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
+                        <p><PrettifyKeyboardShortcut def={this.props.keyboardShortcuts.CloseReader} /></p>
+                        <p>{this.props.__("settings.keyboard.list.CloseReader.name")}</p>
+                        <p>{this.props.__("settings.keyboard.list.CloseReader.description")}</p>
+                        </Tooltip>
+                        </TooltipTrigger>
                         </li>
                         <li>
                             <PublicationInfoReaderWithRAC handlePublicationInfo={this.props.handlePublicationInfo}>
-                                <PublicationInfoReaderWithRACTrigger asChild>
+                                <PublicationInfoReaderWithRACTrigger
+                                    asChild
+                                    tooltipkeyboardShortcut={this.props.keyboardShortcuts.OpenReaderInfo}
+                                    tooltipkeyboardShortcutName={this.props.keyboardShortcuts.OpenReaderInfo ? this.props.__("settings.keyboard.list.OpenReaderInfo.name") : "WTF??"}
+                                    tooltipkeyboardShortcutDescription={this.props.__("settings.keyboard.list.OpenReaderInfo.description")}
+                                >
                                     <button
                                         className={stylesReader.menu_button}
                                         ref={this.infoMenuButtonRef}
-                                        title={__("reader.navigation.infoTitle")}
+                                        aria-label={`${__("reader.navigation.infoTitle")} [${textualizeKeyboardShortcut(this.props.keyboardShortcuts.OpenReaderInfo)}]` + ` (${this.props.__("settings.keyboard.list.OpenReaderInfo.name")})` + ` <${this.props.__("settings.keyboard.list.OpenReaderInfo.description")}>`}
                                         disabled={(this.props.settingsOpen || this.props.menuOpen || this.props.pdfPrintOpen) && !isDockedMode}
                                     >
                                         <SVG ariaHidden={true} svg={InfosIcon} />
                                     </button>
+
                                 </PublicationInfoReaderWithRACTrigger>
                                 <PublicationInfoReaderWithRACContent />
                             </PublicationInfoReaderWithRAC>
