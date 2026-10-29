@@ -15,12 +15,17 @@ describe("import clipboard diagnostics", () => {
         expect(text).toContain(cause.stack);
     });
 
-    it("keeps URL paths, non-sensitive queries and fragments while redacting credentials", () => {
-        const error = new Error("Request https://user:password@example.org:8443/book?page=2&token=secret#chapter Authorization: Bearer credential");
-        const text = formatImportDiagnostics("Safe message", error);
-        for (const secret of ["user:password", "token=secret", "credential"]) expect(text).not.toContain(secret);
-        expect(text).toContain("https://example.org:8443/book?page=2&token=%5Bredacted%5D#chapter");
+    it("removes explicit URL credentials while preserving queries and fragments", () => {
+        const source = "https://user:password@example.org:8443/book?page=2&token=secret#chapter";
+        const text = formatImportDiagnostics("Safe message", undefined, source);
+        expect(text).toContain("Source: https://example.org:8443/book?page=2&token=secret#chapter");
+        expect(text).not.toContain("user:password");
+        expect(formatImportDiagnostics("Safe", undefined, "https://[invalid")).toContain("[invalid URL]");
+    });
 
+    it("copies stack text unchanged instead of applying pattern-based redaction", () => {
+        const error = new Error("Authorization: Basic example-token https://user:password@example.org/book?token=abc'def");
+        expect(formatImportDiagnostics("Safe", error)).toContain(error.stack);
     });
 
     it("retains HTTP status and the non-enumerable original transport stack without dumping a response", () => {
@@ -33,7 +38,8 @@ describe("import clipboard diagnostics", () => {
         const text = formatImportDiagnostics("Safe message", error, data.url);
         expect(error).toBeInstanceOf(DownloadFailure);
         expect(text).toContain("Category: network");
-        expect(text).toContain("Request URL: https://example.org/private?secret=%5Bredacted%5D");
+        expect(text).toContain("URL: https://example.org/private?secret=1");
+        expect(text).not.toContain("Unavailable");
         expect(text).toContain("HTTP status: 503");
         expect(text).toContain(original.stack);
         expect(text).not.toContain("secret-header");
@@ -73,4 +79,12 @@ it("includes the failing resource URL alongside the original local import path",
     const text = formatImportDiagnostics("Safe", new DownloadFailure("network", source), "/books/license.lcpl");
     expect(text).toContain("Source: /books/license.lcpl");
     expect(text).toContain(`Download source: ${source}`);
+});
+
+
+it("includes only the final HTTP URL and numeric status from a response", () => {
+    const data = { url: "https://origin.example/book", responseUrl: "https://user:password@cdn.example/book?key=123#part",
+        statusCode: 403, statusMessage: "Do not copy server-provided text", response: { body: "Do not copy body" } };
+    const text = formatImportDiagnostics("Safe", data);
+    expect(text).toBe("Safe\n\nURL: https://cdn.example/book?key=123#part\n\nHTTP status: 403");
 });
