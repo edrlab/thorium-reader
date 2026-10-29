@@ -273,28 +273,62 @@
             "nothing": "Er is geen aantekening om geïmporteerd te worden, de import wordt afgebroken",
             "success": "Import succesvol voltooid."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Download geannuleerd.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwachte SHA-256 hash {{- expected}}, ontvangen {{- actual}}.",
                 "httpGet": "HTTP download mislukt: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "De tijdelijke download bestandsnaam is ongeldig.",
                 "invalidLink": "De download link is ongeldig.",
                 "invalidTempDirectory": "De tijdelijke downloadmap is ongeldig.",
                 "lengthMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwacht {{- expected}} bytes, ontvangen {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Downloadstream is niet beschikbaar.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Kan geen unieke tijdelijke downloadbestandsnaam aanmaken: {{- path}}"
             },
-            "started": "",
+            "failedWithHost": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} is al toegevoegd.",
-            "fail": "Het toevoegen van {{- path}} is mislukt. {{- err}}",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "Het toevoegen van {{- title}} is gelukt.",
             "unsupportedFormat": ""
         },
@@ -324,7 +358,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "De publicatie kan niet worden geopend: {{- err}}",
             "failed": "",
             "folderNotFound": "De publicatiemap kan niet worden gevonden. Importeer deze opnieuw of configureer de extra opslagruimte in Instellingen > Opslag.",
             "missingLicense": ""
@@ -745,7 +778,6 @@
         "duration": {
             "title": "Duur"
         },
-        "encryptedNoLicense": "Publicatie is versleuteld maar heeft geen LCP-licentie!",
         "expired": "Uitlening verlopen",
         "expiredLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie verlopen is.",
         "incorrectPassphrase": "Geen opgeslagen wachtwoordzin past bij de publicatie of de ingevoerde wachtwoordzin is verkeerd.",

@@ -283,28 +283,62 @@
             "nothing": "Nėra importui paruoštų pastabų, importas nutraukiamas",
             "success": "Importavimas sėkmingai užbaigtas."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Atsiuntimas nutrauktas.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
                 "httpGet": "HTTP atsiuntimas nepavyko: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Laikino atsiuntimo failo pavadinimas netaisyklingas.",
                 "invalidLink": "Atsiuntimo nuoroda netaisyklinga.",
                 "invalidTempDirectory": "Netaisyklingas laikinas atsiuntimo aplankas.",
                 "lengthMismatch": "Atsiųsto failo vientisumo patikra nepavyko: tikėtasi baitų: {{- expected}}, gauta: {{- actual}}.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Neprieinamas atsiuntimo srautas.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Nepavyko sukurti unikalaus laikino atsiuntimo failo pavadinimo: {{- path}}"
             },
-            "started": "Atsiuntimas pradėtas.",
+            "failedWithHost": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "startedWithTitle": "Atsiunčiama „{{- title}}“."
         },
         "import": {
             "alreadyImport": "[{{- title}}] jau importuotas.",
-            "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "[{{- title}}] importas baigtas.",
             "unsupportedFormat": ""
         },
@@ -334,7 +368,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Nepavyko atverti leidinio : [{{- err}}]",
             "failed": "",
             "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“.",
             "missingLicense": ""
@@ -757,7 +790,6 @@
         "duration": {
             "title": "Trukmė"
         },
-        "encryptedNoLicense": "Leidinys yra užšifruotas, tačiau stokoja LCP licencijos!",
         "expired": "Skolinimo terminas baigėsi",
         "expiredLcp": "Šio leidinio LCP licencijos galiojimo laikas baigėsi.",
         "incorrectPassphrase": "Jokia išsaugota slaptafrazė neatitinka leidinio arba įvesta neteisinga slaptafrazė.",

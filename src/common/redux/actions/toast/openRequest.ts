@@ -14,10 +14,11 @@ export const ID = "TOAST_OPEN_REQUEST";
 export interface Payload {
     type: ToastType;
     data: string | undefined;
+    copyText?: string;
     publicationIdentifier: string | undefined;
 }
 
-export function build(type: ToastType, data: string, publicationIdentifier?: string, windowIdentifier?: string):
+export function build(type: ToastType, data: string, publicationIdentifier?: string, windowIdentifier?: string, copyText?: string):
     Action<typeof ID, Payload> & Partial<WithDestination<WindowReaderDestination>> {
 
     return {
@@ -26,6 +27,7 @@ export function build(type: ToastType, data: string, publicationIdentifier?: str
         payload: {
             type,
             data,
+            ...(copyText !== undefined ? { copyText } : {}),
             publicationIdentifier,
         },
     };

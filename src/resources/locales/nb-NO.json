@@ -273,28 +273,62 @@
             "nothing": "Det finnes ingen notater som kan importeres. Importen avbrytes.",
             "success": "Importen er fullført."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
             },
-            "started": "",
+            "failedWithHost": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} er allerede importert",
-            "fail": "Importen av {{- path}} mislyktes. {{- err}}",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "{{- title}} er nå importert.",
             "unsupportedFormat": ""
         },
@@ -324,7 +358,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Boken kan ikke åpnes: {{- err}}",
             "failed": "",
             "folderNotFound": "",
             "missingLicense": ""
@@ -745,7 +778,6 @@
         "duration": {
             "title": "Spilletid"
         },
-        "encryptedNoLicense": "Publikasjonen er kryptert, men mangler LCP-lisens!",
         "expired": "Lånet er utløpt",
         "expiredLcp": "Denne boken kan ikke leses, LCP-lisensen er utløpt.",
         "incorrectPassphrase": "Ingen lagret passfrase passer til publikasjonen, eller passfrasen du skrev inn, er feil.",

@@ -160,7 +160,7 @@ export async function importPublicationFromFS(
                 return await importPublicationFromFS(packagePath, willBeImmediatelyFollowedByOpen, hash, lcpHashedPassphrase);
             }
 
-            throw new Error("convertDaisyToReadiumWebPub failed?!");
+            throw new Error(getTranslator().translate("message.import.errors.daisyConversionFailed"));
             // break;
 
         // case acceptedExtensionObject.cbz:
@@ -198,7 +198,7 @@ export async function importPublicationFromFS(
                     const r2LCPJson = JSON.parse(r2LCPStr);
 
                     if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
-                        throw new ImportFailure("invalidLicense", `LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
+                        throw new ImportFailure("invalidLicense", getTranslator().translate("message.import.lcpLicenseMalformed"));
                     }
 
                     const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
@@ -221,7 +221,7 @@ export async function importPublicationFromFS(
     }
 
     if (!r2Publication) {
-        throw new ImportFailure("invalidPublication", "publication manifest not defined");
+        throw new ImportFailure("invalidPublication", getTranslator().translate("message.import.errors.manifestMissing"));
     }
 
     // const r2PublicationJson = TaJsonSerialize(r2Publication);

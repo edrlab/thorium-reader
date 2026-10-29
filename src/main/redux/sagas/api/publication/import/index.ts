@@ -6,6 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { formatImportDiagnostics } from "readium-desktop/main/tools/importDiagnostics";
+import { DownloadCancelled } from "readium-desktop/main/tools/downloadFailure";
 import { importFailureMessage } from "./importFailure";
 import { notificationSource } from "readium-desktop/main/tools/notificationSource";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -168,7 +170,7 @@ export function* importFromLink(
         );
 
         if (!publicationDocument) {
-            throw new Error("publicationDocument not imported on db");
+            throw new Error(getTranslator().translate("message.import.errors.notImported"));
         }
 
         const publicationViewConverter = diMainGet("publication-view-converter");
@@ -264,10 +266,12 @@ export function* importFromLink(
     } catch (e: any) {
 
         debug("importFromLink failed", link.url, e);
+        if (e instanceof DownloadCancelled) return undefined;
+        const message = importFailureMessage(e, notificationSource(link.url) || "");
         yield put(
             toastActions.openRequest.build(
                 ToastType.Error,
-                importFailureMessage(e, notificationSource(link.url) || ""),
+                message, undefined, undefined, formatImportDiagnostics(message, e, link.url),
             ),
         );
     }
@@ -287,7 +291,7 @@ export function* importFromString(
             const [publicationDocument]  = yield* callTyped(importFromStringService, manifest, willBeImmediatelyFollowedByOpen, baseFileUrl);
 
             if (!publicationDocument) {
-                throw new Error("publicationDocument not imported on db");
+                throw new Error(getTranslator().translate("message.import.errors.notImported"));
             }
 
             const publicationViewConverter = diMainGet("publication-view-converter");
@@ -297,7 +301,7 @@ export function* importFromString(
             return publicationView;
 
         } catch (error) {
-            throw new Error(`importFromLink error ${error}`);
+            throw new Error(getTranslator().translate("message.import.errors.manifestImportFailed"), { cause: error });
         }
     }
 
@@ -328,12 +332,12 @@ export function* importFromFs(
                     // });
                     const data = yield* callTyped(importFromFsService, fpath, willBeImmediatelyFollowedByOpen);
                     if (!data) {
-                        throw new Error("importFromFsService undefined");
+                        throw new Error(getTranslator().translate("message.import.errors.noImportResult"));
                     }
                     const [publicationDocument, alreadyImported] = data;
 
                     if (!publicationDocument) {
-                        throw new Error("publicationDocument not imported on db");
+                        throw new Error(getTranslator().translate("message.import.errors.notImported"));
                     }
 
                     const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
@@ -414,10 +418,12 @@ export function* importFromFs(
                 } catch (error) {
 
                     debug("importFromFs (hash + import) fail with :" + filePath, error);
+                    if (error instanceof DownloadCancelled) return undefined;
+                    const message = importFailureMessage(error, notificationSource(fpath) || "");
                     yield put(
                         toastActions.openRequest.build(
                             ToastType.Error,
-                            importFailureMessage(error, notificationSource(fpath) || ""),
+                            message, undefined, undefined, formatImportDiagnostics(message, error, fpath),
                         ),
                     );
                 }

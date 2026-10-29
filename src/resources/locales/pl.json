@@ -283,28 +283,62 @@
             "nothing": "Brak notatek gotowych do zaimportowania, przerywam import",
             "success": "Import zakończony pomyślnie."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Pobieranie pliku zostało anulowane.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wartość hasha SHA-256 to {{- expected}}, a obliczona to {{- actual}}.",
                 "httpGet": "Nie udało się pobrać pliku przez HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Tymczasowa nazwa pliku do pobrania jest nieprawidłowa.",
                 "invalidLink": "Link do pobrania jest nieprawidłowy.",
                 "invalidTempDirectory": "Tymczasowy katalog do pobierania jest nieprawidłowy.",
                 "lengthMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wielkość pliku to {{- expected}} bajtów, pobrany plik ma {{- actual}} bajtów.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Transmisja danych nie jest dostępna.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Nie można utworzyć unikalnej tymczasowej nazwy pliku do pobrania: {{- path}}"
             },
-            "started": "",
+            "failedWithHost": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] został już zaimportowany.",
-            "fail": "Importowanie [{{- path}}] nie powiodło się: [{{- err}}]",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "Importowanie [{{- title}}] zakończone.",
             "unsupportedFormat": ""
         },
@@ -334,7 +368,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Ładowanie publikacji nie powiodło się: [{{- err}}]",
             "failed": "",
             "folderNotFound": "Nie można znaleźć katalogu publikacji. Zaimportuj go ponownie lub skonfiguruj dodatkową przestrzeń dyskową w sekcji Ustawienia > Przestrzeń dyskowa.",
             "missingLicense": ""
@@ -757,7 +790,6 @@
         "duration": {
             "title": "Czas trwania"
         },
-        "encryptedNoLicense": "Publikacja jest zaszyfrowana, ale nie posiada licencji LCP!",
         "expired": "Wypożyczenie wygasło",
         "expiredLcp": "Licencja LCP tej publikacji wygasła.",
         "incorrectPassphrase": "Żadne zapisane hasło dostępu nie pasuje do publikacji lub wprowadzone hasło jest nieprawidłowe.",

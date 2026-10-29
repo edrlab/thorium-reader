@@ -273,28 +273,62 @@
             "nothing": "",
             "success": ""
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
             },
-            "started": "",
+            "failedWithHost": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{-  title}} xa estaba importado",
-            "fail": "A importación de {{-  path}} fallou. {{-  err}}",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "A importación de {{-  title}} finalizou.",
             "unsupportedFormat": ""
         },
@@ -324,7 +358,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Non se pode abrir a publicación: {{-  err}}",
             "failed": "",
             "folderNotFound": "",
             "missingLicense": ""
@@ -745,7 +778,6 @@
         "duration": {
             "title": "Duración"
         },
-        "encryptedNoLicense": "",
         "expired": "Préstamo expirado",
         "expiredLcp": "Este libro non se pode ler porque a licenza  LCP expirou.",
         "incorrectPassphrase": "",

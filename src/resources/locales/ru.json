@@ -283,28 +283,62 @@
             "nothing": "Нет ни одной готовой к импорту заметки, импорт прерван",
             "success": "Импорт успешно завершён."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Загрузка отменена.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Ошибка проверки целостности загруженного файла: ожидаемый хэш SHA-256 {{- expected}}, полученный {{- actual}}.",
                 "httpGet": "Ошибка загрузки по протоколу HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "Скачивание прервалась: данные не получены в течение 30 секунд. Пожалуйста, попробуйте ещё раз.",
                 "invalidFilename": "Неверное имя временного скачиваемого файла.",
                 "invalidLink": "Ссылка для скачивания недействительна.",
                 "invalidTempDirectory": "Временный каталог загрузки недействителен.",
                 "lengthMismatch": "Ошибка проверки целостности скаченного файла: ожидалось {{- expected}} байт, получено {{- actual}} байт.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Поток загрузки недоступен.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Не удалось создать уникальное имя временного файла для скачивания: {{- path}}"
             },
-            "started": "Скачивание началось.",
+            "failedWithHost": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "startedWithTitle": "Скачивание {{- title}}."
         },
         "import": {
             "alreadyImport": "[{{- title}}] уже импортировано.",
-            "fail": "Импорт {{- path}} не удался. {{- err}}",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "Импорт {{- title}} закончен.",
             "unsupportedFormat": ""
         },
@@ -334,7 +368,6 @@
             "tagsFailed": "Не удалось сохранить теги публикации. Попробуйте ещё раз."
         },
         "open": {
-            "error": "Книга не может быть открыта : {{- err}}",
             "failed": "",
             "folderNotFound": "Каталог публикации не найден. Повторно импортируйте его или настройте дополнительное хранилище в разделе Настройки > Хранилище.",
             "missingLicense": ""
@@ -757,7 +790,6 @@
         "duration": {
             "title": "Продолжительность"
         },
-        "encryptedNoLicense": "Публикация зашифрована, но не имеет лицензии LCP!",
         "expired": "Срок абонемента истёк",
         "expiredLcp": "Эту книгу нельзя прочитать, потому что срок действия лицензии LCP истек.",
         "incorrectPassphrase": "Ни один из сохранённых паролей не подходит к публикации, или введённый пароль неверен.",

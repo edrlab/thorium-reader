@@ -54,6 +54,17 @@ export class ToastManager extends React.Component<IProps> {
         if (toast !== oldProps.toast) {
             if (shouldAddToast(this.queue.visibleToasts, toast, this.props.pubId)) {
                 this.queue.add(toast, { timeout: 5000 });
+            } else if (toast.open && toast.data?.trim()
+                && !(toast.publicationIdentifier && this.props.pubId && toast.publicationIdentifier !== this.props.pubId)) {
+                const duplicate = this.queue.visibleToasts.find(({ content }) =>
+                    content.type === toast.type && content.data === toast.data
+                    && content.publicationIdentifier === toast.publicationIdentifier);
+                if (duplicate && duplicate.content.copyText !== toast.copyText) {
+                    // The queue has no update API. Keep its key, focus, and timer, replacing only content.
+                    // Do not mutate the Redux state object stored as the original content.
+                    duplicate.content = { ...duplicate.content, copyText: toast.copyText };
+                    this.forceUpdate();
+                }
             }
         }
     }

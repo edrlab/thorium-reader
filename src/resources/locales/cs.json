@@ -283,28 +283,62 @@
             "nothing": "Žádná poznámka k importu, přerušuji import",
             "success": "Import úspěšně dokončen."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
             },
-            "started": "",
+            "failedWithHost": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "Publikace „{{- title}}“ je již nahráná.",
-            "fail": "Import [{{- path}}] selhal: [{{- err}}]",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "Import publikace „{{- title}}“ dokončen.",
             "unsupportedFormat": ""
         },
@@ -334,7 +368,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Načítání publikace sehlalo: [{{- err}}]",
             "failed": "",
             "folderNotFound": "",
             "missingLicense": ""
@@ -757,7 +790,6 @@
         "duration": {
             "title": "Trvání"
         },
-        "encryptedNoLicense": "Publikace je šifrovaná, ale postrádá LCP licenci!",
         "expired": "Výpůjčka vypršela",
         "expiredLcp": "Licence LCP této publikace vypršela.",
         "incorrectPassphrase": "",

@@ -293,28 +293,62 @@
             "nothing": "لا توجد أي ملاحظة جاهزة للاستيراد، جاري إلغاء عملية الاستيراد",
             "success": "اكتمل الاستيراد بنجاح."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "تم إلغاء التحميل.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "فشل التحقق من الملف المحمَّل: شفرة SHA-256 المتوقعة هي: {{- expected}}، لكن الفعلية: {{- actual}}.",
                 "httpGet": "فشل التحميل عبر HTTP: [{{- statusMessage}}] ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "الاسم المؤلف للملف المحمل غير صحيح.",
                 "invalidLink": "رابط التحميل غير صالح.",
                 "invalidTempDirectory": "مجلد التحميل المؤقت غير صالح.",
                 "lengthMismatch": "فشل التحقق من سلامة الملف المحمل: المتوقع {{- expected}} بايت، لكن الفعلي {{- actual}} بايت.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "مسار التحميل غير متاح.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "لم نتمكن من إنشاء اسم ملف محمًّل غير مكرر: {{- path}}"
             },
-            "started": "",
+            "failedWithHost": "",
+            "integrityFailedWithHost": "",
+            "saveFailed": "",
             "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "تم استيراد [{{- title}}] مسبقًا.",
-            "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "اكتمل استيراد [{{- title}}].",
             "unsupportedFormat": ""
         },
@@ -344,7 +378,6 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "فشل تحميل المنشور: [{{- err}}]",
             "failed": "",
             "folderNotFound": "لم نتمكن من العثور على مجلد الكتاب. أعد جلبه أو عدل إعدادات ذاكرة التخزين الإضافية في الإعدادات > التخزين.",
             "missingLicense": ""
@@ -769,7 +802,6 @@
         "duration": {
             "title": "المدة"
         },
-        "encryptedNoLicense": "المنشور مشفّر لكنه يفتقر إلى ترخيص LCP!",
         "expired": "انتهت مدة الاستعارة",
         "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
         "incorrectPassphrase": "لا يوجد عبارة مرور مخزّنة تتناسب مع المنشور، أو أن عبارة المرور المكتوبة غير صحيحة.",
