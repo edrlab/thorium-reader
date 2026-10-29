@@ -83,6 +83,7 @@ interface IState {
     displayKeyboardShortcuts: boolean;
     editKeyboardShortcutId: TKeyboardShortcutId | undefined;
     editKeyboardShortcutData: TKeyboardShortcut | undefined;
+    tooltipOpen: TKeyboardShortcutId | undefined;
     searchItem: string | undefined;
     refresh: number;
 }
@@ -156,6 +157,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             displayKeyboardShortcuts: false,
             editKeyboardShortcutId: undefined,
             editKeyboardShortcutData: undefined,
+            tooltipOpen: undefined,
             searchItem: undefined,
             refresh: 0,
         };
@@ -589,17 +591,28 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 const heading = <div style={{display: "flex", border: isDuplicated ? "2px solid red" : undefined}}>
                                         <h3 className={stylesKeys.keyshortElement_title}>{cname}</h3>
                                     {    cleanNames[id].description.length ?
-                                        <TooltipTrigger>
-                                            <Button style={{ width: "15px", height: "15px", marginLeft: "3px" }} aria-label={cdesc}>
+                                        <TooltipTrigger
+                                            isOpen={this.state.tooltipOpen === id}
+                                            onOpenChange={(open) => this.setState({tooltipOpen: open ? id : undefined})}
+                                            >
+                                            <Button
+                                                onClick={() => {
+                                                    this.setState({ tooltipOpen: id });
+                                                }}
+                                                style={{ width: "15px", height: "15px", marginLeft: "3px" }}
+                                                aria-label={cdesc}>
                                                 <SVG ariaHidden svg={InfoIcon} />
                                             </Button>
-                                            <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)"}}>
-                                                <OverlayArrow>
-                                                <svg width={8} height={8} viewBox="0 0 8 8">
-                                                    <path d="M0 0 L4 4 L8 0" />
-                                                </svg>
-                                                </OverlayArrow>
-                                                {cdesc}
+                                            <Tooltip
+                                                aria-hidden
+                                                placement="top"
+                                                offset={0}
+                                                dir={isRTL ? "rtl" : "ltr"}
+                                                className={classNames("tooltipKeyboardShortcut")}
+                                                // style={{ border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)" }}
+                                            >
+                                            <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
+                                                <p>{cdesc}</p>
                                             </Tooltip>
                                         </TooltipTrigger>
                                         : ""
