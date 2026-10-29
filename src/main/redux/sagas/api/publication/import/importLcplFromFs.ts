@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { getTranslator } from "readium-desktop/common/services/translator";
 import { ImportFailure } from "./importFailure";
 import * as fs from "node:fs";
 import moment from "moment";
@@ -41,7 +42,7 @@ export function* importLcplFromFS(
     const r2LCPJson = JSON.parse(r2LCPStr);
 
     if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
-        throw new ImportFailure("invalidLicense", `LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
+        throw new ImportFailure("invalidLicense", getTranslator().translate("message.import.lcpLicenseMalformed"));
     }
 
     const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);

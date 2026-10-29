@@ -4,21 +4,22 @@ import { DownloadFailure, checkDownloadResponse } from "readium-desktop/main/too
 import type { IHttpGetResult } from "readium-desktop/common/utils/http";
 
 describe("import clipboard diagnostics", () => {
-    it("includes original nested stacks and only a filename as source", () => {
+    it("includes original nested stacks and the full file path as source", () => {
         const cause = new Error("Original failure");
         const error = new Error("Import failed", { cause });
         const text = formatImportDiagnostics("Safe message", error, "/private/books/book.epub");
-        expect(text).toContain("Source: book.epub");
-        expect(text).not.toContain("Source: /private/");
+        expect(text).toContain("Source: /private/books/book.epub");
+        expect(formatImportDiagnostics("Safe", error, "C:\\private\\books\\book.epub"))
+            .toContain("Source: C:\\private\\books\\book.epub");
         expect(text).toContain(error.stack);
         expect(text).toContain(cause.stack);
     });
 
-    it("redacts URL credentials, queries, fragments, authorization, and embedded license data", () => {
-        const error = new Error("Request https://user:password@example.org/book?token=secret#private Authorization: Bearer credential");
+    it("keeps URL paths, non-sensitive queries and fragments while redacting credentials and license data", () => {
+        const error = new Error("Request https://user:password@example.org:8443/book?page=2&token=secret#chapter Authorization: Bearer credential");
         const text = formatImportDiagnostics("Safe message", error);
-        for (const secret of ["user:password", "token=secret", "#private", "credential"]) expect(text).not.toContain(secret);
-        expect(text).toContain("https://example.org/book");
+        for (const secret of ["user:password", "token=secret", "credential"]) expect(text).not.toContain(secret);
+        expect(text).toContain("https://example.org:8443/book?page=2&token=%5Bredacted%5D#chapter");
         const license = formatImportDiagnostics("Safe message", new Error('LCP license malformed: {"email":"private@example.org"}'));
         expect(license).not.toContain("private@example.org");
         expect(license).toContain("[license data omitted]");
@@ -34,6 +35,7 @@ describe("import clipboard diagnostics", () => {
         const text = formatImportDiagnostics("Safe message", error, data.url);
         expect(error).toBeInstanceOf(DownloadFailure);
         expect(text).toContain("Category: network");
+        expect(text).toContain("Request URL: https://example.org/private?secret=%5Bredacted%5D");
         expect(text).toContain("HTTP status: 503");
         expect(text).toContain(original.stack);
         expect(text).not.toContain("secret-header");
@@ -65,4 +67,12 @@ describe("import clipboard diagnostics", () => {
         Object.defineProperty(error, "stack", { get: () => { throw new Error("getter failed"); } });
         expect(() => formatImportDiagnostics("Safe", error)).not.toThrow();
     });
+});
+
+
+it("includes the failing resource URL alongside the original local import path", () => {
+    const source = "https://cdn.example.org:8443/resources/chapter.xhtml?page=2#part";
+    const text = formatImportDiagnostics("Safe", new DownloadFailure("network", source), "/books/license.lcpl");
+    expect(text).toContain("Source: /books/license.lcpl");
+    expect(text).toContain(`Download source: ${source}`);
 });

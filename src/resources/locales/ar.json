@@ -320,6 +320,7 @@
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "اكتمل استيراد [{{- title}}].",
             "unsupportedFormat": ""
         },

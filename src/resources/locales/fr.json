@@ -305,6 +305,7 @@
             "failed": "Impossible d’importer « {{- name}} ».",
             "invalidLicense": "Impossible d’importer « {{- name}} ». La licence de la publication est invalide.",
             "invalidPublication": "Impossible d’importer « {{- name}} ». Le manifeste de la publication est manquant.",
+            "lcpLicenseMalformed": "La licence LCP est mal formée.",
             "success": "L'ajout de {{- title}} est achevé.",
             "unsupportedFormat": "Impossible d’importer « {{- name}} ». Ce format de fichier n’est pas pris en charge."
         },

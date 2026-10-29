@@ -295,6 +295,7 @@
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "匯入 [{{- title}}] 完成。",
             "unsupportedFormat": ""
         },

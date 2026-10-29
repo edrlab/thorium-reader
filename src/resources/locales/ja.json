@@ -295,6 +295,7 @@
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "『{{- title}}』の追加が完了しました。",
             "unsupportedFormat": ""
         },

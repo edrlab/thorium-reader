@@ -300,6 +300,7 @@
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது.",
             "unsupportedFormat": ""
         },

@@ -300,6 +300,7 @@
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "Julkaisun {{- title}} tuonti on valmis.",
             "unsupportedFormat": ""
         },

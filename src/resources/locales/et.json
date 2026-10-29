@@ -300,6 +300,7 @@
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud.",
             "unsupportedFormat": ""
         },

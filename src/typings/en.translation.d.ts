@@ -689,6 +689,7 @@ declare namespace typed_i18n {
     readonly "failed": string,
     readonly "invalidLicense": string,
     readonly "invalidPublication": string,
+    readonly "lcpLicenseMalformed": string,
     readonly "success": string,
     readonly "unsupportedFormat": string
   },
@@ -799,6 +800,7 @@ declare namespace typed_i18n {
   readonly "failed": string,
   readonly "invalidLicense": string,
   readonly "invalidPublication": string,
+  readonly "lcpLicenseMalformed": string,
   readonly "success": string,
   readonly "unsupportedFormat": string
 };
@@ -807,6 +809,7 @@ declare namespace typed_i18n {
   (_: "message.import.failed", __?: {}): string;
   (_: "message.import.invalidLicense", __?: {}): string;
   (_: "message.import.invalidPublication", __?: {}): string;
+  (_: "message.import.lcpLicenseMalformed", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
   (_: "message.import.unsupportedFormat", __?: {}): string;
   (_: "message.notifications", __?: {}): {

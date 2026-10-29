@@ -310,6 +310,7 @@
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "Import publikace „{{- title}}“ dokončen.",
             "unsupportedFormat": ""
         },

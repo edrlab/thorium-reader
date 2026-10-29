@@ -22,6 +22,7 @@ export function withErrorNotification<Args extends unknown[], Result>(
     operation: (...args: Args) => SagaGenerator<Result>,
     message: TTranslatorKeyParameter,
     includeErrorDetails = false,
+    diagnosticSource?: (...args: Args) => string | undefined,
 ): (...args: Args) => SagaGenerator<Result> {
     return function* notifyOperation(...args: Args): SagaGenerator<Result> {
         try {
@@ -35,7 +36,7 @@ export function withErrorNotification<Args extends unknown[], Result>(
                 const windowIdentifier = yield* getContextTyped<string | undefined>("toastWindowIdentifier");
                 const text = getTranslator().translate(message);
                 yield* putTyped(toastActions.openRequest.build(ToastType.Error, text, undefined, windowIdentifier,
-                    includeErrorDetails ? formatImportDiagnostics(text, error) : undefined));
+                    includeErrorDetails ? formatImportDiagnostics(text, error, diagnosticSource?.(...args)) : undefined));
             }
             throw error;
         }

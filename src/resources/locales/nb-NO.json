@@ -300,6 +300,7 @@
             "failed": "",
             "invalidLicense": "",
             "invalidPublication": "",
+            "lcpLicenseMalformed": "",
             "success": "{{- title}} er nå importert.",
             "unsupportedFormat": ""
         },

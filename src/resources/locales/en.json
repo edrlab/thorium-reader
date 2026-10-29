@@ -300,6 +300,7 @@
             "failed": "Could not import “{{- name}}”.",
             "invalidLicense": "Could not import “{{- name}}”. The publication’s license is invalid.",
             "invalidPublication": "Could not import “{{- name}}”. The publication manifest is missing.",
+            "lcpLicenseMalformed": "LCP license malformed.",
             "success": "Importing [{{- title}}] completed.",
             "unsupportedFormat": "Could not import “{{- name}}”. This file format is not supported."
         },

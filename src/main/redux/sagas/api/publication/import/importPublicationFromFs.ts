@@ -198,7 +198,7 @@ export async function importPublicationFromFS(
                     const r2LCPJson = JSON.parse(r2LCPStr);
 
                     if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
-                        throw new ImportFailure("invalidLicense", `LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
+                        throw new ImportFailure("invalidLicense", getTranslator().translate("message.import.lcpLicenseMalformed"));
                     }
 
                     const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
