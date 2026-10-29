@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { getTranslator } from "readium-desktop/common/services/translator";
+
 import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -303,7 +305,7 @@ export async function cbzPackager(cbzPath: string): Promise<TCbzPackagerResult> 
     }
 
     if (!images.length) {
-        throw new Error("CBZ archive does not contain any supported images");
+        throw new Error(getTranslator().translate("message.import.errors.cbzNoImages"));
     }
 
     const comicInfo = parseComicInfo(comicInfoBuffer);

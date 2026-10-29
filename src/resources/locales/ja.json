@@ -5,18 +5,24 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "閉じる",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "左にスライド",
         "loading": "",
         "mainContent": "メインコンテンツ",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
         "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "右にスライド",
+        "searching": "",
         "skipLink": "コンテンツに移動",
         "toolbar": "ツールバー"
     },
@@ -193,6 +199,7 @@
         "deleteAnnotations": "メモを削除しますか？",
         "deleteAnnotationsText": "{{-count}} 件のメモを削除しますか？",
         "deleteBookmarks": "しおりを削除しますか？",
+        "deleteBookmarksText": "",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "deletePublicationWithNotes": "",
@@ -258,28 +265,67 @@
         "annotations": {
             "alreadyImported": "すべてのメモがすでに取り込まれています。",
             "emptyFile": "ファイル内にメモはありません。",
-            "errorParsing": "ファイル解析中にエラーが発生しました： ",
             "nothing": "取りこめる状態のメモがないため、取りこみを中止します",
             "success": "取り込みが正常に完了しました。"
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
-            "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "『{{- title}}』はすでに追加されています。",
-            "fail": "『{{- path}}』の追加に失敗しました：{{- err}}",
-            "success": "『{{- title}}』の追加が完了しました。"
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "『{{- title}}』の追加が完了しました。",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -307,12 +353,14 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "本を開けません：{{- err}}",
-            "folderNotFound": "出版物の保存場所が見つかりません。再登録するか、設定の保存先で追加の保存先を設定してください。"
+            "failed": "",
+            "folderNotFound": "出版物の保存場所が見つかりません。再登録するか、設定の保存先で追加の保存先を設定してください。",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -724,11 +772,9 @@
         "duration": {
             "title": "期間"
         },
-        "encryptedNoLicense": "本は暗号化されていますが、LCPライセンスではありません！",
         "expired": "貸出の期限切れ",
         "expiredLcp": "この本のLCPライセンスの有効期限が切れました。",
         "incorrectPassphrase": "保存しているパスフレーズが本に適合しないか、入力したパスフレーズが間違っています。",
-        "lcpEnd": "終了",
         "lcpNotSupported": "",
         "lcpRightsCopy": "文字列のコピー",
         "lcpRightsPrint": "ページを印刷",
@@ -1392,9 +1438,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

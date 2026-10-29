@@ -5,39 +5,39 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
-import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import { TDispatch } from "readium-desktop/typings/redux";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
-import { I18nFunction } from "readium-desktop/common/services/translator";
-
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
+import { I18nFunction } from "readium-desktop/common/services/translator";
+import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 import LibraryHeader from "./LibraryHeader";
 
-import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh-icon.svg";
+import { Link, matchPath } from "react-router-dom";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
+import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { dispatchHistoryPush, IOpdsBrowse, resolveDisplayType, routes } from "readium-desktop/renderer/library/routing";
-import { Link, matchPath } from "react-router-dom";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -212,7 +212,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         }
     };
     private onKeyboardToggleScreenReaderOptimize = () => {
-        const keyboardShortcutScreenReader = `${(this.props.keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + this.props.keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
+        const keyboardShortcutScreenReader = textualizeKeyboardShortcut(this.props.keyboardShortcuts.ToggleScreenReaderOptimize);
         this.props.toggleScreenReader(this.props.screenReaderActivate, keyboardShortcutScreenReader, this.props.__);
     };
 
@@ -383,14 +383,15 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     locale: state.i18n.locale, // refresh
     libraryView: state.settings.libraryView,
     screenReaderActivate: state.screenReader.activate,
+    screenReaderDenied: state.screenReader.denied,
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         historyPush: dispatchHistoryPush(dispatch),
-        toggleScreenReader: (screenReaderActivate: boolean, keyboard: string, __: I18nFunction) => {
+        toggleScreenReader: (screenReaderActivate: boolean, _keyboard: string, __: I18nFunction) => {
             dispatch(screenReaderActions.save.build(!screenReaderActivate));
-            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));
+            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite") + ` (${!screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no")})`));
         },
     };
 };

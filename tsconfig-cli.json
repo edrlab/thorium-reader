@@ -1,7 +1,17 @@
 {
   "extends": "./tsconfig",
   "watchOptions": {
-    "excludeDirectories": ["./**/node_modules", "./dist", "./release"]
+    "excludeDirectories": [
+      "./**/node_modules",
+      "./dist",
+      "./docs",
+      "./external-assets",
+      "./release",
+      "./.git",
+      "./.pi",
+      "./.flox",
+      "./scripts"
+    ]
   },
   "compilerOptions": {
     // "skipLibCheck": true,
@@ -22,12 +32,12 @@
     "pretty": false,
     "sourceMap": false,
     "inlineSources": false,
-    "resolveJsonModule": false,
+    "resolveJsonModule": false
     // "esModuleInterop": true,
     // allowSyntheticDefaultImports: true,
     // "types": ["./node_modules/marked-emoji/src/"],
     // "typeRoots": ["./node_modules/marked-emoji/src/"]
-  },
+  }
   // "files": [
   //   "typings.d.ts",
   //   // "./node_modules/marked-emoji/src/index.d.cts"
@@ -50,10 +60,10 @@
   // node_modules/@types/jsdom/base.d.ts
   // and LIB.DOM.ITERABLE:
   // node_modules/@types/jsdom/base.d.ts
- // "include": [],
- // "files": [
- //   "./src/main.ts",
- //   "./src/typings/lunr.d.ts",
- //   "./typings.d.ts",
- // ],
+  // "include": [],
+  // "files": [
+  //   "./src/main.ts",
+  //   "./src/typings/lunr.d.ts",
+  //   "./typings.d.ts",
+  // ],
 }

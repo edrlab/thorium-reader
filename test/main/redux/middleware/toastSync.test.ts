@@ -24,6 +24,7 @@ describe("toast IPC synchronization", () => {
     });
     it.each([
         [build(ToastType.Error, "Failed"), "library"],
+        [build(ToastType.Error, "Failed", undefined, undefined, "Error: original stack"), "library"],
         [build(ToastType.Error, "Failed", "book-1"), "reader-1"],
         [build(ToastType.Error, "Failed", "book-1", "reader-2"), "reader-2"],
         [build(ToastType.Error, "Failed", "book-1", "closed-reader"), "reader-1"],
@@ -32,6 +33,7 @@ describe("toast IPC synchronization", () => {
         reduxSyncMiddleware(store)(next)(action);
         for (const [id, win] of Object.entries(windows)) {
             expect(win.webContents.send).toHaveBeenCalledTimes(id === expected ? 1 : 0);
+            if (id === expected) expect(win.webContents.send.mock.calls[0][1]).toMatchObject({ payload: { action } });
         }
         expect(next).toHaveBeenCalledWith(action);
     });

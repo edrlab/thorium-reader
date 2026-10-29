@@ -19,13 +19,18 @@ import { LocatorLocations, LocatorText } from "../../common/locator";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
-import { convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL } from "../../common/sessions";
+import { READIUM2_ELECTRON_HTTP_PROTOCOL, convertCustomSchemeToHttpUrl } from "../../common/sessions";
 
 import {
+    ENABLE_NAVIGATOR_R2_EVENT_IMAGE_CLICK,
     IEventPayload_R2_EVENT_AUDIO_SOUNDTRACK, IEventPayload_R2_EVENT_CAPTIONS,
     IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_DEBUG_VISUALS,
+    IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
     IEventPayload_R2_EVENT_FXL_CONFIGURE, IEventPayload_R2_EVENT_HIGHLIGHT_CREATE,
-    IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE, IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE_ALL, IEventPayload_R2_EVENT_LINK,
+    IEventPayload_R2_EVENT_HIGHLIGHT_DRAW_MARGIN,
+    IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE, IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE_ALL,
+    IEventPayload_R2_EVENT_IMAGE_CLICK,
+    IEventPayload_R2_EVENT_LINK,
     IEventPayload_R2_EVENT_LOCATOR_VISIBLE, IEventPayload_R2_EVENT_MEDIA_OVERLAY_CLICK,
     IEventPayload_R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT, IEventPayload_R2_EVENT_MEDIA_OVERLAY_STARTSTOP,
     IEventPayload_R2_EVENT_MEDIA_OVERLAY_STATE,
@@ -33,91 +38,102 @@ import {
     IEventPayload_R2_EVENT_READIUMCSS, IEventPayload_R2_EVENT_SCROLLTO,
     IEventPayload_R2_EVENT_SHIFT_VIEW_X, IEventPayload_R2_EVENT_TTS_CLICK_ENABLE,
     IEventPayload_R2_EVENT_TTS_DO_NEXT_OR_PREVIOUS, IEventPayload_R2_EVENT_TTS_DO_PLAY,
+    IEventPayload_R2_EVENT_TTS_HIGHLIGHT_STYLE,
+    IEventPayload_R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
     IEventPayload_R2_EVENT_TTS_OVERLAY_ENABLE, IEventPayload_R2_EVENT_TTS_PLAYBACK_RATE,
-    IEventPayload_R2_EVENT_TTS_SENTENCE_DETECT_ENABLE, IEventPayload_R2_EVENT_TTS_VOICE,
-    IEventPayload_R2_EVENT_TTS_SKIP_ENABLE, R2_EVENT_TTS_SKIP_ENABLE,
+    IEventPayload_R2_EVENT_TTS_SENTENCE_DETECT_ENABLE,
+    IEventPayload_R2_EVENT_TTS_SKIP_ENABLE,
+    IEventPayload_R2_EVENT_TTS_VOICE,
     IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, MediaOverlaysStateEnum, R2_EVENT_AUDIO_SOUNDTRACK, R2_EVENT_CAPTIONS,
-    R2_EVENT_CLIPBOARD_COPY, R2_EVENT_DEBUG_VISUALS, R2_EVENT_FXL_CONFIGURE,
-    R2_EVENT_HIGHLIGHT_CREATE, R2_EVENT_HIGHLIGHT_REMOVE, R2_EVENT_HIGHLIGHT_REMOVE_ALL,
-    R2_EVENT_KEYBOARD_FOCUS_REQUEST, R2_EVENT_FOCUS_READING_LOC, R2_EVENT_LINK, R2_EVENT_LOCATOR_VISIBLE,
+    R2_EVENT_CLIPBOARD_COPY, R2_EVENT_DEBUG_VISUALS,
+    R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
+    R2_EVENT_FOCUS_READING_LOC,
+    R2_EVENT_FXL_CONFIGURE,
+    R2_EVENT_HIGHLIGHT_CREATE,
+    R2_EVENT_HIGHLIGHT_DRAW_MARGIN,
+    R2_EVENT_HIGHLIGHT_REMOVE, R2_EVENT_HIGHLIGHT_REMOVE_ALL,
+    R2_EVENT_IMAGE_CLICK,
+    R2_EVENT_KEYBOARD_FOCUS_REQUEST,
+    R2_EVENT_LINK, R2_EVENT_LOCATOR_VISIBLE,
     R2_EVENT_MEDIA_OVERLAY_CLICK, R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT,
     R2_EVENT_MEDIA_OVERLAY_STARTSTOP, R2_EVENT_MEDIA_OVERLAY_STATE, R2_EVENT_PAGE_TURN, R2_EVENT_PAGE_TURN_RES,
     R2_EVENT_READING_LOCATION, R2_EVENT_READIUMCSS, R2_EVENT_SCROLLTO, R2_EVENT_SHIFT_VIEW_X,
     R2_EVENT_SHOW, R2_EVENT_TTS_CLICK_ENABLE, R2_EVENT_TTS_DO_NEXT, R2_EVENT_TTS_DO_PAUSE,
     R2_EVENT_TTS_DO_PLAY, R2_EVENT_TTS_DO_PREVIOUS, R2_EVENT_TTS_DO_RESUME, R2_EVENT_TTS_DO_STOP,
-    R2_EVENT_TTS_OVERLAY_ENABLE, R2_EVENT_TTS_PLAYBACK_RATE, R2_EVENT_TTS_SENTENCE_DETECT_ENABLE,
-    R2_EVENT_TTS_VOICE, R2_EVENT_WEBVIEW_KEYDOWN, R2_EVENT_WEBVIEW_KEYUP, R2_EVENT_HIGHLIGHT_DRAW_MARGIN, IEventPayload_R2_EVENT_HIGHLIGHT_DRAW_MARGIN,
-    R2_EVENT_IMAGE_CLICK,
-    IEventPayload_R2_EVENT_IMAGE_CLICK,
-    R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
-    IEventPayload_R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
-    IEventPayload_R2_EVENT_TTS_HIGHLIGHT_STYLE,
     R2_EVENT_TTS_HIGHLIGHT_STYLE,
-    ENABLE_NAVIGATOR_R2_EVENT_IMAGE_CLICK,
-    R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
-    IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
-    // R2_EVENT_DISABLE_TEMPORARY_NAV_TARGET_OUTLINE,
-    // IEventPayload_R2_EVENT_DISABLE_TEMPORARY_NAV_TARGET_OUTLINE,
+    R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
+    R2_EVENT_TTS_OVERLAY_ENABLE, R2_EVENT_TTS_PLAYBACK_RATE, R2_EVENT_TTS_SENTENCE_DETECT_ENABLE,
+    R2_EVENT_TTS_SKIP_ENABLE,
+    R2_EVENT_TTS_VOICE, R2_EVENT_WEBVIEW_KEYDOWN, R2_EVENT_WEBVIEW_KEYUP,
 } from "../../common/events";
-import { HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler, IColor, HighlightDrawTypeNONE, HighlightDrawTypeBackground, IHighlightDefinition, HighlightDrawTypeMarginBookmark } from "../../common/highlight";
+import { HighlightDrawTypeBackground, HighlightDrawTypeMarginBookmark, HighlightDrawTypeNONE, HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler, IColor, IHighlightDefinition } from "../../common/highlight";
 import { IPaginationInfo } from "../../common/pagination";
 import {
     appendCSSInline, configureFixedLayout, injectDefaultCSS, injectReadPosCSS, isPaginated,
 } from "../../common/readium-css-inject";
 import { sameSelections } from "../../common/selection";
 import {
-    CLASS_PAGINATED, CSS_CLASS_NO_FOCUS_OUTLINE, HIDE_CURSOR_CLASS, LINK_TARGET_CLASS, LINK_TARGET_ALT_CLASS,
+    CLASS_HIGHLIGHT_CONTAINER,
+    CLASS_HIGHLIGHT_CONTOUR, CLASS_HIGHLIGHT_CONTOUR_MARGIN,
+    CLASS_PAGINATED, CSS_CLASS_NO_FOCUS_OUTLINE,
+    ENABLE_EXTRA_COLUMN_SHIFT_METHOD,
+    ENABLE_VISIBILITY_MASK,
+    EXTRA_COLUMN_PAD_ID,
+    HIDE_CURSOR_CLASS,
+    ID_HIGHLIGHTS_CONTAINER,
+    LINK_TARGET_ALT_CLASS,
+    LINK_TARGET_CLASS,
     POPOUTIMAGE_CONTAINER_ID, POPUP_DIALOG_CLASS, POPUP_DIALOG_CLASS_COLLAPSE,
     R2_MO_CLASS_ACTIVE, R2_MO_CLASS_ACTIVE_PLAYBACK, R2_MO_CLASS_PAUSED, R2_MO_CLASS_PLAYING, R2_MO_CLASS_STOPPED, ROOT_CLASS_INVISIBLE_MASK,
     ROOT_CLASS_INVISIBLE_MASK_REMOVED, ROOT_CLASS_KEYBOARD_INTERACT, ROOT_CLASS_MATHJAX,
-    ROOT_CLASS_NO_FOOTNOTES, ROOT_CLASS_REDUCE_MOTION, SKIP_LINK_ID, TTS_CLASS_PAUSED, TTS_CLASS_PLAYING, TTS_ID_SPEAKING_DOC_ELEMENT,
-    CLASS_HIGHLIGHT_CONTAINER, ROOT_CLASS_NO_RUBY,
-    CLASS_HIGHLIGHT_CONTOUR, CLASS_HIGHLIGHT_CONTOUR_MARGIN,
+    ROOT_CLASS_NO_FOOTNOTES,
+    ROOT_CLASS_NO_RUBY,
+    ROOT_CLASS_REDUCE_MOTION, SKIP_LINK_ID, TTS_CLASS_PAUSED, TTS_CLASS_PLAYING, TTS_ID_SPEAKING_DOC_ELEMENT,
     WebViewSlotEnum, ZERO_TRANSFORM_CLASS, readPosCssStylesAttr1, readPosCssStylesAttr2,
     readPosCssStylesAttr3, readPosCssStylesAttr4,
-    ID_HIGHLIGHTS_CONTAINER,
-    EXTRA_COLUMN_PAD_ID,
-    ENABLE_EXTRA_COLUMN_SHIFT_METHOD,
-    ENABLE_VISIBILITY_MASK,
 } from "../../common/styles";
 import { IPropertyAnimationState, animateProperty } from "../common/animateProperty";
 import { uniqueCssSelector } from "../common/cssselector3";
 
 import { getDirection, getLanguage, normalizeText } from "../common/dom-text-utils";
 import { easings } from "../common/easings";
-import { closePopupDialogs, isPopupDialogOpen } from "./popup-dialog";
 import { getURLQueryParams } from "../common/querystring";
-import { IRect, getClientRectsNoOverlap, DOMRectListToArray } from "../common/rect-utils";
+import { DOMRectListToArray, IRect, getClientRectsNoOverlap } from "../common/rect-utils";
 import {
-    URL_PARAM_HIGHLIGHTS,
-    URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS,
-    URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_PREVIOUS,
-    URL_PARAM_SECOND_WEBVIEW, URL_PARAM_WEBVIEW_SLOT,
     FRAG_ID_CSS_SELECTOR, FRAG_ID_CSS_SELECTOR_ACTIVATE_LINK,
-    URL_PARAM_A11Y_SUPPORT_ENABLED,
-    URL_PARAM_EPUBMEDIAOVERLAYS,
     FRAG_ID_CSS_SELECTOR_HYPERLINK,
+    URL_PARAM_A11Y_SUPPORT_ENABLED,
+    URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS,
+    URL_PARAM_EPUBMEDIAOVERLAYS,
+    URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE,
+    URL_PARAM_HIGHLIGHTS,
+    URL_PARAM_PREVIOUS,
+    URL_PARAM_SECOND_WEBVIEW, URL_PARAM_WEBVIEW_SLOT,
 } from "../common/url-params";
 import { setupAudioBook } from "./audiobook";
 import { INameVersion, setWindowNavigatorEpubReadingSystem } from "./epubReadingSystem";
 import {
-    createHighlights, destroyAllhighlights, destroyHighlight, destroyHighlightsGroup,
     HIGHLIGHT_GROUP_PAGEBREAK, HIGHLIGHT_GROUP_TTS,
+    createHighlights, destroyAllhighlights, destroyHighlight, destroyHighlightsGroup,
     recreateAllHighlights, recreateAllHighlightsRaw, setDrawMargin,
 } from "./highlight";
 import { popoutImage } from "./popoutImages";
+import { closePopupDialogs, isPopupDialogOpen } from "./popup-dialog";
 import { popupFootNote } from "./popupFootNotes";
 import {
     assignUtteranceVoice,
     ttsNext, ttsPause, ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsStop, ttsVoices,
 } from "./readaloud";
 import {
-    calculateColumnDimension, calculateMaxScrollShift, calculateTotalColumns, checkHiddenFootNotes,
-    computeVerticalRTL, getScrollingElement, isRTL, isTwoPageSpread, isVerticalWritingMode,
-    readiumCSS, clearImageZoomOutlineDebounced, clearImageZoomOutline,
+    calculateColumnDimension, calculateMaxScrollShift, calculateTotalColumns,
     checkHeightConstrainedTables,
+    checkHiddenFootNotes,
+    clearImageZoomOutline,
+    clearImageZoomOutlineDebounced,
+    computeVerticalRTL, getScrollingElement, isRTL, isTwoPageSpread, isVerticalWritingMode,
+    readiumCSS,
 } from "./readium-css";
-import { clearCurrentSelection, convertRangeInfo, getCurrentSelectionInfo, convertRange, setSelectionChangeAction } from "./selection";
+import { clearCurrentSelection, convertRange, convertRangeInfo, getCurrentSelectionInfo, setSelectionChangeAction } from "./selection";
 import { ReadiumElectronWebviewWindow } from "./state";
 import { convertTextFragmentToRanges, parseTextFragmentDirective } from "./textFragment";
 
@@ -227,7 +243,7 @@ win.prompt = (...args: any[]): string => {
 // (I observed different outcomes with Virtual Machines in various resolutions, versus hardware laptop/tablet)
 const CSS_PIXEL_TOLERANCE = 5;
 
-// setTimeout(() => {
+// win.setTimeout(() => {
 //     if (win.alert) {
 //         win.alert("win.alert!");
 //     }
@@ -754,7 +770,7 @@ ipcRenderer.on(R2_EVENT_SCROLLTO, (_event: any, payload: IEventPayload_R2_EVENT_
         const scrollLeft = scrollElement.scrollLeft;
         win.location.href = "#";
         delayScrollIntoView = true;
-        setTimeout(() => {
+        win.setTimeout(() => {
             debug("location HREF # hash, reset scroll left/top: ", scrollTop, scrollLeft);
             scrollElement.scrollTop = scrollTop;
             scrollElement.scrollLeft = scrollLeft;
@@ -766,7 +782,7 @@ ipcRenderer.on(R2_EVENT_SCROLLTO, (_event: any, payload: IEventPayload_R2_EVENT_
     resetLocationHashOverrideInfo();
 
     if (delayScrollIntoView) {
-        setTimeout(() => {
+        win.setTimeout(() => {
             if (DEBUG_TRACE) debug("R2_EVENT_SCROLLTO: delayScrollIntoView + scrollToHashRaw()...");
             // CONTEXT: R2_EVENT_SCROLLTO
             scrollToHashRaw(false, true);
@@ -1062,7 +1078,7 @@ function onEventPageTurn(payload: IEventPayload_R2_EVENT_PAGE_TURN) {
                     //     vwm ?
                     //     `translateY(${unit}px)` :
                     //     `translateX(${(isRTL() ? -1 : 1) * unit}px)`;
-                    // setTimeout(() => {
+                    // win.setTimeout(() => {
                     //     (targetObj as HTMLElement).style.transition = "";
                     //     (targetObj as HTMLElement).style.transform = "none";
                     //     targetObj[targetProp] = scrollOffset;
@@ -1260,7 +1276,7 @@ ipcRenderer.on(R2_EVENT_PAGE_TURN, (_event: any, payload: IEventPayload_R2_EVENT
     // mediaOverlaysClickDebounced.clear();
 
     // Because 'r2_leftrightKeyboardTimeStamp' is set AFTER the main window left/right keyboard handler!
-    setTimeout(() => { // we could debounce too?
+    win.setTimeout(() => { // we could debounce too?
         if (DEBUG_TRACE) debug("R2_EVENT_PAGE_TURN: onEventPageTurn()...");
         onEventPageTurn(payload);
     }, 100);
@@ -1377,12 +1393,12 @@ const tempLinkTargetOutline = (element: Element, time: number, alt: boolean) => 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((element as any)._timeoutTargetClass) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        clearTimeout((element as any)._timeoutTargetClass);
+        win.clearTimeout((element as any)._timeoutTargetClass);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (element as any)._timeoutTargetClass = undefined;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (element as any)._timeoutTargetClass = setTimeout(() => {
+    (element as any)._timeoutTargetClass = win.setTimeout(() => {
         // debug("ANIMATION TIMEOUT REMOVE");
         // (element as HTMLElement).style.animationPlayState = "paused";
         element.classList.remove(LINK_TARGET_CLASS);
@@ -1418,7 +1434,7 @@ function scrollElementIntoView(element: Element, doFocus: boolean, animate: bool
         focusElement(element, !!domRect /*, focusHost */);
     }
 
-    setTimeout(() => {
+    win.setTimeout(() => {
         const isPaged = isPaginated(win.document);
         if (isPaged) {
             if (DEBUG_TRACE) debug("scrollElementIntoView: isPaged + scrollIntoView()");
@@ -1485,7 +1501,7 @@ function scrollElementIntoView(element: Element, doFocus: boolean, animate: bool
                         //     isVerticalWritingMode() ?
                         //     `translateY(${unit}px)` :
                         //     `translateX(${(isRTL() ? -1 : 1) * unit}px)`;
-                        // setTimeout(() => {
+                        // win.setTimeout(() => {
                         //     (targetObj as HTMLElement).style.transition = "";
                         //     (targetObj as HTMLElement).style.transform = "none";
                         //     targetObj[targetProp] = offset;
@@ -1689,7 +1705,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
                 win.READIUM2.locationHashOverride = undefined;
                 resetLocationHashOverrideInfo();
 
-                setTimeout(() => {
+                win.setTimeout(() => {
 
                     // relative to fixed window top-left corner
                     // const y = (isPaged ?
@@ -1719,7 +1735,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
                         notifyReadingLocationDebounced();
                     }
 
-                    setTimeout(() => {
+                    win.setTimeout(() => {
                         _ignoreScrollEvent = false;
                     }, 10);
                 }, 60);
@@ -1791,7 +1807,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
                     notifyReadingLocationDebounced();
 
                     if (doHyperlink && selected.tagName?.toLowerCase() === "a") {
-                        setTimeout(() => {
+                        win.setTimeout(() => {
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             (selected as any).__skipHistory = true;
                             (selected as HTMLLinkElement).click();
@@ -1841,7 +1857,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
                         scrollElement.scrollTop = 0;
                         scrollElement.scrollLeft = scrollOffsetPaged;
                     }
-                    setTimeout(() => {
+                    win.setTimeout(() => {
                         _ignoreScrollEvent = false;
                     }, 10);
 
@@ -1884,7 +1900,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
                     scrollElement.scrollTop = scrollOffset;
                     scrollElement.scrollLeft = 0;
                 }
-                setTimeout(() => {
+                win.setTimeout(() => {
                     _ignoreScrollEvent = false;
                 }, 10);
 
@@ -1917,7 +1933,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
         _ignoreScrollEvent = true;
         scrollElement.scrollLeft = 0;
         scrollElement.scrollTop = 0;
-        setTimeout(() => {
+        win.setTimeout(() => {
             _ignoreScrollEvent = false;
         }, 10);
 
@@ -2164,6 +2180,7 @@ ipcRenderer.on(R2_EVENT_READIUMCSS, (_event: any, payload: IEventPayload_R2_EVEN
 
 let _docTitle: string | undefined;
 
+let _readyLoadedTimeout: number | undefined;
 win.addEventListener("DOMContentLoaded", () => {
     debug("############# DOMContentLoaded");
 
@@ -2336,10 +2353,124 @@ win.addEventListener("DOMContentLoaded", () => {
         checkHeightConstrainedTables(win.document);
     }
 
-    // sometimes the load event does not occur! (some weird FXL edge case?)
-    setTimeout(() => {
-        loaded(true);
-    }, 500);
+    if (win.READIUM2.isAudio) {
+        ;
+    } else {
+        if (!win.READIUM2.isFixedLayout) {
+            let hostDocumentURL = `${win.document.location.protocol}//${win.document.location.host}${win.document.location.pathname}`;
+            // debug("hostDocumentURL1", hostDocumentURL);
+            if (hostDocumentURL.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+                hostDocumentURL = convertCustomSchemeToHttpUrl(hostDocumentURL);
+                // debug("hostDocumentURL2", hostDocumentURL);
+                // const u = new URL(hostDocumentURL);
+                // hostDocumentURL = u.pathname.replace("/pub/", "");
+                // hostDocumentURL = hostDocumentURL.substring(hostDocumentURL.indexOf("/") + 1);
+                // debug("hostDocumentURL3", hostDocumentURL);
+            }
+            const detailsList = win.document.querySelectorAll("details");
+            const obj1 = (JSON.parse(win.localStorage.getItem("_readiumDetailsOpenState") || "{}")) as { [docUrl: string]: { [cssSelector: string]: { open?: boolean } } };
+            if (IS_DEV) debug("_readiumDetailsOpenState1", JSON.stringify(obj1, null, 4));
+            detailsList.forEach((detailsElement: HTMLDetailsElement) => {
+                try {
+                    const obj2 = obj1[hostDocumentURL] || {};
+                    obj1[hostDocumentURL] = obj2;
+                    const css = getCssSelector(detailsElement);
+                    const obj3 = obj2[css] || {};
+                    obj2[css] = obj3;
+                    if (typeof obj3.open !== "undefined") {
+                        detailsElement.open = !!obj3.open;
+                    } else {
+                        obj3.open = detailsElement.open;
+                    }
+
+                    detailsElement.addEventListener("toggle", (event) => {
+                        const d1 = (JSON.parse(win.localStorage.getItem("_readiumDetailsOpenState") || "{}")) as { [docUrl: string]: { [cssSelector: string]: { open?: boolean } } };
+                        if (IS_DEV) debug("_readiumDetailsOpenStateA toggle", JSON.stringify(d1, null, 4));
+                        const d2 = d1[hostDocumentURL] || {};
+                        d1[hostDocumentURL] = d2;
+                        // const css = getCssSelector(detailsElement);
+                        const d3 = d2[css] || {};
+                        d2[css] = d3;
+                        const newOpen = event.newState === "open" ? true : false; // === detailsElement.open
+                        // const oldOpen = d3.open;
+                        d3.open = newOpen;
+                        if (IS_DEV) debug("_readiumDetailsOpenStateB toggle", JSON.stringify(d1, null, 4));
+                        win.localStorage.setItem("_readiumDetailsOpenState", JSON.stringify(d1));
+
+                        ttsStop(); // forces a reset of the utterances (now that details content is revealed or hidden)
+
+                        // recreateAllHighlightsRaw(win);
+                        recreateAllHighlights(win);
+                    });
+
+                } catch (_err) {
+                    return;
+                }
+            });
+            if (IS_DEV) debug("_readiumDetailsOpenState2", JSON.stringify(obj1, null, 4));
+            win.localStorage.setItem("_readiumDetailsOpenState", JSON.stringify(obj1));
+        }
+    }
+
+    // win.document.documentElement.classList.contains(ROOT_CLASS_MATHJAX) ===> user activated, but not necessarily with MathJax in doc
+    if (!!(win as any).MathJax || !!win.document.getElementById("thorium_mathJax_script") || !!win.document.getElementById("__thorium_mathJax_script")) {
+        debug("|||| LOAD EVENT wait for MathJax ...");
+
+        _readyLoadedTimeout = undefined; // see "load" event listener
+
+        new Promise<boolean>((resolve, _rej) => {
+
+            let _MathJaxReadyTimeout = win.setTimeout(() => {
+                if (!_MathJaxReadyTimeout) {
+                    // the "MathJaxReady" event won the race
+                    return;
+                }
+
+                // the timeout won the race
+                _MathJaxReadyTimeout = undefined;
+                debug("|||| LOAD EVENT wait for MathJax failed ==> force");
+                resolve(true);
+            }, 2000);
+
+            const func = (_ev: CustomEvent) => {
+                if (!_MathJaxReadyTimeout) {
+                    // the timeout won the race
+                    return;
+                }
+
+                // the "MathJaxReady" event won the race
+                win.clearTimeout(_MathJaxReadyTimeout);
+                _MathJaxReadyTimeout = undefined;
+
+                // @ts-expect-error custom event
+                win.document.documentElement.removeEventListener("MathJaxReady", func);
+
+                debug("|||| LOAD EVENT wait for MathJax success ==> go!");
+                resolve(false);
+            };
+            // @ts-expect-error custom event
+            win.document.documentElement.addEventListener("MathJaxReady", func, true);
+
+        }).then((forced) => {
+            debug("|||| LOAD EVENT MathJax ready FORCED: ", forced);
+            loaded(forced);
+        }).catch((err) => {
+            debug("|||| LOAD EVENT MathJax ready ERR??? ", err);
+        });
+    } else {
+        // sometimes the load event does not occur! (some weird FXL edge case?)
+        _readyLoadedTimeout = win.setTimeout(() => {
+            if (!_readyLoadedTimeout) {
+                // the "load" event won the race
+                return;
+            }
+
+            // the "DOMContentLoaded" event timeout won the race
+            _readyLoadedTimeout = undefined;
+
+            loaded(true);
+        }, 1000);
+    }
 });
 
 // let _cancelInitialScrollCheck = false;
@@ -2400,7 +2531,7 @@ function checkSoundtrack(documant: Document) {
     // (works-ish, because broken playback flow when "turning pages" in the book,
     // and possibility of concurrent multiple playback streams with two-page spreads)
     // audio.setAttribute("loop", "loop");
-    // setTimeout(() => {
+    // win.setTimeout(() => {
     //     await audio.play();
     // }, 500);
 
@@ -2625,31 +2756,49 @@ function focusCurrentReadingLocationElement(invert: boolean) {
 }
 
 // see hydrateHighlightsBuild() in location.ts
-async function hydrateHighlights(b64Highlights: string): Promise<void> {
+async function hydrateHighlightsConsume(b64Highlights: string): Promise<void> {
     let jsonStr: string | undefined;
     try {
         const buff = Buffer.from(b64Highlights, "base64");
 
         const cs = new DecompressionStream("gzip");
         const csWriter = cs.writable.getWriter();
-        await csWriter.write(buff); // .buffer
-        await csWriter.close();
 
+        csWriter.write(buff).then(() => { /* debug("hydrateHighlights CSWRITER WRITE DONE"); */ }).catch((err) => { debug("hydrateHighlights CSWRITER WRITE ERR"); debug(err);  });
+
+        csWriter.close().then(() => { /* debug("hydrateHighlights CSWRITER CLOSE DONE"); */ }).catch((err) => { debug("hydrateHighlights CSWRITER CLOSE ERR"); debug(err); });
+
+        // const reader = cs.readable.getReader();
+        // let done = false;
+        // let output = [];
+        // while (!done) {
+        //   const result = await reader.read();
+        //   if (result.value) {
+        //     output.push(...result.value);
+        //   }
+        //   done = result.done;
+        // }
+        // const arr = new Uint8Array(output); // .toBase64()
+        // const buff = Buffer.from(arr);
         const buffer = Buffer.from(await new Response(cs.readable).arrayBuffer());
         // const buffer = await streamToBufferPromise(cs.readable as ReadableStream<any>);
 
-        const jsonStr = new TextDecoder().decode(buffer); // buffer.toString("utf8");
+        jsonStr = new TextDecoder().decode(buffer); // buffer.toString("utf8");
 
-        // console.log("--HIGH LOAD PARAM OUT--");
-        // console.log(jsonStr);
+        // debug("--HIGH LOAD PARAM OUT--");
+        // debug(jsonStr);
         const highlights = JSON.parse(jsonStr);
 
-        setDrawMargin(win, highlights.margin);
-        recreateAllHighlightsRaw(win, highlights.list);
+        debug("################## HIGHLIGHTS hydrate PARSE ...", b64Highlights.length); // JSON.stringify(highlights, null, 4)
+
+        setDrawMargin(win, highlights.margin, highlights.list || []); // calls recreateAllHighlightsRaw()
+        // if (highlights.list?.length) {
+        //     recreateAllHighlightsRaw(win, highlights.list);
+        // }
     } catch (err) {
-        debug("################## HIGHLIGHTS PARSE ERROR?!");
-        debug(b64Highlights);
+        debug("################## HIGHLIGHTS hydrate PARSE ERROR?!");
         debug(err);
+        debug(b64Highlights.length);
         debug(jsonStr);
     }
 }
@@ -2659,10 +2808,12 @@ let _firstResizeObserverTimeout: number | undefined = undefined;
 
 let _loaded = false;
 function loaded(forced: boolean) {
+
     if (_loaded) {
         return;
     }
     _loaded = true;
+
     if (forced) {
         debug(">>> LOAD EVENT WAS FORCED!");
     } else {
@@ -2690,8 +2841,8 @@ function loaded(forced: boolean) {
         // tslint:disable-next-line:no-string-literal
         const b64Highlights = win.READIUM2.urlQueryParams[URL_PARAM_HIGHLIGHTS];
         if (b64Highlights) {
-            setTimeout(() => {
-                hydrateHighlights(b64Highlights).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+            win.setTimeout(() => {
+                hydrateHighlightsConsume(b64Highlights).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
             }, 10);
         }
     }
@@ -2730,7 +2881,7 @@ function loaded(forced: boolean) {
                 focusLink.setAttribute("href", "javascript:;");
                 focusLink.setAttribute("tabindex", "0");
                 win.document.body.insertAdjacentElement("afterbegin", focusLink);
-                setTimeout(() => {
+                win.setTimeout(() => {
                     focusLink.addEventListener("click", (ev) => {
                         ev.preventDefault();
                         if (DEBUG_TRACE) debug("focusLink CLICK: focusCurrentReadingLocationElement()...");
@@ -2739,18 +2890,18 @@ function loaded(forced: boolean) {
                     });
                 }, 200);
                 // Does not work! :(
-                // setTimeout(() => {
+                // win.setTimeout(() => {
                 //     console.log("TEST AUTOFOCUS");
                 //     focusLink.focus();
                 // }, 2000);
             }
 
-            // setTimeout(() => {
+            // win.setTimeout(() => {
             //     debug("++++ scrollToHashRaw FROM LOAD");
             //     scrollToHashRaw();
             // }, 100);
             // _cancelInitialScrollCheck = false;
-            // setTimeout(() => {
+            // win.setTimeout(() => {
             //     if (_cancelInitialScrollCheck) {
             //         return;
             //     }
@@ -2792,7 +2943,7 @@ function loaded(forced: boolean) {
         // if (win.READIUM2.isFixedLayout) {
         //     mediaOverlaysClickRaw(undefined, false);
         // } else {
-        //     setTimeout(() => {
+        //     win.setTimeout(() => {
         //         const element = findFirstVisibleElement(win.document.body);
         //         mediaOverlaysClickDebounced(element, false);
         //     }, 200);
@@ -2915,7 +3066,7 @@ function loaded(forced: boolean) {
 
     const useResizeObserver = !win.READIUM2.isFixedLayout;
     if (useResizeObserver && win.document.body) {
-        setTimeout(() => {
+        win.setTimeout(() => {
             const debouncedResizeObserverCallback = debounce((entries: ResizeObserverEntry[]) => {
                 if (DEBUG_TRACE) debug("ResizeObserver ...");
                 for (const entry of entries) {
@@ -2934,8 +3085,15 @@ function loaded(forced: boolean) {
 
                 if (_firstResizeObserver) {
                     _firstResizeObserver = false;
-                    debug("ResizeObserver SKIP FIRST");
+                    debug("ResizeObserver SKIP FIRST ...");
                     return;
+
+                    // // win.document.documentElement.classList.contains(ROOT_CLASS_MATHJAX) ===> user activated, but not necessarily with MathJax in doc
+                    // if (!!(win as any).MathJax || !!win.document.getElementById("thorium_mathJax_script") || !!win.document.getElementById("__thorium_mathJax_script")) {
+                    //     debug("ResizeObserver SKIP FIRST ... nope because MathJax async fonts etc.");
+                    // } else {
+                    //     return;
+                    // }
                 }
                 // debug("ResizeObserver");
 
@@ -2946,7 +3104,7 @@ function loaded(forced: boolean) {
                 const elPad = win.document.getElementById(EXTRA_COLUMN_PAD_ID);
                 if (elPad) {
                     debug("ResizeObserver appendExtraColumnPadIfNecessary EXTRA_COLUMN_PAD_ID will remove...");
-                    setTimeout(() => {
+                    win.setTimeout(() => {
                         debug("ResizeObserver appendExtraColumnPadIfNecessary EXTRA_COLUMN_PAD_ID removing");
                         debouncedResizeObserverCallback.clear();
                         // _firstResizeObserver = true;
@@ -3747,7 +3905,7 @@ function loaded(forced: boolean) {
         _wheelTimeStamp = -1;
     });
 
-    setTimeout(() => {
+    win.setTimeout(() => {
         win.addEventListener("scroll", (_ev: Event) => {
 
             if (_ignoreScrollEvent) {
@@ -3884,7 +4042,7 @@ function loaded(forced: boolean) {
                 if (str) {
                     evt.preventDefault();
 
-                    setTimeout(() => {
+                    win.setTimeout(() => {
                         const payload: IEventPayload_R2_EVENT_CLIPBOARD_COPY = {
                             locator: win.READIUM2.locationHashOverrideInfo, // see notifyReadingLocationRaw()
                             txt: str,
@@ -3903,8 +4061,15 @@ function loaded(forced: boolean) {
 // after DOMContentLoaded, but sometimes fail to occur (e.g. some fixed layout docs with single image in body!)
 win.addEventListener("load", () => {
     debug("############# load");
-    // console.log(win.location);
-    loaded(false);
+    if (_readyLoadedTimeout) {
+        // the "load" event won the race
+        win.clearTimeout(_readyLoadedTimeout);
+        _readyLoadedTimeout = undefined;
+        loaded(false);
+    } else {
+        // the "DOMContentLoaded" event timeout won the race, or the MathJax promise that was waiting
+        // loaded(false);
+    }
 });
 
 // // does not occur when re-using same webview (src="href")
@@ -5667,7 +5832,7 @@ if (!win.READIUM2.isAudio) {
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             (utterance as any)._textToSpeechPayload = payload;
 
-                            // setTimeout(() => {
+                            // win.setTimeout(() => {
                             win.speechSynthesis.speak(utterance);
                             // }, 0);
                         } else {

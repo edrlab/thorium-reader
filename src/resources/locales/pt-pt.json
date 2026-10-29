@@ -5,18 +5,24 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "Fechar",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "Deslizar para a esquerda",
         "loading": "",
         "mainContent": "Conteúdo principal",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
         "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Deslizar para a direita",
+        "searching": "",
         "skipLink": "Ir para o conteúdo",
         "toolbar": "Barra de ferramentas"
     },
@@ -269,28 +275,67 @@
         "annotations": {
             "alreadyImported": "Todas as anotações já foram importadas.",
             "emptyFile": "Nenhuma anotação disponível no ficheiro.",
-            "errorParsing": "Erro ao analisar o formato do ficheiro: ",
             "nothing": "Não existem anotações prontas para serem importadas. A abortar a importação",
             "success": "Importação concluída com sucesso."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
-            "error": "Falha ao descarregar {{- title}}: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "Já tinha sido importado: {{- title}}.",
-            "fail": "Falha ao importar {{- path}}. Erro: {{- err}}",
-            "success": "Foi concluída a importação de {{- title}}."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Foi concluída a importação de {{- title}}.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -318,8 +363,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Não foi possível carregar o documento: {{- err}}",
-            "folderNotFound": "A pasta da publicação não foi encontrada. Importe-a novamente ou configure o armazenamento adicional em Configurações > Armazenamento."
+            "failed": "",
+            "folderNotFound": "A pasta da publicação não foi encontrada. Importe-a novamente ou configure o armazenamento adicional em Configurações > Armazenamento.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -738,11 +784,9 @@
         "duration": {
             "title": "Duração"
         },
-        "encryptedNoLicense": "A publicação está encriptada, mas não tem uma licença PCL!",
         "expired": "Empréstimo expirado",
         "expiredLcp": "A licença PCL deste documento está expirada.",
         "incorrectPassphrase": "Nenhuma frase-passe armazenada corresponde à publicação ou a frase-passe introduzida está errada.",
-        "lcpEnd": "Fim",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impressas",

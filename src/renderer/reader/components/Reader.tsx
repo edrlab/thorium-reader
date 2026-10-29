@@ -6,15 +6,12 @@
 // ==LICENSE-END==
 
 // import debounce from "debounce";
-import { rgbToHex } from "readium-desktop/common/rgb";
 import { HighlightDrawTypeNONE } from "@r2-navigator-js/electron/common/highlight";
-import debug_ from "debug";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import { fixedLayoutZoomPercent } from "@r2-navigator-js/electron/renderer/dom";
-import { ipcRenderer } from "electron";
 import classNames from "classnames";
+import debug_ from "debug";
 import divinaPlayer from "divina-player-js";
+import { ipcRenderer } from "electron";
 import * as path from "node:path";
 import * as r from "ramda";
 import * as React from "react";
@@ -28,22 +25,26 @@ import {
     ReaderConfig,
 } from "readium-desktop/common/models/reader";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { dialogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
-import { IReaderPdfConfig, IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { ok } from "readium-desktop/common/utils/assert";
-import { formatTime } from "readium-desktop/common/utils/time";
 import {
     createReadiumPositionList, IReadiumPositionList, isEpubPositionListPublication,
     mapLocatorToReadiumPosition,
 } from "readium-desktop/common/readium/positions";
+import { dialogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
+import { IReaderPdfConfig, IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { rgbToHex } from "readium-desktop/common/rgb";
+import { ok } from "readium-desktop/common/utils/assert";
+import { formatTime } from "readium-desktop/common/utils/time";
 import {
-    _APP_NAME, _APP_VERSION, _DIST_RELATIVE_URL, _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL,
+    _APP_NAME, _APP_VERSION,
+    _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/double_arrow_down_black_24dp.svg";
 import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
 import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
 import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
 import * as exitZenModeIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
+import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -65,6 +66,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_LINK, R2_EVENT_LINK } from "@r2-navigator-js/electron/common/events";
+import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import {
     convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
@@ -72,43 +74,46 @@ import {
     audioForward, audioPause, audioRewind, audioTogglePlayPause,
 } from "@r2-navigator-js/electron/renderer/audiobook";
 import {
-    getCurrentReadingLocation, handleLinkLocator as r2HandleLinkLocator, handleLinkUrl as r2HandleLinkUrl, installNavigatorDOM,
-    LocatorExtended, mediaOverlaysClickEnable,
-    mediaOverlaysNext, mediaOverlaysPause,
-    mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
-    MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight,
-    setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
-    setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
-    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
-    ttsStop, ttsVoices as navigatorTTSVoicesSetter,
+    enablePageBreakMarginIndicators,
+    getCurrentReadingLocation,
+    highlightsClickListen,
+    installNavigatorDOM,
     // stealFocusDisable,
     keyboardFocusRequest,
-    ttsHighlightStyle,
+    LocatorExtended, mediaOverlaysClickEnable,
     mediaOverlaysEnableCaptionsMode,
     mediaOverlaysEnableSkippability,
-    highlightsClickListen,
+    mediaOverlaysNext, mediaOverlaysPause,
+    mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
+    MediaOverlaysStateEnum, mediaOverlaysStop,
     mediaOverlaysUseTTSHighlights,
-    enablePageBreakMarginIndicators,
+    ttsVoices as navigatorTTSVoicesSetter,
+    navLeftOrRight,
+    handleLinkLocator as r2HandleLinkLocator, handleLinkUrl as r2HandleLinkUrl,
+    setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
+    setReadingLocationSaver,
+    ttsAndMediaOverlaysManualPlayNext,
+    ttsClickEnable,
+    ttsHighlightStyle,
+    ttsNext, ttsOverlayEnable, ttsPause,
+    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume,
+    ttsSentenceDetectionEnable,
+    ttsSkippabilityEnable,
+    TTSStateEnum,
+    ttsStop,
 } from "@r2-navigator-js/electron/renderer/index";
-import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
-import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
-import type {
-    TPdfAnnotationDraftTransport,
-    TPdfAnnotationNavigationTarget,
-    TPdfAnnotationSelectionErrorPayload,
-    TPdfAnnotationSelectionTarget,
-} from "../pdf/common/pdfReader.type";
-import { pdfMount } from "../pdf/driver";
+import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
+import { defaultReadingMode, TdivinaReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
+import {
+    pdfAnnotationDraftToNote,
+} from "readium-desktop/renderer/reader/pdf/pdfAnnotationConverters";
 import {
     buildPdfAnnotationTransportList,
     handlePdfAnnotationCreateRequested,
     IPdfAnnotationCreateRequestPayload,
     triggerPdfAnnotation,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
-import {
-    pdfAnnotationDraftToNote,
-} from "readium-desktop/renderer/reader/pdf/pdfAnnotationConverters";
 import {
     getPdfAnnotationSelectionMenuAction,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
@@ -117,39 +122,44 @@ import {
     getPdfAnnotationCreatePresentation,
     getPdfAnnotationVisibilityPayload,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationReader";
+import type {
+    TPdfAnnotationDraftTransport,
+    TPdfAnnotationNavigationTarget,
+    TPdfAnnotationSelectionErrorPayload,
+    TPdfAnnotationSelectionTarget,
+} from "../pdf/common/pdfReader.type";
+import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
+import { pdfMount } from "../pdf/driver";
 import {
     readerLocalActionAnnotations,
     readerLocalActionLocatorHrefChanged,
     readerLocalActionToggleMenu,
     readerLocalActionToggleSettings,
 } from "../redux/actions";
-import { TdivinaReadingMode, defaultReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
 import {
     IReaderMenuProps, IReaderSettingsProps, isDivinaReadingMode,
 } from "./options-values";
-import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
 
+import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
-import { logEvent } from "readium-desktop/renderer/common/analytics";
-import { winCommonActions } from "readium-desktop/common/redux/actions";
-import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
-import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { getTranslator } from "readium-desktop/common/services/translator";
-import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
-import { getStore } from "../createStore";
-import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
-import { DockTypeName } from "readium-desktop/common/models/dock";
-import { EDrawType, INoteState, TDrawType, TDrawView } from "readium-desktop/common/redux/states/renderer/note";
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
-import { OpdsProgressionDialog } from "./OpdsProgressionDialog";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { DockTypeName } from "readium-desktop/common/models/dock";
 import { opdsProgressionToLocator } from "readium-desktop/common/models/opdsProgression";
+import { winCommonActions } from "readium-desktop/common/redux/actions";
+import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { EDrawType, INoteState, TDrawType, TDrawView } from "readium-desktop/common/redux/states/renderer/note";
+import { getTranslator } from "readium-desktop/common/services/translator";
+import { URL_HOST_COMMON, URL_PATH_PREFIX_PUB, URL_PROTOCOL_FILEX, URL_PROTOCOL_THORIUMHTTPS } from "readium-desktop/common/streamerProtocol";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
+import { getStore } from "../createStore";
+import { OpdsProgressionDialog } from "./OpdsProgressionDialog";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
@@ -1165,6 +1175,9 @@ class Reader extends React.Component<IProps, IState> {
                     className={stylesReader.skip_link}
                     anchorId="main-content"
                     label={this.props.__("accessibility.skipLink")}
+                    tooltipkeyboardShortcut={ this.props.keyboardShortcuts.FocusMain }
+                    tooltipkeyboardShortcutName={this.props.__("settings.keyboard.list.FocusMain.name")}
+                    tooltipkeyboardShortcutDescription={ this.props.__("settings.keyboard.list.FocusMain.description") }
                 />
                 <div className={stylesReader.root}>
                     {!this.state.zenMode ?

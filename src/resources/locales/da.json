@@ -5,18 +5,24 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "Luk",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "Flyt listen til venstre",
         "loading": "",
         "mainContent": "hovedindhold",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
         "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Flyt listen til højre",
+        "searching": "",
         "skipLink": "Spring til indholdet",
         "toolbar": "værktøjslinje"
     },
@@ -264,28 +270,67 @@
         "annotations": {
             "alreadyImported": "Alle noter eksisterer i forvejen, afslutter import.",
             "emptyFile": "Ingen noter blev fundet i filen.",
-            "errorParsing": "Fejl under læsning af filen: ",
             "nothing": "Ingen noter kunne importeres, afslutter import",
             "success": "Import færdig."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Download annulleret.",
-            "error": "Download af {{- title}} er stødt på en fejl: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Den downloadede fil kunne ikke valideres: Forventet SHA-256 hash: {{- expected}}, fik i stedet {{- actual}}.",
                 "httpGet": "HTTP download mislykkedes: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Det midlertidige filnavn til downloaden er ugyldigt.",
                 "invalidLink": "Download linket er ugyldigt.",
                 "invalidTempDirectory": "Den midlertidige mappe til downloads er ugyldig.",
                 "lengthMismatch": "Integritetstjek af den downloadede fil fejlede: forventede {{- expected}} bytes, fik {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Download var ikke muligt.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Var ikke i stand til at lave en unik midlertidig fil til download: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} er allerede importeret.",
-            "fail": "Import af {{- path}} fejlede. {{- err}}",
-            "success": "{{- title}} er nu importeret."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "{{- title}} er nu importeret.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -313,8 +358,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Bogen kan ikke åbnes: {{- err}}",
-            "folderNotFound": "Bogmappen kan ikke findes. Importer den igen, eller konfigurer ekstra lagerplads i Indstillinger under Lagerplads."
+            "failed": "",
+            "folderNotFound": "Bogmappen kan ikke findes. Importer den igen, eller konfigurer ekstra lagerplads i Indstillinger under Lagerplads.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -732,11 +778,9 @@
         "duration": {
             "title": "Spilletid"
         },
-        "encryptedNoLicense": "Bogen er krypteret, men mangler en LCP licens!",
         "expired": "Lånet er udløbet",
         "expiredLcp": "Denne bog kan ikke læses, da LCP-licensen er udløbet.",
         "incorrectPassphrase": "Intet gemt nøgleord passer til bogen, eller det indtastede nøgleord er forkert.",
-        "lcpEnd": "Slut",
         "lcpNotSupported": "ADVARSEL: Dette er en pre-release version af Thorium Desktop, som ikke understøtter rigtige LCP-licenser og kun understøtter LCP-dekryptering af 'grundlæggende profil' uden certifikatvalidering.",
         "lcpRightsCopy": "Kopierede bogstaver",
         "lcpRightsPrint": "Printede sider",
@@ -1336,7 +1380,7 @@
         },
         "screenReaderActivate": {
             "help": "Når applikationen registrerer at hjælpeteknologier benyttes, fungerer brugergrænsefladen bedre med skærmlæsere",
-            "invite": "Optimer til skærmoplæser ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimer til skærmoplæser",
             "message": "Forbedret understøttelse af skærmlæsere",
             "title": "Forbedret oplevelse med skærmlæser"
         },

@@ -6,38 +6,37 @@
 // ==LICENSE-END==
 
 import { ipcRenderer } from "electron";
-
-import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
+import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+// import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
 
-import { Link } from "react-router-dom";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import classNames from "classnames";
 import * as React from "react";
-import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
+import { Link } from "react-router-dom";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { resolveDisplayType } from "../../routing";
-import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
-import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
+import { URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PROTOCOL_THORIUMHTTPS } from "readium-desktop/common/streamerProtocol";
 import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
-import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
+import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
+import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
+import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { Settings } from "../settings/Settings";
-import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import { buildOpdsBrowserRoute } from "../../opds/route";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import {
     buildProfileCatalogRootIdentifier,
     buildProfileRoute,
     getLocalizedProfileScreenLinks,
 } from "../../customization/route";
-import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { buildOpdsBrowserRoute } from "../../opds/route";
+import { resolveDisplayType } from "../../routing";
+import { Settings } from "../settings/Settings";
 // import { WizardModal } from "../Wizard";
 
 export interface NavigationHeader {
@@ -177,12 +176,13 @@ const Header = () => {
 
     const dispatch = useDispatch();
 
-    const keyboardShortcutScreenReader = `${(keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
+    // const keyboardShortcutScreenReader = textualizeKeyboardShortcut(keyboardShortcuts.ToggleScreenReaderOptimize);
+    // const keyboardShortcutFocusMain = textualizeKeyboardShortcut(keyboardShortcuts.FocusMain);
 
     const screenReaderToggle = React.useCallback(() => {
         dispatch(screenReaderActions.save.build(!screenReaderActivate));
-        dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));
-    }, [dispatch, __, screenReaderActivate, keyboardShortcutScreenReader]);
+        dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite") + ` (${!screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no")})`));
+    }, [dispatch, __, screenReaderActivate]); // keyboardShortcutScreenReader
 
     const [isAccessibilitySupportEnabled, setAccessibilitySupportEnabled] = React.useState(false);
 
@@ -251,17 +251,24 @@ const Header = () => {
 
     const displayScreenReaderInvite = !screenReaderActivate && isAccessibilitySupportEnabled;
 
+    //
     return (<>
         {displayScreenReaderInvite ? <SkipLink
             className={stylesHeader.skip_link}
             anchorId="xxx"
-            label={__("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader, status: screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no")})}
+            label={__("settings.screenReaderActivate.invite")}
             onClick={screenReaderToggle}
+            tooltipkeyboardShortcut={keyboardShortcuts.ToggleScreenReaderOptimize}
+            tooltipkeyboardShortcutName={__("settings.keyboard.list.ToggleScreenReaderOptimize.name")}
+            tooltipkeyboardShortcutDescription={ __("settings.keyboard.list.ToggleScreenReaderOptimize.description") }
         /> : <></>}
         <SkipLink
             className={stylesHeader.skip_link}
             anchorId="main-content"
             label={__("accessibility.skipLink")}
+            tooltipkeyboardShortcut={ keyboardShortcuts.FocusMain }
+            tooltipkeyboardShortcutName={__("settings.keyboard.list.FocusMain.name")}
+            tooltipkeyboardShortcutDescription={ __("settings.keyboard.list.FocusMain.description") }
         />
 
         <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>

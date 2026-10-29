@@ -5,18 +5,24 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "Pechar",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "Desprazar lista á esquerda",
         "loading": "",
         "mainContent": "Contido principal",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
         "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Desprazar lista á dereita",
+        "searching": "",
         "skipLink": "Pasar ao contido",
         "toolbar": "Barra de ferramentas"
     },
@@ -264,28 +270,67 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
-            "error": "A descarga de {{-  title}} fallou: [{{-  err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{-  title}} xa estaba importado",
-            "fail": "A importación de {{-  path}} fallou. {{-  err}}",
-            "success": "A importación de {{-  title}} finalizou."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "A importación de {{-  title}} finalizou.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -313,8 +358,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Non se pode abrir a publicación: {{-  err}}",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -732,11 +778,9 @@
         "duration": {
             "title": "Duración"
         },
-        "encryptedNoLicense": "",
         "expired": "Préstamo expirado",
         "expiredLcp": "Este libro non se pode ler porque a licenza  LCP expirou.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Fin",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Copia de personaxes",
         "lcpRightsPrint": "Copia de impresora",

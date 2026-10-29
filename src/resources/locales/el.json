@@ -5,18 +5,24 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "Κλείσιμο",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "Μετακίνηση προς τα αριστερά",
         "loading": "",
         "mainContent": "κυρίως περιεχόμενο",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
         "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Μετακίνηση προς τα δεξιά",
+        "searching": "",
         "skipLink": "Μεταπήδηση στο περιεχόμενο",
         "toolbar": "Γραμμή εργαλείων"
     },
@@ -264,28 +270,67 @@
         "annotations": {
             "alreadyImported": "Όλες οι σημειώσεις έχουν ήδη εισαχθεί.",
             "emptyFile": "Δεν διατίθενται σημειώσεις μέσα στο αρχείο.",
-            "errorParsing": "Σφάλμα κατά την ανάλυση αρχείου: ",
             "nothing": "Δεν υπάρχει καμία σημείωση για εισαγωγή· παράκαμψη εισαγωγής",
             "success": "Επιτυχής ολοκλήρωση εισαγωγής."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Ακύρωση λήψης.",
-            "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενος κωδικός SHA-256 {{- expected}}, βρέθηκε {{- actual}}.",
                 "httpGet": "Αποτυχία λήψης μέσω HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Το προσωρινό όνομα του αρχείου λήψης δεν είναι έγκυρο.",
                 "invalidLink": "Ο σύνδεσμος λήψης δεν είναι έγκυρος.",
                 "invalidTempDirectory": "Ο προσωρινός φάκελος λήψης δεν είναι έγκυρος.",
                 "lengthMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενα {{- expected}} bytes, ληφθήκαν {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Η ροή λήψης δεν είναι διαθέσιμη.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Αδυναμία δημιουργίας ενός μοναδικού προσωρινού ονόματος αρχείου λήψης: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} έχει ήδη εισαχθεί.",
-            "fail": "Η εισαγωγή του {{- path}} απέτυχε. {{- err}}",
-            "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -313,8 +358,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Η δημοσίευση δεν μπορεί να ανοίξει: {{- err}}",
-            "folderNotFound": "Δεν εντοπίστηκε ο φάκελος δημοσιεύσεων. Εισάγετέ τον ξανά ή ρυθμίστε τον επιπλέον χώρο αποθήκευσης από τις Ρυθμίσεις > Αποθήκευση."
+            "failed": "",
+            "folderNotFound": "Δεν εντοπίστηκε ο φάκελος δημοσιεύσεων. Εισάγετέ τον ξανά ή ρυθμίστε τον επιπλέον χώρο αποθήκευσης από τις Ρυθμίσεις > Αποθήκευση.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -732,11 +778,9 @@
         "duration": {
             "title": "Διάρκεια"
         },
-        "encryptedNoLicense": "Η δημοσίευση είναι κρυπτογραφημένη, αλλά δεν έχει άδεια LCP!",
         "expired": "Ο δανεισμός έχει λήξει",
         "expiredLcp": "Αυτό το βιβλίο δεν μπορεί να διαβαστεί επειδή η άδεια χρήσης LCP έχει λήξει.",
         "incorrectPassphrase": "Καμία αποθηκευμένη συνθηματική φράση δεν ταιριάζει με το βιβλίο ή η εισαχθείσα συνθηματική φράση είναι λανθασμένη.",
-        "lcpEnd": "Τέλος",
         "lcpNotSupported": "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Αυτή είναι μια pre-release έκδοση του προγράμματος ανάγνωσης Thorium Desktop, η οποία δεν υποστηρίζει άδειες χρήσης LCP παραγωγής και υποστηρίζει μόνο την αποκρυπτογράφηση LCP «βασικού προφίλ» χωρίς επικύρωση πιστοποιητικού.",
         "lcpRightsCopy": "Αντιγραμμένοι χαρακτήρες",
         "lcpRightsPrint": "Εκτυπώσιμες σελίδες",
@@ -1336,7 +1380,7 @@
         },
         "screenReaderActivate": {
             "help": "Όταν η εφαρμογή ανιχνεύει την παρουσία βοηθητικής τεχνολογίας, η διεπαφή χρήστη λειτουργεί καλύτερα με προγράμματα ανάγνωσης οθόνης",
-            "invite": "Βελτιστοποίηση αναγνώστη οθόνης ({{- status}}) [{{- keyboard}}]",
+            "invite": "Βελτιστοποίηση αναγνώστη οθόνης",
             "message": "Βελτιωμένη υποστήριξη για προγράμματα ανάγνωσης οθόνης",
             "title": "Βελτίωση της εμπειρίας χρήσης του προγράμματος ανάγνωσης οθόνης"
         },

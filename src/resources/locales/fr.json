@@ -5,18 +5,24 @@
         "bookmarkNote": "Note du marque-page",
         "cancelDownload": "Annuler le téléchargement : {{- title}}",
         "closeDialog": "Fermer",
+        "closeNotification": "Fermer la notification",
+        "copyNotificationInstruction": "Copier la notification",
         "decreaseSetting": "Diminuer {{- setting}}",
         "downloadProgress": "Progression du téléchargement : {{- title}}",
+        "downloadProgressUnknown": "La progression du téléchargement est inconnue.",
         "editTag": "Modifier l’étiquette : {{- tag}}",
         "favoriteCatalog": "Catalogue favori : {{- title}}",
         "increaseSetting": "Augmenter {{- setting}}",
         "leftSlideButton": "Faire défiler vers la gauche",
         "loading": "Chargement…",
         "mainContent": "Contenu principal",
+        "notificationCopied": "Copié dans le presse-papiers :",
+        "notificationCopyFailed": "Impossible de copier la notification",
         "printPage": "Page {{page}}",
         "publicationDetails": "{{- field}} : {{- title}}",
         "resetSetting": "Réinitialiser {{- setting}}",
         "rightSlideButton": "Faire défiler vers la droite",
+        "searching": "Recherche en cours…",
         "skipLink": "Aller directement au contenu",
         "toolbar": "Barre d'outils"
     },
@@ -145,7 +151,7 @@
                 "state": "État"
             }
         },
-        "openFolder": "Répertoire ouvert",
+        "openFolder": "Ouvrir le dossier",
         "publisher": "Éditeur",
         "readBook": "Lire",
         "released": "Publié le",
@@ -269,28 +275,67 @@
         "annotations": {
             "alreadyImported": "Toutes les notes sont déjà importées, importation annulée.",
             "emptyFile": "Aucune note n'est disponible dans ce fichier.",
-            "errorParsing": "Erreur lors de la lecture du fichier : ",
             "nothing": "Aucune note disponible, ajout annulé",
             "success": "Importation réussie."
         },
+        "diagnostics": {
+            "category": "Catégorie : {{- category}}",
+            "causedBy": "Causé par :",
+            "downloadSource": "Source du téléchargement : {{- source}}",
+            "error": "Erreur",
+            "httpStatus": "Statut HTTP : {{- status}}",
+            "invalidUrl": "[URL invalide]",
+            "source": "Source : {{- source}}",
+            "url": "URL : {{- url}}"
+        },
         "download": {
             "cancelled": "Téléchargement annulé.",
-            "error": "Le téléchargement de {{- title}} a échoué : [{{- err}}]",
             "errors": {
+                "failed": "Le téléchargement a échoué.",
                 "hashMismatch": "Erreur de vérification de l'intégrité du fichier téléchargé  : SHA-256 attendu {{- expected}}, obtenu {{- actual}}.",
                 "httpGet": "Téléchargement HTTP échoué : {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Le nom du fichier temporaire téléchargé est invalide.",
                 "invalidLink": "Le lien de téléchargement est invalide.",
                 "invalidTempDirectory": "Le répertoire de téléchargement temporaire est invalide.",
                 "lengthMismatch": "Erreur de vérification de l'intégrité des fichiers téléchargés : attendus {{- expected}}, obtenu {{- actual}} octets.",
+                "pathMissing": "Le chemin du fichier téléchargé est manquant.",
+                "publicationLinkMissing": "La licence ne contient aucun lien de téléchargement de la publication.",
                 "readStreamMissing": "Le flux de téléchargement n'est pas disponible.",
+                "streamClosed": "Le flux de téléchargement a été fermé avant la fin.",
                 "tooManyFilenameAttempts": "Impossible de créer un fichier de téléchargement temporaire unique : {{- path}}"
-            }
+            },
+            "failed": "Impossible de télécharger depuis « {{- hostname}} ». Veuillez réessayer.",
+            "integrityFailed": "Le téléchargement depuis « {{- hostname}} » est incomplet ou endommagé. Veuillez réessayer.",
+            "saveFailed": "Impossible d’enregistrer le téléchargement. Vérifiez l’espace de stockage disponible et les autorisations.",
+            "startedWithTitle": "Téléchargement de {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} a déjà été ajouté.",
-            "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
-            "success": "L'ajout de {{- title}} est achevé."
+            "errors": {
+                "acquisitionUrlMissing": "L’URL de téléchargement de la publication est manquante ou invalide.",
+                "cbzNoImages": "L’archive CBZ ne contient aucune image prise en charge.",
+                "contextMissing": "manquant",
+                "daisyConversionFailed": "Impossible de convertir la publication DAISY.",
+                "manifestContext": "@context du manifeste de publication non reconnu à l’adresse {{- url}} : {{- context}}",
+                "manifestImportFailed": "L’importation du manifeste de la publication a échoué.",
+                "manifestInvalidJson": "JSON invalide dans le manifeste de la publication à l’adresse {{- url}}.",
+                "manifestMissing": "Le manifeste de la publication est manquant.",
+                "manifestNotFound": "Aucun manifeste de publication trouvé à l’adresse {{- url}}.",
+                "manifestParsingFailed": "Impossible d’analyser le manifeste de la publication à l’adresse {{- url}}.",
+                "noImportResult": "L’importation n’a renvoyé aucune publication.",
+                "notImported": "La publication n’a pas pu être ajoutée à la bibliothèque.",
+                "profileAssetUrl": "URL de publication du profil invalide : {{- path}}",
+                "profileEmpty": "L’archive ZIP du profil personnalisé est vide.",
+                "profileEntryMissing": "Publication introuvable dans le profil personnalisé : {{- path}}",
+                "profileMissing": "Profil personnalisé introuvable : {{- id}}",
+                "profileNotZip": "Le profil personnalisé n’est pas une archive ZIP."
+            },
+            "failed": "Impossible d’importer « {{- name}} ».",
+            "invalidLicense": "Impossible d’importer « {{- name}} ». La licence de la publication est invalide.",
+            "invalidPublication": "Impossible d’importer « {{- name}} ». Le manifeste de la publication est manquant.",
+            "lcpLicenseMalformed": "La licence LCP est mal formée.",
+            "success": "L'ajout de {{- title}} est achevé.",
+            "unsupportedFormat": "Impossible d’importer « {{- name}} ». Ce format de fichier n’est pas pris en charge."
         },
         "notifications": {
             "annotationImportFailed": "Impossible d’importer les annotations. Vérifiez que le fichier est un export d’annotations valide.",
@@ -318,8 +363,9 @@
             "tagsFailed": "Impossible d’enregistrer les étiquettes de la publication. Réessayez."
         },
         "open": {
-            "error": "Le livre ne peut pas être ouvert : {{- err}}",
-            "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage."
+            "failed": "Impossible d’ouvrir cette publication.",
+            "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage.",
+            "missingLicense": "Impossible d’ouvrir cette publication. Elle est chiffrée, mais sa licence LCP est manquante."
         },
         "storage": {
             "recovery": {
@@ -738,11 +784,9 @@
         "duration": {
             "title": "Durée"
         },
-        "encryptedNoLicense": "La publication est encryptée mais aucune licence LCP trouvée !",
         "expired": "Prêt expiré",
         "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
         "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",
-        "lcpEnd": "Fin",
         "lcpNotSupported": "WARNING : il s'agit d'une version préliminaire de Thorium Desktop, qui ne prend pas en charge les licences de production LCP. Elle ne prend en charge que des licences LCP de test.",
         "lcpRightsCopy": "Caractères copiés",
         "lcpRightsPrint": "Pages imprimées",
@@ -1343,7 +1387,7 @@
         },
         "screenReaderActivate": {
             "help": "Lorsque l'application détecte la présence d'une technologie d'assistance, l'interface utilisateur fonctionne mieux avec les lecteurs d'écran",
-            "invite": "Support optimisé des lecteurs d'écran ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimiser pour les lecteurs d'écran",
             "message": "Support amélioré pour les lecteurs d'écran",
             "title": "Améliorer l'expérience d'un utilisateur doté d'un lecteur d'écran"
         },

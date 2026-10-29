@@ -9,8 +9,8 @@ import { downloader } from "readium-desktop/main/redux/sagas/downloader";
 describe("download failure ownership", () => {
     it("reports cancellation as an informational notice", () => {
         const operation = downloader(["https://example.org/book"], "My book");
-        operation.next();
-        operation.next();
+        let step = operation.next();
+        while (!step.done && (step.value as any)?.type !== "CALL") step = operation.next();
         expect(operation.return(undefined).value).toMatchObject({ type: "CANCELLED" });
         const notification = operation.next(true).value;
         expect(notification).toMatchObject({ type: "PUT", payload: { action: { payload: { type: "toast-info" } } } });
@@ -21,12 +21,14 @@ describe("download failure ownership", () => {
     it("propagates the original cause without notifying and completes download tracking", () => {
         const operation = downloader(["https://example.org/book"], "My book");
         expect(operation.next().value).toMatchObject({ type: "PUT", payload: { action: { type: "DOWNLOAD_PROGRESS" } } });
-        expect(operation.next().value).toMatchObject({ type: "CALL" });
+        let step = operation.next();
+        while (!step.done && (step.value as any)?.type !== "CALL") step = operation.next();
+        expect(step.value).toMatchObject({ type: "CALL" });
         const cause = new Error("Connection lost");
         expect(operation.throw(cause).value).toMatchObject({ type: "CANCELLED" });
         expect(operation.next(false).value).toMatchObject({ type: "PUT", payload: { action: { type: "DOWNLOAD_DONE" } } });
         let failure: unknown;
         try { operation.next(); } catch (error) { failure = error; }
-        expect(failure).toMatchObject({ message: "My book: Connection lost", cause });
+        expect(failure).toBe(cause);
     });
 });

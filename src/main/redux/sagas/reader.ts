@@ -26,7 +26,6 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { all, call, put, take } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped, put as putTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
-import { types } from "node:util";
 
 import {
     ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, ERROR_MESSAGE_ENCRYPTED_NO_LICENSE, streamerOpenPublicationAndReturnManifestUrl,
@@ -147,26 +146,15 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
     } catch (e) {
 
-        const errMsg = e.toString();
-        if (errMsg === ERROR_MESSAGE_ENCRYPTED_NO_LICENSE) {
+        debug("Unable to open publication", publicationIdentifier, e);
+        if (e !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
+            const translate = getTranslator().translate;
             yield put(
                 toastActions.openRequest.build(
                     ToastType.Error,
-                    getTranslator().translate("message.open.error", { err: getTranslator().translate("publication.encryptedNoLicense") }),
-                    undefined, (action as unknown as ActionWithSender).sender?.identifier,
-                ),
-            );
-        } else if (errMsg !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
-
-            if (types.isNativeError(e)) {
-                // disable "Error: "
-                e.name = "";
-            }
-
-            yield put(
-                toastActions.openRequest.build(
-                    ToastType.Error,
-                    getTranslator().translate("message.open.error", { err: errMsg }),
+                    e === ERROR_MESSAGE_ENCRYPTED_NO_LICENSE
+                        ? translate("message.open.missingLicense")
+                        : translate("message.open.failed"),
                     undefined, (action as unknown as ActionWithSender).sender?.identifier,
                 ),
             );

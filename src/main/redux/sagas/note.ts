@@ -32,7 +32,7 @@ import { publicationActions as publicationActionsFromMainAction } from "../actio
 import { EXT_ANNOTATIONS, EXT_ANNOTATIONS_LEGACY } from "readium-desktop/common/extension";
 import { resolveReadiumAnnotationSourceHref } from "readium-desktop/common/readium/annotation/sourceHref";
 import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
-import { TAnalyticsEventParams } from "src/common/api/interface/analyticsApi.interface";
+import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/analyticsApi.interface";
 import { readAnnotationSetFile } from "readium-desktop/main/w3c/annotations/read";
 
 // Logger
