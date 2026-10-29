@@ -278,26 +278,64 @@
             "nothing": "Non c'è nessuna nota pronta per essere importata, l'importazione sarà interrotta",
             "success": "Importazione completata."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Download annullato.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Verifica di integrità del file scaricato non riuscita: previsto SHA-256 hash {{- expected}}, ottenuto {{- actual}}.",
                 "httpGet": "Download HTTP fallito: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "Download in stallo: nessun dato ricevuto per 30 secondi. Si prega di riprovare.",
                 "invalidFilename": "Il nome temporaneo del file di download non è valido.",
                 "invalidLink": "Il link per il download non è valido.",
                 "invalidTempDirectory": "La directory di download temporanea non è valida.",
                 "lengthMismatch": "Verifica di integrità del file scaricato non riuscita: previsti {{- expected}} byte, ottenuti {{- actual}} byte.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Il download dello streaming non è disponibile.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Impossibile creare un nome univoco per il file di download temporaneo: {{- path}}"
             },
-            "started": "Download iniziato.",
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
             "startedWithTitle": "Downloading {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} è già stato importato.",
-            "fail": "L'importazione di {{- path}} è fallita. {{- err}}",
-            "success": "L'importazione di {{- title}} è terminata."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "L'importazione di {{- title}} è terminata.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "Impossibile importare le annotazioni. Controlla che sia possibile esportare il file.",
@@ -325,8 +363,9 @@
             "tagsFailed": "Impossibile salvare le tag delle pubblicazioni. Riprova."
         },
         "open": {
-            "error": "La pubblicazione non può essere aperta: {{- err}}",
-            "folderNotFound": "La cartella della pubblicazione non si trova. Reimportala o configura uno spazio d'archiviazione aggiuntivo in Impostazioni > Spazio d'archiviazione."
+            "failed": "",
+            "folderNotFound": "La cartella della pubblicazione non si trova. Reimportala o configura uno spazio d'archiviazione aggiuntivo in Impostazioni > Spazio d'archiviazione.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -745,7 +784,6 @@
         "duration": {
             "title": "Durata"
         },
-        "encryptedNoLicense": "La pubblicazione è criptata ma manca la licenza LCP!",
         "expired": "Prestito scaduto",
         "expiredLcp": "Questa pubblicazione non può essere letta perché la licenza LCP è scaduta.",
         "incorrectPassphrase": "Nessuna passphrase memorizzata è associata alla pubblicazione, oppure la passphrase inserita è errata.",

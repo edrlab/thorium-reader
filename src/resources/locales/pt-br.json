@@ -178,14 +178,14 @@
         "annotations": {
             "descAuthor": "por '{{- author}} '",
             "descCreator": "criado por",
-            "descList_many": "{{- count}} As notas de {{- creator}} serão importadas em '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} A nota de {{- creator}} será importada em '{{- title}}' {{- author}}",
+            "descList_many": "{{- count}} As notas de {{- creator}} serão importadas em '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} As notas de {{- creator}} serão importadas em '{{- title}}' {{- author}}",
-            "descNewer_many": "Conflito(s): {{- count}} notas mais recentes",
             "descNewer_one": "Conflito: {{- count}} nota mais recente",
+            "descNewer_many": "Conflito(s): {{- count}} notas mais recentes",
             "descNewer_other": "Conflito(s): {{- count}} notas mais recentes",
-            "descOlder_many": "Conflito(s): {{- count}} notas mais antigas",
             "descOlder_one": "Conflito: {{- count}} nota mais antiga",
+            "descOlder_many": "Conflito(s): {{- count}} notas mais antigas",
             "descOlder_other": "Conflito(s): {{- count}} notas mais antigas",
             "descTitle": "Título de anotações: ",
             "importAll": "Importar todas as notas",
@@ -203,12 +203,12 @@
             }
         },
         "deleteAnnotations": "Excluir anotações?",
-        "deleteAnnotationsText_many": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} nota?",
+        "deleteAnnotationsText_many": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteAnnotationsText_other": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteBookmarks": "Excluir marcadores?",
-        "deleteBookmarksText_many": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteBookmarksText_one": "Tem certeza de que deseja excluir {{- count}} marcador?",
+        "deleteBookmarksText_many": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteBookmarksText_other": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteFeed": "Deseja excluir este catálogo?",
         "deletePublication": "Deseja excluir esta publicação?",
@@ -278,26 +278,64 @@
             "nothing": "Não há nota pronta para ser importada, abortando a importação",
             "success": "Importação concluída com sucesso."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Download cancelado.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Falha na verificação de integridade do arquivo baixado: hash SHA-256 esperado {{- expected}}, obtido {{- actual}}.",
                 "httpGet": "Falha no download HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "Download travado: nenhum dado foi recebido por 30 segundos. Tente novamente.",
                 "invalidFilename": "O nome do arquivo de download temporário é inválido.",
                 "invalidLink": "O link de download é inválido.",
                 "invalidTempDirectory": "O diretório temporário de download é inválido.",
                 "lengthMismatch": "Falha na verificação de integridade do arquivo baixado: esperavam-se {{- expected}} bytes, foram obtidos {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "O fluxo de download está indisponível.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Não foi possível criar um nome de arquivo temporário exclusivo para download: {{- path}}"
             },
-            "started": "Download iniciado.",
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
             "startedWithTitle": "Baixando {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} já foi importado.",
-            "fail": "A importação de {{- path}} falhou: [{{- err}}]",
-            "success": "A importação de {{- title}} terminou."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "A importação de {{- title}} terminou.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "Não foi possível importar as anotações. Verifique se o arquivo é uma exportação de anotações válido.",
@@ -325,14 +363,15 @@
             "tagsFailed": "Não foi possível salvar as etiquetas da publicação. Tente novamente."
         },
         "open": {
-            "error": "Erro na abertura da publicação: {{- err}}",
-            "folderNotFound": "O diretório de publicação não pôde ser encontrado. Importe-o novamente ou configure o armazenamento adicional em Configurações > Armazenamento."
+            "failed": "",
+            "folderNotFound": "O diretório de publicação não pôde ser encontrado. Importe-o novamente ou configure o armazenamento adicional em Configurações > Armazenamento.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
                 "failure": "A recuperação da publicação falhou.",
-                "success_many": "{{- count}} publicações recuperadas.",
                 "success_one": "{{- count}} publicação recuperada.",
+                "success_many": "{{- count}} publicações recuperadas.",
                 "success_other": "{{- count}} publicações recuperadas."
             },
             "removed": "Diretório de publicação removido.",
@@ -745,7 +784,6 @@
         "duration": {
             "title": "Duração"
         },
-        "encryptedNoLicense": "A publicação está criptografada, mas não tem licença LCP!",
         "expired": "Empréstimo expirado",
         "expiredLcp": "A licença LCP desta publicação expirou.",
         "incorrectPassphrase": "Nenhuma senha armazenada funciona na publicação, ou a senha inserida é errada.",
@@ -929,8 +967,8 @@
         },
         "picker": {
             "search": {
-                "founds_many": "{{- count}} correspondências",
                 "founds_one": "{{- count}} correspondência",
+                "founds_many": "{{- count}} correspondências",
                 "founds_other": "{{- count}} correspondências",
                 "input": "texto para correspondência",
                 "next": "Próximo",
@@ -1414,14 +1452,14 @@
                 "description": "Verifica o armazenamento de publicações para encontrar publicações que possam ser recuperadas com segurança.",
                 "dialog": {
                     "confirm": "Recuperar",
-                    "description_many": "O Thorium encontrou {{- count}} publicações no disco que não constam no banco de dados. Você deseja importá-las novamente para o Thorium?",
                     "description_one": "O Thorium encontrou {{- count}} publicação no disco que não constam no banco de dados. Você deseja importá-la novamente para o Thorium?",
+                    "description_many": "O Thorium encontrou {{- count}} publicações no disco que não constam no banco de dados. Você deseja importá-las novamente para o Thorium?",
                     "description_other": "O Thorium encontrou {{- count}} publicações no disco que não constam no banco de dados. Você deseja importá-las novamente para o Thorium?",
                     "title": "Recuperar publicações"
                 },
                 "none": "Não foram encontradas publicações recuperáveis.",
-                "recoverableCount_many": "{{- count}} publicações podem ser recuperadas com o identificador de armazenamento original.",
                 "recoverableCount_one": "{{- count}} publicação pode ser recuperada com o identificador de armazenamento original.",
+                "recoverableCount_many": "{{- count}} publicações podem ser recuperadas com o identificador de armazenamento original.",
                 "recoverableCount_other": "{{- count}} publicações podem ser recuperadas com o identificador de armazenamento original.",
                 "title": "Recuperação"
             }

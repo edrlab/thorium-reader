@@ -273,26 +273,64 @@
             "nothing": "Yhtään muistiinpanoa ei ole valmiina tuontiin, tuonti keskeytetty.",
             "success": "Tuonti onnistui."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Lataus peruttu.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",
                 "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "Lataaminen keskeytyi: tietoja ei ole vastaanotettu 30 sekuntiin. Yritä uudelleen.",
                 "invalidFilename": "Väliaikaisen lataustiedoston nimi ei kelpaa.",
                 "invalidLink": "Latauslinkki ei kelpaa.",
                 "invalidTempDirectory": "Väliaikainen lataushakemisto ei kelpaa.",
                 "lengthMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu {{- expected}} tavua, todellinen määrä {{- actual}} tavua.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Suoratoiston lataaminen ei onnistu.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
             },
-            "started": "Lataaminen aloitettu.",
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
             "startedWithTitle": "Ladataan {{- title}}."
         },
         "import": {
             "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
-            "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
-            "success": "Julkaisun {{- title}} tuonti on valmis."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Julkaisun {{- title}} tuonti on valmis.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "Merkintöjä ei voitu tuoda. Varmista, että tiedosto on kelvollinen",
@@ -320,8 +358,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Julkaisua ei voi avata: {{- err}}",
-            "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila."
+            "failed": "",
+            "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -739,7 +778,6 @@
         "duration": {
             "title": "Kesto"
         },
-        "encryptedNoLicense": "Julkaisu on suojattu, mutta siitä puuttuu LCP-lisenssi.",
         "expired": "Laina-aika on päättynyt",
         "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
         "incorrectPassphrase": "Yksikään tallennettu salasana ei käy julkaisuun tai annettu salasana on väärä.",

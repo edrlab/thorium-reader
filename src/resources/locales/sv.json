@@ -273,26 +273,64 @@
             "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen",
             "success": "Importen lyckades."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Nedladdning avbruten.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Integritetskontroll för filen misslyckades. Förväntad SHA-256-hash: {{- expected}}, fick {{- actual}}.",
                 "httpGet": "HTTP-nedladdning misslyckades: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Det tillfälliga filnamnet för den nedladdade filen är ogiltigt.",
                 "invalidLink": "Nedladdningslänken är ogiltig.",
                 "invalidTempDirectory": "Mappen för den tillfälliga nedladdningen är ogiltig.",
                 "lengthMismatch": "Integritetskontroll för den nedladdade filen misslyckades. Förväntade {{- expected}} bytes, fick {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Nedladdningsströmmen går inte att nå.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Kunde inte skapa ett unikt filnamn för den nedladdade filen: {{- path}}"
             },
-            "started": "Nedladdning påbörjad.",
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
             "startedWithTitle": "Laddar ner {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} var redan importerad.",
-            "fail": "Importen av {{- path}} misslyckades. {{- err}}",
-            "success": "Importen av {{- title}} är slutförd."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Importen av {{- title}} är slutförd.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -320,8 +358,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Publikationen kan inte öppnas: {{- err}}",
-            "folderNotFound": "Mappen för boken kan inte hittas. Importera den igen eller ändra i Inställningar > Lagring."
+            "failed": "",
+            "folderNotFound": "Mappen för boken kan inte hittas. Importera den igen eller ändra i Inställningar > Lagring.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -739,7 +778,6 @@
         "duration": {
             "title": "Längd"
         },
-        "encryptedNoLicense": "Publikationen är krypterad men saknar LCP-licens!",
         "expired": "Lånetiden har gått ut",
         "expiredLcp": "Bokens LCP-licens har löpt ut.",
         "incorrectPassphrase": "Inget sparat lösenord passar för boken, eller så är det angivna lösenordet fel.",

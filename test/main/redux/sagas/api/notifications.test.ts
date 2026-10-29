@@ -65,3 +65,18 @@ describe("nested API operations", () => {
         expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({ type: "API_RESULT", error: false, payload: ["existing-book"] }));
     });
 });
+
+
+describe("opt-in diagnostic copies", () => {
+    it("includes a nested stack only in copyText for manifest import failures", async () => {
+        const cause = new Error("Original parser failure");
+        function* operation(): SagaGenerator<void> { throw new Error("Import from manifest failed", { cause }); }
+        jest.mocked(diMainGet).mockReturnValue({ importFromString: withErrorNotification(operation, "message.notifications.openFileFailed", true) } as never);
+        const dispatch = jest.fn();
+        await runSaga({ dispatch }, processRequest, apiActions.request.build("manifest-1", "publication", "importFromString", [])).toPromise();
+        const notice = (dispatch.mock.calls[0][0] as any).payload;
+        expect(notice.data).toBe("message.notifications.openFileFailed");
+        expect(notice.copyText).toContain(cause.stack);
+        expect(notice.data).not.toContain("Original parser failure");
+    });
+});

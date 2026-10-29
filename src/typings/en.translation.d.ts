@@ -662,26 +662,64 @@ declare namespace typed_i18n {
     readonly "nothing": string,
     readonly "success": string
   },
+  readonly "diagnostics": {
+    readonly "category": string,
+    readonly "causedBy": string,
+    readonly "downloadSource": string,
+    readonly "error": string,
+    readonly "httpStatus": string,
+    readonly "invalidUrl": string,
+    readonly "source": string,
+    readonly "url": string
+  },
   readonly "download": {
     readonly "cancelled": string,
     readonly "errors": {
+      readonly "failed": string,
       readonly "hashMismatch": string,
       readonly "httpGet": string,
-      readonly "idleTimeout": string,
       readonly "invalidFilename": string,
       readonly "invalidLink": string,
       readonly "invalidTempDirectory": string,
       readonly "lengthMismatch": string,
+      readonly "pathMissing": string,
+      readonly "publicationLinkMissing": string,
       readonly "readStreamMissing": string,
+      readonly "streamClosed": string,
       readonly "tooManyFilenameAttempts": string
     },
-    readonly "started": string,
+    readonly "failed": string,
+    readonly "integrityFailed": string,
+    readonly "saveFailed": string,
     readonly "startedWithTitle": string
   },
   readonly "import": {
     readonly "alreadyImport": string,
-    readonly "fail": string,
-    readonly "success": string
+    readonly "errors": {
+      readonly "acquisitionUrlMissing": string,
+      readonly "cbzNoImages": string,
+      readonly "contextMissing": string,
+      readonly "daisyConversionFailed": string,
+      readonly "manifestContext": string,
+      readonly "manifestImportFailed": string,
+      readonly "manifestInvalidJson": string,
+      readonly "manifestMissing": string,
+      readonly "manifestNotFound": string,
+      readonly "manifestParsingFailed": string,
+      readonly "noImportResult": string,
+      readonly "notImported": string,
+      readonly "profileAssetUrl": string,
+      readonly "profileEmpty": string,
+      readonly "profileEntryMissing": string,
+      readonly "profileMissing": string,
+      readonly "profileNotZip": string
+    },
+    readonly "failed": string,
+    readonly "invalidLicense": string,
+    readonly "invalidPublication": string,
+    readonly "lcpLicenseMalformed": string,
+    readonly "success": string,
+    readonly "unsupportedFormat": string
   },
   readonly "notifications": {
     readonly "annotationImportFailed": string,
@@ -709,8 +747,9 @@ declare namespace typed_i18n {
     readonly "tagsFailed": string
   },
   readonly "open": {
-    readonly "error": string,
-    readonly "folderNotFound": string
+    readonly "failed": string,
+    readonly "folderNotFound": string,
+    readonly "missingLicense": string
   },
   readonly "storage": {
     readonly "recovery": {
@@ -733,53 +772,147 @@ declare namespace typed_i18n {
   (_: "message.annotations.emptyFile", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
+  (_: "message.diagnostics", __?: {}): {
+  readonly "category": string,
+  readonly "causedBy": string,
+  readonly "downloadSource": string,
+  readonly "error": string,
+  readonly "httpStatus": string,
+  readonly "invalidUrl": string,
+  readonly "source": string,
+  readonly "url": string
+};
+  (_: "message.diagnostics.category", __?: {}): string;
+  (_: "message.diagnostics.causedBy", __?: {}): string;
+  (_: "message.diagnostics.downloadSource", __?: {}): string;
+  (_: "message.diagnostics.error", __?: {}): string;
+  (_: "message.diagnostics.httpStatus", __?: {}): string;
+  (_: "message.diagnostics.invalidUrl", __?: {}): string;
+  (_: "message.diagnostics.source", __?: {}): string;
+  (_: "message.diagnostics.url", __?: {}): string;
   (_: "message.download", __?: {}): {
   readonly "cancelled": string,
   readonly "errors": {
+    readonly "failed": string,
     readonly "hashMismatch": string,
     readonly "httpGet": string,
-    readonly "idleTimeout": string,
     readonly "invalidFilename": string,
     readonly "invalidLink": string,
     readonly "invalidTempDirectory": string,
     readonly "lengthMismatch": string,
+    readonly "pathMissing": string,
+    readonly "publicationLinkMissing": string,
     readonly "readStreamMissing": string,
+    readonly "streamClosed": string,
     readonly "tooManyFilenameAttempts": string
   },
-  readonly "started": string,
+  readonly "failed": string,
+  readonly "integrityFailed": string,
+  readonly "saveFailed": string,
   readonly "startedWithTitle": string
 };
   (_: "message.download.cancelled", __?: {}): string;
   (_: "message.download.errors", __?: {}): {
+  readonly "failed": string,
   readonly "hashMismatch": string,
   readonly "httpGet": string,
-  readonly "idleTimeout": string,
   readonly "invalidFilename": string,
   readonly "invalidLink": string,
   readonly "invalidTempDirectory": string,
   readonly "lengthMismatch": string,
+  readonly "pathMissing": string,
+  readonly "publicationLinkMissing": string,
   readonly "readStreamMissing": string,
+  readonly "streamClosed": string,
   readonly "tooManyFilenameAttempts": string
 };
+  (_: "message.download.errors.failed", __?: {}): string;
   (_: "message.download.errors.hashMismatch", __?: {}): string;
   (_: "message.download.errors.httpGet", __?: {}): string;
-  (_: "message.download.errors.idleTimeout", __?: {}): string;
   (_: "message.download.errors.invalidFilename", __?: {}): string;
   (_: "message.download.errors.invalidLink", __?: {}): string;
   (_: "message.download.errors.invalidTempDirectory", __?: {}): string;
   (_: "message.download.errors.lengthMismatch", __?: {}): string;
+  (_: "message.download.errors.pathMissing", __?: {}): string;
+  (_: "message.download.errors.publicationLinkMissing", __?: {}): string;
   (_: "message.download.errors.readStreamMissing", __?: {}): string;
+  (_: "message.download.errors.streamClosed", __?: {}): string;
   (_: "message.download.errors.tooManyFilenameAttempts", __?: {}): string;
-  (_: "message.download.started", __?: {}): string;
+  (_: "message.download.failed", __?: {}): string;
+  (_: "message.download.integrityFailed", __?: {}): string;
+  (_: "message.download.saveFailed", __?: {}): string;
   (_: "message.download.startedWithTitle", __?: {}): string;
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
-  readonly "fail": string,
-  readonly "success": string
+  readonly "errors": {
+    readonly "acquisitionUrlMissing": string,
+    readonly "cbzNoImages": string,
+    readonly "contextMissing": string,
+    readonly "daisyConversionFailed": string,
+    readonly "manifestContext": string,
+    readonly "manifestImportFailed": string,
+    readonly "manifestInvalidJson": string,
+    readonly "manifestMissing": string,
+    readonly "manifestNotFound": string,
+    readonly "manifestParsingFailed": string,
+    readonly "noImportResult": string,
+    readonly "notImported": string,
+    readonly "profileAssetUrl": string,
+    readonly "profileEmpty": string,
+    readonly "profileEntryMissing": string,
+    readonly "profileMissing": string,
+    readonly "profileNotZip": string
+  },
+  readonly "failed": string,
+  readonly "invalidLicense": string,
+  readonly "invalidPublication": string,
+  readonly "lcpLicenseMalformed": string,
+  readonly "success": string,
+  readonly "unsupportedFormat": string
 };
   (_: "message.import.alreadyImport", __?: {}): string;
-  (_: "message.import.fail", __?: {}): string;
+  (_: "message.import.errors", __?: {}): {
+  readonly "acquisitionUrlMissing": string,
+  readonly "cbzNoImages": string,
+  readonly "contextMissing": string,
+  readonly "daisyConversionFailed": string,
+  readonly "manifestContext": string,
+  readonly "manifestImportFailed": string,
+  readonly "manifestInvalidJson": string,
+  readonly "manifestMissing": string,
+  readonly "manifestNotFound": string,
+  readonly "manifestParsingFailed": string,
+  readonly "noImportResult": string,
+  readonly "notImported": string,
+  readonly "profileAssetUrl": string,
+  readonly "profileEmpty": string,
+  readonly "profileEntryMissing": string,
+  readonly "profileMissing": string,
+  readonly "profileNotZip": string
+};
+  (_: "message.import.errors.acquisitionUrlMissing", __?: {}): string;
+  (_: "message.import.errors.cbzNoImages", __?: {}): string;
+  (_: "message.import.errors.contextMissing", __?: {}): string;
+  (_: "message.import.errors.daisyConversionFailed", __?: {}): string;
+  (_: "message.import.errors.manifestContext", __?: {}): string;
+  (_: "message.import.errors.manifestImportFailed", __?: {}): string;
+  (_: "message.import.errors.manifestInvalidJson", __?: {}): string;
+  (_: "message.import.errors.manifestMissing", __?: {}): string;
+  (_: "message.import.errors.manifestNotFound", __?: {}): string;
+  (_: "message.import.errors.manifestParsingFailed", __?: {}): string;
+  (_: "message.import.errors.noImportResult", __?: {}): string;
+  (_: "message.import.errors.notImported", __?: {}): string;
+  (_: "message.import.errors.profileAssetUrl", __?: {}): string;
+  (_: "message.import.errors.profileEmpty", __?: {}): string;
+  (_: "message.import.errors.profileEntryMissing", __?: {}): string;
+  (_: "message.import.errors.profileMissing", __?: {}): string;
+  (_: "message.import.errors.profileNotZip", __?: {}): string;
+  (_: "message.import.failed", __?: {}): string;
+  (_: "message.import.invalidLicense", __?: {}): string;
+  (_: "message.import.invalidPublication", __?: {}): string;
+  (_: "message.import.lcpLicenseMalformed", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.import.unsupportedFormat", __?: {}): string;
   (_: "message.notifications", __?: {}): {
   readonly "annotationImportFailed": string,
   readonly "annotationPublicationUnavailable": string,
@@ -828,9 +961,14 @@ declare namespace typed_i18n {
   (_: "message.notifications.returnFailed", __?: {}): string;
   (_: "message.notifications.storageRefreshFailed", __?: {}): string;
   (_: "message.notifications.tagsFailed", __?: {}): string;
-  (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
-  (_: "message.open.error", __?: {}): string;
+  (_: "message.open", __?: {}): {
+  readonly "failed": string,
+  readonly "folderNotFound": string,
+  readonly "missingLicense": string
+};
+  (_: "message.open.failed", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;
+  (_: "message.open.missingLicense", __?: {}): string;
   (_: "message.storage", __?: {}): {
   readonly "recovery": {
     readonly "failure": string,
@@ -1822,7 +1960,6 @@ declare namespace typed_i18n {
   readonly "day": string,
   readonly "days": string,
   readonly "duration": { readonly "title": string },
-  readonly "encryptedNoLicense": string,
   readonly "expired": string,
   readonly "expiredLcp": string,
   readonly "incorrectPassphrase": string,
@@ -1950,7 +2087,6 @@ declare namespace typed_i18n {
   (_: "publication.days", __?: {}): string;
   (_: "publication.duration", __?: {}): { readonly "title": string };
   (_: "publication.duration.title", __?: {}): string;
-  (_: "publication.encryptedNoLicense", __?: {}): string;
   (_: "publication.expired", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.incorrectPassphrase", __?: {}): string;

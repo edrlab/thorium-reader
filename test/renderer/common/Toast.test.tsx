@@ -71,6 +71,9 @@ beforeAll(() => {
         savedGlobals.set(key, Object.getOwnPropertyDescriptor(globalThis, key));
         Object.defineProperty(globalThis, key, { configurable: true, writable: true, value });
     }
+    Object.defineProperty(dom.window.navigator, "clipboard", { configurable: true, value: {
+        writeText: (text: string) => Promise.resolve(clipboard.writeText(text)),
+    } });
     dom.window.HTMLElement.prototype.scrollIntoView = jest.fn();
     // Load React Aria and React DOM after installing the browser globals.
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -94,6 +97,7 @@ beforeEach(async () => {
 afterEach(async () => {
     await React.act(async () => root.unmount());
     host.remove();
+    jest.restoreAllMocks();
     jest.useRealTimers();
 });
 
@@ -342,6 +346,64 @@ test("repeated accessibility responses cannot dismiss a focused toast", async ()
     await React.act(async () => messageAction().focus());
     await advance(60000);
     expect(dialogs()).toHaveLength(1);
+    const outside = document.createElement("button");
+    host.appendChild(outside);
+    await React.act(async () => outside.focus());
+    await advance(2999);
+    expect(dialogs()).toHaveLength(1);
+    await advance(1);
+    expect(dialogs()).toHaveLength(0);
+});
+
+
+test("copies diagnostic text without rendering or announcing it", async () => {
+    const copyText = "Safe message\nError: internal failure\n    at importBook (main.js:12:4)";
+    const action = openToast(ToastType.Error, "Safe message", undefined, undefined, copyText);
+    const state = toastReducer(undefined, JSON.parse(JSON.stringify(action)));
+    await render(state);
+    expect(document.body.textContent).not.toContain("internal failure");
+    await press(messageAction(), "Enter");
+    expect(clipboard.writeText).toHaveBeenCalledWith(copyText);
+    expect(document.body.textContent).not.toContain("internal failure");
+    await render(toastReducer(state, openToast(ToastType.Info, "Ordinary notice")));
+    expect(toastReducer(state, openToast(ToastType.Info, "Ordinary notice")).copyText).toBeUndefined();
+});
+
+test("reports asynchronous clipboard rejection and permits retry", async () => {
+    const write = jest.spyOn(navigator.clipboard, "writeText").mockRejectedValueOnce(new Error("Permission denied"))
+        .mockResolvedValueOnce(undefined);
+    await notify();
+    await press(messageAction(), "Enter");
+    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopyFailed");
+    expect(messageAction().getAttribute("aria-disabled")).toBe("false");
+    await press(messageAction(), "Enter");
+    expect(write).toHaveBeenCalledTimes(2);
+    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopied");
+});
+
+test("waits for clipboard completion before announcing success", async () => {
+    let complete: () => void;
+    jest.spyOn(navigator.clipboard, "writeText").mockImplementation(() => new Promise<void>(resolve => { complete = resolve; }));
+    await notify();
+    await press(messageAction(), "Enter");
+    expect(document.querySelector("[role=status]")?.textContent).toBe("");
+    await React.act(async () => complete());
+    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopied");
+});
+
+test("a duplicate failure keeps its focus and timer but copies the latest diagnostics", async () => {
+    const first: ToastState = { open: true, type: ToastType.Error, data: "Failed", copyText: "First stack", publicationIdentifier: undefined };
+    await render(first);
+    await advance(2000);
+    const button = messageAction();
+    await press(button, "Enter");
+    await render({ ...first, copyText: "Latest stack" });
+    expect(dialogs()).toHaveLength(1);
+    expect(messageAction()).toBe(button);
+    expect(document.activeElement).toBe(button);
+    expect(first.copyText).toBe("First stack");
+    await press(button, "Enter");
+    expect(clipboard.writeText).toHaveBeenLastCalledWith("Latest stack");
     const outside = document.createElement("button");
     host.appendChild(outside);
     await React.act(async () => outside.focus());

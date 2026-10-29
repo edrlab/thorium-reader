@@ -283,26 +283,64 @@
             "nothing": "Ni opombe, pripravljene za uvoz, zato se uvoz prekine",
             "success": "Uvoz uspešno zaključen."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Prenos preklican.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Preverjanje celovitosti prenesene datoteke ni uspelo: pričakovani izvleček SHA-256 je {{- expected}}, pridobljeni {{- actual}}.",
                 "httpGet": "Prenos HTTP ni uspel: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Ime začasne datoteke za prenos ni veljavno.",
                 "invalidLink": "Povezava za prenos ni veljavna.",
                 "invalidTempDirectory": "Začasni direktorij za prenose ni veljaven.",
                 "lengthMismatch": "Preverjanje celovitosti prenesene datoteke ni uspelo: pričakovanih {{- expected}} bajtov, prejetih {{- actual}} bajtov.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Pretok prenosa ni na voljo.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Ni mogoče ustvariti edinstvenega imena začasne datoteke za prenos: {{- path}}"
             },
-            "started": "",
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
             "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} je že uvožen.",
-            "fail": "Uvoz {{- path}} ni uspel: {{- err}}",
-            "success": "Uvoz {{- title}} je končan."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Uvoz {{- title}} je končan.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -330,8 +368,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Publikacije ni mogoče odpreti: {{- err}}",
-            "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba."
+            "failed": "",
+            "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -751,7 +790,6 @@
         "duration": {
             "title": "Trajanje"
         },
-        "encryptedNoLicense": "Publikacija je šifrirana, vendar nima licence LCP!",
         "expired": "Rok izposoje je potekel",
         "expiredLcp": "Licenca LCP za to publikacijo je potekla.",
         "incorrectPassphrase": "Nobeno shranjeno geslo ne ustreza publikaciji ali pa je vneseno geslo napačno.",

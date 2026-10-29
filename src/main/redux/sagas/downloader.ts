@@ -6,6 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { DownloadCancelled, DownloadFailure, checkDownloadResponse, isDownloadStorageError } from "readium-desktop/main/tools/downloadFailure";
+import { notificationSource } from "readium-desktop/main/tools/notificationSource";
 import { getUrlHost } from "readium-desktop/utils/url";
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -42,14 +44,6 @@ type TDownloaderChannel = {
     id: number;
     read: () => IDownloadProgression;
 };
-
-const getErrorMessage = (err: unknown): string => {
-    if (err instanceof Error) {
-        return err.message;
-    }
-    return `${err}`;
-};
-
 
 // https://readium.org/lcp-specs/releases/lcp/latest#link-object
 export type IDownloaderLink = string | {
@@ -90,13 +84,12 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
             contentLengthHumanReadable: "",
         }));
 
-        if (linkHrefArray.some(shouldAnnounceDownload)) {
-            const translate = getTranslator().translate;
+        const source = linkHrefArray.find(shouldAnnounceDownload);
+        const title = source ? notificationSource(typeof source === "string" ? source : source.href) : undefined;
+        if (title) {
             yield* putTyped(toastActions.openRequest.build(
                 ToastType.Info,
-                downloadLabel
-                    ? translate("message.download.startedWithTitle", { title: downloadLabel })
-                    : translate("message.download.started"),
+                getTranslator().translate("message.download.startedWithTitle", { title }),
             ));
         }
 
@@ -108,7 +101,11 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
 
     } catch (err) {
 
-        debug(getErrorMessage(err));
+        debug("Download failed", err);
+        if (err instanceof DownloadCancelled) {
+            yield* putTyped(toastActions.openRequest.build(ToastType.Info,
+                getTranslator().translate("message.download.cancelled")));
+        }
 
         // The import operation owns the user-facing failure notification.
         throw err;
@@ -178,29 +175,37 @@ function* downloaderServiceDownloadProcessTask(chan: Channel<TDownloaderChannel>
 
     if (!linkHref) return undefined;
 
-    const [pathFile, channel, readStream] = yield* callTyped(downloadLinkProcess, linkHref, id);
-    if (channel) yield* putTyped(chan, { id: fileId, read: channel });
+    const source = typeof linkHref === "string" ? linkHref : linkHref.href;
+    try {
+        const [pathFile, channel, readStream] = yield* callTyped(downloadLinkProcess, linkHref, id);
+        if (channel) yield* putTyped(chan, { id: fileId, read: channel });
 
-    const writeStream = fs.createWriteStream(pathFile);
-    writeStream.on("finish", () => {
-        debug("WriteStream finish");
-    });
-    writeStream.on("close", () => {
-        debug("WriteStream close");
-    });
-    writeStream.on("error", () => {
-        debug("WriteStream error");
-    });
+        const writeStream = fs.createWriteStream(pathFile);
+        writeStream.on("finish", () => {
+            debug("WriteStream finish");
+        });
+        writeStream.on("close", () => {
+            debug("WriteStream close");
+        });
+        writeStream.on("error", () => {
+            debug("WriteStream error");
+        });
 
-    yield* callTyped(downloaderServiceProcessTaskStreamPipeline, readStream, writeStream);
-    const length = typeof linkHref === "string" ? undefined : linkHref.length;
-    const hash = typeof linkHref === "string" ? undefined : linkHref.hash;
-    yield* callTyped(checkDownloadedFileIntegrity, pathFile, length, hash);
+        yield* callTyped(downloaderServiceProcessTaskStreamPipeline, readStream, writeStream, source);
+        const length = typeof linkHref === "string" ? undefined : linkHref.length;
+        const hash = typeof linkHref === "string" ? undefined : linkHref.hash;
+        yield* callTyped(checkDownloadedFileIntegrity, pathFile, length, hash, source);
 
-    return pathFile;
+        return pathFile;
+    } catch (error) {
+        if (isDownloadStorageError(error)) {
+            throw new DownloadFailure("storage", source, error);
+        }
+        throw error;
+    }
 }
 
-function* downloaderServiceProcessTaskStreamPipeline(readStream: NodeJS.ReadStream, writeStream: fs.WriteStream): SagaGenerator<void> {
+function* downloaderServiceProcessTaskStreamPipeline(readStream: NodeJS.ReadStream, writeStream: fs.WriteStream, source: string): SagaGenerator<void> {
 
     if (!readStream || !writeStream) return;
 
@@ -214,30 +219,42 @@ function* downloaderServiceProcessTaskStreamPipeline(readStream: NodeJS.ReadStre
             clearIdleTimeout();
             idleTimeout = setTimeout(() => {
                 idleTimeout = undefined;
-                readStream.destroy(new Error(getTranslator().translate("message.download.errors.idleTimeout")));
+                readStream.destroy(new DownloadFailure("timeout", source));
             }, 30000);
         };
-        const onError = (error: Error) => emit(error);
+        const onReadError = (error: Error) => emit(error instanceof DownloadFailure ? error : new DownloadFailure("network", source, error));
+        const onWriteError = (error: Error) => emit(new DownloadFailure("storage", source, error));
+        const onReadClose = () => {
+            clearIdleTimeout();
+            if (!readStream.readableEnded) {
+                emit(new DownloadFailure("network", source, new Error(getTranslator().translate("message.download.errors.streamClosed"))));
+            }
+        };
+        const onClose = () => {
+            if (!writeStream.writableFinished) {
+                emit(new DownloadFailure("network", source, new Error(getTranslator().translate("message.download.errors.streamClosed"))));
+            }
+        };
         const onFinish = () => emit(0);
 
         readStream.on("data", resetIdleTimeout);
         readStream.on("end", clearIdleTimeout);
-        readStream.on("close", clearIdleTimeout);
-        readStream.on("error", onError);
+        readStream.on("close", onReadClose);
+        readStream.on("error", onReadError);
         writeStream.on("finish", onFinish);
-        writeStream.on("close", onFinish);
-        writeStream.on("error", onError);
+        writeStream.on("close", onClose);
+        writeStream.on("error", onWriteError);
         resetIdleTimeout();
 
         return () => {
             clearIdleTimeout();
             readStream.off("data", resetIdleTimeout);
             readStream.off("end", clearIdleTimeout);
-            readStream.off("close", clearIdleTimeout);
-            readStream.off("error", onError);
+            readStream.off("close", onReadClose);
+            readStream.off("error", onReadError);
             writeStream.off("finish", onFinish);
-            writeStream.off("close", onFinish);
-            writeStream.off("error", onError);
+            writeStream.off("close", onClose);
+            writeStream.off("error", onWriteError);
             readStream.destroy();
             writeStream.destroy();
         };
@@ -326,7 +343,7 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
     // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!linkHref || !isURL(linkHref)) {
         debug("isURL() NOK", linkHref);
-        return undefined;
+        throw new Error(getTranslator().translate("message.download.errors.invalidLink"));
     }
     const data = yield* callTyped(() => httpGet(linkHref, options));
 
@@ -356,12 +373,13 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
 
         if (cancel) {
             controller.abort();
-            return data;
+            throw new DownloadCancelled();
         }
         debug("relaunch the download of the publication");
         return yield* callTyped(downloadLinkRequest, linkHref, controller);
     }
 
+    checkDownloadResponse(data, linkHref);
     return data;
 }
 
@@ -669,7 +687,10 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
     const pathFile = yield* callTyped(downloadCreatePathFilename, pathDir, filename);
     debug("PathFile", pathFile);
 
-    ok(readStream, getTranslator().translate("message.download.errors.readStreamMissing"));
+    if (!readStream) {
+        throw new DownloadFailure("network", typeof data.url === "string" ? data.url : data.url.toString(),
+            new Error(getTranslator().translate("message.download.errors.readStreamMissing")));
+    }
 
     const channel = downloadReadStreamProgression(readStream, contentLength, filename, typeof data.url === "string" ? data.url : data.url.toString());
 
@@ -681,7 +702,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
     ] as TReturnDownloadLinkStream;
 }
 
-async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: number, expectedHash?: string): Promise<void> {
+async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: number, expectedHash?: string, source = ""): Promise<void> {
 
     const shouldCheckLength = typeof expectedLength === "number" && Number.isFinite(expectedLength) && expectedLength >= 0;
     const shouldCheckHash = typeof expectedHash === "string" && expectedHash.trim().length > 0;
@@ -691,7 +712,7 @@ async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: n
 
     const stat = await fs.promises.stat(pathFile);
     if (shouldCheckLength && stat.size !== expectedLength) {
-        throw new Error(getTranslator().translate("message.download.errors.lengthMismatch", {
+        throw new DownloadFailure("integrity", source, getTranslator().translate("message.download.errors.lengthMismatch", {
             expected: expectedLength,
             actual: stat.size,
         }));
@@ -700,7 +721,7 @@ async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: n
     if (shouldCheckHash) {
         const actualHash = await computeFileSha256(pathFile);
         if (!fileSha256MatchesExpectedHash(expectedHash, actualHash)) {
-            throw new Error(getTranslator().translate("message.download.errors.hashMismatch", {
+            throw new DownloadFailure("integrity", source, getTranslator().translate("message.download.errors.hashMismatch", {
                 expected: expectedHash.trim(),
                 actual: `${actualHash.hex} / ${actualHash.base64}`,
             }));
