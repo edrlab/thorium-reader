@@ -11,10 +11,13 @@
   }
 }
 /* .react-aria-Tooltip */
-.tooltipKeyboardShortcut {
+.tooltipKeyboardShortcut:not(.tooltipKeyboardShortcutImmediate) {
   opacity: 0;
-  visibility: none;
+  visibility: hidden;
   animation: popIntoView 0s 0.7s step-end forwards;
+}
+
+.tooltipKeyboardShortcut {
   max-width: 15em;
   border-radius: 0.5em;
   border: 0.15em solid var(--color-text-primary);
@@ -33,7 +36,7 @@
       opacity 200ms;
   */
 
-  > p {
+  > p, > div > p {
     margin-top: 0.15em;
     margin-bottom: 0.15em;
     padding: 0.4em;
@@ -55,16 +58,16 @@
     }
   }
 
-  > p:nth-child(2) {
+  > p:nth-child(2), > div > p:nth-child(2) {
     border: 1px solid #aaa;
   }
 
-  > p:nth-child(3) {
+  > p:nth-child(3), > div > p:nth-child(3) {
     font-size: 90%;
     font-weight: bold;
   }
 
-  > p:nth-child(4) {
+  > p:nth-child(4), > div > p:nth-child(4) {
     font-size: 90%;
     opacity: 0.8;
   }

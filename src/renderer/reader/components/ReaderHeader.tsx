@@ -660,7 +660,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                 }
                                                             }
                                                             }
-                                                            title={
+                                                            aria-label={
                                                                 this.props.publicationHasMediaOverlays ?
                                                                     __("reader.media-overlays.activate") :
                                                                     __("reader.tts.activate")
@@ -693,7 +693,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                     }
                                                                 }
                                                                 }
-                                                                title={
+                                                                aria-label={
                                                                     useMO ?
                                                                         __("reader.media-overlays.stop") :
                                                                         __("reader.tts.stop")
@@ -730,7 +730,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                         }
                                                                     }
                                                                 }}
-                                                                title={
+                                                                aria-label={
                                                                     isRTL ?
                                                                         (useMO ?
                                                                             __("reader.media-overlays.next") :
@@ -766,7 +766,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             this.props.handleMediaOverlaysPause :
                                                                             this.props.handleTTSPause
                                                                     }
-                                                                    title={
+                                                                    aria-label={
                                                                         useMO ?
                                                                             __("reader.media-overlays.pause") :
                                                                             __("reader.tts.pause")
@@ -797,7 +797,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                         }
                                                                     }
                                                                     }
-                                                                    title={
+                                                                    aria-label={
                                                                         useMO ?
                                                                             __("reader.media-overlays.play") :
                                                                             __("reader.tts.play")
@@ -836,7 +836,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                         }
                                                                     }
                                                                 }}
-                                                                title={
+                                                                aria-label={
                                                                     isRTL ?
                                                                         (useMO ?
                                                                             __("reader.media-overlays.previous") :
@@ -914,6 +914,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                         }
                                                                                     }
                                                                                 }}
+                                                                                tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.AudioSpeedDecrease, this.props.keyboardShortcuts.AudioSpeedIncrease, this.props.keyboardShortcuts.AudioSpeedReset]}
+                                                                                tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.AudioSpeedDecrease.name"), __("settings.keyboard.list.AudioSpeedIncrease.name"), __("settings.keyboard.list.AudioSpeedReset.name")]}
+                                                                                tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.AudioSpeedDecrease.description"), __("settings.keyboard.list.AudioSpeedIncrease.description"), __("settings.keyboard.list.AudioSpeedReset.description")]}
                                                                             >
                                                                                 {(item) => <ComboBoxItem>{item.name}</ComboBoxItem>}
                                                                             </ComboBox>
