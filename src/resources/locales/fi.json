@@ -295,7 +295,7 @@
             "success": "Julkaisun {{- title}} tuonti on valmis."
         },
         "notifications": {
-            "annotationImportFailed": "",
+            "annotationImportFailed": "Merkintöjä ei voitu tuoda. Varmista, että tiedosto on kelvollinen",
             "annotationPublicationUnavailable": "",
             "annotationStopPlayback": "",
             "authenticationFailed": "",
