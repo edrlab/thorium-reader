@@ -98,7 +98,8 @@ import classNames from "classnames";
 import { ipcRenderer } from "electron";
 import { keyboardShortcutsMatch, TKeyboardShortcutsMap } from "readium-desktop/common/keyboard";
 import {
-    ensureKeyboardListenerIsInstalled, registerKeyboardListener, textualizeKeyboardShortcut, unregisterKeyboardListener,
+    ensureKeyboardListenerIsInstalled, registerKeyboardListener,
+    unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { DisplayType, resolveDisplayType } from "readium-desktop/renderer/library/routing";
 import PublicationCard from "../publication/PublicationCard";
@@ -443,15 +444,16 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     }, 500);
 
     const keyboardShortcuts = useSelector((state: ILibraryRootState) => state.keyboard.shortcuts);
-    const keyboardShortcutFocusSearch = textualizeKeyboardShortcut(props.keyboardShortcuts.FocusSearch);
+    // const keyboardShortcutFocusSearch = textualizeKeyboardShortcut(props.keyboardShortcuts.FocusSearch);
     return (
         <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>
-        <TooltipTrigger delay={500} closeDelay={0} trigger="hover">
+        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
         <Focusable excludeFromTabOrder>
             <label
                 id="globalSearchLabel"
                 htmlFor="globalSearchInput"
-                aria-label={`${props.__("header.searchPlaceholder")}` + ` [${keyboardShortcutFocusSearch}]` + ` (${props.__("settings.keyboard.list.FocusSearch.name")})` + ` <${props.__("settings.keyboard.list.FocusSearch.description")}>`}
+                aria-label={`${props.__("header.searchPlaceholder")}`}
+                /* aria-label={`${props.__("header.searchPlaceholder")}` + ` [${keyboardShortcutFocusSearch}]` + ` (${props.__("settings.keyboard.list.FocusSearch.name")})` + ` <${props.__("settings.keyboard.list.FocusSearch.description")}>`} */
                 style={{ display: "flex", gap: "2px" }}>
                 {`${props.__("header.searchPlaceholder")}`}
                 <div
@@ -462,7 +464,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
         </Focusable>
         <Tooltip placement="top" offset={0} className={classNames("tooltipKeyboardShortcut")}>
         <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
-        <p><PrettifyKeyboardShortcut def={keyboardShortcuts.FocusSearch} /></p>
+        <p><PrettifyKeyboardShortcut hideFromScreenReaders={false} def={keyboardShortcuts.FocusSearch} /></p>
         <p>{props.__("settings.keyboard.list.FocusSearch.name")}</p>
         <p>{props.__("settings.keyboard.list.FocusSearch.description")}</p>
         </Tooltip>

@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { PrettifyKeyboardShortcut } from "readium-desktop/renderer/common/components/Keyboard";
-import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -44,20 +43,22 @@ class SkipLink extends React.Component<IProps, undefined> {
         const { onClick, label, className, tooltipkeyboardShortcut, tooltipkeyboardShortcutName, tooltipkeyboardShortcutDescription } = this.props;
         if (tooltipkeyboardShortcut) {
             return (
-                <TooltipTrigger delay={500} closeDelay={0} trigger="hover">
+                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
                 <Focusable>
                 <button
                     onClick={onClick || (() => this.onClick())}
                     aria-hidden={false}
                     className={className}
-                    aria-label={`${label} [${textualizeKeyboardShortcut(tooltipkeyboardShortcut)}]` + (tooltipkeyboardShortcutName ? ` (${tooltipkeyboardShortcutName})` : "") + (tooltipkeyboardShortcutDescription ? ` <${tooltipkeyboardShortcutDescription}>` : "")}
+
+                    aria-label={`${label}`}
+                    /* aria-label={`${label} [${textualizeKeyboardShortcut(tooltipkeyboardShortcut)}]` + (tooltipkeyboardShortcutName ? ` (${tooltipkeyboardShortcutName})` : "") + (tooltipkeyboardShortcutDescription ? ` <${tooltipkeyboardShortcutDescription}>` : "")} */
                 >
                     { label }
                 </button>
                 </Focusable>
                 <Tooltip placement="bottom" offset={0} className={classNames("tooltipKeyboardShortcut")}>
                 <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
-                <p><PrettifyKeyboardShortcut def={tooltipkeyboardShortcut} /></p>
+                <p><PrettifyKeyboardShortcut hideFromScreenReaders={false} def={tooltipkeyboardShortcut} /></p>
                 {
                     (tooltipkeyboardShortcutName ? (<p>{tooltipkeyboardShortcutName}</p>) : (<></>))
                 }{

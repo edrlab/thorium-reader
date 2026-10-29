@@ -610,7 +610,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                         style={{border: isDuplicated ? "2px solid orange" : undefined}}
                                         className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
                                         <div className={stylesKeys.keyshortElement_shortcut}>
-                                            <PrettifyKeyboardShortcut def={def} />
+                                            <PrettifyKeyboardShortcut hideFromScreenReaders={true} def={def} />
                                             <button
                                                 id={`keyEditButt_${id}`}
                                                 onClick={(_ev) => {

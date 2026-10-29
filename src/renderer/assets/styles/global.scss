@@ -4,8 +4,17 @@
 @use './partials/mixin' as mx;
 @use './partials/focus';
 
+@keyframes popIntoView {
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
 /* .react-aria-Tooltip */
 .tooltipKeyboardShortcut {
+  opacity: 0;
+  visibility: none;
+  animation: popIntoView 0s 0.7s step-end forwards;
   max-width: 15em;
   border-radius: 0.5em;
   border: 0.15em solid var(--color-text-primary);
@@ -14,12 +23,15 @@
   forced-color-adjust: none;
   outline: none;
   padding: 0 0.15em;
+  font: 100% system-ui;
   /* fixes FF gap */
   transform: translate3d(0, 0, 0);
-  transition:
-    transform 200ms,
-    opacity 200ms;
-  font: 100% system-ui;
+
+  /*
+    transition:
+      transform 200ms,
+      opacity 200ms;
+  */
 
   > p {
     margin-top: 0.15em;

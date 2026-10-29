@@ -21,12 +21,12 @@ const _isWindows = os.platform() === "win32";
 // const isLinux = !isMac && !isWindows;
 const DETECTED_OS: "Windows" | "MacOS" | "Linux" = _isWindows ? "Windows" : _isMac ? "MacOS" : "Linux";
 
-export const PrettifyKeyboardShortcut: React.FC<{ def: TKeyboardShortcut }> = ({ def }) => {
+export const PrettifyKeyboardShortcut: React.FC<{ hideFromScreenReaders: boolean, def: TKeyboardShortcut }> = ({ hideFromScreenReaders, def }) => {
     const alt = def.alt ? <span title={DETECTED_OS === "MacOS" ? "Option" : "Alt"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"} </span> : null;
     const shift = def.shift ? <span title="Shift"><SVG ariaHidden svg={ShiftIcon} /> </span> : null;
     const control = def.control ? <span title="Control">CTRL </span> : null;
     const meta = def.meta ? <span title={DETECTED_OS === "MacOS" ? "Command" : "Meta"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : <SVG ariaHidden svg={WindowsIcon} />} </span> : null;
     const softKeyRaw = applyKeyboardLayoutMap(def.key);
     const softKey = toUpperIfSimpleLowerCase(softKeyRaw);
-    return <span aria-hidden>{shift}{control}{alt}{meta} <span> {softKey}</span></span>;
+    return <span aria-hidden={ hideFromScreenReaders ? true : undefined }>{shift}{control}{alt}{meta} <span> {softKey}</span></span>;
 };

@@ -86,13 +86,13 @@ export function Trigger(props: ButtonProps) {
             return c;
         }
         return (
-        <TooltipTrigger delay={500} closeDelay={0} trigger="hover">
+        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
         <Focusable>
         {c}
         </Focusable>
         <Tooltip placement="bottom" offset={0} className={classNames("tooltipKeyboardShortcut")}>
         <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
-        <p><PrettifyKeyboardShortcut def={propstooltipkeyboardShortcut} /></p>
+                    <p><PrettifyKeyboardShortcut hideFromScreenReaders={false}  def={propstooltipkeyboardShortcut} /></p>
         {
             (propstooltipkeyboardShortcutName ? (<p>{propstooltipkeyboardShortcutName}</p>) : (<></>))
         }{
@@ -107,11 +107,11 @@ export function Trigger(props: ButtonProps) {
         return c;
     }
     return (
-    <TooltipTrigger delay={500} closeDelay={0} trigger="hover">
+    <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
     {c}
     <Tooltip placement="bottom" offset={0} className={classNames("tooltipKeyboardShortcut")}>
     <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
-    <p><PrettifyKeyboardShortcut def={propstooltipkeyboardShortcut} /></p>
+    <p><PrettifyKeyboardShortcut hideFromScreenReaders={false} def={propstooltipkeyboardShortcut} /></p>
     {
         (propstooltipkeyboardShortcutName ? (<p>{propstooltipkeyboardShortcutName}</p>) : (<></>))
     }{

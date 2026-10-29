@@ -47,8 +47,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.help")}</p>
             </div>
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
-                <TooltipTrigger delay={500} closeDelay={0} trigger="hover">
-
+                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
                 <input type="checkbox" id="screenReaderSettings" className={stylesGlobal.checkbox_custom_input} name="screenReaderSettings" checked={screenReaderActivate} onChange={onChange} />
                 <Focusable excludeFromTabOrder>
                 <label htmlFor="screenReaderSettings" className={stylesGlobal.checkbox_custom_label}>
@@ -83,7 +82,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                 </Focusable>
                 <Tooltip placement="top" offset={0} className={classNames("tooltipKeyboardShortcut")}>
                 <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
-                <p><PrettifyKeyboardShortcut def={keyboardShortcuts.ToggleScreenReaderOptimize} /></p>
+                <p><PrettifyKeyboardShortcut hideFromScreenReaders={false} def={keyboardShortcuts.ToggleScreenReaderOptimize} /></p>
                 <p>{__("settings.keyboard.list.ToggleScreenReaderOptimize.name")}</p>
                 <p>{__("settings.keyboard.list.ToggleScreenReaderOptimize.description")}</p>
                 </Tooltip>
