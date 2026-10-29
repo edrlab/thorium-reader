@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { getTranslator } from "readium-desktop/common/services/translator";
+
 const MAX_LENGTH = 24000;
 const MAX_DEPTH = 6;
 
@@ -24,20 +26,21 @@ function sourceText(value: string): string {
         url.password = "";
         return url.toString();
     } catch {
-        return "[invalid URL]";
+        return getTranslator().translate("message.diagnostics.invalidUrl");
     }
 }
 
 // Only strings cross IPC. Do not serialize response bodies, headers, or arbitrary objects.
 export function formatImportDiagnostics(message: string, error: unknown, source?: string): string {
+    const translate = getTranslator().translate;
     const lines = [message];
-    if (source) lines.push(`Source: ${sourceText(source)}`);
+    if (source) lines.push(translate("message.diagnostics.source", { source: sourceText(source) }));
     const seen = new Set<object>();
     let current = error;
     for (let depth = 0; current !== undefined && depth < MAX_DEPTH; depth++) {
         if (current && typeof current === "object") {
             if (seen.has(current)) {
-                lines.push("[circular cause omitted]");
+                lines.push(translate("message.diagnostics.circularCause"));
                 current = undefined;
                 break;
             }
@@ -45,31 +48,33 @@ export function formatImportDiagnostics(message: string, error: unknown, source?
             const reason = read(current, "reason");
             if (typeof reason === "string" && ["network", "http", "timeout", "integrity", "storage",
                 "unsupportedFormat", "invalidPublication", "invalidLicense"].includes(reason)) {
-                lines.push(`Category: ${reason}`);
+                lines.push(translate("message.diagnostics.category", { category: reason }));
                 const downloadSource = read(current, "source");
-                if (typeof downloadSource === "string") lines.push(`Download source: ${sourceText(downloadSource)}`);
+                if (typeof downloadSource === "string") lines.push(translate("message.diagnostics.downloadSource", { source: sourceText(downloadSource) }));
             }
             const stack = read(current, "stack");
             const detail = read(current, "message");
             const name = read(current, "name");
             if (typeof stack === "string") lines.push(stack.slice(0, MAX_LENGTH));
-            else if (typeof detail === "string") lines.push(`${typeof name === "string" ? name.slice(0, 200) : "Error"}: ${detail.slice(0, MAX_LENGTH)}`);
+            else if (typeof detail === "string") lines.push(`${typeof name === "string" ? name.slice(0, 200) : translate("message.diagnostics.error")}: ${detail.slice(0, MAX_LENGTH)}`);
             else {
                 const value = read(current, "responseUrl") ?? read(current, "url");
                 const url = typeof value === "string" ? value : value instanceof URL ? read(value, "href") : undefined;
-                if (typeof url === "string") lines.push(`URL: ${sourceText(url)}`);
+                if (typeof url === "string") lines.push(translate("message.diagnostics.url", { url: sourceText(url) }));
                 const status = read(current, "statusCode");
-                if (typeof status === "number") lines.push(`HTTP status: ${status}`);
-                if (status === undefined && url === undefined) lines.push("[non-Error details omitted]");
+                if (typeof status === "number") lines.push(translate("message.diagnostics.httpStatus", { status }));
+                if (status === undefined && url === undefined) lines.push(translate("message.diagnostics.nonErrorDetails"));
             }
             current = read(current, "cause");
         } else {
-            lines.push(typeof current === "string" ? current.slice(0, MAX_LENGTH) : "[non-Error details omitted]");
+            lines.push(typeof current === "string" ? current.slice(0, MAX_LENGTH) : translate("message.diagnostics.nonErrorDetails"));
             current = undefined;
         }
-        if (current !== undefined) lines.push("Caused by:");
+        if (current !== undefined) lines.push(translate("message.diagnostics.causedBy"));
     }
-    if (current !== undefined) lines.push("[cause depth limit reached]");
+    if (current !== undefined) lines.push(translate("message.diagnostics.causeDepthLimit"));
     const text = lines.join("\n\n");
-    return text.length >= MAX_LENGTH ? `${text.slice(0, MAX_LENGTH - 24)}\n[diagnostics truncated]` : text;
+    if (text.length <= MAX_LENGTH) return text;
+    const suffix = `\n${translate("message.diagnostics.truncated")}`.slice(0, MAX_LENGTH);
+    return text.slice(0, MAX_LENGTH - suffix.length) + suffix;
 }

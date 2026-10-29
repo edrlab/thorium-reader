@@ -273,9 +273,24 @@
             "nothing": "Ingen noter kunne importeres, afslutter import",
             "success": "Import færdig."
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Download annulleret.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Den downloadede fil kunne ikke valideres: Forventet SHA-256 hash: {{- expected}}, fik i stedet {{- actual}}.",
                 "httpGet": "HTTP download mislykkedes: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "",
@@ -283,7 +298,10 @@
                 "invalidLink": "Download linket er ugyldigt.",
                 "invalidTempDirectory": "Den midlertidige mappe til downloads er ugyldig.",
                 "lengthMismatch": "Integritetstjek af den downloadede fil fejlede: forventede {{- expected}} bytes, fik {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Download var ikke muligt.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Var ikke i stand til at lave en unik midlertidig fil til download: {{- path}}"
             },
             "failed": "",
@@ -296,6 +314,25 @@
         },
         "import": {
             "alreadyImport": "{{- title}} er allerede importeret.",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "Import af {{- path}} fejlede. {{- err}}",
             "failed": "",
             "invalidLicense": "",

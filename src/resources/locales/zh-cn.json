@@ -268,9 +268,24 @@
             "nothing": "没有可导入的笔记，导入已终止",
             "success": "导入已成功完成。"
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "下载已取消。",
             "errors": {
+                "failed": "",
                 "hashMismatch": "下载文件完整性检查失败：预期SHA-256哈希值为 {{- expected}}，实际为 {{- actual}}。",
                 "httpGet": "HTTP协议下载失败： {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "",
@@ -278,7 +293,10 @@
                 "invalidLink": "下载链接无效。",
                 "invalidTempDirectory": "当前下载文件的路径无效。",
                 "lengthMismatch": "下载文件完整性检查失败：预期大小为 {{- expected}} 字节，实际为 {{- actual}} 字节。",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "下载数据流不可用。",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "无法创建特定临时下载文件名：{{- path}}"
             },
             "failed": "",
@@ -291,6 +309,25 @@
         },
         "import": {
             "alreadyImport": "[{{- title}}] 已被导入。",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "导入{{- path}}失败。{{- err}}",
             "failed": "",
             "invalidLicense": "",

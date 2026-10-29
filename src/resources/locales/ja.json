@@ -268,9 +268,24 @@
             "nothing": "取りこめる状態のメモがないため、取りこみを中止します",
             "success": "取り込みが正常に完了しました。"
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
                 "idleTimeout": "",
@@ -278,7 +293,10 @@
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
             },
             "failed": "",
@@ -291,6 +309,25 @@
         },
         "import": {
             "alreadyImport": "『{{- title}}』はすでに追加されています。",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "『{{- path}}』の追加に失敗しました：{{- err}}",
             "failed": "",
             "invalidLicense": "",

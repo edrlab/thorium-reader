@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { getTranslator } from "readium-desktop/common/services/translator";
+
 import * as crypto from "node:crypto";
 import debug_ from "debug";
 import { DownloadFailure, checkDownloadResponse } from "readium-desktop/main/tools/downloadFailure";
@@ -230,7 +232,7 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
 
     } catch (e) {
 
-        throw new Error(`Invalid JSON in publication manifest at ${manifestUrl}: ${String(e)}`);
+        throw new Error(getTranslator().translate("message.import.errors.manifestInvalidJson", { url: manifestUrl }), { cause: e });
     }
 
     const [isR2, isW3] = manifestContext(r2PublicationJson);
@@ -249,7 +251,10 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
 
         r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
     } else {
-        throw new Error(`Unrecognized publication manifest @context at ${manifestUrl}: ${JSON.stringify(r2PublicationJson?.["@context"]) ?? "missing"}`);
+        throw new Error(getTranslator().translate("message.import.errors.manifestContext", {
+            url: manifestUrl, context: JSON.stringify(r2PublicationJson?.["@context"])
+                ?? getTranslator().translate("message.import.errors.contextMissing"),
+        }));
     }
 
     return r2Publication;
@@ -262,7 +267,7 @@ export function* packageFromLink(
 
     const [manifest, manifestUrl] = yield* callTyped(packageGetManifestBuffer, href, isHtml);
     if (!manifest) {
-        throw new Error("manifest not found from content link " + href);
+        throw new Error(getTranslator().translate("message.import.errors.manifestNotFound", { url: href }));
     }
 
     return yield* callTyped(packageFromManifestBuffer, href, manifest, manifestUrl);
@@ -280,7 +285,7 @@ export function* packageFromManifestBuffer(
         baseUrl;
     const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, baseUrl, manifestUrlAbsolutized);
     if (!r2Publication) {
-        throw new Error("r2Publication parsing failed at " + manifestUrlAbsolutized);
+        throw new Error(getTranslator().translate("message.import.errors.manifestParsingFailed", { url: manifestUrlAbsolutized }));
     }
 
     debug("ready to package the r2Publication");
@@ -324,7 +329,7 @@ export function* packageGetManifestBuffer(
     // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!href || !isURL(href)) {
         debug("isURL() NOK", href);
-        throw new Error("fetch URL error [" + href + "]");
+        throw new Error(getTranslator().translate("message.download.errors.invalidLink"));
     }
     const data = yield* callTyped(httpGet, href);
     checkDownloadResponse(data, href);

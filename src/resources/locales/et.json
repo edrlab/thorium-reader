@@ -273,9 +273,24 @@
             "nothing": "Pole ühtegi imporditavat märget, katkestan impordi",
             "success": "Importimine õnnestus kenasti."
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Allalaadimine on katkestatud.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: faili eeldatud SHA-256 räsi oleks pidanud olema {{- expected}}, kuid tegelikult oli {{- actual}}.",
                 "httpGet": "Allalaadimine ei õnnestunud: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "",
@@ -283,7 +298,10 @@
                 "invalidLink": "Allalaadimislink pole õige.",
                 "invalidTempDirectory": "Allalaaditava sisu ajutine kaust on vale või vigane.",
                 "lengthMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: andmemaht oleks pidanud olema {{- expected}} baiti, kuid tegelikult oli {{- actual}} baiti.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Allalaadimise andmevoog pole saadaval.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Ei suuda luua ajutist failinime allalaaditavale sisule: {{- path}}"
             },
             "failed": "",
@@ -296,6 +314,25 @@
         },
         "import": {
             "alreadyImport": "„{{- title}}“ on juba imporditud.",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "„{{- path}}“ objekti importimine ei õnnestunud: {{- err}}",
             "failed": "",
             "invalidLicense": "",

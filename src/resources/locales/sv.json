@@ -273,9 +273,24 @@
             "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen",
             "success": "Importen lyckades."
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Nedladdning avbruten.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Integritetskontroll för filen misslyckades. Förväntad SHA-256-hash: {{- expected}}, fick {{- actual}}.",
                 "httpGet": "HTTP-nedladdning misslyckades: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "",
@@ -283,7 +298,10 @@
                 "invalidLink": "Nedladdningslänken är ogiltig.",
                 "invalidTempDirectory": "Mappen för den tillfälliga nedladdningen är ogiltig.",
                 "lengthMismatch": "Integritetskontroll för den nedladdade filen misslyckades. Förväntade {{- expected}} bytes, fick {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Nedladdningsströmmen går inte att nå.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Kunde inte skapa ett unikt filnamn för den nedladdade filen: {{- path}}"
             },
             "failed": "",
@@ -296,6 +314,25 @@
         },
         "import": {
             "alreadyImport": "{{- title}} var redan importerad.",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "Importen av {{- path}} misslyckades. {{- err}}",
             "failed": "",
             "invalidLicense": "",

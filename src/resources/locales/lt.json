@@ -283,9 +283,24 @@
             "nothing": "Nėra importui paruoštų pastabų, importas nutraukiamas",
             "success": "Importavimas sėkmingai užbaigtas."
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Atsiuntimas nutrauktas.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
                 "httpGet": "HTTP atsiuntimas nepavyko: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "",
@@ -293,7 +308,10 @@
                 "invalidLink": "Atsiuntimo nuoroda netaisyklinga.",
                 "invalidTempDirectory": "Netaisyklingas laikinas atsiuntimo aplankas.",
                 "lengthMismatch": "Atsiųsto failo vientisumo patikra nepavyko: tikėtasi baitų: {{- expected}}, gauta: {{- actual}}.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Neprieinamas atsiuntimo srautas.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Nepavyko sukurti unikalaus laikino atsiuntimo failo pavadinimo: {{- path}}"
             },
             "failed": "",
@@ -306,6 +324,25 @@
         },
         "import": {
             "alreadyImport": "[{{- title}}] jau importuotas.",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
             "failed": "",
             "invalidLicense": "",

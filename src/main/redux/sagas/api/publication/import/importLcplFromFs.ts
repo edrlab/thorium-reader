@@ -134,10 +134,10 @@ export function* importLcplFromFS(
             return [publicationDocument, false];
 
         } else {
-            throw new Error("download path undefined");
+            throw new Error(getTranslator().translate("message.download.errors.pathMissing"));
         }
 
     } else {
-        throw new Error("no download publication link");
+        throw new Error(getTranslator().translate("message.download.errors.publicationLinkMissing"));
     }
 }

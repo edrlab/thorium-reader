@@ -273,9 +273,24 @@
             "nothing": "Δεν υπάρχει καμία σημείωση για εισαγωγή· παράκαμψη εισαγωγής",
             "success": "Επιτυχής ολοκλήρωση εισαγωγής."
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Ακύρωση λήψης.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενος κωδικός SHA-256 {{- expected}}, βρέθηκε {{- actual}}.",
                 "httpGet": "Αποτυχία λήψης μέσω HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "",
@@ -283,7 +298,10 @@
                 "invalidLink": "Ο σύνδεσμος λήψης δεν είναι έγκυρος.",
                 "invalidTempDirectory": "Ο προσωρινός φάκελος λήψης δεν είναι έγκυρος.",
                 "lengthMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενα {{- expected}} bytes, ληφθήκαν {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Η ροή λήψης δεν είναι διαθέσιμη.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Αδυναμία δημιουργίας ενός μοναδικού προσωρινού ονόματος αρχείου λήψης: {{- path}}"
             },
             "failed": "",
@@ -296,6 +314,25 @@
         },
         "import": {
             "alreadyImport": "{{- title}} έχει ήδη εισαχθεί.",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "Η εισαγωγή του {{- path}} απέτυχε. {{- err}}",
             "failed": "",
             "invalidLicense": "",

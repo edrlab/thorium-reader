@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 import { formatImportDiagnostics } from "readium-desktop/main/tools/importDiagnostics";
-import { DownloadFailure, checkDownloadResponse } from "readium-desktop/main/tools/downloadFailure";
+import { getTranslator, setLocale } from "readium-desktop/common/services/translator";
+import { DownloadCancelled, DownloadFailure, checkDownloadResponse } from "readium-desktop/main/tools/downloadFailure";
 import type { IHttpGetResult } from "readium-desktop/common/utils/http";
 
 describe("import clipboard diagnostics", () => {
@@ -87,4 +88,35 @@ it("includes only the final HTTP URL and numeric status from a response", () => 
         statusCode: 403, statusMessage: "Do not copy server-provided text", response: { body: "Do not copy body" } };
     const text = formatImportDiagnostics("Safe", data);
     expect(text).toBe("Safe\n\nURL: https://cdn.example/book?key=123#part\n\nHTTP status: 403");
+});
+
+
+it("localizes diagnostic labels and download errors in French while retaining native stacks", async () => {
+    await setLocale("fr");
+    try {
+        const native = new Error("Native parser error");
+        const failure = new DownloadFailure("network", "https://example.org/book", native);
+        expect(failure.message).toBe("Le téléchargement a échoué.");
+        expect(new DownloadCancelled().message).toBe(getTranslator().translate("message.download.cancelled"));
+        const text = formatImportDiagnostics("Échec", failure, "https://[invalid");
+        expect(text).toContain("Source : [URL invalide]");
+        expect(text).toContain("Catégorie : network");
+        expect(text).toContain("Causé par :");
+        expect(text).toContain(native.stack);
+        expect(formatImportDiagnostics("Échec", { statusCode: 503 })).toContain("Statut HTTP : 503");
+        expect(formatImportDiagnostics("Échec", new Error("x".repeat(30000))).length).toBeLessThanOrEqual(24000);
+    } finally {
+        await setLocale("en");
+    }
+});
+
+it("uses English fallback for empty diagnostic translations", async () => {
+    await setLocale("de");
+    try {
+        expect(formatImportDiagnostics("Failed", { statusCode: 503 }, "/books/book.epub"))
+            .toBe("Failed\n\nSource: /books/book.epub\n\nHTTP status: 503");
+        expect(new DownloadFailure("network", "https://example.org").message).toBe("Download failed.");
+    } finally {
+        await setLocale("en");
+    }
 });

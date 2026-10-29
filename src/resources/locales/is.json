@@ -273,9 +273,24 @@
             "nothing": "Engin glósa er tilbúin til innflutnings. Hætt er við.",
             "success": "Innflutningi lokið."
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Hætt við niðurhal.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Heilleikapróf niðurhalaðrar skrár mistókst: búist var við SHA-256-gildinu {{- expected}}, en niðurstaðan var {{- actual}}.",
                 "httpGet": "HTTP-niðurhal mistókst: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "",
@@ -283,7 +298,10 @@
                 "invalidLink": "Niðurhalstengillinn er ógildur.",
                 "invalidTempDirectory": "Bráðabirgðamappan er ógild.",
                 "lengthMismatch": "Heilleikapróf niðurhalaðrar skrár mistókst: búist var við {{- expected}} bætum, en fjöldinn var {{- actual}}.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Niðurhalsstraumur er ekki tiltækur.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Ekki tókst að búa til einstakt bráðabirgðaskráarheiti: {{- path}}"
             },
             "failed": "",
@@ -296,6 +314,25 @@
         },
         "import": {
             "alreadyImport": "[{{- title}}] hefur þegar verið bætt við.",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "Ekki tókst að bæta [{{- path}}] við: [{{- err}}]",
             "failed": "",
             "invalidLicense": "",

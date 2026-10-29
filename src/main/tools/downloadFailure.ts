@@ -5,19 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { getTranslator } from "readium-desktop/common/services/translator";
+
 import type { IHttpGetResult } from "readium-desktop/common/utils/http";
 
 export type DownloadFailureReason = "network" | "http" | "timeout" | "integrity" | "storage";
 
 export class DownloadFailure extends Error {
     constructor(public readonly reason: DownloadFailureReason, public readonly source: string, cause?: unknown) {
-        super(`Download failed (${reason})`, { cause });
+        super(getTranslator().translate("message.download.errors.failed"), { cause });
     }
 }
 
 export class DownloadCancelled extends Error {
     constructor() {
-        super("Download cancelled");
+        super(getTranslator().translate("message.download.cancelled"));
     }
 }
 

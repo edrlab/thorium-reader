@@ -278,9 +278,24 @@
             "nothing": "Aucune note disponible, ajout annulé",
             "success": "Importation réussie."
         },
+        "diagnostics": {
+            "category": "Catégorie : {{- category}}",
+            "causeDepthLimit": "[limite de profondeur des causes atteinte]",
+            "causedBy": "Causé par :",
+            "circularCause": "[cause circulaire omise]",
+            "downloadSource": "Source du téléchargement : {{- source}}",
+            "error": "Erreur",
+            "httpStatus": "Statut HTTP : {{- status}}",
+            "invalidUrl": "[URL invalide]",
+            "nonErrorDetails": "[détails non liés à une erreur omis]",
+            "source": "Source : {{- source}}",
+            "truncated": "[diagnostic tronqué]",
+            "url": "URL : {{- url}}"
+        },
         "download": {
             "cancelled": "Téléchargement annulé.",
             "errors": {
+                "failed": "Le téléchargement a échoué.",
                 "hashMismatch": "Erreur de vérification de l'intégrité du fichier téléchargé  : SHA-256 attendu {{- expected}}, obtenu {{- actual}}.",
                 "httpGet": "Téléchargement HTTP échoué : {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "Le téléchargement est bloqué : aucune donnée reçue depuis 30 secondes. Veuillez réessayer.",
@@ -288,7 +303,10 @@
                 "invalidLink": "Le lien de téléchargement est invalide.",
                 "invalidTempDirectory": "Le répertoire de téléchargement temporaire est invalide.",
                 "lengthMismatch": "Erreur de vérification de l'intégrité des fichiers téléchargés : attendus {{- expected}}, obtenu {{- actual}} octets.",
+                "pathMissing": "Le chemin du fichier téléchargé est manquant.",
+                "publicationLinkMissing": "La licence ne contient aucun lien de téléchargement de la publication.",
                 "readStreamMissing": "Le flux de téléchargement n'est pas disponible.",
+                "streamClosed": "Le flux de téléchargement a été fermé avant la fin.",
                 "tooManyFilenameAttempts": "Impossible de créer un fichier de téléchargement temporaire unique : {{- path}}"
             },
             "failed": "Impossible de télécharger la publication. Veuillez réessayer.",
@@ -301,6 +319,25 @@
         },
         "import": {
             "alreadyImport": "{{- title}} a déjà été ajouté.",
+            "errors": {
+                "acquisitionUrlMissing": "L’URL de téléchargement de la publication est manquante ou invalide.",
+                "cbzNoImages": "L’archive CBZ ne contient aucune image prise en charge.",
+                "contextMissing": "manquant",
+                "daisyConversionFailed": "Impossible de convertir la publication DAISY.",
+                "manifestContext": "@context du manifeste de publication non reconnu à l’adresse {{- url}} : {{- context}}",
+                "manifestImportFailed": "L’importation du manifeste de la publication a échoué.",
+                "manifestInvalidJson": "JSON invalide dans le manifeste de la publication à l’adresse {{- url}}.",
+                "manifestMissing": "Le manifeste de la publication est manquant.",
+                "manifestNotFound": "Aucun manifeste de publication trouvé à l’adresse {{- url}}.",
+                "manifestParsingFailed": "Impossible d’analyser le manifeste de la publication à l’adresse {{- url}}.",
+                "noImportResult": "L’importation n’a renvoyé aucune publication.",
+                "notImported": "La publication n’a pas pu être ajoutée à la bibliothèque.",
+                "profileAssetUrl": "URL de publication du profil invalide : {{- path}}",
+                "profileEmpty": "L’archive ZIP du profil personnalisé est vide.",
+                "profileEntryMissing": "Publication introuvable dans le profil personnalisé : {{- path}}",
+                "profileMissing": "Profil personnalisé introuvable : {{- id}}",
+                "profileNotZip": "Le profil personnalisé n’est pas une archive ZIP."
+            },
             "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
             "failed": "Impossible d’importer « {{- name}} ».",
             "invalidLicense": "Impossible d’importer « {{- name}} ». La licence de la publication est invalide.",

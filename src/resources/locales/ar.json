@@ -293,9 +293,24 @@
             "nothing": "لا توجد أي ملاحظة جاهزة للاستيراد، جاري إلغاء عملية الاستيراد",
             "success": "اكتمل الاستيراد بنجاح."
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "تم إلغاء التحميل.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "فشل التحقق من الملف المحمَّل: شفرة SHA-256 المتوقعة هي: {{- expected}}، لكن الفعلية: {{- actual}}.",
                 "httpGet": "فشل التحميل عبر HTTP: [{{- statusMessage}}] ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "",
@@ -303,7 +318,10 @@
                 "invalidLink": "رابط التحميل غير صالح.",
                 "invalidTempDirectory": "مجلد التحميل المؤقت غير صالح.",
                 "lengthMismatch": "فشل التحقق من سلامة الملف المحمل: المتوقع {{- expected}} بايت، لكن الفعلي {{- actual}} بايت.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "مسار التحميل غير متاح.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "لم نتمكن من إنشاء اسم ملف محمًّل غير مكرر: {{- path}}"
             },
             "failed": "",
@@ -316,6 +334,25 @@
         },
         "import": {
             "alreadyImport": "تم استيراد [{{- title}}] مسبقًا.",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
             "failed": "",
             "invalidLicense": "",

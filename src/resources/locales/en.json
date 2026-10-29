@@ -273,9 +273,24 @@
             "nothing": "There is no note ready to be imported, aborting the import",
             "success": "Import completed successfully."
         },
+        "diagnostics": {
+            "category": "Category: {{- category}}",
+            "causeDepthLimit": "[cause depth limit reached]",
+            "causedBy": "Caused by:",
+            "circularCause": "[circular cause omitted]",
+            "downloadSource": "Download source: {{- source}}",
+            "error": "Error",
+            "httpStatus": "HTTP status: {{- status}}",
+            "invalidUrl": "[invalid URL]",
+            "nonErrorDetails": "[non-Error details omitted]",
+            "source": "Source: {{- source}}",
+            "truncated": "[diagnostics truncated]",
+            "url": "URL: {{- url}}"
+        },
         "download": {
             "cancelled": "Download cancelled.",
             "errors": {
+                "failed": "Download failed.",
                 "hashMismatch": "Downloaded file integrity check failed: expected SHA-256 hash {{- expected}}, got {{- actual}}.",
                 "httpGet": "HTTP download failed: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "Download stalled: no data received for 30 seconds. Please try again.",
@@ -283,7 +298,10 @@
                 "invalidLink": "The download link is invalid.",
                 "invalidTempDirectory": "The temporary download directory is invalid.",
                 "lengthMismatch": "Downloaded file integrity check failed: expected {{- expected}} bytes, got {{- actual}} bytes.",
+                "pathMissing": "The downloaded file path is missing.",
+                "publicationLinkMissing": "The license does not contain a publication download link.",
                 "readStreamMissing": "Download stream is unavailable.",
+                "streamClosed": "Download stream closed before completion.",
                 "tooManyFilenameAttempts": "Unable to create a unique temporary download filename: {{- path}}"
             },
             "failed": "Could not download the publication. Please try again.",
@@ -296,6 +314,25 @@
         },
         "import": {
             "alreadyImport": "[{{- title}}] was already imported.",
+            "errors": {
+                "acquisitionUrlMissing": "The publication’s download URL is missing or invalid.",
+                "cbzNoImages": "The CBZ archive does not contain any supported images.",
+                "contextMissing": "missing",
+                "daisyConversionFailed": "Unable to convert the DAISY publication.",
+                "manifestContext": "Unrecognized publication manifest @context at {{- url}}: {{- context}}",
+                "manifestImportFailed": "Importing the publication manifest failed.",
+                "manifestInvalidJson": "Invalid JSON in publication manifest at {{- url}}.",
+                "manifestMissing": "The publication manifest is missing.",
+                "manifestNotFound": "No publication manifest was found at {{- url}}.",
+                "manifestParsingFailed": "Unable to parse the publication manifest at {{- url}}.",
+                "noImportResult": "The import did not return a publication.",
+                "notImported": "The publication could not be added to the library.",
+                "profileAssetUrl": "Invalid profile publication URL: {{- path}}",
+                "profileEmpty": "The custom profile ZIP archive is empty.",
+                "profileEntryMissing": "Publication not found in the custom profile: {{- path}}",
+                "profileMissing": "Custom profile not found: {{- id}}",
+                "profileNotZip": "The custom profile is not a ZIP archive."
+            },
             "fail": "Importing [{{- path}}] failed: [{{- err}}]",
             "failed": "Could not import “{{- name}}”.",
             "invalidLicense": "Could not import “{{- name}}”. The publication’s license is invalid.",

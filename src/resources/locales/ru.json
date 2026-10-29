@@ -283,9 +283,24 @@
             "nothing": "Нет ни одной готовой к импорту заметки, импорт прерван",
             "success": "Импорт успешно завершён."
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Загрузка отменена.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Ошибка проверки целостности загруженного файла: ожидаемый хэш SHA-256 {{- expected}}, полученный {{- actual}}.",
                 "httpGet": "Ошибка загрузки по протоколу HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "Скачивание прервалась: данные не получены в течение 30 секунд. Пожалуйста, попробуйте ещё раз.",
@@ -293,7 +308,10 @@
                 "invalidLink": "Ссылка для скачивания недействительна.",
                 "invalidTempDirectory": "Временный каталог загрузки недействителен.",
                 "lengthMismatch": "Ошибка проверки целостности скаченного файла: ожидалось {{- expected}} байт, получено {{- actual}} байт.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Поток загрузки недоступен.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Не удалось создать уникальное имя временного файла для скачивания: {{- path}}"
             },
             "failed": "",
@@ -306,6 +324,25 @@
         },
         "import": {
             "alreadyImport": "[{{- title}}] уже импортировано.",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "Импорт {{- path}} не удался. {{- err}}",
             "failed": "",
             "invalidLicense": "",

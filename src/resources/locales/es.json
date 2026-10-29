@@ -278,9 +278,24 @@
             "nothing": "No hay anotaciones listas para importar, cancelando la importación",
             "success": "¡Correcto!"
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Descarga cancelada.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Falló la comprobación de integridad para el archivo descargado: hash SHA-256 esperado {{- expected}}, obtenido {{- actual}}.",
                 "httpGet": "\"Falló la descarga HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "",
@@ -288,7 +303,10 @@
                 "invalidLink": "El enlace de descarga no es válido.",
                 "invalidTempDirectory": "El directorio temporal de descarga no es válido.",
                 "lengthMismatch": "Falló la comprobación de integridad para el archivo descargado: esperado {{- expected}} bytes, obtenido {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "La transmisión para la descarga no está disponible.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "No se puede crear un único nombre para el archivo temporal de descarga: {{- path}}"
             },
             "failed": "",
@@ -301,6 +319,25 @@
         },
         "import": {
             "alreadyImport": "{{- title}} ya estaba importado.",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "La importación de {{- path}} falló. {{- err}}",
             "failed": "",
             "invalidLicense": "",

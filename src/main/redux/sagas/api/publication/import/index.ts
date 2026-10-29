@@ -170,7 +170,7 @@ export function* importFromLink(
         );
 
         if (!publicationDocument) {
-            throw new Error("publicationDocument not imported on db");
+            throw new Error(getTranslator().translate("message.import.errors.notImported"));
         }
 
         const publicationViewConverter = diMainGet("publication-view-converter");
@@ -291,7 +291,7 @@ export function* importFromString(
             const [publicationDocument]  = yield* callTyped(importFromStringService, manifest, willBeImmediatelyFollowedByOpen, baseFileUrl);
 
             if (!publicationDocument) {
-                throw new Error("publicationDocument not imported on db");
+                throw new Error(getTranslator().translate("message.import.errors.notImported"));
             }
 
             const publicationViewConverter = diMainGet("publication-view-converter");
@@ -301,7 +301,7 @@ export function* importFromString(
             return publicationView;
 
         } catch (error) {
-            throw new Error("Import from manifest failed", { cause: error });
+            throw new Error(getTranslator().translate("message.import.errors.manifestImportFailed"), { cause: error });
         }
     }
 
@@ -332,12 +332,12 @@ export function* importFromFs(
                     // });
                     const data = yield* callTyped(importFromFsService, fpath, willBeImmediatelyFollowedByOpen);
                     if (!data) {
-                        throw new Error("importFromFsService undefined");
+                        throw new Error(getTranslator().translate("message.import.errors.noImportResult"));
                     }
                     const [publicationDocument, alreadyImported] = data;
 
                     if (!publicationDocument) {
-                        throw new Error("publicationDocument not imported on db");
+                        throw new Error(getTranslator().translate("message.import.errors.notImported"));
                     }
 
                     const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));

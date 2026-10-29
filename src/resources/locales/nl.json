@@ -273,9 +273,24 @@
             "nothing": "Er is geen aantekening om geïmporteerd te worden, de import wordt afgebroken",
             "success": "Import succesvol voltooid."
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Download geannuleerd.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwachte SHA-256 hash {{- expected}}, ontvangen {{- actual}}.",
                 "httpGet": "HTTP download mislukt: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "",
@@ -283,7 +298,10 @@
                 "invalidLink": "De download link is ongeldig.",
                 "invalidTempDirectory": "De tijdelijke downloadmap is ongeldig.",
                 "lengthMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwacht {{- expected}} bytes, ontvangen {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Downloadstream is niet beschikbaar.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Kan geen unieke tijdelijke downloadbestandsnaam aanmaken: {{- path}}"
             },
             "failed": "",
@@ -296,6 +314,25 @@
         },
         "import": {
             "alreadyImport": "{{- title}} is al toegevoegd.",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "Het toevoegen van {{- path}} is mislukt. {{- err}}",
             "failed": "",
             "invalidLicense": "",

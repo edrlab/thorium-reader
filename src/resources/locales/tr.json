@@ -273,9 +273,24 @@
             "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarım durduruluyor",
             "success": "İçe aktarma başarıyla tamamlandı."
         },
+        "diagnostics": {
+            "category": "",
+            "causeDepthLimit": "",
+            "causedBy": "",
+            "circularCause": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "nonErrorDetails": "",
+            "source": "",
+            "truncated": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "İndirme iptal edildi.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "İndirilen dosyanın bütünlük denetimi başarısız: Beklenen SHA-256 değeri {{- expected}}, alınan {{- actual}}.",
                 "httpGet": "HTTP indirme hatası: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "idleTimeout": "",
@@ -283,7 +298,10 @@
                 "invalidLink": "İndirme bağlantısı geçersiz.",
                 "invalidTempDirectory": "Geçici indirme dizini geçersiz.",
                 "lengthMismatch": "İndirilen dosya bütünlüğü denetimi başarısız: beklenen {{- expected}} bayt, alınan {{- actual}} bayt.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "İndirme akışı kullanılamıyor.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Benzersiz geçici indirme dosya adı oluşturulamıyor: {{- path}}"
             },
             "failed": "",
@@ -296,6 +314,25 @@
         },
         "import": {
             "alreadyImport": "[{{- title}}] zaten içe aktarılmış.",
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
             "fail": "[{{- path}}] İçe aktarması başarısız: [{{- err}}]",
             "failed": "",
             "invalidLicense": "",

@@ -230,12 +230,12 @@ function* downloaderServiceProcessTaskStreamPipeline(readStream: NodeJS.ReadStre
         const onReadClose = () => {
             clearIdleTimeout();
             if (!readStream.readableEnded) {
-                emit(new DownloadFailure("network", source, new Error("Download stream closed before completion")));
+                emit(new DownloadFailure("network", source, new Error(getTranslator().translate("message.download.errors.streamClosed"))));
             }
         };
         const onClose = () => {
             if (!writeStream.writableFinished) {
-                emit(new DownloadFailure("network", source, new Error("Download stream closed before completion")));
+                emit(new DownloadFailure("network", source, new Error(getTranslator().translate("message.download.errors.streamClosed"))));
             }
         };
         const onFinish = () => emit(0);
@@ -346,7 +346,7 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
     // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!linkHref || !isURL(linkHref)) {
         debug("isURL() NOK", linkHref);
-        throw new Error("Invalid download URL");
+        throw new Error(getTranslator().translate("message.download.errors.invalidLink"));
     }
     const data = yield* callTyped(() => httpGet(linkHref, options));
 
