@@ -299,12 +299,9 @@
                 "streamClosed": "",
                 "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
             },
-            "failed": "",
             "failedWithHost": "",
-            "integrityFailed": "",
             "integrityFailedWithHost": "",
             "saveFailed": "",
-            "started": "",
             "startedWithTitle": ""
         },
         "import": {

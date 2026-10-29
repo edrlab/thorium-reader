@@ -84,15 +84,12 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
             contentLengthHumanReadable: "",
         }));
 
-        if (linkHrefArray.some(shouldAnnounceDownload)) {
-            const translate = getTranslator().translate;
-            const source = linkHrefArray.find(shouldAnnounceDownload);
-            const title = source ? notificationSource(typeof source === "string" ? source : source.href) : undefined;
+        const source = linkHrefArray.find(shouldAnnounceDownload);
+        const title = source ? notificationSource(typeof source === "string" ? source : source.href) : undefined;
+        if (title) {
             yield* putTyped(toastActions.openRequest.build(
                 ToastType.Info,
-                title
-                    ? translate("message.download.startedWithTitle", { title })
-                    : translate("message.download.started"),
+                getTranslator().translate("message.download.startedWithTitle", { title }),
             ));
         }
 

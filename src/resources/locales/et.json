@@ -299,12 +299,9 @@
                 "streamClosed": "",
                 "tooManyFilenameAttempts": "Ei suuda luua ajutist failinime allalaaditavale sisule: {{- path}}"
             },
-            "failed": "",
             "failedWithHost": "",
-            "integrityFailed": "",
             "integrityFailedWithHost": "",
             "saveFailed": "",
-            "started": "",
             "startedWithTitle": ""
         },
         "import": {

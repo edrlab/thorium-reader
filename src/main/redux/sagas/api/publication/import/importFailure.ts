@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import { DownloadFailure } from "readium-desktop/main/tools/downloadFailure";
-import { notificationSource } from "readium-desktop/main/tools/notificationSource";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
 export class ImportFailure extends Error {
@@ -21,13 +20,11 @@ export function importFailureMessage(error: unknown, name: string): string {
         if (error.reason === "storage") {
             return translate("message.download.saveFailed");
         }
-        const hostname = notificationSource(error.source);
+        const hostname = new URL(error.source).hostname;
         if (error.reason === "integrity") {
-            return hostname ? translate("message.download.integrityFailedWithHost", { hostname })
-                : translate("message.download.integrityFailed");
+            return translate("message.download.integrityFailedWithHost", { hostname });
         }
-        return hostname ? translate("message.download.failedWithHost", { hostname })
-            : translate("message.download.failed");
+        return translate("message.download.failedWithHost", { hostname });
     }
     if (error instanceof ImportFailure) {
         switch (error.reason) {

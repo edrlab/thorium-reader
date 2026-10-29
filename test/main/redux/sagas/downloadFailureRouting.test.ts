@@ -142,8 +142,7 @@ describe("download failure routing", () => {
     it("does not classify an unrelated exception by its message", () => {
         expect(importFailureMessage(new Error("timeout ENOSPC secret"), "book.epub"))
             .toBe(JSON.stringify({ key: "message.import.failed", args: { name: "book.epub" } }));
-        expect(importFailureMessage(new DownloadFailure("network", "https://[invalid"), "book.epub"))
-            .toBe(JSON.stringify({ key: "message.download.failed" }));
+
     });
 
     it("returns successful downloads without an error", async () => {
@@ -185,4 +184,15 @@ describe("download failure routing", () => {
     it("marks HTTP abort results as cancellation", () => {
         expect(() => checkDownloadResponse({ isAbort: true } as IHttpGetResult<undefined>, source)).toThrow(DownloadCancelled);
     });
+});
+
+
+it("rejects invalid URLs before creating a typed download failure or start notice", async () => {
+    jest.mocked(httpGet).mockClear();
+    const { actions, failure } = await execute(["https://[invalid"]);
+    expect(failure).not.toBeInstanceOf(DownloadFailure);
+    expect(failure).toMatchObject({ message: JSON.stringify({ key: "message.download.errors.invalidLink" }) });
+    expect(httpGet).not.toHaveBeenCalled();
+    expect(actions.filter(a => a.type === "TOAST_OPEN_REQUEST")).toHaveLength(0);
+    expect(actions.at(-1).type).toBe("DOWNLOAD_DONE");
 });

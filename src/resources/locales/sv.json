@@ -299,12 +299,9 @@
                 "streamClosed": "",
                 "tooManyFilenameAttempts": "Kunde inte skapa ett unikt filnamn för den nedladdade filen: {{- path}}"
             },
-            "failed": "",
             "failedWithHost": "",
-            "integrityFailed": "",
             "integrityFailedWithHost": "",
             "saveFailed": "",
-            "started": "Nedladdning påbörjad.",
             "startedWithTitle": "Laddar ner {{- title}}."
         },
         "import": {

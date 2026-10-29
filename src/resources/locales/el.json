@@ -299,12 +299,9 @@
                 "streamClosed": "",
                 "tooManyFilenameAttempts": "Αδυναμία δημιουργίας ενός μοναδικού προσωρινού ονόματος αρχείου λήψης: {{- path}}"
             },
-            "failed": "",
             "failedWithHost": "",
-            "integrityFailed": "",
             "integrityFailedWithHost": "",
             "saveFailed": "",
-            "started": "",
             "startedWithTitle": ""
         },
         "import": {

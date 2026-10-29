@@ -304,12 +304,9 @@
                 "streamClosed": "",
                 "tooManyFilenameAttempts": "Impossibile creare un nome univoco per il file di download temporaneo: {{- path}}"
             },
-            "failed": "",
             "failedWithHost": "",
-            "integrityFailed": "",
             "integrityFailedWithHost": "",
             "saveFailed": "",
-            "started": "Download iniziato.",
             "startedWithTitle": "Downloading {{- title}}."
         },
         "import": {
