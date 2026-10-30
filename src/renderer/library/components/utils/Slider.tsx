@@ -13,9 +13,9 @@ import * as React from "react";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
-import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { connect } from "react-redux";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -127,7 +127,7 @@ class Slider extends React.Component<IProps, IState> {
 
         return (
             <div className={(className ? className + " " : "") + stylesSlider.slider}>
-                    <button
+                <button
                         aria-label={__("accessibility.leftSlideButton")}
                         className={classNames(stylesSlider.slider_button_prev, stylesButtons.button_transparency_icon)}
                         onClick={() => this.handleMove("left")}
@@ -135,6 +135,14 @@ class Slider extends React.Component<IProps, IState> {
                     >
                     <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
+                <button
+                        onClick={() => this.handleMove("right")}
+                        aria-label={__("accessibility.rightSlideButton")}
+                        className={classNames(stylesSlider.slider_button_next, stylesButtons.button_transparency_icon)}
+                        disabled={this.state.disableRight}
+                    >
+                        <SVG ariaHidden={true} svg={ArrowRightIcon}/>
+                    </button>
                 <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}
                     onWheel={(_event) => {
                         if (this.wrapperRef?.current) {
@@ -148,14 +156,6 @@ class Slider extends React.Component<IProps, IState> {
                         {list}
                     </ul>
                 </div>
-                    <button
-                        onClick={() => this.handleMove("right")}
-                        aria-label={__("accessibility.rightSlideButton")}
-                        className={classNames(stylesSlider.slider_button_next, stylesButtons.button_transparency_icon)}
-                        disabled={this.state.disableRight}
-                    >
-                        <SVG ariaHidden={true} svg={ArrowRightIcon}/>
-                    </button>
             </div>
         );
     }

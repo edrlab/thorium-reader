@@ -17,9 +17,9 @@ interface IBaseProps {
     anchorId: string;
     label: string;
     className?: string;
-    tooltipkeyboardShortcut?: TKeyboardShortcut;
-    tooltipkeyboardShortcutName?: string;
-    tooltipkeyboardShortcutDescription?: string;
+    tooltipkeyboardShortcuts?: TKeyboardShortcut[];
+    tooltipkeyboardShortcutsNames?: string[];
+    tooltipkeyboardShortcutsDescriptions?: string[];
     onClick?: () => void;
 }
 
@@ -39,8 +39,8 @@ class SkipLink extends React.Component<IProps, undefined> {
 
     //
     public render(): React.ReactElement<{}>  {
-        const { onClick, label, className, tooltipkeyboardShortcut, tooltipkeyboardShortcutName, tooltipkeyboardShortcutDescription } = this.props;
-        if (tooltipkeyboardShortcut) {
+        const { onClick, label, className, tooltipkeyboardShortcuts, tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions } = this.props;
+        if (tooltipkeyboardShortcuts?.length) {
             return (
                 <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
                 <Focusable>
@@ -57,9 +57,9 @@ class SkipLink extends React.Component<IProps, undefined> {
                 <ToolTippy
                     placement="bottom"
                     // label={label}
-                    tooltipkeyboardShortcuts={[tooltipkeyboardShortcut]}
-                    tooltipkeyboardShortcutsNames={[tooltipkeyboardShortcutName]}
-                    tooltipkeyboardShortcutsDescriptions={[tooltipkeyboardShortcutDescription]} />
+                    tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
+                    tooltipkeyboardShortcutsNames={tooltipkeyboardShortcutsNames}
+                    tooltipkeyboardShortcutsDescriptions={tooltipkeyboardShortcutsDescriptions} />
                 </TooltipTrigger>
             );
         } else {

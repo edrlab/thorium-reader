@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 // import debounce from "debounce";
+
 import { HighlightDrawTypeNONE } from "@r2-navigator-js/electron/common/highlight";
 import { fixedLayoutZoomPercent } from "@r2-navigator-js/electron/renderer/dom";
 import classNames from "classnames";
@@ -15,6 +16,7 @@ import { ipcRenderer } from "electron";
 import * as path from "node:path";
 import * as r from "ramda";
 import * as React from "react";
+import { Focusable, TooltipTrigger } from "react-aria-components";
 import { connect } from "react-redux";
 import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
@@ -50,6 +52,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
 import {
     ensureKeyboardListenerIsInstalled, keyDownEventHandler, keyUpEventHandler,
     registerKeyboardListener, unregisterKeyboardListener,
@@ -68,7 +71,7 @@ import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_LINK, R2_EVENT_LINK } from "@r2-navigator-js/electron/common/events";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import {
-    convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
+    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
 import {
     audioForward, audioPause, audioRewind, audioTogglePlayPause,
@@ -147,7 +150,7 @@ import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-a
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import { selectPublicationManifestUrl } from "readium-desktop/renderer/reader/redux/selectPublicationManifestUrl";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { opdsProgressionToLocator } from "readium-desktop/common/models/opdsProgression";
@@ -1177,9 +1180,9 @@ class Reader extends React.Component<IProps, IState> {
                     className={stylesReader.skip_link}
                     anchorId="main-content"
                     label={this.props.__("accessibility.skipLink")}
-                    tooltipkeyboardShortcut={ this.props.keyboardShortcuts.FocusMain }
-                    tooltipkeyboardShortcutName={this.props.__("settings.keyboard.list.FocusMain.name")}
-                    tooltipkeyboardShortcutDescription={ this.props.__("settings.keyboard.list.FocusMain.description") }
+                    tooltipkeyboardShortcuts={ [this.props.keyboardShortcuts.FocusMain, this.props.keyboardShortcuts.FocusMainDeep, this.props.keyboardShortcuts.FocusToolbar] }
+                    tooltipkeyboardShortcutsNames={[this.props.__("settings.keyboard.list.FocusMain.name"), this.props.__("settings.keyboard.list.FocusMainDeep.name"), this.props.__("settings.keyboard.list.FocusToolbar.name")]}
+                    tooltipkeyboardShortcutsDescriptions={[this.props.__("settings.keyboard.list.FocusMain.description"), this.props.__("settings.keyboard.list.FocusMainDeep.description"), this.props.__("settings.keyboard.list.FocusToolbar.description")]}
                 />
                 <div className={stylesReader.root}>
                     {!this.state.zenMode ?
@@ -1237,17 +1240,28 @@ class Reader extends React.Component<IProps, IState> {
                     />
                     :
                     <div className={stylesReader.exitZen_container}>
-                            <button onClick={() => {
-                                // this.setState({ zenMode: false });
-                                ReaderSettingsProps.setZenModeAndFXLZoom(false, this.state.fxlZoomPercent);
-                            }}
-                            className={stylesReader.button_exitZen}
-                            style={{ opacity: isPaginated ? "1" : "0" }}
-                            aria-label={this.props.__("reader.navigation.ZenModeExit")}
-                            title={this.props.__("reader.navigation.ZenModeExit")}
+
+                        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                        <Focusable>
+                        <button onClick={() => {
+                            // this.setState({ zenMode: false });
+                            ReaderSettingsProps.setZenModeAndFXLZoom(false, this.state.fxlZoomPercent);
+                        }}
+                        className={stylesReader.button_exitZen}
+                        style={{ opacity: isPaginated ? "1" : "0" }}
+                        aria-label={this.props.__("reader.navigation.ZenModeExit")}
+                        title={this.props.__("reader.navigation.ZenModeExit")}
                         >
                             <SVG ariaHidden svg={exitZenModeIcon} />
                         </button>
+                        </Focusable>
+                        <ToolTippy
+                            placement="bottom"
+                            label={this.props.__("reader.navigation.ZenModeTitle")}
+                            tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.ToggleReaderZenMode, this.props.keyboardShortcuts.ToggleReaderFullscreen]}
+                            tooltipkeyboardShortcutsNames={[this.props.__("settings.keyboard.list.ToggleReaderZenMode.name"), this.props.__("settings.keyboard.list.ToggleReaderFullscreen.name")]}
+                            tooltipkeyboardShortcutsDescriptions={[this.props.__("settings.keyboard.list.ToggleReaderZenMode.description"), this.props.__("settings.keyboard.list.ToggleReaderFullscreen.description")]} />
+                        </TooltipTrigger>
                     </div>
                     }
 
@@ -1302,6 +1316,8 @@ class Reader extends React.Component<IProps, IState> {
                                     <nav role="navigation" aria-label={this.props.__("reader.navigation.openTableOfContentsTitle")}
                                         className={classNames(stylesReaderFooter.arrows, isPaginated ? stylesReaderFooter.isPaginated : undefined)}
                                     >
+                                        <TooltipTrigger delay={3000} closeDelay={0} trigger="hover">
+                                        <Focusable>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
                                                 if (isRTL) {
@@ -1313,11 +1329,23 @@ class Reader extends React.Component<IProps, IState> {
                                                 this.navLeftOrRight_(true);
                                             }
                                         }}
-                                            title={!isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
+                                            aria-label={!isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
                                             className={(this.props.settingsOpen || this.props.menuOpen) ? (this.props.readerConfig.readerDockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} aria-label={this.props.__("reader.svg.left")}/>
                                         </button>
+                                        </Focusable>
+                                        <ToolTippy
+                                            noReveal={true}
+                                            placement="right"
+                                            label={!isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
+                                            tooltipkeyboardShortcuts={!isRTL ? [this.props.keyboardShortcuts.NavigatePreviousPage, this.props.keyboardShortcuts.NavigatePreviousChapter, this.props.keyboardShortcuts.NavigateToBegin] : [this.props.keyboardShortcuts.NavigateNextPage, this.props.keyboardShortcuts.NavigateNextChapter, this.props.keyboardShortcuts.NavigateToEnd]}
+                                            tooltipkeyboardShortcutsNames={!isRTL ? [this.props.__("settings.keyboard.list.NavigatePreviousPage.name"), this.props.__("settings.keyboard.list.NavigatePreviousChapter.name"), this.props.__("settings.keyboard.list.NavigateToBegin.name")] : [this.props.__("settings.keyboard.list.NavigateNextPage.name"), this.props.__("settings.keyboard.list.NavigateNextChapter.name"), this.props.__("settings.keyboard.list.NavigateToEnd.name")]}
+                                            tooltipkeyboardShortcutsDescriptions={!isRTL ? [this.props.__("settings.keyboard.list.NavigatePreviousPage.description"), this.props.__("settings.keyboard.list.NavigatePreviousChapter.description"), this.props.__("settings.keyboard.list.NavigateToBegin.description")] : [this.props.__("settings.keyboard.list.NavigateNextPage.description"), this.props.__("settings.keyboard.list.NavigateNextChapter.description"), this.props.__("settings.keyboard.list.NavigateToEnd.description")]}
+                                                />
+                                        </TooltipTrigger>
+                                        <TooltipTrigger delay={3000} closeDelay={0} trigger="hover">
+                                        <Focusable>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
                                                 if (isRTL) {
@@ -1335,6 +1363,16 @@ class Reader extends React.Component<IProps, IState> {
                                         >
                                             <SVG ariaHidden={true} svg={ArrowRightIcon} aria-label={this.props.__("reader.svg.right")}/>
                                         </button>
+                                    </Focusable>
+                                    <ToolTippy
+                                        noReveal={true}
+                                        placement="left"
+                                        label={isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
+                                        tooltipkeyboardShortcuts={isRTL ? [this.props.keyboardShortcuts.NavigatePreviousPage, this.props.keyboardShortcuts.NavigatePreviousChapter, this.props.keyboardShortcuts.NavigateToBegin] : [this.props.keyboardShortcuts.NavigateNextPage, this.props.keyboardShortcuts.NavigateNextChapter, this.props.keyboardShortcuts.NavigateToEnd]}
+                                        tooltipkeyboardShortcutsNames={isRTL ? [this.props.__("settings.keyboard.list.NavigatePreviousPage.name"), this.props.__("settings.keyboard.list.NavigatePreviousChapter.name"), this.props.__("settings.keyboard.list.NavigateToBegin.name")] : [this.props.__("settings.keyboard.list.NavigateNextPage.name"), this.props.__("settings.keyboard.list.NavigateNextChapter.name"), this.props.__("settings.keyboard.list.NavigateToEnd.name")]}
+                                        tooltipkeyboardShortcutsDescriptions={isRTL ? [this.props.__("settings.keyboard.list.NavigatePreviousPage.description"), this.props.__("settings.keyboard.list.NavigatePreviousChapter.description"), this.props.__("settings.keyboard.list.NavigateToBegin.description")] : [this.props.__("settings.keyboard.list.NavigateNextPage.description"), this.props.__("settings.keyboard.list.NavigateNextChapter.description"), this.props.__("settings.keyboard.list.NavigateToEnd.description")]}
+                                            />
+                                    </TooltipTrigger>
                                     </nav>
                                     :
                                     <></>}
@@ -3723,7 +3761,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     const pubPathBase64 = decodeURIComponent(manifestUrlHttp.replace(/\/manifest.json$/, "").replace(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUB}/`, ""));
     const pubPath = Buffer.from(pubPathBase64, "base64").toString();
 
-    const manifestUrlR2Protocol_pub_id_not_path = convertHttpUrlToCustomScheme(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUB}/${encodeURIComponent_RFC3986(Buffer.from(state.reader.info.publicationIdentifier || state.reader.info.publicationView.identifier, "utf8").toString("base64"))}/manifest.json`);
+    const manifestUrlR2Protocol_pub_id_not_path = selectPublicationManifestUrl(state);
 
     debug("manifestUrlR2Protocol_pub_id_not_path", manifestUrlR2Protocol_pub_id_not_path);
     debug("state.reader.info.manifestUrlR2Protocol", state.reader.info.manifestUrlR2Protocol);

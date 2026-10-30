@@ -616,6 +616,13 @@
                 "descriptive": "The presents of hazards is unknown"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "Claims an accessibility exemption in some jurisdictions",
+                "descriptive": "The publisher claims an exemption from accessibility requirements in some jurisdictions."
+            },
+            "legal-considerations-title": "Legal considerations"
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Index",

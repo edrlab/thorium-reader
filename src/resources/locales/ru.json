@@ -628,6 +628,13 @@
                 "descriptive": "Наличие опасных элементов неизвестно"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Индекс",

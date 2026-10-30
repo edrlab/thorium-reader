@@ -4,56 +4,153 @@
 @use './partials/mixin' as mx;
 @use './partials/focus';
 
+/* .react-aria-Tooltip */
+
 @keyframes popIntoView {
   to {
-    opacity: 1;
     visibility: visible;
+    /* display: block; */
   }
 }
-/* .react-aria-Tooltip */
-.tooltipKeyboardShortcut:not(.tooltipKeyboardShortcutImmediate) {
-  opacity: 0;
-  visibility: hidden;
-  animation: popIntoView 0s 0.7s step-end forwards;
+
+@keyframes popOutaView {
+  to {
+    display: none;
+  }
+}
+
+.tooltipKeyboardShortcut.noReveal {
+  div.tooltipKeyboardShortcut_primary:not(:has(p.tooltipKeyboardShortcut_label)) {
+      display: none;
+      animation: none;
+  }
+
+  div.tooltipKeyboardShortcut_primary {
+    display: none;
+    animation: none;
+
+    p.tooltipKeyboardShortcut_pretty {
+      display: block;
+      animation: none;
+    }
+  }
+
+  div.tooltipKeyboardShortcut_secondary {
+    visibility: visible;
+    /* display: block; */
+    animation: none;
+  }
 }
 
 .tooltipKeyboardShortcut {
   max-width: 15em;
-  border-radius: 0.5em;
-  border: 0.15em solid var(--color-text-primary);
-  background: var(--color-neutral-base);
-  color: var(--color-text-primary);
-  forced-color-adjust: none;
+  background: transparent;
   outline: none;
-  padding: 0 0.15em;
-  font: 100% system-ui;
-  /* fixes FF gap */
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font: 90% system-ui;
   transform: translate3d(0, 0, 0);
 
-  /*
-    transition:
-      transform 200ms,
-      opacity 200ms;
-  */
-
-  > section {
+  p.tooltipKeyboardShortcut_label {
     text-align: center;
-    font-weight: bolder;
-    margin-top: 0.15em;
-    margin-bottom: 0.15em;
-    padding: 0.4em;
-    padding-bottom: 0.8em;
-    border-radius: 0.25em;
-    border: 1px solid transparent;
-    border-bottom: 1px dotted var(--color-text-primary);
+    font-weight: normal;
+    font-size: 110%;
   }
 
-  > p, > div > p {
-    margin-top: 0.15em;
-    margin-bottom: 0.15em;
+  p.tooltipKeyboardShortcut_name {
+    font-weight: bold;
+    font-size: 90%;
+  }
+
+  p.tooltipKeyboardShortcut_description {
+    opacity: 0.8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    /* white-space: nowrap; */
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  div {
+    background: transparent;
+    color: var(--color-text-primary);
+    forced-color-adjust: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  div.tooltipKeyboardShortcut_primary:not(:has(p.tooltipKeyboardShortcut_label)) {
+      display: block;
+      animation: popOutaView 0s 1s step-end forwards;
+  }
+
+  p.tooltipKeyboardShortcut_p {
+    background: var(--color-neutral-base);
+    color: var(--color-text-primary);
+    border-radius: 0.5em;
+    border: 0.10em solid var(--color-text-primary);
+    forced-color-adjust: none;
+    margin: 0;
+    padding: 0.25em;
+  }
+
+  div.tooltipKeyboardShortcut_primary, div.tooltipKeyboardShortcut_secondary {
+    box-shadow: 0 4px 10px var(--color-gray-275);
+  }
+
+  div.tooltipKeyboardShortcut_primary {
+    background: var(--color-neutral-base);
+    color: var(--color-text-primary);
+    border-radius: 0.5em;
+    border: 0.10em solid var(--color-text-primary);
+    forced-color-adjust: none;
+    margin: 0;
+    margin-bottom: 0.2em;
+    padding: 0 0.15em;
+
+    p.tooltipKeyboardShortcut_label {
+      height: 100%;
+    }
+
+    p.tooltipKeyboardShortcut_pretty {
+      display: block;
+      animation: popOutaView 0s 1s step-end forwards;
+    }
+  }
+
+  div.tooltipKeyboardShortcut_secondary {
+    background: var(--color-neutral-base);
+    color: var(--color-text-primary);
+    border-radius: 0.5em;
+    border: 0.10em solid var(--color-text-primary);
+    forced-color-adjust: none;
+    margin: 0;
+    padding: 0 0.15em;
+    visibility: hidden;
+    /* display: none; */
+    animation: popIntoView 0s 1s step-end forwards;
+
+    div:not(:first-child) > p.tooltipKeyboardShortcut_pretty {
+      margin-top: 1em;
+    }
+  }
+
+  p {
+    height: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
     padding: 0.4em;
+  }
+
+  p.tooltipKeyboardShortcut_pretty {
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
     border-radius: 0.25em;
-    border: 1px solid transparent;
+    border: 1px solid gray;
 
     > span {
       display: flex;
@@ -63,31 +160,15 @@
       > span {
         font-weight: bolder;
 
-        > svg {
+        svg {
           width: 1.25em;
         }
       }
+
+      > span:last-child {
+        margin-left: 0.8em;
+      }
     }
-  }
-
-  > div:not(:last-child) > p:last-child {
-    padding-bottom: 1.5em;
-    border-bottom: 0.15em dashed var(--color-text-primary);
-    margin-bottom: 0.8em;
-  }
-
-  > p:nth-child(2), > div > p:nth-child(2) {
-    border: 1px solid #aaa;
-  }
-
-  > p:nth-child(3), > div > p:nth-child(3) {
-    font-size: 90%;
-    font-weight: bold;
-  }
-
-  > p:nth-child(4), > div > p:nth-child(4) {
-    font-size: 90%;
-    opacity: 0.8;
   }
 
   &[data-entering],
