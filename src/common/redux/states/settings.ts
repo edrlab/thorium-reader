@@ -12,7 +12,7 @@ export interface ISettingsState {
     keepLibraryWindowInBackgroundOnReaderClose: boolean; // false by default
     oneReaderWindowPerPublication: boolean; // false by default
     disableGoogleAnalyticsTelemetry: boolean; // false by default
-    disableKeyboardShortcutsTooltips: boolean; // false by default
+    // disableKeyboardShortcutsTooltips: boolean; // false by default
     lcpAutoDeleteExpiredPublications: boolean; // false by default
     // Runtime-only command-line override. It is intentionally excluded from persisted state.
     lcpAutoDeleteExpiredPublicationsForced: boolean; // false by default
@@ -47,8 +47,8 @@ export const settingsOneReaderWindowPerPublicationIsEnabled = (settings?: Partia
 export const settingsGoogleAnalyticsTelemetryIsEnabled = (settings?: Partial<ISettingsState>) =>
     settings?.disableGoogleAnalyticsTelemetry !== true;
 
-export const settingsKeyboardShortcutsTooltipsIsEnabled = (settings?: Partial<ISettingsState>) =>
-    settings?.disableKeyboardShortcutsTooltips !== true;
+// export const settingsKeyboardShortcutsTooltipsIsEnabled = (settings?: Partial<ISettingsState>) =>
+//     settings?.disableKeyboardShortcutsTooltips !== true;
 
 export const settingsLcpAutoDeleteExpiredPublicationsIsEnabled = (settings?: Partial<ISettingsState>) =>
     settings?.lcpAutoDeleteExpiredPublications === true ||

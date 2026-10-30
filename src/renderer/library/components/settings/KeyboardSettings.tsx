@@ -16,7 +16,6 @@ import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
 import { DEBUG_KEYBOARD, defaultKeyboardShortcuts, keyboardShortcutMatches, keyboardShortcutsMatch, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutScopeZone, TKeyboardShortcutsMap } from "readium-desktop/common/keyboard";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { settingsActions } from "readium-desktop/common/redux/actions";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
@@ -532,7 +531,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         return (
             <>
-<section className={stylesSettings.section} style={{ gap: "10px" }}>
+<section className={stylesSettings.section} style={{ gap: "0" }}>
     <div dir={isRTL ? "rtl" : "ltr"}
         className={stylesAnnotations.annotations_checkbox}>
         <input type="checkbox" id="disableTooltips" className={stylesGlobal.checkbox_custom_input} name="disableTooltips"
@@ -1063,7 +1062,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
-        disableKeyboardShortcutsTooltips: state.settings.disableKeyboardShortcutsTooltips,
+        //disableKeyboardShortcutsTooltips: state.settings.disableKeyboardShortcutsTooltips,
+        disableKeyboardShortcutsTooltips: state.keyboard.disableKeyboardShortcutsTooltips,
         keyboardShortcuts: state.keyboard.shortcuts,
         locale: state.i18n.locale, // refresh
     };
@@ -1072,7 +1072,8 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         toggleDisableKeyboardShortcutsTooltips: (disableTooltips: boolean) => {
-            dispatch(settingsActions.disableKeyboardShortcutsTooltips.build(!disableTooltips));
+            // dispatch(settingsActions.disableKeyboardShortcutsTooltips.build(!disableTooltips));
+            dispatch(keyboardActions.disableKeyboardShortcutsTooltips.build(!disableTooltips));
         },
         setKeyboardShortcuts:
             (data: TKeyboardShortcutsMap) => dispatch(keyboardActions.setShortcuts.build(data, true)),

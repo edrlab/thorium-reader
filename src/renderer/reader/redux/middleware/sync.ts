@@ -8,7 +8,6 @@
 import {
     annotationActions,
     apiActions, creatorActions, customizationActions, i18nActions, keyboardActions, lcpActions, noteExport, publicationActions, readerActions,
-    settingsActions,
     themeActions,
     winCommonActions,
 } from "readium-desktop/common/redux/actions";
@@ -31,7 +30,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     keyboardActions.setShortcuts.ID,
     keyboardActions.showShortcuts.ID,
     keyboardActions.reloadShortcuts.ID,
-    settingsActions.disableKeyboardShortcutsTooltips.ID,
+    keyboardActions.disableKeyboardShortcutsTooltips.ID,
 
     // sessionActions.enable.ID,
 

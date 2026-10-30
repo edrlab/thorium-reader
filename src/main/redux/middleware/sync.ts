@@ -51,6 +51,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     keyboardActions.setShortcuts.ID,
     keyboardActions.showShortcuts.ID,
     keyboardActions.reloadShortcuts.ID,
+    keyboardActions.disableKeyboardShortcutsTooltips.ID,
 
     toastActions.openRequest.ID,
     toastActions.closeRequest.ID,
@@ -86,7 +87,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     creatorActions.set.ID,
 
     settingsActions.disableGoogleAnalyticsTelemetry.ID,
-    settingsActions.disableKeyboardShortcutsTooltips.ID,
+    // settingsActions.disableKeyboardShortcutsTooltips.ID,
     settingsActions.keepLibraryWindowInBackgroundOnReaderClose.ID,
     settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.ID,
     settingsActions.minimizeLibraryToTray.ID,
