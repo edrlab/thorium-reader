@@ -52,7 +52,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { TOOLTIP_HOVER_DELAY, TOOLTIP_HOVER_DELAY_EXTRA, ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
 import {
     ensureKeyboardListenerIsInstalled, keyDownEventHandler, keyUpEventHandler,
     registerKeyboardListener, unregisterKeyboardListener,
@@ -1241,7 +1241,7 @@ class Reader extends React.Component<IProps, IState> {
                     :
                     <div className={stylesReader.exitZen_container}>
 
-                        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                        <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                         <Focusable>
                         <button onClick={() => {
                             // this.setState({ zenMode: false });
@@ -1250,12 +1250,12 @@ class Reader extends React.Component<IProps, IState> {
                         className={stylesReader.button_exitZen}
                         style={{ opacity: isPaginated ? "1" : "0" }}
                         aria-label={this.props.__("reader.navigation.ZenModeExit")}
-                        title={this.props.__("reader.navigation.ZenModeExit")}
                         >
                             <SVG ariaHidden svg={exitZenModeIcon} />
                         </button>
                         </Focusable>
                         <ToolTippy
+                            immediate={true}
                             placement="bottom"
                             label={this.props.__("reader.navigation.ZenModeTitle")}
                             tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.ToggleReaderZenMode, this.props.keyboardShortcuts.ToggleReaderFullscreen]}
@@ -1316,7 +1316,7 @@ class Reader extends React.Component<IProps, IState> {
                                     <nav role="navigation" aria-label={this.props.__("reader.navigation.openTableOfContentsTitle")}
                                         className={classNames(stylesReaderFooter.arrows, isPaginated ? stylesReaderFooter.isPaginated : undefined)}
                                     >
-                                        <TooltipTrigger delay={3000} closeDelay={0} trigger="hover">
+                                        <TooltipTrigger delay={TOOLTIP_HOVER_DELAY_EXTRA} closeDelay={0} trigger="hover">
                                         <Focusable>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
@@ -1336,7 +1336,7 @@ class Reader extends React.Component<IProps, IState> {
                                         </button>
                                         </Focusable>
                                         <ToolTippy
-                                            noReveal={true}
+                                            immediate={true}
                                             placement="right"
                                             label={!isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
                                             tooltipkeyboardShortcuts={!isRTL ? [this.props.keyboardShortcuts.NavigatePreviousPage, this.props.keyboardShortcuts.NavigatePreviousChapter, this.props.keyboardShortcuts.NavigateToBegin] : [this.props.keyboardShortcuts.NavigateNextPage, this.props.keyboardShortcuts.NavigateNextChapter, this.props.keyboardShortcuts.NavigateToEnd]}
@@ -1344,7 +1344,7 @@ class Reader extends React.Component<IProps, IState> {
                                             tooltipkeyboardShortcutsDescriptions={!isRTL ? [this.props.__("settings.keyboard.list.NavigatePreviousPage.description"), this.props.__("settings.keyboard.list.NavigatePreviousChapter.description"), this.props.__("settings.keyboard.list.NavigateToBegin.description")] : [this.props.__("settings.keyboard.list.NavigateNextPage.description"), this.props.__("settings.keyboard.list.NavigateNextChapter.description"), this.props.__("settings.keyboard.list.NavigateToEnd.description")]}
                                                 />
                                         </TooltipTrigger>
-                                        <TooltipTrigger delay={3000} closeDelay={0} trigger="hover">
+                                        <TooltipTrigger delay={TOOLTIP_HOVER_DELAY_EXTRA} closeDelay={0} trigger="hover">
                                         <Focusable>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
@@ -1357,7 +1357,7 @@ class Reader extends React.Component<IProps, IState> {
                                                 this.navLeftOrRight_(false);
                                             }
                                         }}
-                                            title={isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
+                                            aria-label={isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
                                             className={(this.props.settingsOpen || this.props.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
                                             style={{ right: !this.props.readerConfig.paged ? ((this.props.settingsOpen || this.props.menuOpen) && this.props.readerConfig.readerDockingMode === "right" ? "384px" : "15px") : ((this.props.settingsOpen || this.props.menuOpen) && this.props.readerConfig.readerDockingMode === "right" ? "373px" : "4px") }}
                                         >
@@ -1365,7 +1365,7 @@ class Reader extends React.Component<IProps, IState> {
                                         </button>
                                     </Focusable>
                                     <ToolTippy
-                                        noReveal={true}
+                                        immediate={true}
                                         placement="left"
                                         label={isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
                                         tooltipkeyboardShortcuts={isRTL ? [this.props.keyboardShortcuts.NavigatePreviousPage, this.props.keyboardShortcuts.NavigatePreviousChapter, this.props.keyboardShortcuts.NavigateToBegin] : [this.props.keyboardShortcuts.NavigateNextPage, this.props.keyboardShortcuts.NavigateNextChapter, this.props.keyboardShortcuts.NavigateToEnd]}

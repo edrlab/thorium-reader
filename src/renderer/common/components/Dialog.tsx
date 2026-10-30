@@ -11,7 +11,7 @@ import { Button, Dialog, DialogProps, DialogTrigger, DialogTriggerProps, Focusab
 import { useOverlayTriggerState } from "react-stately";
 import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
 import { OVERLAY_Z_INDEX } from "./overlayHelpers";
-import { ToolTippy } from "./Tooltippy";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "./Tooltippy";
 
 export interface RootProps extends DialogTriggerProps {
     modal?: boolean;
@@ -83,11 +83,12 @@ export function Trigger({ label, tooltipkeyboardShortcuts, tooltipkeyboardShortc
             return c;
         }
         return (
-        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+        <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
         <Focusable>
         {c}
         </Focusable>
         <ToolTippy
+            immediate={tooltipkeyboardShortcuts?.length === 1}
             placement="bottom"
             label={ label }
             tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
@@ -101,9 +102,10 @@ export function Trigger({ label, tooltipkeyboardShortcuts, tooltipkeyboardShortc
         return c;
     }
     return (
-    <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+    <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
     {c}
     <ToolTippy
+        immediate={tooltipkeyboardShortcuts?.length === 1}
         placement="bottom"
         label={ label }
         tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}

@@ -103,7 +103,7 @@ import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import {
@@ -442,7 +442,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     // const keyboardShortcutFocusSearch = textualizeKeyboardShortcut(props.keyboardShortcuts.FocusSearch);
     return (
         <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>
-        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+        <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
         <Focusable excludeFromTabOrder>
             <label
                 id="globalSearchLabel"
@@ -458,8 +458,8 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
             </label>
         </Focusable>
         <ToolTippy
-            noReveal={false}
-            placement="bottom"
+            immediate={true}
+            placement="top"
             label={ undefined }
             tooltipkeyboardShortcuts={[keyboardShortcuts.FocusSearch]}
             tooltipkeyboardShortcutsNames={[props.__("settings.keyboard.list.FocusSearch.name")]}

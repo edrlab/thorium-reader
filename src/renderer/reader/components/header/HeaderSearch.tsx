@@ -19,7 +19,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
@@ -108,7 +108,7 @@ class HeaderSearch extends React.Component<IProps> {
         const { __ } = this.props;
         return (
             <>
-                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                 <Focusable>
                 <button
                     disabled={this.props.isAudiobook || this.props.isDivina}
@@ -123,7 +123,7 @@ class HeaderSearch extends React.Component<IProps> {
                 </button>
                 </Focusable>
                 <ToolTippy
-                    noReveal={false}
+                    immediate={false}
                     placement="bottom"
                     label={__("reader.navigation.magnifyingGlassButton")}
                     tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.FocusSearch, this.props.keyboardShortcuts.SearchPrevious, this.props.keyboardShortcuts.SearchNext, this.props.keyboardShortcuts.FocusReaderNavigationSearch]}

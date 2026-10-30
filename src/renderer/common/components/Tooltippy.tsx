@@ -14,36 +14,74 @@ import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyb
 import { PrettifyKeyboardShortcut } from "./Keyboard";
 
 export interface MyProps {
-    noReveal?: boolean;
+    immediate?: boolean;
     label?: string;
     tooltipkeyboardShortcuts?: TKeyboardShortcut[];
     tooltipkeyboardShortcutsNames?: string[];
     tooltipkeyboardShortcutsDescriptions?: string[];
 }
-export const ToolTippy: React.FC<React.PropsWithChildren<MyProps & TooltipProps>> = ({ noReveal, label, tooltipkeyboardShortcuts, tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions, ...otherProps }) => {
+
+export const TOOLTIP_HOVER_DELAY = 400;
+export const TOOLTIP_HOVER_DELAY_EXTRA = 2000;
+
+export const ToolTippy: React.FC<React.PropsWithChildren<MyProps & TooltipProps>> = ({ immediate, label, tooltipkeyboardShortcuts, tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions, ...otherProps }) => {
 
     const desc = (label ? label : "") + tooltipkeyboardShortcuts?.length ? tooltipkeyboardShortcuts.reduce((prev, cur, i) => {
-        return prev + " // " + `${textualizeKeyboardShortcut(cur)} [${tooltipkeyboardShortcutsNames[i]}] <${tooltipkeyboardShortcutsDescriptions[i]}>`;
+        return prev + " // " + `${textualizeKeyboardShortcut(cur)} [${tooltipkeyboardShortcutsNames[i]}]`; // + ` <${tooltipkeyboardShortcutsDescriptions[i]}>`
     }, "")  : "";
-    return <Tooltip aria-label={desc} {...mergeProps({ placement: "top", offset: 0, className: classNames("tooltipKeyboardShortcut", noReveal ? "noReveal" : undefined) } satisfies TooltipProps, otherProps)}>
+    return <Tooltip
+        aria-label={desc}
+        {...mergeProps({
+            placement: "top",
+            offset: 0,
+            className: classNames("tooltipKeyboardShortcut", immediate ? "immediate" : undefined),
+        } satisfies TooltipProps,
+        otherProps)} // overrides placement and offset, merges classNames
+    >
         <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
 
-        <div className={"tooltipKeyboardShortcut_primary"}>
-            {label ? (<p className={"tooltipKeyboardShortcut_label"}>{label}</p>) : <></>}
-            {tooltipkeyboardShortcuts?.length ? (<p className={"tooltipKeyboardShortcut_pretty"}><PrettifyKeyboardShortcut hideFromScreenReaders={false} def={tooltipkeyboardShortcuts[0]} /></p>) : <></>}
+        <div
+            className={"tooltipKeyboardShortcut_primary"}
+        >
+            {label ?
+                (<p
+                    className={"tooltipKeyboardShortcut_label"}
+                >
+                    {label}
+                </p>) :
+                <></>}
         </div>
-        <div className={"tooltipKeyboardShortcut_secondary"}>
+        <div
+            className={"tooltipKeyboardShortcut_secondary"}
+        >
             {tooltipkeyboardShortcuts?.length ? tooltipkeyboardShortcuts.map((tooltipkeyboardShortcut, i) => {
-                return <div key={`tooltipkeyboardShortcuts_${i}`}>
-                    <p className={"tooltipKeyboardShortcut_pretty"}><PrettifyKeyboardShortcut hideFromScreenReaders={false} def={tooltipkeyboardShortcut} /></p>
+                return <div
+                    key={`tooltipkeyboardShortcuts_${i}`}
+                >
                     {
-                        (tooltipkeyboardShortcutsNames?.[i] ? (<p className={"tooltipKeyboardShortcut_name"}>{tooltipkeyboardShortcutsNames?.[i]}</p>) : (<></>))
-                    }{
-                        (tooltipkeyboardShortcutsDescriptions?.[i] ? (<p title={tooltipkeyboardShortcutsDescriptions?.[i]} className={"tooltipKeyboardShortcut_description"}>{tooltipkeyboardShortcutsDescriptions?.[i]}</p>) : (<></>))
+                        i === 0 ?
+                        <div className={"pie-timer-wrapper"} aria-hidden>
+                            <div className={"pie spinner"}></div>
+                            <div className={"pie filler"}></div>
+                            <div className={"mask"}></div>
+                        </div> :
+                        <></>
                     }
+                    <p
+                        className={"tooltipKeyboardShortcut_pretty"}>
+                        <PrettifyKeyboardShortcut
+                            hideFromScreenReaders={false}
+                            def={tooltipkeyboardShortcut}
+                        />
+                    </p>
+                    {<p
+                        className={"tooltipKeyboardShortcut_name"}
+                        title={tooltipkeyboardShortcutsDescriptions?.[i]}
+                    >
+                        {tooltipkeyboardShortcutsNames?.[i]}
+                    </p>}
                 </div>;
-            })
-            : <></>}
+            }) : <></>}
         </div>
 
         </Tooltip>;

@@ -10,7 +10,7 @@ import { Focusable, TooltipTrigger } from "react-aria-components";
 import { connect } from "react-redux";
 import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { ToolTippy } from "./Tooltippy";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "./Tooltippy";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -42,7 +42,7 @@ class SkipLink extends React.Component<IProps, undefined> {
         const { onClick, label, className, tooltipkeyboardShortcuts, tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions } = this.props;
         if (tooltipkeyboardShortcuts?.length) {
             return (
-                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                 <Focusable>
                 <button
                     onClick={onClick || (() => this.onClick())}
@@ -55,6 +55,7 @@ class SkipLink extends React.Component<IProps, undefined> {
                 </button>
                 </Focusable>
                 <ToolTippy
+                    immediate={tooltipkeyboardShortcuts?.length === 1}
                     placement="bottom"
                     // label={label}
                     tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
