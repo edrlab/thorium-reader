@@ -593,6 +593,8 @@ async function httpFetchFormattedResponse<TData = undefined>(
             };
         }
 
+        Object.defineProperty(result, "cause", { value: err, enumerable: false });
+
         debug("HTTP FAIL RESUlT");
         debug(result);
         debug("#################");

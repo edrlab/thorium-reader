@@ -5,82 +5,89 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
-import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/print.scss";
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
-
-import classNames from "classnames";
-import debug_ from "debug";
-import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
-import { FocusScope } from "react-aria";
-import { useOverlayTriggerState } from "react-stately";
-import { OverlayTriggerStateContext, DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, VisuallyHidden, Tooltip, TooltipTrigger, Focusable } from "react-aria-components";
-import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
-
 // import * as ReactDOM from "react-dom";
-import { ReaderConfig } from "readium-desktop/common/models/reader";
-import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
-import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
-import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
-import * as PauseIcon from "readium-desktop/renderer/assets/icons/audio-pause-icon.svg";
-import * as PlayIcon from "readium-desktop/renderer/assets/icons/audio-play-icon.svg";
-import * as SkipNext from "readium-desktop/renderer/assets/icons/audio-next-icon.svg";
-import * as SkipPrevious from "readium-desktop/renderer/assets/icons/audio-previous-icon.svg";
-import * as StopIcon from "readium-desktop/renderer/assets/icons/audio-stop-icon.svg";
-import * as AudioIcon from "readium-desktop/renderer/assets/icons/speaker-icon.svg";
-import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-icon.svg";
-import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
-import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
-import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 // import * as BookmarkFullIcon from "readium-desktop/renderer/assets/icons/.unused-icons/outline-bookmark-24px.svg";
 // import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
-import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
-import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
-import * as ExitFullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
 // import * as FloppyDiskIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 // import * as ChevronUpIcon from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 // import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-
 // import { fixedLayoutZoomPercent,
 //     // stealFocusDisable
 // } from "@r2-navigator-js/electron/renderer/dom";
-import {
-    keyboardFocusRequest,
-    MediaOverlaysStateEnum, TTSStateEnum,
-} from "@r2-navigator-js/electron/renderer/index";
-import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-
-import { IPdfPlayerScale, TPdfAnnotationDraftTransport } from "../pdf/common/pdfReader.type";
-import HeaderSearch from "./header/HeaderSearch";
-import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
-import { ReaderMenu } from "./ReaderMenu/ReaderMenu";
 // import {
 //     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 // } from "readium-desktop/renderer/common/keyboard";
 // import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+// import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import {
+    keyboardFocusRequest,
+    MediaOverlaysStateEnum, TTSStateEnum,
+} from "@r2-navigator-js/electron/renderer/index";
+import classNames from "classnames";
+import debug_ from "debug";
+import * as React from "react";
+import { FocusScope } from "react-aria";
+import { DialogTrigger, Focusable, OverlayTriggerStateContext, Popover, Dialog as PopoverDialog, Pressable, TooltipTrigger, VisuallyHidden } from "react-aria-components";
 import { connect } from "react-redux";
+import { useOverlayTriggerState } from "react-stately";
+import { isAudiobookFn } from "readium-desktop/common/isManifestType";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
+import { DockTypeName } from "readium-desktop/common/models/dock";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { TDispatch } from "readium-desktop/typings/redux";
-import { PublicationInfoReaderWithRAC, PublicationInfoReaderWithRACContent, PublicationInfoReaderWithRACTrigger } from "./dialog/publicationInfos/PublicationInfo";
-import {ReaderSettings}  from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
-import {ReadingAudio} from "readium-desktop/renderer/reader/components/ReadingAudio";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
+import * as SkipNext from "readium-desktop/renderer/assets/icons/audio-next-icon.svg";
+import * as PauseIcon from "readium-desktop/renderer/assets/icons/audio-pause-icon.svg";
+import * as PlayIcon from "readium-desktop/renderer/assets/icons/audio-play-icon.svg";
+import * as SkipPrevious from "readium-desktop/renderer/assets/icons/audio-previous-icon.svg";
+import * as StopIcon from "readium-desktop/renderer/assets/icons/audio-stop-icon.svg";
+import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
+import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
+import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
+import * as ExitFullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
+import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-icon.svg";
+import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
+import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
+import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
+import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
+import * as AudioIcon from "readium-desktop/renderer/assets/icons/speaker-icon.svg";
+import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/print.scss";
+import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { ReaderSettings } from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
+import { ReadingAudio } from "readium-desktop/renderer/reader/components/ReadingAudio";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import { triggerPdfAnnotation } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
-import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
-import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { IPdfPlayerScale, TPdfAnnotationDraftTransport } from "../pdf/common/pdfReader.type";
 import { readerLocalActionAnnotations, readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../redux/actions";
 import { AnnotationEdit } from "./AnnotationEdit";
-import { isAudiobookFn } from "readium-desktop/common/isManifestType";
-import { VoiceSelection } from "./header/voiceSelection";
+import { PublicationInfoReaderWithRAC, PublicationInfoReaderWithRACContent, PublicationInfoReaderWithRACTrigger } from "./dialog/publicationInfos/PublicationInfo";
+import { BookmarkButton } from "./header/BookmarkButton";
+import HeaderSearch from "./header/HeaderSearch";
 import type { TLanguage } from "./header/voiceSelection";
-// import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import { VoiceSelection } from "./header/voiceSelection";
+import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
+import { PrintContainer } from "./Print";
+import { ReaderMenu } from "./ReaderMenu/ReaderMenu";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -91,18 +98,8 @@ import type { TLanguage } from "./header/voiceSelection";
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
 // e__slint-disable-next-line @typescript-eslint/ban-ts-comment
 // @__ts-ignore TS1479
-import { WebSpeechVoiceManager } from "@readium/speech";
 import type { ReadiumSpeechVoice } from "@readium/speech";
-
-import { BookmarkButton } from "./header/BookmarkButton";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { DockTypeName } from "readium-desktop/common/models/dock";
-import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import { PrintContainer } from "./Print";
-import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
-import { PublicationView } from "readium-desktop/common/views/publication";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { WebSpeechVoiceManager } from "@readium/speech";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -569,26 +566,46 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             >
                 <div>
                     <ul>
-                        <li >
+                        <li>
+                        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                        <Focusable>
                             <button
                                 className={stylesReader.menu_button}
                                 onClick={this.props.handleReaderClose}
-                                title={__("reader.navigation.backHomeTitle")}
+                                // aria-label={`${__("reader.navigation.backHomeTitle")} // [${textualizeKeyboardShortcut(this.props.keyboardShortcuts.CloseReader)}]` + ` (${this.props.__("settings.keyboard.list.CloseReader.name")})` + ` <${this.props.__("settings.keyboard.list.CloseReader.description")}>`}
+                                aria-label={`${__("reader.navigation.backHomeTitle")}`}
                             >
                                 <SVG ariaHidden={true} svg={BackIcon} />
                             </button>
+                            </Focusable>
+                            <ToolTippy
+                                placement="bottom"
+                                label={ __("reader.navigation.backHomeTitle") }
+                                tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.CloseReader]}
+                                tooltipkeyboardShortcutsNames={[this.props.__("settings.keyboard.list.CloseReader.name")]}
+                                tooltipkeyboardShortcutsDescriptions={[this.props.__("settings.keyboard.list.CloseReader.description")]} />
+                        </TooltipTrigger>
                         </li>
                         <li>
                             <PublicationInfoReaderWithRAC handlePublicationInfo={this.props.handlePublicationInfo}>
-                                <PublicationInfoReaderWithRACTrigger asChild>
+                                <PublicationInfoReaderWithRACTrigger
+                                    asChild
+                                    //aria-label={`${__("reader.navigation.infoTitle")} // [${textualizeKeyboardShortcut(this.props.keyboardShortcuts.OpenReaderInfo)}]` + ` (${this.props.__("settings.keyboard.list.OpenReaderInfo.name")})` + ` <${this.props.__("settings.keyboard.list.OpenReaderInfo.description")}>`}
+                                    aria-label={`${__("reader.navigation.infoTitle")}`}
+                                    label={`${__("reader.navigation.infoTitle")}`}
+                                    tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.OpenReaderInfo, this.props.keyboardShortcuts.OpenReaderInfoWhereAmI, this.props.keyboardShortcuts.SpeakReaderInfoWhereAmI]}
+                                    tooltipkeyboardShortcutsNames={[this.props.__("settings.keyboard.list.OpenReaderInfo.name"), this.props.__("settings.keyboard.list.OpenReaderInfoWhereAmI.name"), this.props.__("settings.keyboard.list.SpeakReaderInfoWhereAmI.name")]}
+                                    tooltipkeyboardShortcutsDescriptions={[this.props.__("settings.keyboard.list.OpenReaderInfo.description"), this.props.__("settings.keyboard.list.OpenReaderInfoWhereAmI.description"), this.props.__("settings.keyboard.list.SpeakReaderInfoWhereAmI.description")]}
+                                >
                                     <button
                                         className={stylesReader.menu_button}
                                         ref={this.infoMenuButtonRef}
-                                        title={__("reader.navigation.infoTitle")}
+                                        /* aria-label={`${__("reader.navigation.infoTitle")} [${textualizeKeyboardShortcut(this.props.keyboardShortcuts.OpenReaderInfo)}]` + ` (${this.props.__("settings.keyboard.list.OpenReaderInfo.name")})` + ` <${this.props.__("settings.keyboard.list.OpenReaderInfo.description")}>`} */
                                         disabled={(this.props.settingsOpen || this.props.menuOpen || this.props.pdfPrintOpen) && !isDockedMode}
                                     >
                                         <SVG ariaHidden={true} svg={InfosIcon} />
                                     </button>
+
                                 </PublicationInfoReaderWithRACTrigger>
                                 <PublicationInfoReaderWithRACContent />
                             </PublicationInfoReaderWithRAC>
@@ -630,6 +647,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     !useMO &&
                                                     this.props.ttsState === TTSStateEnum.STOPPED) ?
                                                     <li className={stylesReader.button_audio}>
+                                                        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                        <Focusable>
                                                         <button
                                                             className={stylesReader.menu_button}
                                                             onClick={(e) => {
@@ -643,17 +662,24 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                 }
                                                             }
                                                             }
-                                                            title={
-                                                                this.props.publicationHasMediaOverlays ?
-                                                                    __("reader.media-overlays.activate") :
-                                                                    __("reader.tts.activate")
-                                                            }
+
+                                                            aria-label={`${this.props.publicationHasMediaOverlays ? __("reader.media-overlays.activate") : __("reader.tts.activate")}`}
                                                         >
                                                             <SVG ariaHidden={true} svg={AudioIcon} />
                                                         </button>
+                                                        </Focusable>
+                                                        <ToolTippy
+                                                            placement="bottom"
+                                                            label={`${this.props.publicationHasMediaOverlays ? __("reader.media-overlays.activate") : __("reader.tts.activate")}`}
+                                                            tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.AudioPlayPause]}
+                                                            tooltipkeyboardShortcutsNames={[this.props.__("settings.keyboard.list.AudioPlayPause.name")]}
+                                                            tooltipkeyboardShortcutsDescriptions={[this.props.__("settings.keyboard.list.AudioPlayPause.description")]} />
+                                                        </TooltipTrigger>
                                                     </li>
                                                     : <>
-                                                        <li >
+                                                        <li>
+                                                            <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                            <Focusable>
                                                             <button
                                                                 className={stylesReader.menu_button}
                                                                 onClick={(_e) => {
@@ -666,16 +692,22 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                     }
                                                                 }
                                                                 }
-                                                                title={
-                                                                    useMO ?
-                                                                        __("reader.media-overlays.stop") :
-                                                                        __("reader.tts.stop")
-                                                                }
+                                                                aria-label={`${useMO ? __("reader.media-overlays.stop") : __("reader.tts.stop")}`}
                                                             >
                                                                 <SVG ariaHidden={true} svg={StopIcon} />
                                                             </button>
+                                                            </Focusable>
+                                                            <ToolTippy
+                                                                placement="bottom"
+                                                                label={`${useMO ? __("reader.media-overlays.stop") : __("reader.tts.stop")}`}
+                                                                tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.AudioStop]}
+                                                                tooltipkeyboardShortcutsNames={[this.props.__("settings.keyboard.list.AudioStop.name")]}
+                                                                tooltipkeyboardShortcutsDescriptions={[this.props.__("settings.keyboard.list.AudioStop.description")]} />
+                                                            </TooltipTrigger>
                                                         </li>
-                                                        <li >
+                                                        <li>
+                                                            <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                            <Focusable>
                                                             <button
                                                                 className={stylesReader.menu_button}
                                                                 onClick={(e) => {
@@ -693,7 +725,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                         }
                                                                     }
                                                                 }}
-                                                                title={
+                                                                aria-label={
                                                                     isRTL ?
                                                                         (useMO ?
                                                                             __("reader.media-overlays.next") :
@@ -706,12 +738,31 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             >
                                                                 <SVG ariaHidden={true} svg={SkipPrevious} />
                                                             </button>
+                                                            </Focusable>
+                                                            <ToolTippy
+                                                                placement="bottom"
+                                                                label={
+                                                                    isRTL ?
+                                                                        (useMO ?
+                                                                            __("reader.media-overlays.next") :
+                                                                            __("reader.tts.next"))
+                                                                        :
+                                                                        (useMO ?
+                                                                            __("reader.media-overlays.previous") :
+                                                                            __("reader.tts.previous"))
+                                                                }
+                                                                tooltipkeyboardShortcuts={[isRTL ? this.props.keyboardShortcuts.AudioNext : this.props.keyboardShortcuts.AudioPrevious, isRTL ? this.props.keyboardShortcuts.AudioNextAlt : this.props.keyboardShortcuts.AudioPreviousAlt]}
+                                                                tooltipkeyboardShortcutsNames={[isRTL ? __("settings.keyboard.list.AudioNext.name") : __("settings.keyboard.list.AudioPrevious.name"), isRTL ? __("settings.keyboard.list.AudioNextAlt.name") : __("settings.keyboard.list.AudioPreviousAlt.name")]}
+                                                                tooltipkeyboardShortcutsDescriptions={[isRTL ? __("settings.keyboard.list.AudioNext.description") : __("settings.keyboard.list.AudioPrevious.description"), isRTL ? __("settings.keyboard.list.AudioNextAlt.description") : __("settings.keyboard.list.AudioPreviousAlt.description")]} />
+                                                            </TooltipTrigger>
                                                         </li>
                                                         {(useMO &&
                                                             this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING ||
                                                             !useMO &&
                                                             this.props.ttsState === TTSStateEnum.PLAYING) ?
                                                             <li style={{ backgroundColor: "var(--color-brand-primary)" }}>
+                                                                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                                <Focusable>
                                                                 <button
                                                                     className={stylesReader.menu_button}
                                                                     onClick={
@@ -719,7 +770,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             this.props.handleMediaOverlaysPause :
                                                                             this.props.handleTTSPause
                                                                     }
-                                                                    title={
+                                                                    aria-label={
                                                                         useMO ?
                                                                             __("reader.media-overlays.pause") :
                                                                             __("reader.tts.pause")
@@ -727,9 +778,23 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                 >
                                                                     <SVG ariaHidden={true} svg={PauseIcon} className={stylesReaderHeader.active_svg} />
                                                                 </button>
+                                                                </Focusable>
+                                                                <ToolTippy
+                                                                    placement="bottom"
+                                                                    label={
+                                                                        useMO ?
+                                                                            __("reader.media-overlays.pause") :
+                                                                            __("reader.tts.pause")
+                                                                    }
+                                                                    tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.AudioPlayPause]}
+                                                                    tooltipkeyboardShortcutsNames={[this.props.__("settings.keyboard.list.AudioPlayPause.name")]}
+                                                                    tooltipkeyboardShortcutsDescriptions={[this.props.__("settings.keyboard.list.AudioPlayPause.description")]} />
+                                                                </TooltipTrigger>
                                                             </li>
                                                             :
                                                             <li>
+                                                                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                                <Focusable>
                                                                 <button
                                                                     className={classNames(isRTL ? stylesReader.RTL_FLIP : undefined, stylesReader.menu_button)}
                                                                     onClick={(_e) => {
@@ -740,7 +805,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                         }
                                                                     }
                                                                     }
-                                                                    title={
+                                                                    aria-label={
                                                                         useMO ?
                                                                             __("reader.media-overlays.play") :
                                                                             __("reader.tts.play")
@@ -748,9 +813,23 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                 >
                                                                     <SVG ariaHidden={true} svg={PlayIcon} />
                                                                 </button>
+                                                                </Focusable>
+                                                                <ToolTippy
+                                                                    placement="bottom"
+                                                                    label={
+                                                                        useMO ?
+                                                                            __("reader.media-overlays.play") :
+                                                                            __("reader.tts.play")
+                                                                    }
+                                                                    tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.AudioPlayPause]}
+                                                                    tooltipkeyboardShortcutsNames={[this.props.__("settings.keyboard.list.AudioPlayPause.name")]}
+                                                                    tooltipkeyboardShortcutsDescriptions={[this.props.__("settings.keyboard.list.AudioPlayPause.description")]} />
+                                                                </TooltipTrigger>
                                                             </li>
                                                         }
-                                                        <li >
+                                                        <li>
+                                                            <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                            <Focusable>
                                                             <button
                                                                 className={stylesReader.menu_button}
 
@@ -769,7 +848,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                         }
                                                                     }
                                                                 }}
-                                                                title={
+                                                                aria-label={
                                                                     isRTL ?
                                                                         (useMO ?
                                                                             __("reader.media-overlays.previous") :
@@ -782,6 +861,23 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             >
                                                                 <SVG ariaHidden={true} svg={SkipNext} />
                                                             </button>
+                                                            </Focusable>
+                                                            <ToolTippy
+                                                                placement="bottom"
+                                                                label={
+                                                                    isRTL ?
+                                                                        (useMO ?
+                                                                            __("reader.media-overlays.previous") :
+                                                                            __("reader.tts.previous"))
+                                                                        :
+                                                                        (useMO ?
+                                                                            __("reader.media-overlays.next") :
+                                                                            __("reader.tts.next"))
+                                                                }
+                                                                tooltipkeyboardShortcuts={[!isRTL ? this.props.keyboardShortcuts.AudioNext : this.props.keyboardShortcuts.AudioPrevious, !isRTL ? this.props.keyboardShortcuts.AudioNextAlt : this.props.keyboardShortcuts.AudioPreviousAlt]}
+                                                                tooltipkeyboardShortcutsNames={[!isRTL ? __("settings.keyboard.list.AudioNext.name") : __("settings.keyboard.list.AudioPrevious.name"), !isRTL ? __("settings.keyboard.list.AudioNextAlt.name") : __("settings.keyboard.list.AudioPreviousAlt.name")]}
+                                                                tooltipkeyboardShortcutsDescriptions={[!isRTL ? __("settings.keyboard.list.AudioNext.description") : __("settings.keyboard.list.AudioPrevious.description"), !isRTL ? __("settings.keyboard.list.AudioNextAlt.description") : __("settings.keyboard.list.AudioPreviousAlt.description")]} />
+                                                            </TooltipTrigger>
                                                         </li>
 
                                                     </>
@@ -839,6 +935,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                         }
                                                                                     }
                                                                                 }}
+                                                                                tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.AudioSpeedReset, this.props.keyboardShortcuts.AudioSpeedDecrease, this.props.keyboardShortcuts.AudioSpeedIncrease]}
+                                                                                tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.AudioSpeedReset.name"), __("settings.keyboard.list.AudioSpeedDecrease.name"), __("settings.keyboard.list.AudioSpeedIncrease.name")]}
+                                                                                tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.AudioSpeedReset.description"), __("settings.keyboard.list.AudioSpeedDecrease.description"), __("settings.keyboard.list.AudioSpeedIncrease.description")]}
                                                                             >
                                                                                 {(item) => <ComboBoxItem>{item.name}</ComboBoxItem>}
                                                                             </ComboBox>
@@ -901,13 +1000,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         this.props.setShortcutEnable(!open);
                                         this.props.setPdfPrintOpen(open);
                                     }}>
-                                        <Dialog.Trigger asChild>
+                                        <Dialog.Trigger
+                                            asChild
+                                            label={!!this.props.publicationView.lcp?.rights && this.props.publicationView.lcp.rights.print < 1 ? __("reader.navigation.printDisabled") : __("reader.navigation.print")}
+                                            tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.Print]}
+                                            tooltipkeyboardShortcutsNames={[this.props.__("settings.keyboard.list.Print.name")]}
+                                            tooltipkeyboardShortcutsDescriptions={[this.props.__("settings.keyboard.list.Print.description")]}
+                                        >
                                             <button
                                                 disabled={!!this.props.publicationView.lcp?.rights && this.props.publicationView.lcp.rights.print < 1}
                                                 aria-pressed={this.props.pdfPrintOpen}
-                                                aria-label={__("reader.navigation.print")}
+                                                aria-label={!!this.props.publicationView.lcp?.rights && this.props.publicationView.lcp.rights.print < 1 ? __("reader.navigation.printDisabled") : __("reader.navigation.print")}
                                                 className={stylesReader.menu_button}
-                                                title={!!this.props.publicationView.lcp?.rights && this.props.publicationView.lcp.rights.print < 1 ? __("reader.navigation.printDisabled") : __("reader.navigation.print")}
                                             >
                                                 <SVG ariaHidden svg={PrinterIcon} className={this.props.pdfPrintOpen ? stylesReaderHeader.active_svg : ""} />
                                             </button>
@@ -973,14 +1077,19 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 }}
                                 modal={!isDockedMode}
                             >
-                                <Dialog.Trigger asChild>
+                                <Dialog.Trigger
+                                    asChild
+                                    label={__("reader.navigation.openTableOfContentsTitle")}
+                                    tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.FocusReaderNavigation, this.props.keyboardShortcuts.FocusReaderNavigationTOC, this.props.keyboardShortcuts.FocusReaderGotoPage]}
+                                    tooltipkeyboardShortcutsNames={[this.props.__("settings.keyboard.list.FocusReaderNavigation.name"), this.props.__("settings.keyboard.list.FocusReaderNavigationTOC.name"), this.props.__("settings.keyboard.list.FocusReaderGotoPage.name")]}
+                                    tooltipkeyboardShortcutsDescriptions={[this.props.__("settings.keyboard.list.FocusReaderNavigation.description"), this.props.__("settings.keyboard.list.FocusReaderNavigationTOC.description"), this.props.__("settings.keyboard.list.FocusReaderGotoPage.description")]}
+                                >
                                     <button
                                         aria-pressed={this.props.menuOpen}
                                         aria-label={__("reader.navigation.openTableOfContentsTitle")}
                                         className={stylesReader.menu_button}
                                         // onClick={this.props.handleMenuClick.bind(this)}
                                         ref={this.navigationMenuButtonRef}
-                                        title={__("reader.navigation.openTableOfContentsTitle")}
                                     >
                                         <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
                                     </button>
@@ -1081,14 +1190,19 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 }}
                                 modal={!isDockedMode}
                             >
-                                <Dialog.Trigger asChild>
+                                <Dialog.Trigger
+                                    asChild
+                                    label={__("reader.navigation.settingsTitle")}
+                                    tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.FocusReaderSettings]}
+                                    tooltipkeyboardShortcutsNames={[this.props.__("settings.keyboard.list.FocusReaderSettings.name")]}
+                                    tooltipkeyboardShortcutsDescriptions={[this.props.__("settings.keyboard.list.FocusReaderSettings.description")]}
+                                >
                                     <button
                                         aria-pressed={this.props.settingsOpen}
                                         aria-label={__("reader.navigation.settingsTitle")}
                                         className={stylesReader.menu_button}
                                         // onClick={() => this.props.handleSettingsClick()}
                                         // ref={this.settingsMenuButtonRef}
-                                        title={__("reader.navigation.settingsTitle")}
                                     >
                                         <SVG ariaHidden={true} svg={SettingsIcon} className={this.props.settingsOpen ? stylesReaderHeader.active_svg : ""} />
                                     </button>
@@ -1235,6 +1349,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <option value={200}>200%</option>
                                     </select> */}
 
+                                    <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                    <Focusable>
                                     <SelectRef
                                         id="buttonFXLZoom"
                                         aria-label={__("reader.navigation.pdfscalemode")}
@@ -1251,11 +1367,22 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     >
                                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                                     </SelectRef>
+                                    </Focusable>
+                                    <ToolTippy
+                                        placement="bottom"
+                                        label={__("reader.navigation.pdfscalemode")}
+                                        tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.FXLZoomReset, this.props.keyboardShortcuts.FXLZoomIn, this.props.keyboardShortcuts.FXLZoomOut]}
+                                        tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.FXLZoomReset.name"), __("settings.keyboard.list.FXLZoomIn.name"), __("settings.keyboard.list.FXLZoomOut.name")]}
+                                        tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.FXLZoomReset.description"), __("settings.keyboard.list.FXLZoomIn.description"), __("settings.keyboard.list.FXLZoomOut.description")]} />
+                                    </TooltipTrigger>
                                 </li>
                                 : <></>
                         }
                         <li role="presentation" aria-hidden="true" style={{width: "1px", height: "30px", backgroundColor: "var(--color-gray-200)", margin: "auto 5px"}}></li>
                         <li className={classNames(stylesReader.blue)}>
+
+                            <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                            <Focusable>
                             <button
                                 className={classNames(stylesReader.menu_button)}
                                 onClick={() => {
@@ -1264,10 +1391,17 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 ref={this.enableFullscreenRef}
                                 aria-pressed={this.props.fullscreen}
                                 aria-label={__("reader.navigation.ZenModeTitle")}
-                                title={__("reader.navigation.ZenModeTitle")}
                             >
                                 <SVG ariaHidden={true} svg={viewMode} />
                             </button>
+                            </Focusable>
+                            <ToolTippy
+                                placement="bottom"
+                                label={__("reader.navigation.ZenModeTitle")}
+                                tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.ToggleReaderZenMode, this.props.keyboardShortcuts.ToggleReaderFullscreen]}
+                                tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.ToggleReaderZenMode.name"), __("settings.keyboard.list.ToggleReaderFullscreen.name")]}
+                                tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.ToggleReaderZenMode.description"), __("settings.keyboard.list.ToggleReaderFullscreen.description")]} />
+                            </TooltipTrigger>
                         </li>
                     </ul>
                 </div>
@@ -1634,11 +1768,12 @@ function AnnotationButton({
     });
     return (
         <OverlayTriggerStateContext.Provider value={annotationPopoverState}>
-            <TooltipTrigger trigger="focus" closeDelay={0}>
+
                 <li
                     ref={annotationPopoverTriggerRef}
                     {...(annotationPopoverOpen && { style: { backgroundColor: "var(--color-brand-primary)" } })}
                 >
+                    <TooltipTrigger delay={0} closeDelay={0} trigger="focus">
                     <Focusable isDisabled={props.isDivina || isAudioBook}>
                         <input
                             disabled={props.isDivina || isAudioBook}
@@ -1666,15 +1801,27 @@ function AnnotationButton({
                             }}
                         />
                     </Focusable>
+                    <ToolTippy
+                        offset={15}
+                        noReveal={false}
+                        placement="bottom"
+                        label={`${__("reader.navigation.annotationTitle")} — ${__("reader.annotations.noSelectionToast")}`}
+                        tooltipkeyboardShortcuts={[props.keyboardShortcuts.AnnotationsCreate, props.keyboardShortcuts.AnnotationsCreateQuick, props.keyboardShortcuts.FocusReaderNavigationAnnotations, props.keyboardShortcuts.AnnotationsToggleMargin]}
+                        tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.AnnotationsCreate.name"), __("settings.keyboard.list.AnnotationsCreateQuick.name"), __("settings.keyboard.list.FocusReaderNavigationAnnotations.name"), __("settings.keyboard.list.AnnotationsToggleMargin.name")]}
+                        tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.AnnotationsCreate.description"), __("settings.keyboard.list.AnnotationsCreateQuick.description"), __("settings.keyboard.list.FocusReaderNavigationAnnotations.description"), __("settings.keyboard.list.AnnotationsToggleMargin.description")]}
+                        />
+                    </TooltipTrigger>
                     {
                         // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
                     }
+                    <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                    <Focusable excludeFromTabOrder>
                     <label
                         htmlFor="annotationButton"
                         aria-hidden="true"
                         className={stylesReader.menu_button}
                         id="annotationLabel"
-                        title={`${__("reader.navigation.annotationTitle")} — ${__("reader.annotations.noSelectionToast")}`}
+                        aria-label={`${__("reader.navigation.annotationTitle")} — ${__("reader.annotations.noSelectionToast")}`}
                     >
                         <SVG
                             ariaHidden
@@ -1685,11 +1832,22 @@ function AnnotationButton({
                             )}
                         />
                     </label>
+                    </Focusable>
+                    <ToolTippy
+                        noReveal={false}
+                        placement="bottom"
+                        label={`${__("reader.navigation.annotationTitle")} — ${__("reader.annotations.noSelectionToast")}`}
+                        tooltipkeyboardShortcuts={[props.keyboardShortcuts.AnnotationsCreate, props.keyboardShortcuts.AnnotationsCreateQuick, props.keyboardShortcuts.FocusReaderNavigationAnnotations, props.keyboardShortcuts.AnnotationsToggleMargin]}
+                        tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.AnnotationsCreate.name"), __("settings.keyboard.list.AnnotationsCreateQuick.name"), __("settings.keyboard.list.FocusReaderNavigationAnnotations.name"), __("settings.keyboard.list.AnnotationsToggleMargin.name")]}
+                        tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.AnnotationsCreate.description"), __("settings.keyboard.list.AnnotationsCreateQuick.description"), __("settings.keyboard.list.FocusReaderNavigationAnnotations.description"), __("settings.keyboard.list.AnnotationsToggleMargin.description")]}
+                        />
+                    </TooltipTrigger>
                     <VisuallyHidden id={selectionRequirementId}>
                         {__("reader.annotations.noSelectionToast")}
                     </VisuallyHidden>
                 </li>
-                <Tooltip
+
+                {/*<Tooltip
                     triggerRef={annotationPopoverTriggerRef}
                     placement="bottom"
                     offset={8}
@@ -1697,8 +1855,7 @@ function AnnotationButton({
                     style={{ zIndex: OVERLAY_Z_INDEX }}
                 >
                     {__("reader.annotations.noSelectionToast")}
-                </Tooltip>
-            </TooltipTrigger>
+                </Tooltip>*/}
             <Popover
                 triggerRef={annotationPopoverTriggerRef}
 

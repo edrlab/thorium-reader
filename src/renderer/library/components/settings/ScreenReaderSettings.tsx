@@ -5,19 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import * as React from "react";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { Focusable, TooltipTrigger } from "react-aria-components";
 import { screenReaderActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+// import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
 import { logAppSettingModified } from "./analytics";
 
 const ScreenReaderSettings: React.FC<{}> = () => {
@@ -29,9 +33,11 @@ const ScreenReaderSettings: React.FC<{}> = () => {
     const screenReaderActivate = useSelector((state: ICommonRootState) => state.screenReader.activate);
     const onChange = () => {
         const nextScreenReaderActivate = !screenReaderActivate;
-        dispatch(screenReaderActions.save.build(nextScreenReaderActivate));
+        dispatch(screenReaderActions.save.build(nextScreenReaderActivate, nextScreenReaderActivate));
         logAppSettingModified("screenreader", nextScreenReaderActivate);
     };
+    const keyboardShortcuts = useSelector((state: ILibraryRootState) => state.keyboard.shortcuts);
+    // const keyboardShortcutScreenReaderOptimize = textualizeKeyboardShortcut(keyboardShortcuts.ToggleScreenReaderOptimize);
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.message")}</h3>
@@ -40,12 +46,15 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.help")}</p>
             </div>
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
+                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
                 <input type="checkbox" id="screenReaderSettings" className={stylesGlobal.checkbox_custom_input} name="screenReaderSettings" checked={screenReaderActivate} onChange={onChange} />
+                <Focusable excludeFromTabOrder>
                 <label htmlFor="screenReaderSettings" className={stylesGlobal.checkbox_custom_label}>
                     <div
                         tabIndex={0}
                         role="checkbox"
                         aria-checked={screenReaderActivate}
+                        // aria-label={__("settings.screenReaderActivate.title") + ` [${keyboardShortcutScreenReaderOptimize}]` + ` (${__("settings.keyboard.list.ToggleScreenReaderOptimize.name")})` + ` <${__("settings.keyboard.list.ToggleScreenReaderOptimize.description")}>`}
                         aria-label={__("settings.screenReaderActivate.title")}
                         onKeyDown={(e) => {
                             // if (e.code === "Space") {
@@ -69,7 +78,16 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                         }
                     </div>
                     <span aria-hidden dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</span>
-                </label>
+                    </label>
+                    </Focusable>
+                    <ToolTippy
+                        noReveal={true}
+                        placement="bottom"
+                        label={ undefined }
+                        tooltipkeyboardShortcuts={[keyboardShortcuts.ToggleScreenReaderOptimize]}
+                        tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.ToggleScreenReaderOptimize.name")]}
+                        tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.ToggleScreenReaderOptimize.description")]} />
+                </TooltipTrigger>
             </div>
         </section>
     );

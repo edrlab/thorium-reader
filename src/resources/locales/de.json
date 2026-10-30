@@ -22,6 +22,7 @@
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Scrolle nach rechts",
+        "searching": "",
         "skipLink": "Gehe zum Inhalt",
         "toolbar": "Symbolleiste"
     },
@@ -272,26 +273,64 @@
             "nothing": "Keine Notizen sind für den Import bereit. Import wird abgebrochen.",
             "success": "Import vollständig abgeschlossen."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "Es scheint, dass Sie die Publikation [{{- title}}] bereits in Ihren Katalog aufgenommen haben.",
-            "fail": "Der Import von {{- path}} ist fehlgeschlagen. {{- err}}",
-            "success": "Der Import von {{- title}} ist abgeschlossen."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Der Import von {{- title}} ist abgeschlossen.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -319,8 +358,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Die Publikation kann nicht geöffnet werden: {{- err}}",
-            "folderNotFound": "Das Publikationsverzeichnis wurde nicht gefunden. Importieren Sie es erneut oder richten Sie den zusätzlichen Speicher unter Einstellungen > Speicher ein."
+            "failed": "",
+            "folderNotFound": "Das Publikationsverzeichnis wurde nicht gefunden. Importieren Sie es erneut oder richten Sie den zusätzlichen Speicher unter Einstellungen > Speicher ein.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -576,6 +616,13 @@
                 "descriptive": "Es ist nicht bekannt, ob Gefahren bestehen"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Index",
@@ -738,11 +785,9 @@
         "duration": {
             "title": "Dauer"
         },
-        "encryptedNoLicense": "Publikation ist verschlüsselt, aber LCP-Lizenz fehlt!",
         "expired": "Ausleihe abgelaufen",
         "expiredLcp": "Die LCP-Lizenz dieser Veröffentlichung ist abgelaufen.",
         "incorrectPassphrase": "Kein gespeichertes Passwort passt zu dieser Publikation oder das eingegebene Passwort ist falsch.",
-        "lcpEnd": "Ende",
         "lcpNotSupported": "WARNUNG: Dies ist eine Vorabversion des Thorium Desktop Reader, die keine produktionsreifen LCP-Lizenzen unterstützt und lediglich die Entschlüsselung von LCP-Zertifikaten im „Basic Profile“ ohne Zertifikatsvalidierung ermöglicht.",
         "lcpRightsCopy": "Kopierte Zeichen",
         "lcpRightsPrint": "Gedruckte Seiten",

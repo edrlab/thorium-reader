@@ -1,6 +1,10 @@
 export declare const CSS_END_app: string;
 export declare const CSS_START_app: string;
 export declare const downloadsPanel: string;
+export declare const filename: string;
 export declare const percent: string;
 export declare const rootDiv: string;
+export declare const subDownloads: string;
 export declare const title: string;
+export declare const transferSize: string;
+export declare const transferSpeed: string;

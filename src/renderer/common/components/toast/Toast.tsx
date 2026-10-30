@@ -7,16 +7,16 @@
 
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 
-import { clipboard } from "electron";
+// import { clipboard } from "electron";
 import classNames from "classnames";
 import * as React from "react";
 import {
-    Button,
-    Text,
-    VisuallyHidden,
     UNSTABLE_Toast as AriaToast,
-    UNSTABLE_ToastContent as ToastContent,
+    Button,
     QueuedToast,
+    Text,
+    UNSTABLE_ToastContent as ToastContent,
+    VisuallyHidden,
 } from "react-aria-components";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
@@ -63,18 +63,27 @@ export function Toast({ toast, close, __ }: IProps) {
         return () => window.clearTimeout(timer);
     }, [willLeave, finishClose]);
 
-    const copyAndExpand = () => {
-        if (closing.current) return;
+    const copyPending = React.useRef(false);
+    React.useEffect(() => {
+        setCopyFeedback({ message: "", sequence: 0, failed: false });
+    }, [toast.content.copyText]);
+
+    const copyAndExpand = async () => {
+        if (closing.current || copyPending.current) return;
         setOpened((value) => !value);
-        let feedback: string;
+        copyPending.current = true;
+        const copyText = toast.content.copyText;
         let failed = false;
         try {
-            clipboard.writeText(message, "clipboard");
-            feedback = __("accessibility.notificationCopied");
+            await navigator.clipboard.writeText(copyText ?? message);
         } catch (_error) {
             failed = true;
-            feedback = __("accessibility.notificationCopyFailed");
+        } finally {
+            copyPending.current = false;
         }
+        // A newer failure may have replaced the diagnostic text while copying.
+        if (copyText !== toast.content.copyText || closing.current) return;
+        const feedback = failed ? __("accessibility.notificationCopyFailed") : __("accessibility.notificationCopied");
         setCopyFeedback((value) => ({ message: feedback, sequence: value.sequence + 1, failed }));
     };
 
@@ -109,7 +118,7 @@ export function Toast({ toast, close, __ }: IProps) {
                     className={classNames(stylesToasts.content, stylesToasts.messageButton)}
                     aria-label={__("accessibility.copyNotificationInstruction")}
                     aria-disabled={copied ? true : false}
-                    onPress={copyAndExpand}
+                    onPress={() => { void copyAndExpand(); }}
                     onBlur={() => setOpened(false)}
                 >
                         <span className={stylesToasts.copyStatus}>

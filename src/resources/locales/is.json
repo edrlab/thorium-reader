@@ -22,6 +22,7 @@
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Færa til hægri",
+        "searching": "",
         "skipLink": "Fara í efni",
         "toolbar": "tækjastika"
     },
@@ -272,26 +273,64 @@
             "nothing": "Engin glósa er tilbúin til innflutnings. Hætt er við.",
             "success": "Innflutningi lokið."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Hætt við niðurhal.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Heilleikapróf niðurhalaðrar skrár mistókst: búist var við SHA-256-gildinu {{- expected}}, en niðurstaðan var {{- actual}}.",
                 "httpGet": "HTTP-niðurhal mistókst: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Bráðabirgðaskráarheitið er ógilt.",
                 "invalidLink": "Niðurhalstengillinn er ógildur.",
                 "invalidTempDirectory": "Bráðabirgðamappan er ógild.",
                 "lengthMismatch": "Heilleikapróf niðurhalaðrar skrár mistókst: búist var við {{- expected}} bætum, en fjöldinn var {{- actual}}.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Niðurhalsstraumur er ekki tiltækur.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Ekki tókst að búa til einstakt bráðabirgðaskráarheiti: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] hefur þegar verið bætt við.",
-            "fail": "Ekki tókst að bæta [{{- path}}] við: [{{- err}}]",
-            "success": "[{{- title}}] hefur verið bætt við."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "[{{- title}}] hefur verið bætt við.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -319,8 +358,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Ekki tókst að opna bókina: [{{- err}}]",
-            "folderNotFound": "Mappa bókarinnar fannst ekki. Bættu bókinni við aftur eða stilltu viðbótargeymslu í Stillingar > Geymsla."
+            "failed": "",
+            "folderNotFound": "Mappa bókarinnar fannst ekki. Bættu bókinni við aftur eða stilltu viðbótargeymslu í Stillingar > Geymsla.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -576,6 +616,13 @@
                 "descriptive": "Ekki er vitað hvort bókin felur í sér hættur"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Atriðaskrá",
@@ -738,11 +785,9 @@
         "duration": {
             "title": "Lengd"
         },
-        "encryptedNoLicense": "Bókin er dulkóðuð en LCP-leyfi vantar.",
         "expired": "Lánstími liðinn",
         "expiredLcp": "LCP-leyfi bókarinnar er útrunnið.",
         "incorrectPassphrase": "Ekkert vistað lykilorð passar við bókina eða lykilorðið sem var slegið inn er rangt.",
-        "lcpEnd": "Lýkur",
         "lcpNotSupported": "VIÐVÖRUN: Þetta er forútgáfa af Thorium Desktop sem styður ekki virk LCP-leyfi. Hún styður aðeins afkóðun með einföldu LCP-sniði án staðfestingar vottorðs.",
         "lcpRightsCopy": "Stafir sem má afrita",
         "lcpRightsPrint": "Síður sem má prenta",
@@ -1342,7 +1387,7 @@
         },
         "screenReaderActivate": {
             "help": "Þegar forritið greinir hjálpartækni virkar viðmótið betur með skjálesurum",
-            "invite": "Fínstilla fyrir skjálesara ({{- status}}) [{{- keyboard}}]",
+            "invite": "Fínstilla fyrir skjálesara",
             "message": "Bættur stuðningur við skjálesara",
             "title": "Bæta upplifun með skjálesara"
         },

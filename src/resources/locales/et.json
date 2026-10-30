@@ -22,6 +22,7 @@
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Viipa paremale",
+        "searching": "",
         "skipLink": "Mine sisu juurde",
         "toolbar": "tööriistariba"
     },
@@ -272,26 +273,64 @@
             "nothing": "Pole ühtegi imporditavat märget, katkestan impordi",
             "success": "Importimine õnnestus kenasti."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Allalaadimine on katkestatud.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: faili eeldatud SHA-256 räsi oleks pidanud olema {{- expected}}, kuid tegelikult oli {{- actual}}.",
                 "httpGet": "Allalaadimine ei õnnestunud: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Allalaadimise ajutine failinimi on vale või vigane.",
                 "invalidLink": "Allalaadimislink pole õige.",
                 "invalidTempDirectory": "Allalaaditava sisu ajutine kaust on vale või vigane.",
                 "lengthMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: andmemaht oleks pidanud olema {{- expected}} baiti, kuid tegelikult oli {{- actual}} baiti.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Allalaadimise andmevoog pole saadaval.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Ei suuda luua ajutist failinime allalaaditavale sisule: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "„{{- title}}“ on juba imporditud.",
-            "fail": "„{{- path}}“ objekti importimine ei õnnestunud: {{- err}}",
-            "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -319,8 +358,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
-            "folderNotFound": "Valjaande kausta leidmine ei õnnestu. Impordi ta uuesti või seadista andmeruumi siit „Seadistused“ → „Andmeruum“."
+            "failed": "",
+            "folderNotFound": "Valjaande kausta leidmine ei õnnestu. Impordi ta uuesti või seadista andmeruumi siit „Seadistused“ → „Andmeruum“.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -576,6 +616,13 @@
                 "descriptive": "Ohtude olemasolu pole teada"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Indeks",
@@ -738,11 +785,9 @@
         "duration": {
             "title": "Kestus"
         },
-        "encryptedNoLicense": "Väljaanne on krüptitud, kuid LCP-litsents on puudu!",
         "expired": "Laenutus on aegunud",
         "expiredLcp": "Selle väljaande LCP-litsents on aegunud.",
         "incorrectPassphrase": "Mitte ükski salvestatud salasõna/salafraas ei sobi selle väljaandega või on sisestus vigane.",
-        "lcpEnd": "Lõpp",
         "lcpNotSupported": "HOIATUS: tegemist on Thoriumi töölauarakenduse (Thorium Desktop Reader) eelversiooniga, mis ei toeta tegelikuks kasutuseks mõeldud LCP-litsentse ning toetab ainult LCP „põhiprofiili“ dekodeerimist ilma sertifikaadi õigsuse kontrollimiseta.",
         "lcpRightsCopy": "Kopeeritud tähemärke",
         "lcpRightsPrint": "Trükitud lehti",

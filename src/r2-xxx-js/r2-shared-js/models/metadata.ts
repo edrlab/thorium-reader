@@ -56,6 +56,7 @@ export const MetadataSupportedKeys = [
     "schema:accessModeSufficient",
     "schema:accessibilityAPI",
     "schema:accessibilityControl",
+    "a11y:exemption",
     "a11y:certifiedBy",
     "a11y:certifierCredential",
     "a11y:certifierReport",

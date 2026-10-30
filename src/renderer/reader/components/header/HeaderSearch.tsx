@@ -5,28 +5,28 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
-
 import * as React from "react";
+import { Focusable, TooltipTrigger } from "react-aria-components";
 import { connect } from "react-redux";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
+import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { TDispatch } from "readium-desktop/typings/redux";
-
-import { readerLocalActionSearch } from "../../redux/actions";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import SearchPicker from "../picker/Search";
 import { createOrGetPdfEventBus } from "../../pdf/driver";
-import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { readerLocalActionSearch } from "../../redux/actions";
+import SearchPicker from "../picker/Search";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -108,6 +108,8 @@ class HeaderSearch extends React.Component<IProps> {
         const { __ } = this.props;
         return (
             <>
+                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                <Focusable>
                 <button
                     disabled={this.props.isAudiobook || this.props.isDivina}
                     aria-pressed={this.props.isOnSearch}
@@ -115,11 +117,20 @@ class HeaderSearch extends React.Component<IProps> {
                     className={stylesReader.menu_button}
                     onClick={() => { this.enableSearch(!this.props.isOnSearch); }}
                     // ref={this.settingsMenuButtonRef}
-                    title={__("reader.navigation.magnifyingGlassButton")}
                     id="search-button-trigger"
                 >
                     <SVG ariaHidden={true} svg={this.props.isOnSearch ? QuitIcon : magnifyingGlass} className={this.props.isOnSearch ? stylesReaderHeader.active_svg : ""} />
                 </button>
+                </Focusable>
+                <ToolTippy
+                    noReveal={false}
+                    placement="bottom"
+                    label={__("reader.navigation.magnifyingGlassButton")}
+                    tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.FocusSearch, this.props.keyboardShortcuts.SearchPrevious, this.props.keyboardShortcuts.SearchNext, this.props.keyboardShortcuts.FocusReaderNavigationSearch]}
+                    tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.FocusSearch.name"), __("settings.keyboard.list.SearchPrevious.name"), __("settings.keyboard.list.SearchNext.name"), __("settings.keyboard.list.FocusReaderNavigationSearch.name")]}
+                    tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.FocusSearch.description"), __("settings.keyboard.list.SearchPrevious.description"), __("settings.keyboard.list.SearchNext.description"), __("settings.keyboard.list.FocusReaderNavigationSearch.description")]}
+                    />
+                </TooltipTrigger>
 
                 {
                     this.props.isOnSearch ?

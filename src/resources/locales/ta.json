@@ -22,6 +22,7 @@
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "வலதுபுறம் சரிய",
+        "searching": "",
         "skipLink": "உள்ளடக்கத்தைத் தவிர்க்கவும்",
         "toolbar": "கருவிப்பட்டி"
     },
@@ -272,26 +273,64 @@
             "nothing": "இறக்குமதியை நிறுத்தி, இறக்குமதி செய்ய எந்த குறிப்பும் தயாராக இல்லை",
             "success": "இறக்குமதி வெற்றிகரமாக முடிந்தது."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] ஏற்கனவே இறக்குமதி செய்யப்பட்டது.",
-            "fail": "இறக்குமதி [{{- path}}] தோல்வியுற்றது: [{{- err}}]",
-            "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது.",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -319,8 +358,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -576,6 +616,13 @@
                 "descriptive": "ஆபத்துகளின் பரிசுகள் தெரியவில்லை"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "குறியெண்",
@@ -738,11 +785,9 @@
         "duration": {
             "title": "காலம்"
         },
-        "encryptedNoLicense": "வெளியீடு குறியாக்கம் செய்யப்பட்டுள்ளது, ஆனால் எல்.சி.பி உரிமம் இல்லை!",
         "expired": "கடன் காலாவதியானது",
         "expiredLcp": "இந்த வெளியீட்டின் எல்.சி.பி உரிமம் காலாவதியானது.",
         "incorrectPassphrase": "சேமிக்கப்பட்ட பாச்ஃபிரேச் வெளியீட்டிற்கு பொருந்தவில்லை, அல்லது நுழைந்த பாச்ஃபிரேச் தவறானது.",
-        "lcpEnd": "முடிவு",
         "lcpNotSupported": "",
         "lcpRightsCopy": "நகலெடுக்கப்பட்ட எழுத்துக்கள்",
         "lcpRightsPrint": "அச்சிடப்பட்ட பக்கங்கள்",

@@ -1599,7 +1599,7 @@ export class LcpManager {
                 debug(r2LCPJson);
 
                 if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
-                    const rej = `LCP license malformed: ${JSON.stringify(r2LCPJson)}`;
+                    const rej = this.translator.translate("message.import.lcpLicenseMalformed");
                     debug(rej);
                     throw new Error(rej);
                 }

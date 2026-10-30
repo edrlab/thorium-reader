@@ -4,6 +4,221 @@
 @use './partials/mixin' as mx;
 @use './partials/focus';
 
+/* .react-aria-Tooltip */
+
+@keyframes popIntoView {
+  to {
+    visibility: visible;
+    /* display: block; */
+  }
+}
+
+@keyframes popOutaView {
+  to {
+    display: none;
+  }
+}
+
+.tooltipKeyboardShortcut.noReveal {
+  div.tooltipKeyboardShortcut_primary:not(:has(p.tooltipKeyboardShortcut_label)) {
+      display: none;
+      animation: none;
+  }
+
+  div.tooltipKeyboardShortcut_primary {
+    display: none;
+    animation: none;
+
+    p.tooltipKeyboardShortcut_pretty {
+      display: block;
+      animation: none;
+    }
+  }
+
+  div.tooltipKeyboardShortcut_secondary {
+    visibility: visible;
+    /* display: block; */
+    animation: none;
+  }
+}
+
+.tooltipKeyboardShortcut {
+  max-width: 15em;
+  background: transparent;
+  outline: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font: 90% system-ui;
+  transform: translate3d(0, 0, 0);
+
+  p.tooltipKeyboardShortcut_label {
+    text-align: center;
+    font-weight: normal;
+    font-size: 110%;
+  }
+
+  p.tooltipKeyboardShortcut_name {
+    font-weight: bold;
+    font-size: 90%;
+  }
+
+  p.tooltipKeyboardShortcut_description {
+    opacity: 0.8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    /* white-space: nowrap; */
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  div {
+    background: transparent;
+    color: var(--color-text-primary);
+    forced-color-adjust: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  div.tooltipKeyboardShortcut_primary:not(:has(p.tooltipKeyboardShortcut_label)) {
+      display: block;
+      animation: popOutaView 0s 1s step-end forwards;
+  }
+
+  p.tooltipKeyboardShortcut_p {
+    background: var(--color-neutral-base);
+    color: var(--color-text-primary);
+    border-radius: 0.5em;
+    border: 0.10em solid var(--color-text-primary);
+    forced-color-adjust: none;
+    margin: 0;
+    padding: 0.25em;
+  }
+
+  div.tooltipKeyboardShortcut_primary, div.tooltipKeyboardShortcut_secondary {
+    box-shadow: 0 4px 10px var(--color-gray-275);
+  }
+
+  div.tooltipKeyboardShortcut_primary {
+    background: var(--color-neutral-base);
+    color: var(--color-text-primary);
+    border-radius: 0.5em;
+    border: 0.10em solid var(--color-text-primary);
+    forced-color-adjust: none;
+    margin: 0;
+    margin-bottom: 0.2em;
+    padding: 0 0.15em;
+
+    p.tooltipKeyboardShortcut_label {
+      height: 100%;
+    }
+
+    p.tooltipKeyboardShortcut_pretty {
+      display: block;
+      animation: popOutaView 0s 1s step-end forwards;
+    }
+  }
+
+  div.tooltipKeyboardShortcut_secondary {
+    background: var(--color-neutral-base);
+    color: var(--color-text-primary);
+    border-radius: 0.5em;
+    border: 0.10em solid var(--color-text-primary);
+    forced-color-adjust: none;
+    margin: 0;
+    padding: 0 0.15em;
+    visibility: hidden;
+    /* display: none; */
+    animation: popIntoView 0s 1s step-end forwards;
+
+    div:not(:first-child) > p.tooltipKeyboardShortcut_pretty {
+      margin-top: 1em;
+    }
+  }
+
+  p {
+    height: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0.4em;
+  }
+
+  p.tooltipKeyboardShortcut_pretty {
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    border-radius: 0.25em;
+    border: 1px solid gray;
+
+    > span {
+      display: flex;
+      gap: 0.5em;
+      align-items: center;
+
+      > span {
+        font-weight: bolder;
+
+        svg {
+          width: 1.25em;
+        }
+      }
+
+      > span:last-child {
+        margin-left: 0.8em;
+      }
+    }
+  }
+
+  &[data-entering],
+  &[data-exiting] {
+    transform: var(--origin);
+    opacity: 0;
+  }
+
+  &[data-placement='top'] {
+    margin-bottom: 0.5em;
+
+    --origin: translateY(0.25em);
+  }
+
+  &[data-placement='bottom'] {
+    margin-top: 0.5em;
+
+    --origin: translateY(-0.25em);
+
+    & .react-aria-OverlayArrow svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  &[data-placement='right'] {
+    margin-left: 0.5em;
+
+    --origin: translateX(-0.25em);
+
+    & .react-aria-OverlayArrow svg {
+      transform: rotate(90deg);
+    }
+  }
+
+  &[data-placement='left'] {
+    margin-right: 0.5em;
+
+    --origin: translateX(0.25em);
+
+    & .react-aria-OverlayArrow svg {
+      transform: rotate(-90deg);
+    }
+  }
+
+  .react-aria-OverlayArrow svg {
+    display: block;
+    fill: var(--color-text-primary);
+  }
+}
+
 .CSS_START_global {
   display: none;
 }
@@ -317,7 +532,7 @@ nav + nav + .breadcrumb + .main {
       margin: 0;
       font-size: 14px;
       color: var(--color-brand-primary);
-      
+
       &:visited {
         color: var(--color-brand-primary);
       }

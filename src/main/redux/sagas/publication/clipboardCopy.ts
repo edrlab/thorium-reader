@@ -20,7 +20,6 @@ const debug = debug_("readium-desktop:main:saga:clipboardCopy");
 export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
 
     const { publicationIdentifier, clipboardData } = action.payload;
-    const clipBoardType = "clipboard";
 
     let textToCopy = clipboardData.txt;
 
@@ -38,7 +37,10 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
         typeof publicationDocument.lcp.rights.copy === "undefined" ||
         publicationDocument.lcp.rights.copy < 0) {
 
-        clipboard.writeText(textToCopy, clipBoardType);
+        debug("readerClipboardCopy1 => clipboard.writeText...");
+        // navigator.clipboard.write([new ClipboardItem({ "text/plain": textToCopy })]).then((_res) => { /* no-op */ }).catch((err) => { console.log(err); });
+        // navigator.clipboard.writeText(textToCopy).then((_res) => { /* no-op */ }).catch((err) => { console.log(err); });
+        clipboard.writeText(textToCopy).then((_res) => { /* no-op */ }).catch((err) => { console.log(err); });
         return ;
     }
 
@@ -65,7 +67,10 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
     );
     yield* callTyped(() => publicationRepository.save(newPublicationDocument));
 
-    clipboard.writeText(`${textToCopy}`, clipBoardType);
+    debug("readerClipboardCopy2 => clipboard.writeText...");
+    // navigator.clipboard.write([new ClipboardItem({ "text/plain": textToCopy })]).then((_res) => { /* no-op */ }).catch((err) => { console.log(err); });
+    // navigator.clipboard.writeText(textToCopy).then((_res) => { /* no-op */ }).catch((err) => { console.log(err); });
+    clipboard.writeText(textToCopy).then((_res) => { /* no-op */ }).catch((err) => { console.log(err); });
 
     // A partial copy is informational; reserve success for a complete copy.
     const partialCopy = nCharsToCopy < clipboardData.txt.length;

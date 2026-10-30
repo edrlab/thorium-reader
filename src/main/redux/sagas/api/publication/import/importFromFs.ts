@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { ImportFailure } from "./importFailure";
 import * as path from "node:path";
 import { acceptedExtensionObject, isAcceptedExtension } from "readium-desktop/common/extension";
 import { computeFileHash, extractCrc32OnZip } from "readium-desktop/main/tools/crc";
@@ -58,7 +59,7 @@ export function* importFromFsService(
         // })));
         // return [undefined, false];
 
-        throw new Error(getTranslator().translate("dialog.importError", {
+        throw new ImportFailure("unsupportedFormat", getTranslator().translate("dialog.importError", {
             acceptedExtension: `[${ext}] ${acceptedExtensionArray.join(" ")}`,
         }));
     }

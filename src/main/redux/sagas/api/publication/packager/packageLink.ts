@@ -5,8 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { getTranslator } from "readium-desktop/common/services/translator";
+
 import * as crypto from "node:crypto";
 import debug_ from "debug";
+import { DownloadFailure, checkDownloadResponse } from "readium-desktop/main/tools/downloadFailure";
 import * as path from "node:path";
 import { ok } from "readium-desktop/common/utils/assert";
 import { httpGet } from "readium-desktop/main/network/http";
@@ -19,7 +22,6 @@ import {
 import { findHtmlTocInRessources } from "readium-desktop/main/w3c/audiobooks/toc";
 import { createWebpubZip, TResourcesFSCreateZip } from "readium-desktop/main/zip/create";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
-import { contentTypeisApiProblem, parseContentType } from "readium-desktop/utils/contentType";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped } from "typed-redux-saga/macro";
 
@@ -29,6 +31,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { downloader } from "../../../downloader";
 import { manifestContext } from "./context";
+import { normalizeAudiobookManifestType } from "./normalizeAudiobookManifestType";
 
 import isURL from "readium-desktop/common/utils/isURL";
 
@@ -230,7 +233,7 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
 
     } catch (e) {
 
-        throw new Error(`Invalid JSON in publication manifest at ${manifestUrl}: ${String(e)}`);
+        throw new Error(getTranslator().translate("message.import.errors.manifestInvalidJson", { url: manifestUrl }), { cause: e });
     }
 
     const [isR2, isW3] = manifestContext(r2PublicationJson);
@@ -249,7 +252,10 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
 
         r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
     } else {
-        throw new Error(`Unrecognized publication manifest @context at ${manifestUrl}: ${JSON.stringify(r2PublicationJson?.["@context"]) ?? "missing"}`);
+        throw new Error(getTranslator().translate("message.import.errors.manifestContext", {
+            url: manifestUrl, context: JSON.stringify(r2PublicationJson?.["@context"])
+                ?? getTranslator().translate("message.import.errors.contextMissing"),
+        }));
     }
 
     return r2Publication;
@@ -258,20 +264,22 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
 export function* packageFromLink(
     href: string,
     isHtml: boolean,
+    isAudiobook = false,
 ): SagaGenerator<string | undefined> {
 
     const [manifest, manifestUrl] = yield* callTyped(packageGetManifestBuffer, href, isHtml);
     if (!manifest) {
-        throw new Error("manifest not found from content link " + href);
+        throw new Error(getTranslator().translate("message.import.errors.manifestNotFound", { url: href }));
     }
 
-    return yield* callTyped(packageFromManifestBuffer, href, manifest, manifestUrl);
+    return yield* callTyped(packageFromManifestBuffer, href, manifest, manifestUrl, isAudiobook);
 }
 
 export function* packageFromManifestBuffer(
     baseUrl: string, // 'file://' for local resources
     manifest: Buffer,
     manifestPath?: string,
+    isAudiobook = false,
 ) {
     // DEPRECATED API (watch for the inverse function parameter order!):
     // url.resolve(baseUrl, manifestPath)
@@ -280,8 +288,10 @@ export function* packageFromManifestBuffer(
         baseUrl;
     const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, baseUrl, manifestUrlAbsolutized);
     if (!r2Publication) {
-        throw new Error("r2Publication parsing failed at " + manifestUrlAbsolutized);
+        throw new Error(getTranslator().translate("message.import.errors.manifestParsingFailed", { url: manifestUrlAbsolutized }));
     }
+
+    normalizeAudiobookManifestType(r2Publication, isAudiobook);
 
     debug("ready to package the r2Publication");
     debug(r2Publication);
@@ -324,18 +334,17 @@ export function* packageGetManifestBuffer(
     // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!href || !isURL(href)) {
         debug("isURL() NOK", href);
-        throw new Error("fetch URL error [" + href + "]");
+        throw new Error(getTranslator().translate("message.download.errors.invalidLink"));
     }
     const data = yield* callTyped(httpGet, href);
-    const { response, isFailure } = data;
+    checkDownloadResponse(data, href);
+    const { response } = data;
 
-    const rawData = yield* callTyped(() => response?.text());
-    if (isFailure) {
-        if (contentTypeisApiProblem(parseContentType(data.contentType))) {
-            throw new Error(`HTTP ${data.statusCode}: ${data.statusMessage || "Unable to fetch publication manifest"}`);
-        }
-        throw new Error("fetch error [" + href + "](" + response?.status + " " + response?.statusText + " " + rawData + "]");
-        // we can add a toast notification here like the downloader
+    let rawData: string;
+    try {
+        rawData = yield* callTyped(() => response?.text());
+    } catch (error) {
+        throw new DownloadFailure("network", href, error);
     }
 
     if (rawData) {

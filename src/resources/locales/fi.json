@@ -1,27 +1,28 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Muistiinpanomerkintä",
         "bookMenu": "Valikko",
-        "bookmarkNote": "",
-        "cancelDownload": "",
+        "bookmarkNote": "Kirjanmerkkimerkintä",
+        "cancelDownload": "Peruuta lataus: {{- title}}",
         "closeDialog": "Sulje",
-        "closeNotification": "",
-        "copyNotificationInstruction": "",
-        "decreaseSetting": "",
-        "downloadProgress": "",
-        "downloadProgressUnknown": "",
-        "editTag": "",
-        "favoriteCatalog": "",
-        "increaseSetting": "",
+        "closeNotification": "Sulje ilmoitus",
+        "copyNotificationInstruction": "Kopioi ilmoitus",
+        "decreaseSetting": "Pienennä {{- setting}}",
+        "downloadProgress": "Latauksen eteneminen: {{- title}}",
+        "downloadProgressUnknown": "Latauksen eteneminen ei tiedossa.",
+        "editTag": "Muokkaa tunnistetta: {{- tag}}",
+        "favoriteCatalog": "Suosikkiluettelo: {{- title}}",
+        "increaseSetting": "Suurenna {{- setting}}",
         "leftSlideButton": "Siirry listalla vasemmalle",
-        "loading": "",
+        "loading": "Ladataan…",
         "mainContent": "Pääsisältö",
-        "notificationCopied": "",
-        "notificationCopyFailed": "",
-        "printPage": "",
-        "publicationDetails": "",
-        "resetSetting": "",
+        "notificationCopied": "Ilmoitus kopioitu",
+        "notificationCopyFailed": "Ilmoitusta ei voitu kopioida",
+        "printPage": "Sivu {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Nollaa {{- setting}}",
         "rightSlideButton": "Siirry listalla oikealle",
+        "searching": "Etsitään…",
         "skipLink": "Hyppää sisältöön",
         "toolbar": "Työkalurivi"
     },
@@ -161,16 +162,16 @@
         "tags": "Tunnisteet",
         "update": "Muokkaa",
         "userProfile": {
-            "available": "",
-            "bookshelf": "",
-            "edit": "",
-            "holds": "",
-            "loading": "",
-            "loans": "",
-            "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "available": "Saatavilla: {{count}}",
+            "bookshelf": "Avaa kirjahylly",
+            "edit": "Muokkaa profiilia",
+            "holds": "Varaukset",
+            "loading": "Ladataan tiliä…",
+            "loans": "Lainat",
+            "title": "Tili",
+            "total": "Rajoitus: {{count}}",
+            "unavailable": "Profiilitietoja ei ole saatavilla",
+            "used": "{{used}} /{{total}} käytetty"
         }
     },
     "dialog": {
@@ -272,29 +273,67 @@
             "nothing": "Yhtään muistiinpanoa ei ole valmiina tuontiin, tuonti keskeytetty.",
             "success": "Tuonti onnistui."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Lataus peruttu.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",
                 "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "Väliaikaisen lataustiedoston nimi ei kelpaa.",
                 "invalidLink": "Latauslinkki ei kelpaa.",
                 "invalidTempDirectory": "Väliaikainen lataushakemisto ei kelpaa.",
                 "lengthMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu {{- expected}} tavua, todellinen määrä {{- actual}} tavua.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Suoratoiston lataaminen ei onnistu.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": "Ladataan {{- title}}."
         },
         "import": {
             "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
-            "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
-            "success": "Julkaisun {{- title}} tuonti on valmis."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Julkaisun {{- title}} tuonti on valmis.",
+            "unsupportedFormat": ""
         },
         "notifications": {
-            "annotationImportFailed": "",
+            "annotationImportFailed": "Merkintöjä ei voitu tuoda. Varmista, että tiedosto on kelvollinen",
             "annotationPublicationUnavailable": "",
             "annotationStopPlayback": "",
             "authenticationFailed": "",
@@ -319,8 +358,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "Julkaisua ei voi avata: {{- err}}",
-            "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila."
+            "failed": "",
+            "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -576,6 +616,13 @@
                 "descriptive": "Ei tietoa vaaratekijöistä"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Hakemisto",
@@ -738,11 +785,9 @@
         "duration": {
             "title": "Kesto"
         },
-        "encryptedNoLicense": "Julkaisu on suojattu, mutta siitä puuttuu LCP-lisenssi.",
         "expired": "Laina-aika on päättynyt",
         "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
         "incorrectPassphrase": "Yksikään tallennettu salasana ei käy julkaisuun tai annettu salasana on väärä.",
-        "lcpEnd": "Loppu",
         "lcpNotSupported": "VAROITUS: Tämä on Thorium Desktop -ohjelman ennakkoversio, joka ei tue tuotantokäyttöön tarkoitettuja LCP-lisenssejä, vaan ainoastaan LCP ”basic profile” -salauksen purkua ilman varmenteen vahvistusta.",
         "lcpRightsCopy": "Kopioidut merkit",
         "lcpRightsPrint": "Tulostetut sivut",
@@ -1342,7 +1387,7 @@
         },
         "screenReaderActivate": {
             "help": "Kun sovellus havaitsee, että käytössä on avustavaa teknologiaa, käyttöliittymä mukautuu toimimaan paremmin yhteen ruudunlukuohjelmien kanssa.",
-            "invite": "Optimoi ruudunlukuohjelmaa varten ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimoi ruudunlukuohjelmaa varten",
             "message": "Parannettu tuki ruudunlukuohjelmille",
             "title": "Paranna ruudunlukukokemusta"
         },

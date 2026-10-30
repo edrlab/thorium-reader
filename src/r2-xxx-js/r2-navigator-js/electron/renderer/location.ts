@@ -7,15 +7,14 @@
 
 import debug_ from "debug";
 import { ipcRenderer, shell } from "electron";
-import * as path from "node:path";
 import { URL } from "node:url";
 
 // import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 
-import { Locator, LocatorLocations } from "../common/locator";
 import { PageEnum, Properties, SpreadEnum } from "@r2-shared-js/models/metadata-properties";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import { Locator, LocatorLocations } from "../common/locator";
 
 import { DEBUG_AUDIO, IAudioPlaybackInfo } from "../common/audiobook";
 import { IDocInfo } from "../common/document";
@@ -24,11 +23,12 @@ import {
     IEventPayload_R2_EVENT_LOCATOR_VISIBLE, IEventPayload_R2_EVENT_PAGE_TURN,
     IEventPayload_R2_EVENT_READING_LOCATION, IEventPayload_R2_EVENT_READIUMCSS,
     IEventPayload_R2_EVENT_SCROLLTO, IEventPayload_R2_EVENT_SHIFT_VIEW_X,
-    R2_EVENT_AUDIO_PLAYBACK_RATE, R2_EVENT_LINK, R2_EVENT_LOCATOR_VISIBLE, R2_EVENT_PAGE_TURN,
-    R2_EVENT_PAGE_TURN_RES, R2_EVENT_READING_LOCATION, R2_EVENT_SCROLLTO, R2_EVENT_SHIFT_VIEW_X,
-    R2_EVENT_READING_LOCATION_CLEAR_SELECTION, R2_EVENT_FOCUS_READING_LOC,
-    // IEventPayload_R2_EVENT_DISABLE_TEMPORARY_NAV_TARGET_OUTLINE,
-    // R2_EVENT_DISABLE_TEMPORARY_NAV_TARGET_OUTLINE,
+    R2_EVENT_AUDIO_PLAYBACK_RATE,
+    R2_EVENT_FOCUS_READING_LOC,
+    R2_EVENT_LINK, R2_EVENT_LOCATOR_VISIBLE, R2_EVENT_PAGE_TURN,
+    R2_EVENT_PAGE_TURN_RES, R2_EVENT_READING_LOCATION,
+    R2_EVENT_READING_LOCATION_CLEAR_SELECTION,
+    R2_EVENT_SCROLLTO, R2_EVENT_SHIFT_VIEW_X,
 } from "../common/events";
 import { IwidthHeight } from "../common/fxl";
 import { IPaginationInfo } from "../common/pagination";
@@ -45,21 +45,23 @@ import {
     WebViewSlotEnum,
 } from "../common/styles";
 import { getCurrentAudioPlaybackRate, setCurrentAudioPlaybackRate } from "./audiobook";
+import { isAudiobookResource } from "./common/audiobook-resource";
 import {
-    URL_PARAM_HIGHLIGHTS,
-    URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS,
-    URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_PREVIOUS,
-    URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT,
     FRAG_ID_CSS_SELECTOR,
     URL_PARAM_A11Y_SUPPORT_ENABLED,
+    URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS,
     URL_PARAM_EPUBMEDIAOVERLAYS,
+    URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE,
+    URL_PARAM_HIGHLIGHTS,
+    URL_PARAM_PREVIOUS,
+    URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT,
 } from "./common/url-params";
 import { getEpubReadingSystemInfo } from "./epubReadingSystem";
 import { mediaOverlaysInterrupt, publicationHasMediaOverlays } from "./media-overlays";
 import {
     adjustReadiumCssJsonMessageForFixedLayout, isFixedLayout, isRTL_PackageMeta, obtainReadiumCss,
 } from "./readium-css";
-import { ReadiumElectronBrowserWindow, IReadiumElectronWebview } from "./webview/state";
+import { IReadiumElectronWebview, ReadiumElectronBrowserWindow } from "./webview/state";
 
 import URI from "urijs";
 import { IHighlight } from "../common/highlight";
@@ -917,21 +919,7 @@ function loadLink(
         activeWebView.READIUM2.readiumCss = actualReadiumCss;
     }
 
-    const fileName = path.basename(linkPath);
-    const ext = path.extname(fileName);
-    const isAudio =
-        publication.Metadata &&
-        publication.Metadata.RDFType &&
-        /https?:\/\/schema\.org\/Audiobook$/.test(publication.Metadata.RDFType) &&
-        ((pubLink.TypeLink && pubLink.TypeLink.startsWith("audio/")) ||
-        // fallbacks:
-        /\.mp[3|4]$/i.test(ext) ||
-        /\.wav$/i.test(ext) ||
-        /\.aac$/i.test(ext) ||
-        /\.og[g|b|a]$/i.test(ext) ||
-        /\.aiff$/i.test(ext) ||
-        /\.wma$/i.test(ext) ||
-        /\.flac$/i.test(ext));
+    const isAudio = isAudiobookResource(publication.Metadata?.RDFType, pubLink.TypeLink, linkPath);
 
     let webViewSlot = WebViewSlotEnum.center;
 
@@ -1260,6 +1248,7 @@ function loadLink(
 
     const webviewNeedsForcedRefresh = !isAudio && (win.READIUM2.ttsClickEnabled ||
         activeWebView && activeWebView.READIUM2.forceRefresh);
+    debug("WEBVIEW force refresh: " + activeWebView?.READIUM2.forceRefresh, webviewNeedsForcedRefresh);
     if (activeWebView) {
         activeWebView.READIUM2.forceRefresh = undefined;
     }
@@ -1335,6 +1324,7 @@ function loadLink(
                 // overrides existing (leaves others intact)
 
                 data[URL_PARAM_REFRESH] = `${++_reloadCounter}`;
+                debug("webviewNeedsForcedRefresh", URL_PARAM_REFRESH, _reloadCounter);
             });
         }
 
@@ -1697,9 +1687,15 @@ ${coverLink ? `<img id="${AUDIO_COVER_ID}" src="${coverLink.Href}" alt="" ${cove
                 // }, 0);
             }
         } else {
-            const highlights = activeWebView.READIUM2.link === pubLink ? activeWebView.READIUM2.highlights : undefined;
+            const eq = activeWebView.READIUM2.link === pubLink;
+            const highlights = eq ? activeWebView.READIUM2.highlights : undefined;
+            if (IS_DEV) {
+                debug(`pre-hydrateHighlightsBuild SRC LOAD: ${eq} ... ${activeWebView.READIUM2.link?.HrefDecoded} -----  ${pubLink?.HrefDecoded} ===== ${activeWebView.READIUM2.highlights?.length}`); /// ${JSON.stringify(activeWebView.READIUM2.highlights, null, 4)}
+            }
             setTimeout(() => {
-                hydrateHighlightsBuild(highlights, hrefToLoadHttpUri).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ }).finally(() => {
+
+                hydrateHighlightsBuild(highlights, hrefToLoadHttpUri).then((_v) => { /* if (IS_DEV) debug("LOAD...?", hrefToLoadHttpUri); */ }).catch((err) => { debug("LOAD...!!", hrefToLoadHttpUri, err); }).finally(() => {
+
                     // if (webviewNeedsHardRefresh) {
                     //     const uriStr = hrefToLoadHttpUri.toString();
                     //     const uriStr__ = uriStr.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ? uriStr :
@@ -1775,38 +1771,68 @@ ${coverLink ? `<img id="${AUDIO_COVER_ID}" src="${coverLink.Href}" alt="" ${cove
     return true;
 }
 
-// see hydrateHighlights() in preload.ts
+// see hydrateHighlightsConsume() in preload.ts
 const hydrateHighlightsBuild = async (highlights: IHighlight[] | undefined, hrefToLoadHttpUri: URI): Promise<void> => {
-    if (!highlights) {
-        return;
-    }
+    // if (!highlights) {
+    //     return;
+    // }
 
     const jsonStr = JSON.stringify({
-        margin: win.READIUM2.highlightsDrawMargin,
-        list: highlights,
+        margin: win.READIUM2.highlightsDrawMargin || false,
+        list: highlights || [],
     });
+    try {
+        // debug("--HIGH LOAD PARAM IN--");
+        // debug(jsonStr);
+        // const b64Highlights_ = Buffer.from(jsonStr).toString("base64");
 
-    // console.log("--HIGH LOAD PARAM IN--");
-    // console.log(jsonStr);
-    // const b64Highlights_ = Buffer.from(jsonStr).toString("base64");
+        const data = new TextEncoder().encode(jsonStr);
 
-    const cs = new CompressionStream("gzip");
-    const csWriter = cs.writable.getWriter();
-    await csWriter.write(new TextEncoder().encode(jsonStr));
-    await csWriter.close();
-    const buff = Buffer.from(await new Response(cs.readable).arrayBuffer());
-    // const buff = await streamToBufferPromise(cs.readable as ReadableStream<any>);
-    const b64Highlights = buff.toString("base64");
+        const cs = new CompressionStream("gzip");
+        const csWriter = cs.writable.getWriter();
 
-    // console.log(" **** " + b64Highlights.length + " VS " + b64Highlights_.length);
+        csWriter.write(data).then(() => { /* debug("hydrateHighlightsBuild CSWRITER WRITE DONE"); */ }).catch((err) => { debug("hydrateHighlightsBuild CSWRITER WRITE ERR"); debug(err);  });
 
-    // TODO: urijs types broke this! (lib remains unchanged)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (hrefToLoadHttpUri as any).search((data: any) => {
-        // overrides existing (leaves others intact)
+        csWriter.close().then(() => { /* debug("hydrateHighlightsBuild CSWRITER CLOSE DONE"); */ }).catch((err) => { debug("hydrateHighlightsBuild CSWRITER CLOSE ERR"); debug(err);  });
 
-        data[URL_PARAM_HIGHLIGHTS] = b64Highlights;
-    });
+        // const reader = cs.readable.getReader();
+        // let done = false;
+        // let output = [];
+        // while (!done) {
+        //   const result = await reader.read();
+        //   if (result.value) {
+        //     output.push(...result.value);
+        //   }
+        //   done = result.done;
+        // }
+        // const arr = new Uint8Array(output); // .toBase64()
+        // const buff = Buffer.from(arr);
+        const buff = Buffer.from(await new Response(cs.readable).arrayBuffer());
+
+        // const buff = await streamToBufferPromise(cs.readable as ReadableStream<any>);
+        const b64Highlights = buff.toString("base64");
+
+        // debug(" **** " + b64Highlights.length + " VS " + b64Highlights_.length);
+
+        debug("################## HIGHLIGHTS hydrate BUILD ...", b64Highlights.length);
+
+        // https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/security/url_display_guidelines/url_display_guidelines.md#url-length
+        // In general, the web platform does not have limits on the length of URLs (although 2^31 is a common limit).
+        // Chrome limits URLs to a maximum length of 2MB for practical reasons and to avoid causing denial-of-service problems in inter-process communication.
+
+        // TODO: urijs types broke this! (lib remains unchanged)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (hrefToLoadHttpUri as any).search((data: any) => {
+            // overrides existing (leaves others intact)
+
+            data[URL_PARAM_HIGHLIGHTS] = b64Highlights;
+        });
+    } catch (err) {
+        debug("################## HIGHLIGHTS hydrate BUILD ERROR?!");
+        debug(err);
+        debug(jsonStr.length);
+        debug(jsonStr);
+    }
 };
 
 export interface LocatorExtended {

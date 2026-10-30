@@ -22,6 +22,7 @@
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "將列表移至右側",
+        "searching": "",
         "skipLink": "跳轉至內容",
         "toolbar": "工具欄"
     },
@@ -267,26 +268,64 @@
             "nothing": "沒有可供匯入的註解，正在中止匯入",
             "success": "匯入已成功完成。"
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "下載已取消。",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
-                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} 已被匯入。",
-            "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
-            "success": "匯入 [{{- title}}] 完成。"
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "匯入 [{{- title}}] 完成。",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -314,12 +353,14 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "無法打開出版物：[{{- err}}]",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -569,6 +610,13 @@
                 "descriptive": ""
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "",
@@ -731,11 +779,9 @@
         "duration": {
             "title": "播放時長"
         },
-        "encryptedNoLicense": "出版物已加密，但缺少 LCP 許可證！",
         "expired": "出借到期",
         "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
         "incorrectPassphrase": "有符合此出版物的已儲存密語，或輸入的密語不正確。",
-        "lcpEnd": "結束",
         "lcpNotSupported": "",
         "lcpRightsCopy": "複製的文字",
         "lcpRightsPrint": "列印頁數",
@@ -1399,9 +1445,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

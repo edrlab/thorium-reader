@@ -20,7 +20,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
-import { buildOpdsBrowserRouteWithLink } from "readium-desktop/renderer/library/opds/route";
+import { buildOpdsBrowserRouteWithLink, parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { dispatchHistoryPush, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { TDispatch } from "readium-desktop/typings/redux";
@@ -63,7 +63,8 @@ class PageNavigation extends React.Component<IProps, undefined> {
     }
 
     public render() {
-        const { pageLinks, pageInfo, __ } = this.props;
+        const { pageInfo, __ } = this.props;
+        const pageLinks = this.pageLinks;
 
         if (![pageLinks?.first, pageLinks?.previous, pageLinks?.next, pageLinks?.last]
             .some((links) => links?.[0]?.url)) {
@@ -121,6 +122,30 @@ class PageNavigation extends React.Component<IProps, undefined> {
         );
     }
 
+    private get pageLinks(): IOpdsResultView["links"] {
+        const links = this.props.pageLinks;
+        if (links?.first?.[0]?.url && links?.previous?.[0]?.url) {
+            return links;
+        }
+        try {
+            const url = new URL(parseOpdsBrowserRoute(this.props.location.pathname)?.url);
+            const page = Number(url.searchParams.get("page"));
+            if (!Number.isSafeInteger(page) || page <= 1) {
+                return links;
+            }
+            url.searchParams.set("page", "1");
+            const first = [{ url: url.href }];
+            url.searchParams.set("page", String(page - 1));
+            return {
+                ...links,
+                first: links?.first?.[0]?.url ? links.first : first,
+                previous: links?.previous?.[0]?.url ? links.previous : [{ url: url.href }],
+            };
+        } catch {
+            return links;
+        }
+    }
+
     private registerAllKeyboardListeners() {
         registerKeyboardListener(
             false, // listen for key down (not key up)
@@ -150,7 +175,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
     private onKeyboardPageNavigationFirst = () => {
 
-        const { pageLinks } = this.props;
+        const pageLinks = this.pageLinks;
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
         if (pageLinks?.first?.[0]?.url) { // TODO RTL
             this.props.historyPush({
@@ -184,7 +209,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
     };
     private onKeyboardPageNavigationPrevious = () => {
 
-        const { pageLinks } = this.props;
+        const pageLinks = this.pageLinks;
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
 
         if (pageLinks?.previous?.[0]?.url) { // TODO RTL

@@ -16,6 +16,7 @@
   border-radius: 5px;
   bottom: 0;
   height: auto;
+  max-height: 45vh;
   overflow: hidden;
   overflow-y: auto;
   background: var(--color-gray-50);
@@ -28,6 +29,41 @@
   > h2 {
     margin: 0;
     font: inherit;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
+  }
+
+  .subDownloads {
+    margin: 4px 0 12px 30px;
+    padding-left: 12px;
+    border-left: 2px solid var(--color-brand-secondary);
+
+    > li {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 3px 0;
+    }
+
+    .filename {
+      flex: 1;
+      min-width: min(160px, 100%);
+      overflow-wrap: anywhere;
+    }
+
+    .transferSize {
+      min-width: min(170px, 100%);
+      overflow-wrap: anywhere;
+    }
+
+    .transferSpeed {
+      min-width: min(80px, 100%);
+      text-align: right;
+    }
   }
 
   li {
@@ -82,6 +118,8 @@
     span.title {
       display: inline-block;
       width: auto;
+      max-width: 100%;
+      overflow-wrap: anywhere;
       margin: 0;
       padding: 3px;
       color: var(--color-text-primary);

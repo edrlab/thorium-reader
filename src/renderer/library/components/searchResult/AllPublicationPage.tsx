@@ -5,120 +5,123 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
+// import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
+// import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+// import { PublicationInfoLibWithRAC, PublicationInfoLibWithRACContent, PublicationInfoLibWithRACTrigger } from "../dialog/publicationInfos/PublicationInfo";
+// import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
+// import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
 
-import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
-import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
-
-import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+import { HoverEvent } from "@react-types/shared";
+import classNames from "classnames";
+import debounce from "debounce";
+import DOMPurify from "dompurify";
+import { ipcRenderer } from "electron";
 import { Location } from "history";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as FileBroken from "readium-desktop/renderer/assets/icons/file-broken-icon.svg";
-import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
-import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
-import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
-import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
-import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-// import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
-import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
-// import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
-import * as SortIcon from "readium-desktop/renderer/assets/icons/sort-icon.svg";
-import * as EyeOpenIcon from "readium-desktop/renderer/assets/icons/eye-icon.svg";
 import { matchSorter } from "match-sorter";
-import { readerActions } from "readium-desktop/common/redux/actions";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { TDispatch } from "readium-desktop/typings/redux";
+import moment from "moment";
+import { equals } from "ramda";
+import * as React from "react";
+import { FocusScope } from "react-aria";
+import { Button, DialogTrigger, Focusable, Popover, Dialog as PopoverDialog, Pressable, TooltipTrigger } from "react-aria-components";
+import { connect } from "react-redux";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
+    Column,
+    ColumnWithLooseAccessor,
     FilterTypes,
+    IdType,
     Row,
     TableInstance,
     TableOptions,
     TableState,
+    useAsyncDebounce,
+    useFilters,
+    UseFiltersColumnOptions,
     UseFiltersColumnProps,
     UseFiltersInstanceProps,
     UseFiltersOptions,
+    UseFiltersState,
+    useGlobalFilter,
+    UseGlobalFiltersColumnOptions,
     UseGlobalFiltersInstanceProps,
     UseGlobalFiltersOptions,
     UseGlobalFiltersState,
+    usePagination,
     UsePaginationInstanceProps,
     UsePaginationOptions,
     UsePaginationState,
+    useSortBy,
+    UseSortByColumnOptions,
     UseSortByColumnProps,
     UseSortByInstanceProps,
     UseSortByOptions,
     UseSortByState,
-    UseTableColumnProps,
-    ColumnWithLooseAccessor,
-    UseFiltersColumnOptions,
+    useTable,
     UseTableColumnOptions,
-    UseSortByColumnOptions,
-    UseGlobalFiltersColumnOptions,
-    IdType,
-    UseFiltersState,
+    UseTableColumnProps,
 } from "react-table";
-import { Column, useTable, useFilters, useSortBy, usePagination, useGlobalFilter, useAsyncDebounce } from "react-table";
-import { formatTime } from "readium-desktop/common/utils/time";
-import DOMPurify from "dompurify";
-import moment from "moment";
+import { keyboardShortcutsMatch, TKeyboardShortcutsMap } from "readium-desktop/common/keyboard";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
+import { readerActions, settingsActions } from "readium-desktop/common/redux/actions";
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { ILibraryViewSettingsState } from "readium-desktop/common/redux/states/settings";
 import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
-import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
-import { FocusScope } from "react-aria";
-import { DialogTrigger, Button, Popover, Dialog as PopoverDialog, Pressable } from "react-aria-components";
-import { connect } from "react-redux";
-import { PublicationView, canOpenPublication } from "readium-desktop/common/views/publication";
+import { formatTime } from "readium-desktop/common/utils/time";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { canOpenPublication, PublicationView } from "readium-desktop/common/views/publication";
+import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
+import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
+import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
+import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
+import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as EyeOpenIcon from "readium-desktop/renderer/assets/icons/eye-icon.svg";
+import * as FileBroken from "readium-desktop/renderer/assets/icons/file-broken-icon.svg";
+import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
+import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
+import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
+import * as SortIcon from "readium-desktop/renderer/assets/icons/sort-icon.svg";
+import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import Menu from "readium-desktop/renderer/common/components/menu/Menu";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import {
+    ensureKeyboardListenerIsInstalled, registerKeyboardListener,
+    unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { ILibraryViewSettingsState } from "readium-desktop/common/redux/states/settings";
-import { Unsubscribe } from "redux";
-
-import Header from "../catalog/Header";
-
 import { DisplayType, resolveDisplayType } from "readium-desktop/renderer/library/routing";
-import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
-import {
-    ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
-} from "readium-desktop/renderer/common/keyboard";
-import { ipcRenderer } from "electron";
-import PublicationCard from "../publication/PublicationCard";
-import classNames from "classnames";
-
-// import { PublicationInfoLibWithRAC, PublicationInfoLibWithRACContent, PublicationInfoLibWithRACTrigger } from "../dialog/publicationInfos/PublicationInfo";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
-import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
-// import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
-// import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
-import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { Unsubscribe } from "redux";
+import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
 import AboutThoriumButton from "../catalog/AboutThoriumButton";
-import { getNextPageIndex } from "./tablePagination";
-import Menu from "readium-desktop/renderer/common/components/menu/Menu";
+import Header from "../catalog/Header";
 import CatalogMenu from "../publication/menu/CatalogMenu";
-import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
-import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
-import debounce from "debounce";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { HoverEvent } from "@react-types/shared";
-import { settingsActions } from "readium-desktop/common/redux/actions";
-import { equals } from "ramda";
+import PublicationCard from "../publication/PublicationCard";
+import { getNextPageIndex } from "./tablePagination";
 
 
 // import GridTagButton from "../catalog/GridTagButton";
@@ -409,6 +412,8 @@ interface ITableCellProps_GlobalFilter {
     focusInputRef: React.RefObject<HTMLInputElement>;
     accessibilitySupportEnabled: boolean;
     setShowColumnFilters: (show: boolean) => void;
+
+    keyboardShortcuts: TKeyboardShortcutsMap;
 }
 const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 
@@ -433,11 +438,17 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
         props.setGlobalFilter(searchText || undefined);
     }, 500);
 
+    const keyboardShortcuts = useSelector((state: ILibraryRootState) => state.keyboard.shortcuts);
+    // const keyboardShortcutFocusSearch = textualizeKeyboardShortcut(props.keyboardShortcuts.FocusSearch);
     return (
         <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>
+        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+        <Focusable excludeFromTabOrder>
             <label
                 id="globalSearchLabel"
                 htmlFor="globalSearchInput"
+                aria-label={`${props.__("header.searchPlaceholder")}`}
+                /* aria-label={`${props.__("header.searchPlaceholder")}` + ` [${keyboardShortcutFocusSearch}]` + ` (${props.__("settings.keyboard.list.FocusSearch.name")})` + ` <${props.__("settings.keyboard.list.FocusSearch.description")}>`} */
                 style={{ display: "flex", gap: "2px" }}>
                 {`${props.__("header.searchPlaceholder")}`}
                 <div
@@ -445,6 +456,15 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                     {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
                 </div>
             </label>
+        </Focusable>
+        <ToolTippy
+            noReveal={false}
+            placement="bottom"
+            label={ undefined }
+            tooltipkeyboardShortcuts={[keyboardShortcuts.FocusSearch]}
+            tooltipkeyboardShortcutsNames={[props.__("settings.keyboard.list.FocusSearch.name")]}
+            tooltipkeyboardShortcutsDescriptions={[props.__("settings.keyboard.list.FocusSearch.description")]} />
+        </TooltipTrigger>
             <i><SVG ariaHidden svg={SearchIcon} /></i>
             {/*
             value={value || ""}
@@ -2783,6 +2803,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 <div className={stylesPublication.allBooks_header_navigation}>
                     <div className={stylesPublication.allBooks_header_navigation_inputs}>
                         <CellGlobalFilter
+                            keyboardShortcuts={keyboardShortcuts}
                             accessibilitySupportEnabled={accessibilitySupportEnabled}
                             preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
                             globalFilteredRows={tableInstance.globalFilteredRows}

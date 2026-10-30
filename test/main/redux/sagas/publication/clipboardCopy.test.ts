@@ -9,8 +9,8 @@ jest.mock("readium-desktop/common/services/translator", () => ({
 }));
 
 import { clipboard } from "electron";
-import { diMainGet } from "readium-desktop/main/di";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { diMainGet } from "readium-desktop/main/di";
 import { readerClipboardCopy } from "readium-desktop/main/redux/sagas/publication/clipboardCopy";
 
 describe("LCP clipboard allowance", () => {
@@ -47,7 +47,7 @@ describe("LCP clipboard allowance", () => {
             readerClipboardCopy,
             readerActions.clipboardCopy.build("publication-1", { txt: "hello", locator: undefined }),
         ).toPromise();
-        expect(clipboard.writeText).toHaveBeenCalledWith("he", "clipboard");
+        expect(clipboard.writeText).toHaveBeenCalledWith("he");
         expect(repository.save).toHaveBeenCalledWith(expect.objectContaining({ lcpRightsCopies: 10 }));
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenCalledWith(

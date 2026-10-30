@@ -16,12 +16,13 @@
         "leftSlideButton": "Slide to the left",
         "loading": "Loading…",
         "mainContent": "main content",
-        "notificationCopied": "Notification copied",
+        "notificationCopied": "Copied into the clipboard:",
         "notificationCopyFailed": "Could not copy notification",
         "printPage": "Page {{page}}",
         "publicationDetails": "{{- field}}: {{- title}}",
         "resetSetting": "Reset {{- setting}}",
         "rightSlideButton": "Slide to the right",
+        "searching": "Searching…",
         "skipLink": "Skip to content",
         "toolbar": "toolbar"
     },
@@ -272,26 +273,64 @@
             "nothing": "There is no note ready to be imported, aborting the import",
             "success": "Import completed successfully."
         },
+        "diagnostics": {
+            "category": "Category: {{- category}}",
+            "causedBy": "Caused by:",
+            "downloadSource": "Download source: {{- source}}",
+            "error": "Error",
+            "httpStatus": "HTTP status: {{- status}}",
+            "invalidUrl": "[invalid URL]",
+            "source": "Source: {{- source}}",
+            "url": "URL: {{- url}}"
+        },
         "download": {
-            "started": "Download started.",
-            "startedWithTitle": "Downloading {{- title}}.",
             "cancelled": "Download cancelled.",
             "errors": {
+                "failed": "Download failed.",
                 "hashMismatch": "Downloaded file integrity check failed: expected SHA-256 hash {{- expected}}, got {{- actual}}.",
                 "httpGet": "HTTP download failed: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "Download stalled: no data received for 30 seconds. Please try again.",
                 "invalidFilename": "The temporary download filename is invalid.",
                 "invalidLink": "The download link is invalid.",
                 "invalidTempDirectory": "The temporary download directory is invalid.",
                 "lengthMismatch": "Downloaded file integrity check failed: expected {{- expected}} bytes, got {{- actual}} bytes.",
+                "pathMissing": "The downloaded file path is missing.",
+                "publicationLinkMissing": "The license does not contain a publication download link.",
                 "readStreamMissing": "Download stream is unavailable.",
+                "streamClosed": "Download stream closed before completion.",
                 "tooManyFilenameAttempts": "Unable to create a unique temporary download filename: {{- path}}"
-            }
+            },
+            "failed": "Could not download from “{{- hostname}}”. Please try again.",
+            "integrityFailed": "The download from “{{- hostname}}” is incomplete or damaged. Please try again.",
+            "saveFailed": "Could not save the download. Check available storage and permissions.",
+            "startedWithTitle": "Downloading {{- title}}."
         },
         "import": {
             "alreadyImport": "[{{- title}}] was already imported.",
-            "fail": "Importing [{{- path}}] failed: [{{- err}}]",
-            "success": "Importing [{{- title}}] completed."
+            "errors": {
+                "acquisitionUrlMissing": "The publication’s download URL is missing or invalid.",
+                "cbzNoImages": "The CBZ archive does not contain any supported images.",
+                "contextMissing": "missing",
+                "daisyConversionFailed": "Unable to convert the DAISY publication.",
+                "manifestContext": "Unrecognized publication manifest @context at {{- url}}: {{- context}}",
+                "manifestImportFailed": "Importing the publication manifest failed.",
+                "manifestInvalidJson": "Invalid JSON in publication manifest at {{- url}}.",
+                "manifestMissing": "The publication manifest is missing.",
+                "manifestNotFound": "No publication manifest was found at {{- url}}.",
+                "manifestParsingFailed": "Unable to parse the publication manifest at {{- url}}.",
+                "noImportResult": "The import did not return a publication.",
+                "notImported": "The publication could not be added to the library.",
+                "profileAssetUrl": "Invalid profile publication URL: {{- path}}",
+                "profileEmpty": "The custom profile ZIP archive is empty.",
+                "profileEntryMissing": "Publication not found in the custom profile: {{- path}}",
+                "profileMissing": "Custom profile not found: {{- id}}",
+                "profileNotZip": "The custom profile is not a ZIP archive."
+            },
+            "failed": "Could not import “{{- name}}”.",
+            "invalidLicense": "Could not import “{{- name}}”. The publication’s license is invalid.",
+            "invalidPublication": "Could not import “{{- name}}”. The publication manifest is missing.",
+            "lcpLicenseMalformed": "LCP license malformed.",
+            "success": "Importing [{{- title}}] completed.",
+            "unsupportedFormat": "Could not import “{{- name}}”. This file format is not supported."
         },
         "notifications": {
             "annotationImportFailed": "Unable to import annotations. Check that the file is a valid annotation export.",
@@ -319,8 +358,9 @@
             "tagsFailed": "Unable to save the publication tags. Try again."
         },
         "open": {
-            "error": "Loading publication failed: [{{- err}}]",
-            "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage."
+            "failed": "Could not open this publication.",
+            "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage.",
+            "missingLicense": "Could not open this publication. It is encrypted but its LCP license is missing."
         },
         "storage": {
             "recovery": {
@@ -576,6 +616,13 @@
                 "descriptive": "The presents of hazards is unknown"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "Claims an accessibility exemption in some jurisdictions",
+                "descriptive": "The publisher claims an exemption from accessibility requirements in some jurisdictions."
+            },
+            "legal-considerations-title": "Legal considerations"
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Index",
@@ -738,11 +785,9 @@
         "duration": {
             "title": "Duration"
         },
-        "encryptedNoLicense": "Publication is encrypted but lacks an LCP license!",
         "expired": "Loan expired",
         "expiredLcp": "This publication's LCP license is expired.",
         "incorrectPassphrase": "No stored passphrase fits the publication, or the entered passphrase is wrong.",
-        "lcpEnd": "End",
         "lcpNotSupported": "WARNING: this is a pre-release version of Thorium Desktop reader which does not support production LCP licenses, and only supports LCP 'basic profile' decryption without certificate validation.",
         "lcpRightsCopy": "Copied characters",
         "lcpRightsPrint": "Printed pages",
@@ -1343,7 +1388,7 @@
         },
         "screenReaderActivate": {
             "help": "When the application detects the presence of assistive technology, the user interface works better with screen readers",
-            "invite": "Optimize for screen reader ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimize for screen reader",
             "message": "Improved support for screen readers",
             "title": "Enhance screen reader experience"
         },

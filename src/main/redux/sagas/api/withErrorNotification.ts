@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { formatImportDiagnostics } from "readium-desktop/main/tools/importDiagnostics";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { getTranslator } from "readium-desktop/common/services/translator";
@@ -20,6 +21,8 @@ const debug = debug_("readium-desktop:main:saga:api:operation");
 export function withErrorNotification<Args extends unknown[], Result>(
     operation: (...args: Args) => SagaGenerator<Result>,
     message: TTranslatorKeyParameter,
+    includeErrorDetails = false,
+    diagnosticSource?: (...args: Args) => string | undefined,
 ): (...args: Args) => SagaGenerator<Result> {
     return function* notifyOperation(...args: Args): SagaGenerator<Result> {
         try {
@@ -31,7 +34,9 @@ export function withErrorNotification<Args extends unknown[], Result>(
             const owner = yield* getContextTyped<unknown>("apiNotificationOwner");
             if (owner === notifyOperation) {
                 const windowIdentifier = yield* getContextTyped<string | undefined>("toastWindowIdentifier");
-                yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate(message), undefined, windowIdentifier));
+                const text = getTranslator().translate(message);
+                yield* putTyped(toastActions.openRequest.build(ToastType.Error, text, undefined, windowIdentifier,
+                    includeErrorDetails ? formatImportDiagnostics(text, error, diagnosticSource?.(...args)) : undefined));
             }
             throw error;
         }

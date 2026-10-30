@@ -22,6 +22,7 @@
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "سحب إلى اليمين",
+        "searching": "",
         "skipLink": "تخطَّ إلى المحتوى",
         "toolbar": "شريط الأدوات"
     },
@@ -292,26 +293,64 @@
             "nothing": "لا توجد أي ملاحظة جاهزة للاستيراد، جاري إلغاء عملية الاستيراد",
             "success": "اكتمل الاستيراد بنجاح."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "تم إلغاء التحميل.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "فشل التحقق من الملف المحمَّل: شفرة SHA-256 المتوقعة هي: {{- expected}}، لكن الفعلية: {{- actual}}.",
                 "httpGet": "فشل التحميل عبر HTTP: [{{- statusMessage}}] ({{- statusCode}}) [{{- url}}]",
-                "idleTimeout": "",
                 "invalidFilename": "الاسم المؤلف للملف المحمل غير صحيح.",
                 "invalidLink": "رابط التحميل غير صالح.",
                 "invalidTempDirectory": "مجلد التحميل المؤقت غير صالح.",
                 "lengthMismatch": "فشل التحقق من سلامة الملف المحمل: المتوقع {{- expected}} بايت، لكن الفعلي {{- actual}} بايت.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "مسار التحميل غير متاح.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "لم نتمكن من إنشاء اسم ملف محمًّل غير مكرر: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "تم استيراد [{{- title}}] مسبقًا.",
-            "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
-            "success": "اكتمل استيراد [{{- title}}]."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "اكتمل استيراد [{{- title}}].",
+            "unsupportedFormat": ""
         },
         "notifications": {
             "annotationImportFailed": "",
@@ -339,8 +378,9 @@
             "tagsFailed": ""
         },
         "open": {
-            "error": "فشل تحميل المنشور: [{{- err}}]",
-            "folderNotFound": "لم نتمكن من العثور على مجلد الكتاب. أعد جلبه أو عدل إعدادات ذاكرة التخزين الإضافية في الإعدادات > التخزين."
+            "failed": "",
+            "folderNotFound": "لم نتمكن من العثور على مجلد الكتاب. أعد جلبه أو عدل إعدادات ذاكرة التخزين الإضافية في الإعدادات > التخزين.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -600,6 +640,13 @@
                 "descriptive": "غير معروف إن كان يوجد مخاطر أم لا"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "كشاف",
@@ -762,11 +809,9 @@
         "duration": {
             "title": "المدة"
         },
-        "encryptedNoLicense": "المنشور مشفّر لكنه يفتقر إلى ترخيص LCP!",
         "expired": "انتهت مدة الاستعارة",
         "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
         "incorrectPassphrase": "لا يوجد عبارة مرور مخزّنة تتناسب مع المنشور، أو أن عبارة المرور المكتوبة غير صحيحة.",
-        "lcpEnd": "النهاية",
         "lcpNotSupported": "تنبيه: هذه نسخة تجريبية من قارئ ثوريوم لأنظمة سطح المكتب، ولا تدعم تراخيص LCP الفعلية النشطة، لكنها تدعم فك تشفير النموذج التجريبي من LCP دون التحقق من شهادة الحماية.",
         "lcpRightsCopy": "الأحرف المنسوخة",
         "lcpRightsPrint": "الصفحات المطبوعة",
@@ -1370,7 +1415,7 @@
         },
         "screenReaderActivate": {
             "help": "عند اكتشاف التطبيق للتقنيات المساعدة، تعمل واجهة المستخدم بشكل أفضل مع قارئات الشاشة",
-            "invite": "التحسينات الإضافية لقارئ الشاشة ({{- status}}) [{{- keyboard}}]",
+            "invite": "التحسينات الإضافية لقارئ الشاشة",
             "message": "دعم محسّن لقارئات الشاشة",
             "title": "تحسين تجربة قارئ الشاشة"
         },
