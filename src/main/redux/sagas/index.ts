@@ -14,6 +14,7 @@ import { startMeasurementProtocolQueue } from "readium-desktop/main/analytics/me
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
 import { call as callTyped, delay as delayTyped, select as selectTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { RootState } from "../states";
