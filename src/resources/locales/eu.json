@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Menu nagusia",
             "cancel": "Indargabetu ",
+            "disableTooltips": "",
             "disclaimer": "Lasterbideak QWERTY teklatuaren diseinutik definitu ziren.",
             "editUserJson": "Editatu erabiltzaile-fitxategia",
             "exportToHTML": "",

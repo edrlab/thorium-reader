@@ -1104,6 +1104,7 @@
         "keyboard": {
             "advancedMenu": "菜单",
             "cancel": "取消",
+            "disableTooltips": "",
             "disclaimer": "应用程序的默认设置是根据 QWERTY 键盘布局上按键的物理位置设计的",
             "editUserJson": "编辑用户文件...",
             "exportToHTML": "导出为HTML",

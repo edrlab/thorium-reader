@@ -10,7 +10,9 @@ import * as React from "react";
 import { mergeProps } from "react-aria";
 import { OverlayArrow, Tooltip, TooltipProps } from "react-aria-components";
 import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
+import { useSelector } from "../hooks/useSelector";
 import { PrettifyKeyboardShortcut } from "./Keyboard";
 
 export interface MyProps {
@@ -26,6 +28,11 @@ export const TOOLTIP_HOVER_DELAY_EXTRA = 2000;
 
 export const ToolTippy: React.FC<React.PropsWithChildren<MyProps & TooltipProps>> = ({ immediate, label, tooltipkeyboardShortcuts, tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions, ...otherProps }) => {
 
+    // const disableKeyboardShortcutsTooltips = useSelector((state: ILibraryRootState) =>
+    //     state.settings.disableKeyboardShortcutsTooltips === true);
+    const disableKeyboardShortcutsTooltips = useSelector((state: ICommonRootState) =>
+        state.keyboard.disableKeyboardShortcutsTooltips === true);
+
     const desc = (label ? label : "") + tooltipkeyboardShortcuts?.length ? tooltipkeyboardShortcuts.reduce((prev, cur, i) => {
         return prev + " // " + `${textualizeKeyboardShortcut(cur)} [${tooltipkeyboardShortcutsNames[i]}]`; // + ` <${tooltipkeyboardShortcutsDescriptions[i]}>`
     }, "")  : "";
@@ -36,8 +43,8 @@ export const ToolTippy: React.FC<React.PropsWithChildren<MyProps & TooltipProps>
             offset: 0,
             className: classNames("tooltipKeyboardShortcut", immediate ? "immediate" : undefined),
         } satisfies TooltipProps,
-        otherProps)} // overrides placement and offset, merges classNames
-    >
+            otherProps)} // overrides placement and offset, merges classNames
+        style={disableKeyboardShortcutsTooltips ? { display: "none" } : {}}>
         <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
 
         <div

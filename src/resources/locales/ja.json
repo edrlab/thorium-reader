@@ -1104,6 +1104,7 @@
         "keyboard": {
             "advancedMenu": "メニュー",
             "cancel": "キャンセル",
+            "disableTooltips": "",
             "disclaimer": "ショートカットは、QWERTY配列のキーボードレイアウトから定義されました。",
             "editUserJson": "ユーザーファイルを編集…",
             "exportToHTML": "",

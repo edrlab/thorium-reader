@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Menu for avancerede tastaturgenveje",
             "cancel": "Annullér",
+            "disableTooltips": "",
             "disclaimer": "Standard tastaturgenveje er designet ud fra et QWERTY tastaturlayout",
             "editUserJson": "Rediger brugerfilen...",
             "exportToHTML": "Eksporter til HTML",

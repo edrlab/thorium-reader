@@ -1104,6 +1104,7 @@
         "keyboard": {
             "advancedMenu": "鍵盤快捷鍵進階選單",
             "cancel": "取消",
+            "disableTooltips": "",
             "disclaimer": "快捷鍵是根據 QWERTY 鍵盤佈局定義的。",
             "editUserJson": "編輯使用者文件...",
             "exportToHTML": "",

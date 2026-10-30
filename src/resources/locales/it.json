@@ -1118,6 +1118,7 @@
         "keyboard": {
             "advancedMenu": "Menu delle scorciatoie da tastiera",
             "cancel": "Annulla",
+            "disableTooltips": "",
             "disclaimer": "Le impostazioni predefinite dell'applicazione sono state progettate in base alla posizione fisica dei tasti in una tastiera QWERTY",
             "editUserJson": "Modifica il file utente...",
             "exportToHTML": "Esporta in HTML",

@@ -1125,6 +1125,7 @@
         "keyboard": {
             "advancedMenu": "",
             "cancel": "Zrušit",
+            "disableTooltips": "",
             "disclaimer": "",
             "editUserJson": "Upravit uživatelský soubor...",
             "exportToHTML": "",

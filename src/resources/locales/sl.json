@@ -1125,6 +1125,7 @@
         "keyboard": {
             "advancedMenu": "Napredni meni bližnjic na tipkovnici",
             "cancel": "Prekliči",
+            "disableTooltips": "",
             "disclaimer": "Privzete nastavitve aplikacije so bile zasnovane na podlagi fizične lokacije tipk na postavitvi QWERTY.",
             "editUserJson": "Uredi datoteko uporabnika ...",
             "exportToHTML": "Izvozi v HTML",

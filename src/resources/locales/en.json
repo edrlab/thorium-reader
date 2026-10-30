@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Keyboard shortcuts advanced menu",
             "cancel": "Cancel",
+            "disableTooltips": "Disable keyboard shortcuts tooltips",
             "disclaimer": "The application defaults were designed based on the physical location of keys on a QWERTY layout",
             "editUserJson": "Edit user file...",
             "exportToHTML": "Export to HTML",

@@ -1125,6 +1125,7 @@
         "keyboard": {
             "advancedMenu": "Zaawansowane menu skrótów klawiszowych",
             "cancel": "Anuluj",
+            "disableTooltips": "",
             "disclaimer": "Domyślne ustawienia aplikacji zostały zaprojektowane na podstawie fizycznego rozmieszczenia klawiszy w układzie QWERTY",
             "editUserJson": "Edytuj plik użytkownika...",
             "exportToHTML": "Eksportuj do HTML",

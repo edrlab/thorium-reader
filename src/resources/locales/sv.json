@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Avancerade kortkommandon",
             "cancel": "Avbryt",
+            "disableTooltips": "",
             "disclaimer": "Kortkommandona baseras på den fysiska positionen för knappar på QWERTY-tangentbord",
             "editUserJson": "Redigera användarfil ...",
             "exportToHTML": "Exportera till HTML",

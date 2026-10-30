@@ -13,6 +13,7 @@ import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 
 const initialState: IKeyboardState = {
     shortcuts: defaultKeyboardShortcuts,
+    disableKeyboardShortcutsTooltips: false,
 };
 
 function keyboardReducer_(
@@ -20,7 +21,8 @@ function keyboardReducer_(
     action:
         keyboardActions.setShortcuts.TAction |
         keyboardActions.reloadShortcuts.TAction |
-        keyboardActions.showShortcuts.TAction,
+        keyboardActions.showShortcuts.TAction |
+        keyboardActions.disableKeyboardShortcutsTooltips.TAction,
     ): IKeyboardState {
     switch (action.type) {
         case keyboardActions.setShortcuts.ID:
@@ -42,6 +44,15 @@ function keyboardReducer_(
             return (
                 {
                     ...state,
+                }
+            );
+        case keyboardActions.disableKeyboardShortcutsTooltips.ID:
+            return (
+                {
+                    ...state,
+                    ...{
+                        disableKeyboardShortcutsTooltips: action.payload.disableKeyboardShortcutsTooltips,
+                    },
                 }
             );
         default:

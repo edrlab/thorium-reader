@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancelar",
+            "disableTooltips": "",
             "disclaimer": "Os atallos definíronse a partir da distribución do teclado QWERTY.",
             "editUserJson": "Editar arquivo de usuario",
             "exportToHTML": "",

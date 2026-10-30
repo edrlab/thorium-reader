@@ -1118,6 +1118,7 @@
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancel·lar",
+            "disableTooltips": "",
             "disclaimer": "Les dreceres es van definir a partir de la disposició de teclat QWERTY.",
             "editUserJson": "Editar arxiu d'usuari",
             "exportToHTML": "",

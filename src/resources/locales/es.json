@@ -1118,6 +1118,7 @@
         "keyboard": {
             "advancedMenu": "Menú avanzado de atajos de teclado",
             "cancel": "Cancelar",
+            "disableTooltips": "",
             "disclaimer": "Los predeterminados de la aplicación se diseñó en función de la ubicación física de las teclas en un teclado QWERTY.",
             "editUserJson": "Editar archivo de usuario...",
             "exportToHTML": "Exportar a HTML",

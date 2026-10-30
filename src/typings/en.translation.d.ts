@@ -2978,6 +2978,7 @@ declare namespace typed_i18n {
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
+    readonly "disableTooltips": string,
     readonly "disclaimer": string,
     readonly "editUserJson": string,
     readonly "exportToHTML": string,
@@ -3379,6 +3380,7 @@ declare namespace typed_i18n {
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
   readonly "cancel": string,
+  readonly "disableTooltips": string,
   readonly "disclaimer": string,
   readonly "editUserJson": string,
   readonly "exportToHTML": string,
@@ -3633,6 +3635,7 @@ declare namespace typed_i18n {
 };
   (_: "settings.keyboard.advancedMenu", __?: {}): string;
   (_: "settings.keyboard.cancel", __?: {}): string;
+  (_: "settings.keyboard.disableTooltips", __?: {}): string;
   (_: "settings.keyboard.disclaimer", __?: {}): string;
   (_: "settings.keyboard.editUserJson", __?: {}): string;
   (_: "settings.keyboard.exportToHTML", __?: {}): string;

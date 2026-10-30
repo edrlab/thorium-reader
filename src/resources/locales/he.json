@@ -1118,6 +1118,7 @@
         "keyboard": {
             "advancedMenu": "",
             "cancel": "",
+            "disableTooltips": "",
             "disclaimer": "",
             "editUserJson": "",
             "exportToHTML": "",

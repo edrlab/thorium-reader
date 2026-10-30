@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Meny",
             "cancel": "Avbryt",
+            "disableTooltips": "",
             "disclaimer": "Programmets standardinnstillinger er utformet med utgangspunkt i den fysiske plasseringen av tastene på et QWERTY-tastatur",
             "editUserJson": "Rediger brukerfil...",
             "exportToHTML": "Eksporter som HTML",

@@ -1139,6 +1139,7 @@
         "keyboard": {
             "advancedMenu": "قائمة متقدمة لاختصارات لوحة المفاتيح",
             "cancel": "إلغاء",
+            "disableTooltips": "",
             "disclaimer": "تم تصميم الإعدادات الافتراضية للتطبيق بناءً على تخطيط لوحة مفاتيح كويرتي (QWERTY)",
             "editUserJson": "تحرير ملف المستخدم...",
             "exportToHTML": "تصدير إلى HTML",

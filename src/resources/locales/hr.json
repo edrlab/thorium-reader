@@ -1118,6 +1118,7 @@
         "keyboard": {
             "advancedMenu": "Izbornik",
             "cancel": "Poništi",
+            "disableTooltips": "",
             "disclaimer": "",
             "editUserJson": "Uredi dokument korisnika...",
             "exportToHTML": "",

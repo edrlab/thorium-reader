@@ -9,20 +9,24 @@ import debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithDestination, ActionWithReaderPublicationIdentifierDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
-    apiActions, authActions, catalogActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
-    publicationActions, themeActions,
-    readerActions, sessionActions, toastActions, versionUpdateActions,
-    creatorActions,
     annotationActions,
-    noteExport,
+    apiActions, authActions, catalogActions,
+    creatorActions,
     customizationActions,
-    screenReaderActions,
+    dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
+    noteExport,
     opdsActions,
+    publicationActions,
+    readerActions,
+    screenReaderActions,
+    sessionActions,
     settingsActions,
+    themeActions,
+    toastActions, versionUpdateActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
-import { UnknownAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
+import { Dispatch, Middleware, MiddlewareAPI, UnknownAction } from "redux";
 
 import { RootState } from "../states";
 import { getToastDestination } from "./toastDestination";
@@ -47,6 +51,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     keyboardActions.setShortcuts.ID,
     keyboardActions.showShortcuts.ID,
     keyboardActions.reloadShortcuts.ID,
+    keyboardActions.disableKeyboardShortcutsTooltips.ID,
 
     toastActions.openRequest.ID,
     toastActions.closeRequest.ID,
@@ -82,6 +87,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     creatorActions.set.ID,
 
     settingsActions.disableGoogleAnalyticsTelemetry.ID,
+    settingsActions.disableKeyboardShortcutsTooltips.ID,
     settingsActions.keepLibraryWindowInBackgroundOnReaderClose.ID,
     settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.ID,
     settingsActions.minimizeLibraryToTray.ID,
