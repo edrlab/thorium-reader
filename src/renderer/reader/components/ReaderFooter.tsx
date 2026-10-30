@@ -5,45 +5,42 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
-
-import debounce from "debounce";
-
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
 // import * as ForwardIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
 // import * as ForwardIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
-import * as BackIcon from "readium-desktop/renderer/assets/icons/backward-icon.svg";
-import * as ForwardIcon from "readium-desktop/renderer/assets/icons/forward-icon.svg";
-
-import classNames from "classnames";
-import * as React from "react";
-import { isAudiobookFn } from "readium-desktop/common/isManifestType";
-import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
-import { formatTime } from "readium-desktop/common/utils/time";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import {
-    TKeyboardEventOnAnchor, TMouseEventOnAnchor, TMouseEventOnSpan,
-} from "readium-desktop/typings/react";
-
-import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
+import classNames from "classnames";
+import debounce from "debounce";
+import * as React from "react";
 import { Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
-import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
-import { TDispatch } from "readium-desktop/typings/redux";
-import { publicationActions } from "readium-desktop/common/redux/actions";
 import { connect } from "react-redux";
-import { PublicationView } from "readium-desktop/common/views/publication";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { logEvent } from "readium-desktop/renderer/common/analytics";
-import { getReadiumPositionProgression } from "readium-desktop/common/readium/positions";
+import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
+import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import type { IReadiumPositionList } from "readium-desktop/common/readium/positions";
+import { getReadiumPositionProgression } from "readium-desktop/common/readium/positions";
+import { publicationActions } from "readium-desktop/common/redux/actions";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { formatTime } from "readium-desktop/common/utils/time";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import * as BackIcon from "readium-desktop/renderer/assets/icons/backward-icon.svg";
+import * as ForwardIcon from "readium-desktop/renderer/assets/icons/forward-icon.svg";
+import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
+import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import {
+    TKeyboardEventOnAnchor, TMouseEventOnAnchor, TMouseEventOnSpan,
+} from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
     if (link && link.Properties) {
@@ -205,7 +202,10 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 // !this.props.fullscreen &&
                         <nav className={stylesReaderFooter.history}
                             role="navigation"
-                            aria-label={this.props.__("reader.navigation.history")}>
+                        aria-label={this.props.__("reader.navigation.history")}>
+
+                        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                        <Focusable excludeFromTabOrder>
                             <button
                                 className={leftHistoryButtonEnabled ? undefined : stylesReaderFooter.disabled}
                                 aria-disabled={leftHistoryButtonEnabled ? undefined : true}
@@ -227,6 +227,17 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             >
                                 <SVG ariaHidden={true} svg={BackIcon} />
                             </button>
+                        </Focusable>
+                        <ToolTippy
+                            noReveal={true}
+                            placement="top"
+                            label={ undefined }
+                            tooltipkeyboardShortcuts={[!isRTL ? this.props.keyboardShortcuts.NavigatePreviousHistory : this.props.keyboardShortcuts.NavigateNextHistory]}
+                            tooltipkeyboardShortcutsNames={[!isRTL ? __("settings.keyboard.list.NavigatePreviousHistory.name") : __("settings.keyboard.list.NavigateNextHistory.name")]}
+                            tooltipkeyboardShortcutsDescriptions={[!isRTL ? __("settings.keyboard.list.NavigatePreviousHistory.description") : __("settings.keyboard.list.NavigateNextHistory.description")]} />
+                        </TooltipTrigger>
+                        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                        <Focusable excludeFromTabOrder>
                             <button
                                 className={rightHistoryButtonEnabled ? undefined : stylesReaderFooter.disabled}
                                 aria-disabled={rightHistoryButtonEnabled ? undefined : true}
@@ -248,6 +259,15 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             >
                                 <SVG ariaHidden={true} svg={ForwardIcon} />
                             </button>
+                        </Focusable>
+                        <ToolTippy
+                            noReveal={true}
+                            placement="top"
+                            label={ undefined }
+                            tooltipkeyboardShortcuts={[isRTL ? this.props.keyboardShortcuts.NavigatePreviousHistory : this.props.keyboardShortcuts.NavigateNextHistory]}
+                            tooltipkeyboardShortcutsNames={[isRTL ? __("settings.keyboard.list.NavigatePreviousHistory.name") : __("settings.keyboard.list.NavigateNextHistory.name")]}
+                            tooltipkeyboardShortcutsDescriptions={[isRTL ? __("settings.keyboard.list.NavigatePreviousHistory.description") : __("settings.keyboard.list.NavigateNextHistory.description")]} />
+                        </TooltipTrigger>
                         </nav>
                 }
                 {/* {!isAudioBook &&
@@ -762,6 +782,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
+        keyboardShortcuts: state.keyboard.shortcuts,
         readerConfig: state.reader.config,
         r2Publication: state.reader.info.r2Publication,
         locale: state.i18n.locale, // refresh

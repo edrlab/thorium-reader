@@ -612,7 +612,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                 // style={{ border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)" }}
                                             >
                                             <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
-                                                <p>{cdesc}</p>
+                                            <p className={"tooltipKeyboardShortcut_p"}>{cdesc}</p>
                                             </Tooltip>
                                         </TooltipTrigger>
                                         : ""

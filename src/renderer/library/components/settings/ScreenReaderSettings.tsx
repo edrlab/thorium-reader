@@ -6,9 +6,8 @@
 // ==LICENSE-END==
 
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
-import classNames from "classnames";
 import * as React from "react";
-import { Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
+import { Focusable, TooltipTrigger } from "react-aria-components";
 import { screenReaderActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
@@ -17,12 +16,12 @@ import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-ic
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import { PrettifyKeyboardShortcut } from "readium-desktop/renderer/common/components/Keyboard";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
+// import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
 import { logAppSettingModified } from "./analytics";
 
 const ScreenReaderSettings: React.FC<{}> = () => {
@@ -38,7 +37,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
         logAppSettingModified("screenreader", nextScreenReaderActivate);
     };
     const keyboardShortcuts = useSelector((state: ILibraryRootState) => state.keyboard.shortcuts);
-    const keyboardShortcutScreenReaderOptimize = textualizeKeyboardShortcut(keyboardShortcuts.ToggleScreenReaderOptimize);
+    // const keyboardShortcutScreenReaderOptimize = textualizeKeyboardShortcut(keyboardShortcuts.ToggleScreenReaderOptimize);
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.message")}</h3>
@@ -55,7 +54,8 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                         tabIndex={0}
                         role="checkbox"
                         aria-checked={screenReaderActivate}
-                        aria-label={__("settings.screenReaderActivate.title") + ` [${keyboardShortcutScreenReaderOptimize}]` + ` (${__("settings.keyboard.list.ToggleScreenReaderOptimize.name")})` + ` <${__("settings.keyboard.list.ToggleScreenReaderOptimize.description")}>`}
+                        // aria-label={__("settings.screenReaderActivate.title") + ` [${keyboardShortcutScreenReaderOptimize}]` + ` (${__("settings.keyboard.list.ToggleScreenReaderOptimize.name")})` + ` <${__("settings.keyboard.list.ToggleScreenReaderOptimize.description")}>`}
+                        aria-label={__("settings.screenReaderActivate.title")}
                         onKeyDown={(e) => {
                             // if (e.code === "Space") {
                             if (e.key === " ") {
@@ -79,13 +79,14 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                     </div>
                     <span aria-hidden dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</span>
                     </label>
-                </Focusable>
-                <Tooltip placement="top" offset={0} className={classNames("tooltipKeyboardShortcut")}>
-                <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
-                <p><PrettifyKeyboardShortcut hideFromScreenReaders={false} def={keyboardShortcuts.ToggleScreenReaderOptimize} /></p>
-                <p>{__("settings.keyboard.list.ToggleScreenReaderOptimize.name")}</p>
-                <p>{__("settings.keyboard.list.ToggleScreenReaderOptimize.description")}</p>
-                </Tooltip>
+                    </Focusable>
+                    <ToolTippy
+                        noReveal={true}
+                        placement="bottom"
+                        label={ undefined }
+                        tooltipkeyboardShortcuts={[keyboardShortcuts.ToggleScreenReaderOptimize]}
+                        tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.ToggleScreenReaderOptimize.name")]}
+                        tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.ToggleScreenReaderOptimize.description")]} />
                 </TooltipTrigger>
             </div>
         </section>

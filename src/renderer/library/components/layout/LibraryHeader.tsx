@@ -251,24 +251,23 @@ const Header = () => {
 
     const displayScreenReaderInvite = !screenReaderActivate && isAccessibilitySupportEnabled;
 
-    //
     return (<>
         {displayScreenReaderInvite ? <SkipLink
             className={stylesHeader.skip_link}
             anchorId="xxx"
             label={__("settings.screenReaderActivate.invite")}
             onClick={screenReaderToggle}
-            tooltipkeyboardShortcut={keyboardShortcuts.ToggleScreenReaderOptimize}
-            tooltipkeyboardShortcutName={__("settings.keyboard.list.ToggleScreenReaderOptimize.name")}
-            tooltipkeyboardShortcutDescription={ __("settings.keyboard.list.ToggleScreenReaderOptimize.description") }
+            tooltipkeyboardShortcuts={[keyboardShortcuts.ToggleScreenReaderOptimize]}
+            tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.ToggleScreenReaderOptimize.name")]}
+            tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.ToggleScreenReaderOptimize.description")]}
         /> : <></>}
         <SkipLink
             className={stylesHeader.skip_link}
             anchorId="main-content"
             label={__("accessibility.skipLink")}
-            tooltipkeyboardShortcut={ keyboardShortcuts.FocusMain }
-            tooltipkeyboardShortcutName={__("settings.keyboard.list.FocusMain.name")}
-            tooltipkeyboardShortcutDescription={ __("settings.keyboard.list.FocusMain.description") }
+            tooltipkeyboardShortcuts={[keyboardShortcuts.FocusMain]}
+            tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.FocusMain.name")]}
+            tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.FocusMain.description")]}
         />
 
         <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>

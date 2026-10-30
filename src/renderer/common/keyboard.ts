@@ -382,6 +382,6 @@ export function toUpperIfSimpleLowerCase(char: string): string {
 }
 export function textualizeKeyboardShortcut(def: TKeyboardShortcut) {
     const key = toUpperIfSimpleLowerCase(applyKeyboardLayoutMap(def.key));
-    return `${def.shift ? "SHIFT " : ""}${def.control ? "CTRL " : ""}${def.alt ? (DETECTED_OS === "MacOS" ? "OPTION " : "ALT ") : ""}${def.meta ? (DETECTED_OS === "MacOS" ? "COMMAND" : "META") : ""}${(def.shift || def.control || def.alt || def.meta) ? "+ " : ""}${key}`;
+    return `${def.shift ? "SHIFT " : ""}${def.control ? "CTRL " : ""}${def.alt ? (DETECTED_OS === "MacOS" ? "OPTION " : "ALT ") : ""}${def.meta ? (DETECTED_OS === "MacOS" ? "COMMAND" : "META") : ""}${(def.shift || def.control || def.alt || def.meta) ? " " : ""}${key}`;
     // return `${(def.shift ? "SHIFT " : "") + (def.control ? "CTRL " : "") + (def.alt ? "ALT/OPT " : "") + (def.meta ? "META/CMD " : "") + def.key}`;
 }
