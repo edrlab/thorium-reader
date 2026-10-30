@@ -30,7 +30,7 @@ import { isCancellableHold } from "readium-desktop/renderer/library/opds/holds";
 import { CancelHold } from "./CancelHold";
 import { BorrowButton } from "./BorrowButton";
 import OpdsLinkProperties from "./OpdsLinkProperties";
-import { ContentType } from "readium-desktop/utils/contentType";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import { isDownloadUrlActive } from "readium-desktop/renderer/library/opds/download";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -69,6 +69,19 @@ export class OpdsControls extends React.Component<IProps, undefined> {
         const boxStyle = { minHeight: "50px", height: "fit-content", padding: "0.4em", paddingTop: "0.2em", marginBottom: "0.5em", marginTop: "0.4em", fontSize: "14px" };
 
         const m = findMimeTypeWithExtension(ADOBE_ADEPT_XML);
+        const isManifestImportDisabled = (link: IOpdsLinkView, links: IOpdsLinkView[]) => {
+            const type = parseContentType(link.type);
+            return (type === ContentType.webpub || type === ContentType.AudioBook)
+                && links.some((candidate) => {
+                    const acquisitionType = candidate.properties?.indirectAcquisitionTypes;
+                    return [candidate.type, acquisitionType?.top, acquisitionType?.child].some((value) => {
+                        const candidateType = parseContentType(value);
+                        return candidateType === ContentType.Lcp
+                            || candidateType === ContentType.AudioBookPackedLcp
+                            || candidateType === ContentType.lcppdf;
+                    });
+                });
+        };
         const orderLinks = (links: IOpdsLinkView[]) => {
             return Array.from(links).sort((a, b) => {
                 if (a.properties?.indirectAcquisitionTypes?.top === m
@@ -117,7 +130,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     }
                                 }}
                                 className={feedLinksList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
-                                disabled={openAccessButtonIsDisabled(ln.url)}
+                                disabled={openAccessButtonIsDisabled(ln.url)
+                                    || isManifestImportDisabled(ln, opdsPublicationView.openAccessLinks)}
                                 title={ln.title || __("catalog.addBookToLib")}
                             >
                                 {`${__("catalog.addBookToLib")}${typeStr(ln)}`}
@@ -153,7 +167,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     }
                                 }}
                                 className={stylesButtons.button_secondary}
-                                disabled={sampleButtonIsDisabled(ln.url)}
+                                disabled={sampleButtonIsDisabled(ln.url)
+                                    || isManifestImportDisabled(ln, opdsPublicationView.sampleOrPreviewLinks)}
                                 title={ln.title || __("opds.menu.addExtract")}
                             >
                                 <SVG ariaHidden={true} svg={ImportIcon} />
