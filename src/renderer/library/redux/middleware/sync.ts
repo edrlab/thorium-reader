@@ -88,6 +88,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     customizationActions.deleteProfile.ID,
 
     authActions.logout.ID,
+    authActions.submit.ID,
 
     opdsActions.refresh.ID,
 

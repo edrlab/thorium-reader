@@ -9,6 +9,7 @@ import * as stylesColumns from "readium-desktop/renderer/assets/styles/component
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
+import { AuthenticationForm } from "./AuthenticationForm";
 import * as React from "react";
 import { VisuallyHidden } from "react-aria-components";
 import { connect } from "react-redux";
@@ -63,7 +64,15 @@ export class BrowserResult extends React.Component<IProps, undefined> {
         } else if (browserData?.result) {
             const browserResult = browserData.result;
 
-            if (browserResult?.data?.problemDetails) {
+            if (browserResult?.data?.opds?.auth?.credentialsUrl) {
+                status = __("catalog.opds.auth.login");
+                content = <>
+                    <h2>{browserResult.data.opds.title || status}</h2>
+                    <AuthenticationForm key={browserResult.data.opds.auth.credentialsUrl} auth={browserResult.data.opds.auth} __={__} />
+                </>;
+            } else if (browserResult?.data?.opds?.auth) {
+                content = message(__("catalog.opds.auth.login"), __("catalog.opds.auth.external"));
+            } else if (browserResult?.data?.problemDetails) {
                 const { data: { problemDetails: {
                     type,
                     title,

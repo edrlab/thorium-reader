@@ -208,7 +208,7 @@ export function* browse(urlRaw: string, method: "GET" | "DELETE" = "GET"): SagaG
             // Web catalogs are routed by the library renderer to the system browser.
             // Keep the successful response metadata (notably the final response URL),
             // but do not attempt to parse the HTML body as OPDS.
-            if (contentType === ContentType.Html) {
+            if (contentType === ContentType.Html && data.isSuccess) {
                 return data;
             }
 

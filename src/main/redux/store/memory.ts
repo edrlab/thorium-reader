@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { sanitize as sanitizeAuthenticationAction } from "readium-desktop/common/redux/actions/auth/submit";
 import debug_ from "debug";
 import * as fs from "node:fs";
 import {
@@ -1026,6 +1027,7 @@ export async function initStore()
     const middleware = __TH__IS_DEV__ ? require("remote-redux-devtools").composeWithDevTools(
         {
             port: REDUX_REMOTE_DEVTOOLS_PORT,
+            actionSanitizer: sanitizeAuthenticationAction,
         },
     )(mware) : mware;
 

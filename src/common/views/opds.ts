@@ -127,6 +127,9 @@ export interface IOpdsFacetView {
 }
 
 export interface IOpdsAuthView {
+    credentialsUrl?: string;
+    registerUrl?: string;
+    helpUrls?: string[];
     logoImageUrl: string;
 
     labelLogin: string;

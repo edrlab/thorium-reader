@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { isOpdsCredentialAuthenticationType, OPDS_AUTHENTICATION_TYPES, TAuthenticationType } from "readium-desktop/common/opdsAuthentication";
 import debug_ from "debug";
 import { inject, injectable } from "inversify";
 import moment from "moment";
@@ -665,7 +666,7 @@ export class OpdsFeedViewConverter {
         const title = r2OpdsAuth.Title;
         let logoImageUrl: string | undefined;
 
-        const logoLink = r2OpdsAuth.Links.find(
+        const logoLink = r2OpdsAuth.Links?.find(
             (l) =>
                 l.Rel && l.Rel.includes("logo"));
 
@@ -673,9 +674,8 @@ export class OpdsFeedViewConverter {
             logoImageUrl = urlPathResolve(baseUrl, logoLink.Href);
         }
 
-        const oauth = r2OpdsAuth.Authentication.find(
-            (a) =>
-                a.Type === "http://opds-spec.org/auth/oauth/password");
+        const selected = r2OpdsAuth.Authentication.find(a => OPDS_AUTHENTICATION_TYPES.includes(a.Type as TAuthenticationType));
+        const oauth = selected && isOpdsCredentialAuthenticationType(selected.Type) ? selected : undefined;
 
         let labelLogin: string | undefined;
         let labelPassword: string | undefined;
@@ -702,7 +702,19 @@ export class OpdsFeedViewConverter {
                 }
             }
         }
+        const externalUrl = (href: string | undefined) => {
+            if (!href) return undefined;
+            try {
+                const url = new URL(href, baseUrl);
+                return /^https?:$/.test(url.protocol) ? url.toString() : undefined;
+            } catch {
+                return undefined;
+            }
+        };
         const auth: IOpdsAuthView = {
+            credentialsUrl: oauth ? baseUrl : undefined,
+            registerUrl: externalUrl(r2OpdsAuth.Links?.find(link => link.Rel?.includes("register"))?.Href),
+            helpUrls: r2OpdsAuth.Links?.filter(link => link.Rel?.includes("help")).map(link => externalUrl(link.Href)).filter(Boolean),
             logoImageUrl,
 
             labelLogin,

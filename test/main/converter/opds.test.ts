@@ -25,6 +25,7 @@ jest.mock("readium-desktop/main/db/repository/publication", () => ({
 }));
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSGroup } from "@r2-opds-js/opds/opds2/opds2-group";
@@ -422,5 +423,46 @@ describe("OPDS hold cancellation properties", () => {
         expect(result.cancellable).toBe(expected);
         expect(result.availabilityState).toBe("reserved");
         expect(result.holdPosition).toBe(52);
+    });
+});
+
+
+describe("inline OPDS authentication", () => {
+    it.each(["basic", "digest", "local", "oauth/password", "oauth/password/apiapp"])("exposes a %s form without requiring document links", (type) => {
+        const doc = TaJsonDeserialize({
+            id: "catalog", title: "Sign in",
+            authentication: [{ type: `http://opds-spec.org/auth/${type}`, labels: { login: "Account", password: "Secret" } }],
+        }, OPDSAuthenticationDoc);
+        const result = createConverter().convertOpdsAuthToView(doc, baseUrl);
+        expect(result.auth.credentialsUrl).toBe(baseUrl);
+        expect(result.auth.labelLogin).toBe("Account");
+        expect(result.auth.labelPassword).toBe("Secret");
+    });
+
+    it("keeps the selected web flow when a document also advertises password authentication", () => {
+        const doc = TaJsonDeserialize({
+            id: "catalog", title: "Sign in",
+            authentication: [
+                { type: "http://opds-spec.org/auth/oauth/authorization-code-pkce" },
+                { type: "http://opds-spec.org/auth/basic" },
+            ],
+        }, OPDSAuthenticationDoc);
+        expect(createConverter().convertOpdsAuthToView(doc, baseUrl).auth.credentialsUrl).toBeUndefined();
+    });
+});
+
+
+describe("HTTP credential challenges", () => {
+    it.each(['Basic realm="Catalog"', 'Digest realm="Catalog", nonce="nonce", qop="auth"'])("renders %s in the OPDS result", async (challenge) => {
+        const service = new OpdsService();
+        const dispatchAuthenticationProcess = jest.fn();
+        Object.assign(service, { opdsFeedViewConverter: createConverter(), dispatchAuthenticationProcess });
+        const result = await service.opdsRequestTransformer({
+            url: baseUrl, responseUrl: baseUrl,
+            contentType: ContentType.Html, statusCode: 401, isFailure: true, isSuccess: false,
+            response: { headers: { get: (name: string) => name === "WWW-Authenticate" ? challenge : undefined } },
+        } as unknown as IHttpGetResult<IOpdsResultView>);
+        expect(result.auth.credentialsUrl).toBe(baseUrl);
+        expect(dispatchAuthenticationProcess).toHaveBeenCalledTimes(1);
     });
 });
