@@ -21,6 +21,7 @@ import { IOpdsBrowse, resolveDisplayType, routes } from "readium-desktop/rendere
 interface IBaseProps {
     level?: number;
     entry: IOpdsNavigationLinkView;
+    variant?: "facet" | "list";
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -39,7 +40,7 @@ class Entry extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { entry } = this.props;
 
-        const { level } = this.props;
+        const { level, variant } = this.props;
 
         const rootFeedIdentifier = matchPath<keyof IOpdsBrowse, string>(
             routes["/opds/browse"].path,
@@ -52,6 +53,12 @@ class Entry extends React.Component<IProps, undefined> {
             entry.url,
             level,
         );
+
+        const getInitial = (title: string): string => {
+    // première lettre ou chiffre, en ignorant guillemets, parenthèses, etc.
+    const match = title?.match(/[\p{L}\p{N}]/u);
+    return match ? match[0].toLocaleUpperCase() : "•";
+};
 
         return (
             <Link
@@ -85,6 +92,11 @@ class Entry extends React.Component<IProps, undefined> {
                     }
                 }}
             >
+                {variant === "list" ?
+        <span className={stylesCatalogs.entryInitial} aria-hidden="true">
+            {getInitial(entry.title)}
+        </span>
+    : <></>}
                 <span>
                     <span title={entry.subtitle ? entry.subtitle : entry.title}>{entry.title}</span>
                     {

@@ -1,102 +1,110 @@
 @use "sass:map";
 @use '../partials/mixin' as mx;
 
-$catalog-card-colors-light: (
-    "gray": (
-        foreground: rgb(25% 25% 25%),
-        background-start: rgb(92% 92% 92%),
-        background-end: rgb(78% 78% 78%),
-    ),
-    "red": (
-        foreground: rgb(55% 5% 5%),
-        background-start: rgb(100% 85% 85%),
-        background-end: rgb(95% 65% 65%),
-    ),
-    "yellow": (
-        foreground: rgb(50% 40% 0%),
-        background-start: rgb(100% 96% 80%),
-        background-end: rgb(100% 88% 55%),
-    ),
-    "blue": (
-        foreground: rgb(5% 15% 50%),
-        background-start: rgb(82% 90% 100%),
-        background-end: rgb(55% 70% 95%),
-    ),
-    "green": (
-        foreground: rgb(5% 40% 15%),
-        background-start: rgb(82% 96% 85%),
-        background-end: rgb(55% 85% 60%),
-    ),
-    "purple": (
-        foreground: rgb(35% 10% 50%),
-        background-start: rgb(92% 85% 100%),
-        background-end: rgb(75% 60% 95%),
-    ),
-    "orange": (
-        foreground: rgb(55% 25% 0%),
-        background-start: rgb(100% 92% 80%),
-        background-end: rgb(100% 75% 45%),
-    ),
-    "pink": (
-        foreground: rgb(55% 5% 30%),
-        background-start: rgb(100% 85% 92%),
-        background-end: rgb(95% 65% 80%),
-    ),
+$entry-card-colors-light: (
+    "gray":   ("start": #f1f2f4, "end": #c9cdd3),
+    "red":    ("start": #f6eae5, "end": #d7a999), // terracotta
+    "yellow": ("start": #f5efe2, "end": #d9c79b), // sable
+    "green":  ("start": #e9f0ea, "end": #a9c2ae), // sauge
+    "teal":   ("start": #e5f0f0, "end": #9cc3c3),
+    "blue":   ("start": #e8eef5, "end": #a9bcd3), // ardoise
+    "purple": ("start": #eeebf4, "end": #b9afd0), // lavande
+    "pink":   ("start": #f4e9ec, "end": #cfa7b3), // rose poudré
 );
-$catalog-card-colors-dark: (
-    "gray": (
-        foreground: rgb(85% 85% 85%),
-        background-start: rgb(30% 30% 30%),
-        background-end: rgb(18% 18% 18%),
-    ),
-    "red": (
-        foreground: rgb(100% 75% 75%),
-        background-start: rgb(45% 10% 10%),
-        background-end: rgb(30% 5% 5%),
-    ),
-    "yellow": (
-        foreground: rgb(100% 92% 60%),
-        background-start: rgb(45% 38% 8%),
-        background-end: rgb(30% 25% 2%),
-    ),
-    "blue": (
-        foreground: rgb(70% 82% 100%),
-        background-start: rgb(12% 22% 50%),
-        background-end: rgb(5% 12% 32%),
-    ),
-    "green": (
-        foreground: rgb(70% 100% 78%),
-        background-start: rgb(8% 35% 15%),
-        background-end: rgb(2% 22% 8%),
-    ),
-    "purple": (
-        foreground: rgb(85% 72% 100%),
-        background-start: rgb(30% 15% 50%),
-        background-end: rgb(18% 8% 32%),
-    ),
-    "orange": (
-        foreground: rgb(100% 85% 65%),
-        background-start: rgb(50% 28% 5%),
-        background-end: rgb(32% 15% 0%),
-    ),
-    "pink": (
-        foreground: rgb(100% 75% 88%),
-        background-start: rgb(45% 10% 28%),
-        background-end: rgb(28% 5% 15%),
-    ),
+$entry-card-colors-dark: (
+    "gray":   ("start": #2a2d31, "end": #4a4f56),
+    "red":    ("start": #3b2a25, "end": #835545),
+    "yellow": ("start": #38321f, "end": #7c6c3a),
+    "green":  ("start": #26332a, "end": #50705a),
+    "teal":   ("start": #223536, "end": #3f7375),
+    "blue":   ("start": #243040, "end": #4e6785),
+    "purple": ("start": #2e2a3e, "end": #685c8c),
+    "pink":   ("start": #3a2830, "end": #81505f),
 );
 
-@mixin catalog-card-color-variables($colors) {
-    --catalog-card-foreground: #{map.get($colors, foreground)};
-    --catalog-card-background-start: #{map.get($colors, background-start)};
-    --catalog-card-background-end: #{map.get($colors, background-end)};
+@mixin entry-card-color-variables($colors) {
+    --entry-card-background-start: #{map.get($colors, "start")};
+    --entry-card-background-end: #{map.get($colors, "end")};
 }
 
-@mixin catalog-card-color($color-set) {
+@mixin entry-card-color($color-set) {
     @each $name, $colors in $color-set {
         &[data-color="#{$name}"] {
-            @include catalog-card-color-variables($colors);
+            @include entry-card-color-variables($colors);
         }
+    }
+}
+
+@mixin entry-card-themes {
+    @include entry-card-color-variables(map.get($entry-card-colors-light, "gray"));
+    @include entry-card-color($entry-card-colors-light);
+
+    [data-theme="dark"] & {
+        @include entry-card-color-variables(map.get($entry-card-colors-dark, "gray"));
+        @include entry-card-color($entry-card-colors-dark);
+    }
+
+    [data-theme="system"] & {
+        @media (prefers-color-scheme: dark) {
+            @include entry-card-color-variables(map.get($entry-card-colors-dark, "gray"));
+            @include entry-card-color($entry-card-colors-dark);
+        }
+    }
+}
+
+@mixin entry-card-base {
+    @include entry-card-themes;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 12px;
+    text-decoration: none;
+    transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        background-color 0.15s ease,
+        box-shadow 0.15s ease;
+
+    a {
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        margin: 0 !important;
+        color: inherit;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.3;
+        text-decoration: none;
+        outline: none;
+
+        span {
+            display: -webkit-box;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        &[aria-current="page"] {
+            background-color: var(--color-brand-secondary);
+            color: var(--color-brand-primary);
+            font-weight: 700;
+        }
+    }
+
+    // Accessibilité clavier
+    &:focus-within {
+        box-shadow: 0 0 0 2px var(--color-brand-primary);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
     }
 }
 
@@ -124,18 +132,18 @@ $catalog-card-colors-dark: (
         position: relative;
         transition: 200ms ease-in-out;
 
-        @include catalog-card-color-variables(map.get($catalog-card-colors-light, "gray"));
-        @include catalog-card-color($catalog-card-colors-light);
+        @include entry-card-color-variables(map.get($entry-card-colors-light, "gray"));
+        @include entry-card-color($entry-card-colors-light);
 
         [data-theme="dark"] & {
-            @include catalog-card-color-variables(map.get($catalog-card-colors-dark, "gray"));
-            @include catalog-card-color($catalog-card-colors-dark);
+            @include entry-card-color-variables(map.get($entry-card-colors-dark, "gray"));
+            @include entry-card-color($entry-card-colors-dark);
         }
 
         [data-theme="system"] & {
             @media (prefers-color-scheme: dark) {
-                @include catalog-card-color-variables(map.get($catalog-card-colors-dark, "gray"));
-                @include catalog-card-color($catalog-card-colors-dark);
+                @include entry-card-color-variables(map.get($entry-card-colors-dark, "gray"));
+                @include entry-card-color($entry-card-colors-dark);
             }
         }
     }
@@ -144,7 +152,7 @@ $catalog-card-colors-dark: (
         border-radius: 6px;
         border-width: 1px;
         border-style: solid;
-        border-color: var(--catalog-card-background-end);
+        border-color: var(--entry-card-background-end);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -164,15 +172,15 @@ $catalog-card-colors-dark: (
             top: -8px;
             right: -10px;
             border-radius: 6px;
-            border-right: 1px solid var(--catalog-card-background-end);
-            border-top: 1px solid var(--catalog-card-background-end);
+            border-right: 1px solid var(--entry-card-background-end);
+            border-top: 1px solid var(--entry-card-background-end);
         }
 
         .catalog_color_band {
             width: 100%;
             height: 50px;
-            background: linear-gradient(135deg, var(--catalog-card-background-start), var(--catalog-card-background-end));
-            border-bottom: 1px solid var(--catalog-card-background-end);
+            background: linear-gradient(135deg, var(--entry-card-background-start), var(--entry-card-background-end));
+            border-bottom: 1px solid var(--entry-card-background-end);
             position: absolute;
             top: 2px;
             pointer-events: none;
@@ -206,7 +214,7 @@ $catalog-card-colors-dark: (
             }
 
             svg {
-                color: var(--catalog-card-foreground);
+                color: var(--entry-card-foreground);
             }
 
             .catalog_icon_image {
@@ -219,18 +227,21 @@ $catalog-card-colors-dark: (
                 padding-right: 10px;
                 top: 35px;
                 left: -10px;
-                color: var(--catalog-card-foreground);
+                color: var(--entry-card-foreground);
                 overflow-wrap: anywhere;
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-line-clamp: 4;
-                        line-clamp: 4;
+                line-clamp: 4;
                 -webkit-box-orient: vertical;
             }
         }
     }
 
-    .button_edit, .button_delete, .button_login, .button_favorites {
+    .button_edit,
+    .button_delete,
+    .button_login,
+    .button_favorites {
         position: absolute;
         bottom: 10px;
         color: var(--color-brand-primary);
@@ -283,7 +294,7 @@ $catalog-card-colors-dark: (
         @include mx.R2_MIXIN_FOCUS_OUTLINE;
     }
 
-    > div {
+    >div {
         input {
             position: absolute;
             z-index: -1;
@@ -302,21 +313,21 @@ $catalog-card-colors-dark: (
     justify-content: center;
     border-radius: 5px;
     cursor: pointer;
-    color: var(--catalog-card-foreground);
-    background: linear-gradient(135deg, var(--catalog-card-background-start), var(--catalog-card-background-end));
+    color: var(--entry-card-foreground);
+    background: linear-gradient(135deg, var(--entry-card-background-start), var(--entry-card-background-end));
 
-    @include catalog-card-color-variables(map.get($catalog-card-colors-light, "gray"));
-    @include catalog-card-color($catalog-card-colors-light);
+    @include entry-card-color-variables(map.get($entry-card-colors-light, "gray"));
+    @include entry-card-color($entry-card-colors-light);
 
     [data-theme="dark"] & {
-        @include catalog-card-color-variables(map.get($catalog-card-colors-dark, "gray"));
-        @include catalog-card-color($catalog-card-colors-dark);
+        @include entry-card-color-variables(map.get($entry-card-colors-dark, "gray"));
+        @include entry-card-color($entry-card-colors-dark);
     }
 
     [data-theme="system"] & {
         @media (prefers-color-scheme: dark) {
-            @include catalog-card-color-variables(map.get($catalog-card-colors-dark, "gray"));
-            @include catalog-card-color($catalog-card-colors-dark);
+            @include entry-card-color-variables(map.get($entry-card-colors-dark, "gray"));
+            @include entry-card-color($entry-card-colors-dark);
         }
     }
 
@@ -327,11 +338,11 @@ $catalog-card-colors-dark: (
     svg {
         width: 16px;
         height: 16px;
-        color: var(--catalog-card-foreground);
+        color: var(--entry-card-foreground);
     }
 }
 
-.entryList{
+.entryList {
     &_ul {
         list-style-type: none;
         padding: 10px 0 0;
@@ -343,63 +354,111 @@ $catalog-card-colors-dark: (
     }
 
     &_item {
-        border-radius: 6px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: var(--color-gray-300);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 250px;
-        height: 70px;
-        text-decoration: none;
-        box-shadow: 0 2px 15px rgb(0 0 0 / 0%);
-        transition: all 0.3s;
-        position: relative;
+        @include entry-card-base;
 
-        &::after {
-            content: "";
-            z-index: -1;
-            width: inherit;
-            height: 100%;
-            position: absolute;
-            top: -8px;
-            right: -10px;
-            border-radius: 6px;
-            border-right: 1px solid var(--color-gray-300);
-            border-top: 1px solid var(--color-gray-300);
-        }
+        justify-content: center;
+        width: 200px;
+        min-height: 56px;
+        background: var(--entry-card-background-start);
+        border: 1px solid color-mix(in srgb, var(--entry-card-background-end) 55%, transparent);
 
         a {
-            width: 100%;
-            height: calc(100% - 15px);
-            align-self: center;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 400;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            box-sizing: border-box;
+            padding: 8px 14px;
+            text-align: center;
+        }
 
-            &[aria-current="page"] {
-                background-color: var(--color-brand-secondary);
-                color: var(--color-brand-primary);
-                font-weight: 700;
-            }
+        &:hover {
+            transform: translateY(-2px);
+            border-color: var(--entry-card-background-end);
+            box-shadow: 0 6px 16px rgb(0 0 0 / 8%);
+        }
 
-            span {
-                // display: block;
-                max-height: 55px;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                display: -webkit-box;
-                -webkit-line-clamp: 3; /* number of lines to show */
-                        line-clamp: 3;
-                -webkit-box-orient: vertical;
-            }
+        &:active {
+            transform: translateY(0);
         }
     }
+
+    &_item_list {
+    @include entry-card-base;
+
+    justify-content: flex-start;
+    width: 250px;
+    min-height: 56px;
+    background: transparent;
+    border: 1px solid var(--color-gray-300);
+
+    a {
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 8px 12px;
+        text-align: left;
+
+        // Pastille avec l'initiale
+        .entryInitial {
+            display: flex;
+            flex: none;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1;
+            background: var(--entry-card-background-start);
+            // plus sombre en clair, plus clair en sombre
+            color: color-mix(in srgb, var(--entry-card-background-end) 45%, currentcolor);
+            -webkit-line-clamp: unset;
+                    line-clamp: unset;
+            overflow: visible;
+        }
+
+        // Le titre prend la place restante
+        .entryTitle {
+            flex: 1;
+            min-width: 0;
+        }
+
+        // Le nombre d'éléments reste compact
+        .numberOfItems {
+            flex: none;
+            font-size: 12px;
+            color: var(--color-gray-500);
+        }
+
+        // Chevron à droite, en CSS pur
+        &::after {
+            content: "";
+            flex: none;
+            width: 7px;
+            height: 7px;
+            margin-right: 2px;
+            border-top: 2px solid var(--color-gray-400);
+            border-right: 2px solid var(--color-gray-400);
+            transform: rotate(45deg);
+            transition:
+                transform 0.15s ease,
+                border-color 0.15s ease;
+        }
+    }
+
+    &:hover {
+        background: color-mix(in srgb, var(--entry-card-background-start) 45%, transparent);
+        border-color: var(--entry-card-background-end);
+
+        a::after {
+            transform: translateX(2px) rotate(45deg);
+            border-color: var(--entry-card-background-end);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        a::after {
+            transition: none;
+        }
+    }
+}
 }
 
 .col_filter .entryList_ul {
@@ -411,6 +470,7 @@ $catalog-card-colors-dark: (
         height: auto;
         min-height: 35px;
         border-color: transparent;
+        background: transparent;
 
         a {
             min-width: 0;
@@ -427,7 +487,7 @@ $catalog-card-colors-dark: (
                 overflow-wrap: anywhere;
             }
 
-            > span:first-child {
+            >span:first-child {
                 min-width: 0;
             }
 
@@ -446,7 +506,7 @@ $catalog-card-colors-dark: (
         }
 
         &:hover {
-            background-color: var(--color-brand-secondary)!important;
+            background-color: var(--color-brand-secondary) !important;
         }
     }
 }
@@ -463,12 +523,13 @@ $catalog-card-colors-dark: (
         gap: 5px;
 
         svg {
-        width: 14px;
+            width: 14px;
         }
     }
 }
 
-.catalog_favorite_icon_false, .catalog_favorite_icon_true {
+.catalog_favorite_icon_false,
+.catalog_favorite_icon_true {
     stroke: var(--color-brand-primary);
     width: 20px;
     height: 20px;
@@ -481,13 +542,14 @@ $catalog-card-colors-dark: (
         color: transparent;
     }
 
-    &_true  {
+    &_true {
         color: var(--color-brand-primary);
     }
 }
 
 .modal_dialog_body {
-    .catalog_favorite_icon_false, .catalog_favorite_icon_true {
+    .catalog_favorite_icon_false,
+    .catalog_favorite_icon_true {
         position: relative;
         left: unset;
         top: unset;
@@ -508,7 +570,7 @@ $catalog-card-colors-dark: (
     position: relative;
 
     label {
-        background-color: var(--color-gray-50)!important;
+        background-color: var(--color-gray-50) !important;
         // top: -18px!important;
     }
 
@@ -592,17 +654,17 @@ $catalog-card-colors-dark: (
         flex-basis: clamp(220px, 40%, 300px);
     }
 
-    .col_filter + .col {
+    .col_filter+.col {
         min-width: 0;
     }
 }
 
 @container (width <= 700px) {
-    .opds_browserResults .col_filter + .col {
+    .opds_browserResults .col_filter+.col {
         .card_wrapper {
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 
-            > * {
+            >* {
                 margin-right: 0;
             }
 
@@ -628,12 +690,12 @@ $catalog-card-colors-dark: (
 
         .button_secondary_blue {
             text-decoration: none;
-            
+
             svg {
                 width: 20px;
                 height: 20px;
             }
-            
+
             p {
                 margin: 0;
                 padding: 0 10px;

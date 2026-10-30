@@ -97,7 +97,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     !opds.groups) {
 
                     content = (
-                        <EntryList entries={opds.navigation} />
+                        <EntryList entries={opds.navigation} variant="list" />
                     );
                 } else if (opds.publications &&
                     !opds.navigation &&
