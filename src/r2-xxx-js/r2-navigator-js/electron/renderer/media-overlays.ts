@@ -1062,6 +1062,94 @@ function findPreviousTextAudioPair(
     return undefined;
 }
 
+// Word-level overlays (a text/audio pair per word) usually group each
+// sentence's pairs in a seq of their own. There, the Previous/Next controls'
+// Alt variant (Shift+Alt click, or the Alt keyboard shortcuts) steps a whole
+// group, the way TTS steps a sentence: one word is little to hear, at any
+// playback rate. The plain controls keep stepping one pair, for readers who
+// go word by word. Pairs averaging a second or more (a sentence or longer
+// per pair) are not word-level, so they always step one pair at a time.
+const WORD_PAIRS_MAX_AVERAGE_SECONDS = 1;
+
+function findParentNode(mo: MediaOverlayNode, child: MediaOverlayNode): MediaOverlayNode | undefined {
+    if (!mo.Children) {
+        return undefined;
+    }
+    for (const c of mo.Children) {
+        if (c === child) {
+            return mo;
+        }
+        const parent = findParentNode(c, child);
+        if (parent) {
+            return parent;
+        }
+    }
+    return undefined;
+}
+
+// A pair's clip length in seconds, read from its audio URL's media fragment
+// ("#t=begin,end", as playMediaOverlaysAudio() reads it: AudioClipBegin and
+// AudioClipEnd are not part of the JSON the renderer receives).
+function audioClipDuration(pair: MediaOverlayNode): number | undefined {
+    const matches = pair.Audio ? pair.Audio.match(/#t=([0-9.]+),([0-9.]+)/) : null;
+    if (!matches) {
+        return undefined;
+    }
+    const begin = parseFloat(matches[1]);
+    const end = parseFloat(matches[2]);
+    return isNaN(begin) || isNaN(end) || end <= begin ? undefined : end - begin;
+}
+
+// The seq of word-sized pairs that holds this pair, if any: a seq tied to an
+// element of the document (epub:textref with a fragment, not the whole
+// document), whose children are all text/audio pairs with clip times.
+function findWordGroup(root: MediaOverlayNode, pair: MediaOverlayNode): MediaOverlayNode | undefined {
+    const group = findParentNode(root, pair);
+    if (!group || group === root || !group.Text || group.Text.indexOf("#") < 0 ||
+        !group.Children || group.Children.length < 2) {
+        return undefined;
+    }
+    let total = 0;
+    for (const child of group.Children) {
+        const duration = child.Children?.length ? undefined : audioClipDuration(child);
+        if (typeof duration === "undefined") {
+            return undefined;
+        }
+        total += duration;
+    }
+    return total / group.Children.length < WORD_PAIRS_MAX_AVERAGE_SECONDS ? group : undefined;
+}
+
+// Next: the first pair after the current pair's word group (the next
+// sentence). Outside a word group, the next pair.
+function findNextSentenceTextAudioPair(root: MediaOverlayNode, pair: MediaOverlayNode): MediaOverlayNode | undefined | null {
+    const group = findWordGroup(root, pair);
+    let next = findNextTextAudioPair(root, pair, {prev: undefined}, false);
+    while (group && next && group.Children.includes(next)) {
+        next = findNextTextAudioPair(root, next, {prev: undefined}, false);
+    }
+    return next;
+}
+
+// Previous: the first pair of the word group before the current pair's own
+// (the previous sentence). Outside a word group, the previous pair.
+function findPreviousSentenceTextAudioPair(root: MediaOverlayNode, pair: MediaOverlayNode): MediaOverlayNode | undefined | null {
+    const group = findWordGroup(root, pair);
+    let previous = findPreviousTextAudioPair(root, pair, {prev: undefined});
+    while (group && previous && group.Children.includes(previous)) {
+        previous = findPreviousTextAudioPair(root, previous, {prev: undefined});
+    }
+    const previousGroup = previous ? findWordGroup(root, previous) : undefined;
+    if (previous && previousGroup) {
+        let before = findPreviousTextAudioPair(root, previous, {prev: undefined});
+        while (before && previousGroup.Children.includes(before)) {
+            previous = before;
+            before = findPreviousTextAudioPair(root, previous, {prev: undefined});
+        }
+    }
+    return previous;
+}
+
 function findDepthFirstTextAudioPair(
     textHref: string,
     mo: MediaOverlayNode,
@@ -1714,7 +1802,10 @@ export function mediaOverlaysResume() {
     }
 }
 
-export function mediaOverlaysPrevious() {
+// bySentence: the Alt variant of the user's Previous control (button or
+// keyboard), which steps a whole word group in word-level overlays (see
+// findWordGroup()).
+export function mediaOverlaysPrevious(bySentence?: boolean) {
     if (IS_DEV) {
         debug("mediaOverlaysPrevious()");
     }
@@ -1726,7 +1817,8 @@ export function mediaOverlaysPrevious() {
     ensureOnTimeUpdate(true);
 
     if (_mediaOverlayRoot && _mediaOverlayTextAudioPair) {
-        const previousTextAudioPair =
+        const previousTextAudioPair = bySentence ?
+            findPreviousSentenceTextAudioPair(_mediaOverlayRoot, _mediaOverlayTextAudioPair) :
             findPreviousTextAudioPair(_mediaOverlayRoot, _mediaOverlayTextAudioPair, {prev: undefined});
         if (!previousTextAudioPair) {
             if (IS_DEV) {
@@ -1792,7 +1884,10 @@ export function mediaOverlaysPrevious() {
     }
 }
 
-export function mediaOverlaysNext(escape?: boolean) {
+// bySentence: the Alt variant of the user's Next control (button or
+// keyboard), which steps a whole word group in word-level overlays (see
+// findWordGroup()).
+export function mediaOverlaysNext(escape?: boolean, bySentence?: boolean) {
     if (IS_DEV) {
         debug("mediaOverlaysNext()");
     }
@@ -1804,7 +1899,8 @@ export function mediaOverlaysNext(escape?: boolean) {
     ensureOnTimeUpdate(true);
 
     if (_mediaOverlayRoot && _mediaOverlayTextAudioPair) {
-        const nextTextAudioPair =
+        const nextTextAudioPair = bySentence && !escape ?
+            findNextSentenceTextAudioPair(_mediaOverlayRoot, _mediaOverlayTextAudioPair) :
             findNextTextAudioPair(_mediaOverlayRoot, _mediaOverlayTextAudioPair, {prev: undefined},
                 escape ? true : false);
         if (!nextTextAudioPair) {

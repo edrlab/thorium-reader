@@ -149,8 +149,8 @@ interface IBaseProps extends TranslatorProps {
     handleMediaOverlaysPause: () => void;
     handleMediaOverlaysStop: () => void;
     handleMediaOverlaysResume: () => void;
-    handleMediaOverlaysPrevious: () => void;
-    handleMediaOverlaysNext: () => void;
+    handleMediaOverlaysPrevious: (bySentence: boolean) => void;
+    handleMediaOverlaysNext: (bySentence: boolean) => void;
     handleMediaOverlaysPlaybackRate: (speed: string) => void;
 
     handleReaderClose: () => void;
@@ -713,9 +713,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                 onClick={(e) => {
                                                                     if (useMO) {
                                                                         if (isRTL) {
-                                                                            this.props.handleMediaOverlaysNext();
+                                                                            this.props.handleMediaOverlaysNext(e.shiftKey && e.altKey);
                                                                         } else {
-                                                                            this.props.handleMediaOverlaysPrevious();
+                                                                            this.props.handleMediaOverlaysPrevious(e.shiftKey && e.altKey);
                                                                         }
                                                                     } else {
                                                                         if (isRTL) {
@@ -836,13 +836,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                 onClick={(e) => {
                                                                     if (isRTL) {
                                                                         if (useMO) {
-                                                                            this.props.handleMediaOverlaysPrevious();
+                                                                            this.props.handleMediaOverlaysPrevious(e.shiftKey && e.altKey);
                                                                         } else {
                                                                             this.props.handleTTSPrevious(e.shiftKey && e.altKey && e.metaKey, e.shiftKey && e.altKey);
                                                                         }
                                                                     } else {
                                                                         if (useMO) {
-                                                                            this.props.handleMediaOverlaysNext();
+                                                                            this.props.handleMediaOverlaysNext(e.shiftKey && e.altKey);
                                                                         } else {
                                                                             this.props.handleTTSNext(e.shiftKey && e.altKey && e.metaKey, e.shiftKey && e.altKey);
                                                                         }
