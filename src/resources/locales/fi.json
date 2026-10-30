@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Pikanäppäinten valikko",
             "cancel": "Peruuta",
+            "disableTooltips": "",
             "disclaimer": "Oletuspikanäppäimet perustuvat QWERTY-näppäinasetteluun",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
             "exportToHTML": "Vie html-muotoon",

@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuleer",
+            "disableTooltips": "",
             "disclaimer": "Snelkoppelingen zijn gedefinieerd op basis van de QWERTY-toetsenbordindeling",
             "editUserJson": "Wijzig gebruikersbestand...",
             "exportToHTML": "Exporteer naar HTML",

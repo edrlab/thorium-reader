@@ -1125,6 +1125,7 @@
         "keyboard": {
             "advancedMenu": "Išplėstinis sparčiųjų klavišų meniu",
             "cancel": "Nutraukti",
+            "disableTooltips": "",
             "disclaimer": "Programos numatytieji nustatymai buvo sukurti atsižvelgiant į fizinę klavišų vietą QWERTY klaviatūroje",
             "editUserJson": "Keisti naudotojo failą...",
             "exportToHTML": "Eksportuoti į HTML",

@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Ítarleg valmynd flýtilykla",
             "cancel": "Hætta við",
+            "disableTooltips": "",
             "disclaimer": "Sjálfgefnu flýtilyklarnir miðast við staðsetningu lykla á QWERTY-lyklaborði",
             "editUserJson": "Breyta notandaskrá...",
             "exportToHTML": "Flytja út sem HTML",

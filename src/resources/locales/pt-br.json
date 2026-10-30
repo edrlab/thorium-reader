@@ -1118,6 +1118,7 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Cancelar",
+            "disableTooltips": "",
             "disclaimer": "Os atalhos foram definidos a partir do layout de teclado QWERTY",
             "editUserJson": "Editar arquivo de usuário...",
             "exportToHTML": "Exportar em HTML",

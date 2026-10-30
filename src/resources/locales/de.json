@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Menü",
             "cancel": "Abbrechen",
+            "disableTooltips": "",
             "disclaimer": "Tastenkombinationen orientieren sich am QWERTY-Tastaturlayout.",
             "editUserJson": "Benutzerdatei bearbeiten ...",
             "exportToHTML": "Nach HTML exportieren",

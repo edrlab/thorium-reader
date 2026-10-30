@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "მენიუ",
             "cancel": "გადაფიქრება",
+            "disableTooltips": "",
             "disclaimer": "",
             "editUserJson": "მომხმარებლის ფაილის რედაქტირება...",
             "exportToHTML": "",

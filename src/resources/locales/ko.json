@@ -1104,6 +1104,7 @@
         "keyboard": {
             "advancedMenu": "메뉴",
             "cancel": "취소",
+            "disableTooltips": "",
             "disclaimer": "",
             "editUserJson": "사용자 파일 편집...",
             "exportToHTML": "",

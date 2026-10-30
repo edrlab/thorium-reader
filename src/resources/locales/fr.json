@@ -1118,6 +1118,7 @@
         "keyboard": {
             "advancedMenu": "Menu avancé raccourcis clavier",
             "cancel": "Annuler",
+            "disableTooltips": "",
             "disclaimer": "Les paramètres par défaut de l'application ont été conçus en fonction de l'emplacement physique des touches sur une disposition QWERTY",
             "editUserJson": "Modifier le fichier utilisateur…",
             "exportToHTML": "Exporter en HTML",

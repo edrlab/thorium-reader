@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Klavye kısayolları gelişmiş menüsü",
             "cancel": "İptal",
+            "disableTooltips": "",
             "disclaimer": "Uygulama varsayılanları, QWERTY klavye düzenindeki tuşların fiziki konumları esas alınarak tasarlanmıştır",
             "editUserJson": "Kullanıcı dosyasını düzenle...",
             "exportToHTML": "HTML olarak dışa aktar",

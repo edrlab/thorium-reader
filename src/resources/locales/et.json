@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Klaviatuuri kiirklahvid oskuskasutajatele",
             "cancel": "Katkesta",
+            "disableTooltips": "",
             "disclaimer": "Rakenduse vaikimisi seadistused põhinevad klahvide asetusel tüüpilisel QWERTY-klahvistikul",
             "editUserJson": "Muuda kasutaja faili…",
             "exportToHTML": "Eksportdi HTML-failina",

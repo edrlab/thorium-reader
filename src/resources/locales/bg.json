@@ -1111,6 +1111,7 @@
         "keyboard": {
             "advancedMenu": "Разширено меню за клавишни комбинации",
             "cancel": "Отказ",
+            "disableTooltips": "",
             "disclaimer": "",
             "editUserJson": "Редактиране на потребителски файл...",
             "exportToHTML": "",
