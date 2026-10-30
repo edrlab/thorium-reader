@@ -57,6 +57,7 @@ import {
     ensureKeyboardListenerIsInstalled, keyDownEventHandler, keyUpEventHandler,
     registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
+import { NavigationAnnouncement, NavigationAnnouncementHandle } from "readium-desktop/renderer/reader/components/NavigationAnnouncement";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import { normalizeLocatorProgressionForPublication } from "readium-desktop/renderer/reader/locatorProgression";
@@ -149,7 +150,6 @@ import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-a
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { selectPublicationManifestUrl } from "readium-desktop/renderer/reader/redux/selectPublicationManifestUrl";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { opdsProgressionToLocator } from "readium-desktop/common/models/opdsProgression";
@@ -160,6 +160,7 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 import { URL_HOST_COMMON, URL_PATH_PREFIX_PUB, URL_PROTOCOL_FILEX, URL_PROTOCOL_THORIUMHTTPS } from "readium-desktop/common/streamerProtocol";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
+import { selectPublicationManifestUrl } from "readium-desktop/renderer/reader/redux/selectPublicationManifestUrl";
 import { getStore } from "../createStore";
 import { OpdsProgressionDialog } from "./OpdsProgressionDialog";
 
@@ -336,13 +337,12 @@ class Reader extends React.Component<IProps, IState> {
     // private resizeObserver: ResizeObserver;
     // private blackoutDebounced: () => void;
 
-    private screenPreviousNextTimerDebounce: number | undefined;
+    private screenReaderAnnouncementRef = React.createRef<NavigationAnnouncementHandle>();
     private readiumPositionList: IReadiumPositionList | undefined;
 
     constructor(props: IProps) {
         super(props);
 
-        this.screenPreviousNextTimerDebounce = undefined;
         this.readiumPositionList = isEpubPositionListPublication(props.r2Publication) ?
             createReadiumPositionList(props.r2Publication) : undefined;
 
@@ -1142,8 +1142,11 @@ class Reader extends React.Component<IProps, IState> {
 
         const isRTL = this.isRTLFlip();
 
+        // enabled = this.state.accessibilitySupportEnabled
         return (
             <>
+            <NavigationAnnouncement ref={this.screenReaderAnnouncementRef} enabled={true} />
+
             <div className={classNames(
                 this.props.readerConfig.theme === "night" ? stylesReader.nightMode :
                 this.props.readerConfig.theme === "sepia" ? stylesReader.sepiaMode :
@@ -2324,7 +2327,9 @@ class Reader extends React.Component<IProps, IState> {
                 }
             }
 
-            this.props.toasty(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
+            const msg = `${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`;
+            // This explicit speech request must also work outside enhanced accessibility mode.
+            this.screenReaderAnnouncementRef.current?.announce(msg);
 
         } catch (_err) {
             this.props.toastError(this.props.__("message.notifications.readingPositionFailed"));
@@ -3293,16 +3298,7 @@ class Reader extends React.Component<IProps, IState> {
             const str = isRTL ?
                 (left ? this.props.__("reader.navigation.screenNext") : this.props.__("reader.navigation.screenPrevious")) :
                 (left ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext"));
-            if (typeof this.screenPreviousNextTimerDebounce !== "undefined") {
-                clearTimeout(this.screenPreviousNextTimerDebounce);
-                this.screenPreviousNextTimerDebounce = undefined;
-            }
-            this.screenPreviousNextTimerDebounce = window.setTimeout(() => {
-                this.screenPreviousNextTimerDebounce = undefined;
-                this.props.toasty(str);
-            }, 800);
-        } else {
-            this.screenPreviousNextTimerDebounce = undefined;
+            this.screenReaderAnnouncementRef.current?.announce(str);
         }
 
         if (this.props.isPdf) {
@@ -3828,9 +3824,6 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             if (!!href1) {
                 dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
             }
-        },
-        toasty: (msg: string) => {
-            dispatch(toastActions.openRequest.build(ToastType.Success, msg));
         },
         toastInfo: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Info, msg));
