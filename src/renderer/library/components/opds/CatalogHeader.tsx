@@ -16,10 +16,18 @@ import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/br
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
+const truncateBreadcrumbLabel = (label: string = "") => {
+    const characters = Array.from(label);
+    return characters.length > 30 ? `${characters.slice(0, 30).join("")}...` : label;
+};
+
 export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: IBreadCrumbItem, previousLocation: IBreadCrumbItem}>> = (props) => {
 
     const { currentLocation, previousLocation } = props;
     const dispatch = useDispatch();
+    const feed = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb[1]);
+    const pageTitle = useSelector((state: ILibraryRootState) => state.opds.browser.header?.title);
+    const title = pageTitle || currentLocation?.name;
     const location = useSelector((state: ILibraryRootState) => state.router.location);
     const savedDisplayType = useSelector((state: ILibraryRootState) => state.settings.libraryView?.displayType);
 
@@ -63,7 +71,20 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
             </Link>
             : <></>
             }
-            <h4 style={{fontSize: "16px"}}>{currentLocation?.name}</h4>
+            <h4 style={{fontSize: "16px", minWidth: 0, overflowWrap: "anywhere"}}>
+                {feed && <>
+                    <Link
+                        to={{ ...location, pathname: feed.path }}
+                        state={{ displayType: resolveDisplayType(location.state, savedDisplayType) }}
+                        title={feed.name}
+                        aria-label={feed.name}
+                    >
+                        {truncateBreadcrumbLabel(feed.name)}
+                    </Link>
+                    <span aria-hidden> / </span>
+                </>}
+                <span aria-current="page" title={title} aria-label={title}>{truncateBreadcrumbLabel(title)}</span>
+            </h4>
         </div>
     );
 };
