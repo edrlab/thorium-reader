@@ -9,4 +9,4 @@ export interface IAllowCustomConfigState {
     state: boolean;
 }
 
-export const defaultAllowCustomConfig = false;
+export const defaultAllowCustomConfig = true;

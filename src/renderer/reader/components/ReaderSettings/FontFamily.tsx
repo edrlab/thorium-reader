@@ -9,10 +9,6 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as React from "react";
 import { cssFontFamilyName } from "@r2-navigator-js/electron/common/css-font-family";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
 import { usePublisherReaderConfig, useSavePublisherReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
@@ -20,7 +16,7 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
-export const FontFamily = () => {
+export const FontFamily = ({ overridePublisherDefault }: { overridePublisherDefault: boolean }) => {
     const [__] = useTranslator();
 
     const font = usePublisherReaderConfig("font");
@@ -81,7 +77,7 @@ export const FontFamily = () => {
 
     return (
         <div>
-            <ComboBox label={__("reader.settings.font")} defaultItems={options} selectedKey={defaultkey} placeholder={inputval}
+            <ComboBox className={stylesSettings.range_size_container} label="Family" defaultItems={options} selectedKey={defaultkey} placeholder={inputval} isDisabled={!overridePublisherDefault}
                 onSelectionChange={
                     (key: React.Key) => {
                         // console.log("@@@@@");
@@ -100,23 +96,22 @@ export const FontFamily = () => {
                             saveFont(found.value);
                         }
                     }}
-                svg={TextAreaIcon}
                 allowsCustomValue
                 onInputChange={(v) => setInputval(v)}
-            >
-                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-            </ComboBox>
-            <div className={stylesSettings.session_text} style={{ marginTop: "0", marginRight: "20px" }}>
-                <SVG ariaHidden svg={InfoIcon} />
+                labelInfos={<div className={stylesSettings.session_text} style={{ margin: "0", backgroundColor: "var(--color-gray-100)" }}>
                 {
                     options.find((v) => v.name === inputval) ?
                     <p>{__("reader.settings.infoCustomFont")}</p>
                     :
                     <p>{__("reader.settings.customFontSelected")}</p>
                 }
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <h3>{__("reader.settings.preview")}:</h3>
+            </div>}
+            >
+                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+            </ComboBox>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", justifyContent: "space-between", padding: "10px 20px 5px 0" }}>
+                <label style={{ flexGrow: 1, margin: "0" }}>{__("reader.settings.preview")}:</label>
+                {fontFamily ?
                 <span
                     aria-hidden
                     style={{
@@ -124,8 +119,11 @@ export const FontFamily = () => {
                         lineHeight: "1.2em",
                         display: "block",
                         fontFamily,
+                        width: "160px",
                     }}>{fontName}
                 </span>
+                : <></>
+                }
             </div>
         </div>
     );

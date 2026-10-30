@@ -7,8 +7,6 @@
 
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as React from "react";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
@@ -18,43 +16,51 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 export const AllowCustom = () => {
     const [__] = useTranslator();
     const overridePublisherDefault = useSelector((state: IReaderRootState) => state.reader.allowCustomConfig.state);
+    const deactivateTextFormatting = !overridePublisherDefault;
     const dispatch = useDispatch();
-    const set = React.useCallback(() => {
+
+    const toggleDeactivateTextFormatting = React.useCallback(() => {
         dispatch(readerActions.allowCustom.build(!overridePublisherDefault));
     }, [dispatch, overridePublisherDefault]);
 
     return (
         <>
-            <input id="allow-custom" className={stylesGlobal.checkbox_custom_input} type="checkbox" checked={overridePublisherDefault} onChange={() => { set(); }} />
             <label htmlFor="allow-custom" className={stylesGlobal.checkbox_custom_label}>
-                <div
-                    tabIndex={0}
-                    role="checkbox"
-                    aria-checked={overridePublisherDefault}
-                    aria-label={__("reader.settings.customizeReader")}
-                    onKeyDown={(e) => {
-                        // if (e.code === "Space") {
-                        if (e.key === " ") {
-                            e.preventDefault(); // prevent scroll
-                        }
-                    }}
-                    onKeyUp={(e) => {
-                        // if (e.code === "Space") {
-                        if (e.key === " ") {
-                            e.preventDefault();
-                            set();
-                        }
-                    }}
-                    className={stylesGlobal.checkbox_custom}
-                    style={{ border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: overridePublisherDefault ? "var(--color-brand-primary)" : "transparent" }}>
-                    {overridePublisherDefault ?
-                        <SVG ariaHidden svg={CheckIcon} />
-                        :
-                        <></>
-                    }
-                </div>
+                <input
+                    id="allow-custom"
+                    className={stylesGlobal.checkbox_custom_input}
+                    type="checkbox"
+                    role="switch"
+                    checked={deactivateTextFormatting}
+                    aria-label={__("reader.settings.deactivateTextFormatting")}
+                    onChange={toggleDeactivateTextFormatting}
+                />
+                <span
+                    aria-hidden
+                    style={{
+                        position: "relative",
+                        width: "34px",
+                        height: "20px",
+                        borderRadius: "999px",
+                        border: "1px solid transparent",
+                        backgroundColor: deactivateTextFormatting ? "var(--color-brand-primary)" : "#61646B",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        transition: "background-color 140ms ease",
+                    }}>
+                    <span
+                        style={{
+                            width: "14px",
+                            height: "14px",
+                            borderRadius: "50%",
+                            backgroundColor: "white",
+                            transform: deactivateTextFormatting ? "translateX(16px)" : "translateX(4px)",
+                            transition: "transform 140ms ease",
+                        }}
+                    />
+                </span>
                 <span aria-hidden>
-                    {__("reader.settings.customizeReader")}
+                    {__("reader.settings.deactivateTextFormatting")}
                 </span>
             </label>
         </>

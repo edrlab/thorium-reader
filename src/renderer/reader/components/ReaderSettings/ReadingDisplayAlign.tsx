@@ -11,30 +11,53 @@ import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-
 import * as AlignJustifyIcon from "readium-desktop/renderer/assets/icons/align-justify-icon.svg";
 import * as DefaultPageIcon from "readium-desktop/renderer/assets/icons/defaultPage-icon.svg";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { useReaderConfig, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
+import { useReaderConfig, useSaveReaderConfig, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { RadioGroupItem } from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
 import { RadioGroup } from "readium-desktop/renderer/common/components/RadioGroupComponent";
 
-export const ReadingDisplayAlign = () => {
+export const ReadingDisplayAlign = ({ overridePublisherDefault }: { overridePublisherDefault: boolean }) => {
     const [__] = useTranslator();
 
     const align = useReaderConfig("align");
     const set = useSaveReaderConfigDebounced();
+    const setImmediate = useSaveReaderConfig();
+
+    const previousAlignRef = React.useRef<typeof align>(undefined);
+    const previousOverridePublisherDefaultRef = React.useRef(overridePublisherDefault);
+
+    React.useEffect(() => {
+        const previousOverridePublisherDefault = previousOverridePublisherDefaultRef.current;
+
+        if (previousOverridePublisherDefault === overridePublisherDefault) {
+            return;
+        }
+
+        previousOverridePublisherDefaultRef.current = overridePublisherDefault;
+
+        if (!overridePublisherDefault) {
+            previousAlignRef.current = align;
+            if (align !== "auto") {
+                setImmediate({ align: "auto" });
+            }
+            return;
+        }
+
+        if (previousAlignRef.current && previousAlignRef.current !== align) {
+            setImmediate({ align: previousAlignRef.current });
+        }
+    }, [align, overridePublisherDefault, setImmediate]);
+
+    const alignValue = overridePublisherDefault ? align : "auto";
 
     return (
-        <section className={stylesSettings.section}>
-            <div>
-                <h3>{__("reader.settings.justification")}</h3>
-            </div>
-            <div className={stylesSettings.display_options} style={{marginBottom: "20px"}}>
-                <RadioGroup aria-label={__("reader.settings.justification")} orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={align}
-                    onValueChange={(v) => set({ align: v })}
-                >
-                    <RadioGroupItem value="auto" description={`${__("reader.settings.column.auto")}`} svg={DefaultPageIcon} disabled={false} />
-                    <RadioGroupItem value="justify" description={`${__("reader.settings.justify")}`} svg={AlignJustifyIcon} disabled={false} />
-                    <RadioGroupItem value="start" description={`${__("reader.svg.left")}`} svg={AlignLeftIcon} disabled={false} />
-                </RadioGroup>
-            </div>
-        </section>
+        <div className={stylesSettings.display_options} style={{marginBottom: "20px"}}>
+            <RadioGroup aria-label={__("reader.settings.justification")} orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={alignValue} isDisabled={!overridePublisherDefault}
+                onValueChange={(v) => set({ align: v })}
+            >
+                <RadioGroupItem value="auto" description={`${__("reader.settings.column.auto")}`} svg={DefaultPageIcon} disabled={false} />
+                <RadioGroupItem value="justify" description={`${__("reader.settings.justify")}`} svg={AlignJustifyIcon} disabled={false} />
+                <RadioGroupItem value="start" description={`${__("reader.svg.left")}`} svg={AlignLeftIcon} disabled={false} />
+            </RadioGroup>
+        </div>
     );
 };
