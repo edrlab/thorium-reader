@@ -36,6 +36,7 @@ module.exports = {
     // globals: {
     // },
     transform: {
+        "\\.svg$": "<rootDir>/scripts/jest_svg.js",
         "\\.ts$": "<rootDir>/scripts/jest_preprocessor.js",
         // ...tsjPreset.transform,
         "\\.tsx?$": [

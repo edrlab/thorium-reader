@@ -2,7 +2,7 @@ import { describe, expect, it, jest } from "@jest/globals";
 import { runSaga } from "redux-saga";
 
 jest.mock("typed-redux-saga/macro", () => jest.requireActual("typed-redux-saga"));
-jest.mock("electron", () => ({ clipboard: { writeText: jest.fn() } }));
+jest.mock("electron", () => ({ clipboard: { writeText: jest.fn(async () => undefined) } }));
 jest.mock("readium-desktop/main/di", () => ({ diMainGet: jest.fn() }));
 jest.mock("readium-desktop/common/services/translator", () => ({
     getTranslator: () => ({ translate: (key: string) => key }),

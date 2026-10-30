@@ -63,7 +63,7 @@ function DialogButton({ onPress, ...props }: ButtonProps & { onPress?: () => voi
         return <Pressable onPress={onPress}>{child}</Pressable>;
     }
     const childRef = (child as React.ReactElement & { ref?: React.Ref<HTMLButtonElement> }).ref;
-    return <Button ref={childRef} isDisabled={child.props.disabled} onPress={onPress}
+    return <Button ref={childRef} type={child.props.type} isDisabled={child.props.disabled} onPress={onPress}
         render={(buttonProps) => React.cloneElement(child, mergeProps(child.props, buttonProps))}>
         {child.props.children}
     </Button>;

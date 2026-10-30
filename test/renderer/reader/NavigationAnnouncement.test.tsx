@@ -73,7 +73,7 @@ async function advance(milliseconds: number) {
 
 const alert = () => host.querySelector("[role=alert]")!;
 
-test("announces navigation after 800 ms without creating notification controls or moving focus", async () => {
+test("announces navigation after 400 ms without creating notification controls or moving focus", async () => {
     const outside = document.createElement("button");
     document.body.appendChild(outside);
     outside.focus();
@@ -81,7 +81,7 @@ test("announces navigation after 800 ms without creating notification controls o
         expect(alert().textContent).toBe("");
         expect(alert().getAttribute("aria-atomic")).toBe("true");
         await announce("Screen next");
-        await advance(799);
+        await advance(399);
         expect(alert().textContent).toBe("");
         await advance(1);
         expect(alert().textContent).toBe("Screen next");
@@ -94,9 +94,9 @@ test("announces navigation after 800 ms without creating notification controls o
 
 test("rapid navigation announces only the final direction after the full debounce", async () => {
     await announce("Screen next");
-    await advance(400);
+    await advance(200);
     await announce("Screen previous");
-    await advance(799);
+    await advance(399);
     expect(alert().textContent).toBe("");
     await advance(1);
     expect(alert().textContent).toBe("Screen previous");
@@ -107,12 +107,12 @@ test.each(["Screen next", "Screen previous"])(
     async (message) => {
         const region = alert();
         await announce(message);
-        await advance(800);
+        await advance(400);
         expect(region.textContent).toBe(message);
         await announce(message);
         expect(alert()).toBe(region);
         expect(region.textContent).toBe("");
-        await advance(799);
+        await advance(399);
         expect(region.textContent).toBe("");
         await advance(1);
         expect(region.textContent).toBe(message);
@@ -121,7 +121,7 @@ test.each(["Screen next", "Screen previous"])(
 
 test("disabling enhanced mode cancels pending feedback, clears the alert, and ignores navigation", async () => {
     await announce("Screen next");
-    await advance(400);
+    await advance(200);
     await render(false);
     await advance(800);
     expect(alert().textContent).toBe("");
