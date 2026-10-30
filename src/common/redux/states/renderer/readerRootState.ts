@@ -6,27 +6,27 @@
 // ==LICENSE-END==
 
 import { ReaderConfig, ReaderConfigPublisher, ReaderInfo } from "readium-desktop/common/models/reader";
-import { IRendererCommonRootState, IRendererCommonRootStateHydration } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
+import { IRendererCommonRootState, IRendererCommonRootStateHydration } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 import { IHighlightHandlerState, IHighlightMounterState } from "./highlight";
 import { ISearchState } from "./search";
-import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 
 // import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 // import { TBookmarkState } from "../bookmark";
-import { IRTLFlipState } from "./rtlFlip";
-import { IAnnotationModeState /*TAnnotationState,*/ } from "./annotation";
-import { ITTSState } from "readium-desktop/common/redux/states/renderer/tts";
-import { IMediaOverlayState } from "readium-desktop/common/redux/states/renderer/mediaOverlay";
 import { IAllowCustomConfigState } from "readium-desktop/common/redux/states/renderer/allowCustom";
-import { IImageClickState } from "readium-desktop/common/redux/states/renderer/imageClick";
 import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
+import { IImageClickState } from "readium-desktop/common/redux/states/renderer/imageClick";
+import { IMediaOverlayState } from "readium-desktop/common/redux/states/renderer/mediaOverlay";
+import { ITTSState } from "readium-desktop/common/redux/states/renderer/tts";
 import { DockState } from "../dock";
+import { IAnnotationModeState /*TAnnotationState,*/ } from "./annotation";
 import { INoteState } from "./note";
 import { IOpdsProgressionState } from "./opdsProgression";
+import { IRTLFlipState } from "./rtlFlip";
 
 export interface IReaderPdfConfig{
         scale: "page-fit" | "page-width" | number;
@@ -55,7 +55,6 @@ export interface IReaderStateReader {
         mounter: TMapState<string, IHighlightMounterState>;
     };
     divina: IDivinaState;
-
     disableRTLFlip: IRTLFlipState;
     defaultConfig: ReaderConfig; // sync across all app
     tts: ITTSState;

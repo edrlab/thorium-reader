@@ -7,24 +7,24 @@
 
 import debug_ from "debug";
 import * as fs from "node:fs";
-import { diMainGet, stateFilePath, patchFilePath, closeProcessLock } from "readium-desktop/main/di";
+import { closeProcessLock, diMainGet, patchFilePath, stateFilePath } from "readium-desktop/main/di";
 import { PersistRootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { call, debounce, all } from "redux-saga/effects";
-import { flush as flushTyped, call as callTyped } from "typed-redux-saga/macro";
+import { all, call, debounce } from "redux-saga/effects";
+import { call as callTyped, flush as flushTyped } from "typed-redux-saga/macro";
 import { winActions } from "../actions";
 
-import { patchChannel } from "./patch";
-import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { readerActions } from "readium-desktop/common/redux/actions";
-import { EventPayload } from "readium-desktop/common/ipc/sync";
-import { SenderType } from "readium-desktop/common/models/sync";
-import { ReaderConfig } from "readium-desktop/common/models/reader";
-import { IDictWinRegistryReaderState, IWinRegistryReaderState } from "../states/win/registry/reader";
-import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
-import { IWinSessionLibraryState } from "../states/win/session/library";
-import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 import crypto from "node:crypto";
+import { EventPayload } from "readium-desktop/common/ipc/sync";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { SenderType } from "readium-desktop/common/models/sync";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { IDictWinRegistryReaderState, IWinRegistryReaderState } from "../states/win/registry/reader";
+import { IWinSessionLibraryState } from "../states/win/session/library";
+import { patchChannel } from "./patch";
 import { extractWindowMaximized } from "./win/session/browserWindowState";
 // import { rmrf } from "readium-desktop/utils/fs";
 

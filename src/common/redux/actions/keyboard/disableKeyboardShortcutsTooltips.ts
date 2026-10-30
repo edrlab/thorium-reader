@@ -7,7 +7,7 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 
-export const ID = "DISABLE_KEYBOARD_TOOLTIPS_";
+export const ID = "DISABLE_KEYBOARD_TOOLTIPS";
 
 export interface Payload {
     disableKeyboardShortcutsTooltips: boolean;

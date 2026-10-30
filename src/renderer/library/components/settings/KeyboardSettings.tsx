@@ -16,7 +16,7 @@ import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
 import { DEBUG_KEYBOARD, defaultKeyboardShortcuts, keyboardShortcutMatches, keyboardShortcutsMatch, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutScopeZone, TKeyboardShortcutsMap } from "readium-desktop/common/keyboard";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
+import { keyboardActions, settingsActions, toastActions } from "readium-desktop/common/redux/actions/";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
@@ -1062,8 +1062,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
-        //disableKeyboardShortcutsTooltips: state.settings.disableKeyboardShortcutsTooltips,
-        disableKeyboardShortcutsTooltips: state.keyboard.disableKeyboardShortcutsTooltips,
+        disableKeyboardShortcutsTooltips: state.settings.disableKeyboardShortcutsTooltips,
+        // disableKeyboardShortcutsTooltips: state.keyboard.disableKeyboardShortcutsTooltips,
         keyboardShortcuts: state.keyboard.shortcuts,
         locale: state.i18n.locale, // refresh
     };
@@ -1072,7 +1072,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         toggleDisableKeyboardShortcutsTooltips: (disableTooltips: boolean) => {
-            // dispatch(settingsActions.disableKeyboardShortcutsTooltips.build(!disableTooltips));
+            dispatch(settingsActions.disableKeyboardShortcutsTooltips.build(!disableTooltips));
             dispatch(keyboardActions.disableKeyboardShortcutsTooltips.build(!disableTooltips));
         },
         setKeyboardShortcuts:

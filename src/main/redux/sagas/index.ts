@@ -13,40 +13,40 @@ import { logMeasurementProtocol } from "readium-desktop/main/analytics/measureme
 import { startMeasurementProtocolQueue } from "readium-desktop/main/analytics/measurementProtocolQueue";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
+import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 import { all, call, put, take } from "redux-saga/effects";
-import { select as selectTyped, call as callTyped, spawn as spawnTyped, delay as delayTyped} from "typed-redux-saga/macro";
+import { call as callTyped, delay as delayTyped, select as selectTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { RootState } from "../states";
-import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 // import { THttpGetCallback } from "readium-desktop/common/utils/http";
 // import { Headers } from "node-fetch";
 import { httpGet } from "readium-desktop/main/network/http";
-import * as semver from "semver";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
+import * as semver from "semver";
 import { appActions, winActions } from "../actions";
+import * as analyticsIpc from "./analyticsIpc";
 import * as api from "./api";
 import * as appSaga from "./app";
 import * as auth from "./auth";
-import * as analyticsIpc from "./analyticsIpc";
+import * as catalog from "./catalog";
+import * as customization from "./customization";
 import * as events from "./event";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
 import * as keyboard from "./keyboard";
+import * as lcp from "./lcp";
+import * as annotation from "./note";
 import * as persist from "./persist";
+import * as lcpSharedWorkstationCleanup from "./publication/lcpSharedWorkstationCleanup";
 import * as reader from "./reader";
 import * as streamer from "./streamer";
-import * as win from "./win";
 import * as telemetry from "./telemetry";
-import * as lcp from "./lcp";
-import * as catalog from "./catalog";
-import * as annotation from "./note";
-import * as customization from "./customization";
-import * as lcpSharedWorkstationCleanup from "./publication/lcpSharedWorkstationCleanup";
+import * as win from "./win";
 
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { sagaCustomizationProfileProvisioning } from "./customization";
 import isURL from "readium-desktop/common/utils/isURL";
-import { publicationIntegrityChecker } from "./publication/checker";
 import { error } from "readium-desktop/main/tools/error";
+import { sagaCustomizationProfileProvisioning } from "./customization";
+import { publicationIntegrityChecker } from "./publication/checker";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -177,6 +177,8 @@ export function* rootSaga() {
 
     // rehydrate shorcuts in redux
     yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
+    const disableKeyboardShortcutsTooltips = yield* selectTyped((state: RootState) => state.settings.disableKeyboardShortcutsTooltips);
+    yield put(keyboardActions.disableKeyboardShortcutsTooltips.build(disableKeyboardShortcutsTooltips));
 
     // enjoy the app !
     yield put(winActions.library.openRequest.build());

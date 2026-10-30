@@ -19,31 +19,31 @@ import { applyMiddleware, legacy_createStore as createStore, type Store } from "
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 import { applyPatch } from "rfc6902";
 
-import { reduxPersistMiddleware } from "../middleware/persistence";
-import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
-import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
-import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
-import { sqliteInitTableNote, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableSelectLastModifiedDateWherePubId } from "readium-desktop/main/db/sqlite/note";
-import { sqliteInitialisation } from "readium-desktop/main/db/sqlite";
-import { IReaderPdfConfig, IReaderStateReaderSession } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { IDictWinRegistryReaderState, IWinRegistryReaderState } from "readium-desktop/main/redux/states/win/registry/reader";
-import { ReaderConfig } from "readium-desktop/common/models/reader";
-import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlFlip";
-import { IAllowCustomConfigState } from "readium-desktop/common/redux/states/renderer/allowCustom";
-import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
-import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
-import { convertPublicationToRegistryReaderState, persistStateToFs } from "../sagas/persist";
 import { app, dialog } from "electron";
-import { error } from "readium-desktop/main/tools/error";
-import { getFileSize, rmrf } from "readium-desktop/utils/fs";
 import crypto from "node:crypto";
-import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
-import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import * as ramda from "ramda";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
+import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { IAllowCustomConfigState } from "readium-desktop/common/redux/states/renderer/allowCustom";
+import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
+import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
+import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import { IReaderPdfConfig, IReaderStateReaderSession } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlFlip";
+import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
+import { sqliteInitialisation } from "readium-desktop/main/db/sqlite";
+import { sqliteInitTableNote, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableSelectLastModifiedDateWherePubId } from "readium-desktop/main/db/sqlite/note";
+import { IDictWinRegistryReaderState, IWinRegistryReaderState } from "readium-desktop/main/redux/states/win/registry/reader";
+import { error } from "readium-desktop/main/tools/error";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { getFileSize, rmrf } from "readium-desktop/utils/fs";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
+import { reduxPersistMiddleware } from "../middleware/persistence";
+import { convertPublicationToRegistryReaderState, persistStateToFs } from "../sagas/persist";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -1013,6 +1013,10 @@ export async function initStore()
             },
         };
     }
+//
+//     if (preloadedState?.settings?.disableKeyboardShortcutsTooltips) {
+//         preloadedState.keyboard.disableKeyboardShortcutsTooltips = true;
+//     }
 
     const sagaMiddleware = createSagaMiddleware();
 

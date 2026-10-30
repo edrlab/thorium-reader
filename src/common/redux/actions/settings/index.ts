@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as disableKeyboardShortcutsTooltips from "./disableKeyboardShortcutsTooltips";
+import * as disableKeyboardShortcutsTooltips from "./disableKeyboardShortcutsTooltips";
 
 import * as disableGoogleAnalyticsTelemetry from "./disableGoogleAnalyticsTelemetry";
 import * as enableAPIAPP from "./enableAPIAPP";
@@ -17,9 +17,8 @@ import * as libraryView from "./libraryView";
 import * as minimizeLibraryToTray from "./minimizeLibraryToTray";
 import * as oneReaderWindowPerPublication from "./oneReaderWindowPerPublication";
 
-// disableKeyboardShortcutsTooltips
 export {
-    disableGoogleAnalyticsTelemetry, enableAPIAPP,
+    disableGoogleAnalyticsTelemetry, disableKeyboardShortcutsTooltips, enableAPIAPP,
     keepLibraryWindowInBackgroundOnReaderClose,
     keepLibraryWindowInBackgroundOnReaderOpen, lcpAutoDeleteExpiredPublications,
     lcpAutoDeleteExpiredPublicationsForced, libraryView, minimizeLibraryToTray,
