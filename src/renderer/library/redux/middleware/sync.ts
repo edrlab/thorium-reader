@@ -6,14 +6,20 @@
 // ==LICENSE-END==
 
 import {
-    apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions, themeActions, publicationActions, whatsNewActions,
     annotationActions,
+    apiActions, authActions, catalogActions,
     creatorActions,
-    settingsActions,
-    noteExport,
     customizationActions,
-    screenReaderActions,
+    downloadActions, i18nActions, keyboardActions, lcpActions,
+    noteExport,
     opdsActions,
+    publicationActions,
+    readerActions,
+    screenReaderActions,
+    sessionActions,
+    settingsActions,
+    themeActions,
+    whatsNewActions,
     winCommonActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
@@ -69,6 +75,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     creatorActions.set.ID,
 
     settingsActions.disableGoogleAnalyticsTelemetry.ID,
+    settingsActions.disableKeyboardShortcutsTooltips.ID,
     settingsActions.enableAPIAPP.ID,
     settingsActions.keepLibraryWindowInBackgroundOnReaderClose.ID,
     settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.ID,
@@ -92,7 +99,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     opdsActions.refresh.ID,
 
     winCommonActions.initSuccess.ID,
-    
+
     catalogActions.setUserDirectory.ID,
     catalogActions.openDefaultDirectory.ID,
     catalogActions.openUserDirectory.ID,
