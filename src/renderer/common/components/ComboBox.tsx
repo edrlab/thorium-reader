@@ -9,7 +9,7 @@ import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import classNames from "classnames";
 import * as React from "react";
 import { Focusable, TooltipTriggerProps } from "react-aria";
-import { Button, ComboBox as ComboBoxReactAria, FieldError, Group, Input, Label, ListBox, ListBoxItem, Popover, Text, TooltipTrigger, ValidationResult } from "react-aria-components";
+import { Button, ComboBox as ComboBoxReactAria, FieldError, Group, Input, Label, ListBox, ListBoxItem, Popover, Text, Tooltip, TooltipTrigger, ValidationResult } from "react-aria-components";
 import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
@@ -18,12 +18,8 @@ import * as StylesCombobox from "readium-desktop/renderer/assets/styles/componen
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
 import { OVERLAY_Z_INDEX } from "./overlayHelpers";
-import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ValidationResult, Group } from "react-aria-components";
-import { FieldError, Text, Tooltip, TooltipTrigger } from "react-aria-components";
 import SVG, { ISVGProps } from "./SVG";
-import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import classNames from "classnames";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+
 import { ToolTippy } from "./Tooltippy";
 
 type TComboBoxReactAriaProps<T extends object> = Parameters<typeof ComboBoxReactAria<T>>[0];
