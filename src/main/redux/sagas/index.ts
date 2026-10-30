@@ -179,7 +179,7 @@ export function* rootSaga() {
     // rehydrate shorcuts in redux
     yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
     const disableKeyboardShortcutsTooltips = yield* selectTyped((state: RootState) => state.settings.disableKeyboardShortcutsTooltips);
-    yield put(keyboardActions.disableKeyboardShortcutsTooltips.build(disableKeyboardShortcutsTooltips));
+    yield put(keyboardActions.disableKeyboardShortcutsTooltips.build(!!disableKeyboardShortcutsTooltips));
 
     // enjoy the app !
     yield put(winActions.library.openRequest.build());
