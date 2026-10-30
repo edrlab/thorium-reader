@@ -19,6 +19,7 @@ export const NavigationAnnouncement = React.forwardRef<NavigationAnnouncementHan
 
         React.useEffect(() => {
             if (!enabled) setMessage("");
+
             return () => window.clearTimeout(timer.current);
         }, [enabled]);
 
@@ -32,13 +33,19 @@ export const NavigationAnnouncement = React.forwardRef<NavigationAnnouncementHan
                 timer.current = window.setTimeout(() => {
                     timer.current = undefined;
                     setMessage(nextMessage);
-                }, 800);
+                }, 400);
             },
         }), [enabled]);
 
+        // role="status" aria-live="polite"
+        // role="alert" aria-live="assertive"
         return (
             <VisuallyHidden>
-                <div role="alert" aria-atomic="true">{message}</div>
+                <div
+                    role="alert"
+                    aria-live="assertive"
+                    aria-relevant="all"
+                    aria-atomic="true">{message}</div>
             </VisuallyHidden>
         );
     },

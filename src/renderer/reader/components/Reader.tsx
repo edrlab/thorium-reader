@@ -150,7 +150,6 @@ import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-a
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { selectPublicationManifestUrl } from "readium-desktop/renderer/reader/redux/selectPublicationManifestUrl";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { opdsProgressionToLocator } from "readium-desktop/common/models/opdsProgression";
@@ -161,6 +160,7 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 import { URL_HOST_COMMON, URL_PATH_PREFIX_PUB, URL_PROTOCOL_FILEX, URL_PROTOCOL_THORIUMHTTPS } from "readium-desktop/common/streamerProtocol";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
+import { selectPublicationManifestUrl } from "readium-desktop/renderer/reader/redux/selectPublicationManifestUrl";
 import { getStore } from "../createStore";
 import { OpdsProgressionDialog } from "./OpdsProgressionDialog";
 
@@ -337,8 +337,7 @@ class Reader extends React.Component<IProps, IState> {
     // private resizeObserver: ResizeObserver;
     // private blackoutDebounced: () => void;
 
-    private navigationAnnouncementRef = React.createRef<NavigationAnnouncementHandle>();
-    private readingPositionAnnouncementRef = React.createRef<NavigationAnnouncementHandle>();
+    private screenReaderAnnouncementRef = React.createRef<NavigationAnnouncementHandle>();
     private readiumPositionList: IReadiumPositionList | undefined;
 
     constructor(props: IProps) {
@@ -1143,10 +1142,11 @@ class Reader extends React.Component<IProps, IState> {
 
         const isRTL = this.isRTLFlip();
 
+        // enabled = this.state.accessibilitySupportEnabled
         return (
             <>
-                <NavigationAnnouncement ref={this.navigationAnnouncementRef} enabled={this.state.accessibilitySupportEnabled} />
-                <NavigationAnnouncement ref={this.readingPositionAnnouncementRef} enabled />
+            <NavigationAnnouncement ref={this.screenReaderAnnouncementRef} enabled={true} />
+
             <div className={classNames(
                 this.props.readerConfig.theme === "night" ? stylesReader.nightMode :
                 this.props.readerConfig.theme === "sepia" ? stylesReader.sepiaMode :
@@ -2327,8 +2327,9 @@ class Reader extends React.Component<IProps, IState> {
                 }
             }
 
+            const msg = `${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`;
             // This explicit speech request must also work outside enhanced accessibility mode.
-            this.readingPositionAnnouncementRef.current?.announce(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
+            this.screenReaderAnnouncementRef.current?.announce(msg);
 
         } catch (_err) {
             this.props.toastError(this.props.__("message.notifications.readingPositionFailed"));
@@ -3297,7 +3298,7 @@ class Reader extends React.Component<IProps, IState> {
             const str = isRTL ?
                 (left ? this.props.__("reader.navigation.screenNext") : this.props.__("reader.navigation.screenPrevious")) :
                 (left ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext"));
-            this.navigationAnnouncementRef.current?.announce(str);
+            this.screenReaderAnnouncementRef.current?.announce(str);
         }
 
         if (this.props.isPdf) {
