@@ -7,10 +7,10 @@
 
 import debug_ from "debug";
 import { shell } from "electron";
-import { replace } from "redux-first-history";
+import { goBack, push, replace } from "redux-first-history";
 import { catalogAnalyticsEvents } from "readium-desktop/common/analytics/catalog";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
-import { apiActions } from "readium-desktop/common/redux/actions";
+import { apiActions, authActions, historyActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
@@ -18,18 +18,18 @@ import { IOpdsLinkView, OPDS_OPEN_SEARCH_DATA_SEPARATOR } from "readium-desktop/
 import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/httpBrowser";
-import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { buildOpdsBrowserRoute, parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { call, delay, put, spawn, take } from "redux-saga/effects";
+import { all, call, delay, put, spawn, take } from "redux-saga/effects";
 import { race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { IOpdsHeaderState } from "readium-desktop/common/redux/states/renderer/opds";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
 import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opds/constants";
-import { takeBrowseResponse } from "readium-desktop/renderer/library/opds/browseResponse";
+import { handOffBrowseResponse, takeBrowseResponse } from "readium-desktop/renderer/library/opds/browseResponse";
 
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
 export const SEARCH_TERM = "{searchTerms}";
@@ -257,11 +257,44 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
     }
 }
 
+// Credential challenges can also originate from a download or the catalog account button.
+// Hand their response to the OPDS browser without issuing another authentication request.
+let inlineAuthentication: { returnToPrevious: boolean; path: string } | undefined;
+
+export function* presentAuthentication(action: authActions.present.TAction) {
+    const { url, result } = action.payload;
+    const location = yield* selectTyped((state: ILibraryRootState) => state.router.location);
+    const current = parseOpdsBrowserRoute(location.pathname);
+    inlineAuthentication = { returnToPrevious: current?.url !== url, path: location.pathname };
+    if (current?.url === url) return;
+    const path = buildOpdsBrowserRoute(current?.rootFeedIdentifier || "authentication",
+        result.title || "", url, current ? current.level + 1 : 1);
+    inlineAuthentication.path = path;
+    handOffBrowseResponse(path, {
+        url, responseUrl: url, statusCode: 401, isSuccess: false, isFailure: true,
+        data: { opds: result },
+    });
+    yield put(push(path));
+}
+
+export function* authenticationDone() {
+    const pending = inlineAuthentication;
+    inlineAuthentication = undefined;
+    const location = yield* selectTyped((state: ILibraryRootState) => state.router.location);
+    if (pending?.path === location.pathname) {
+        yield put(pending.returnToPrevious ? goBack() : historyActions.refresh.build());
+    }
+}
+
+function authenticationCancelled() {
+    inlineAuthentication = undefined;
+}
+
 export function saga() {
-    // listen on router location and trigger only on opds browse route
-    return takeSpawnEvery(
-        routerActions.locationChanged.ID,
-        browseWatcher,
-        (e) => debug(e),
-    );
+    return all([
+        takeSpawnEvery(routerActions.locationChanged.ID, browseWatcher, (e) => debug(e)),
+        takeSpawnEvery(authActions.present.ID, presentAuthentication, (e) => debug(e)),
+        takeSpawnEvery(authActions.done.ID, authenticationDone, (e) => debug(e)),
+        takeSpawnEvery(authActions.cancel.ID, authenticationCancelled, (e) => debug(e)),
+    ]);
 }

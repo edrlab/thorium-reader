@@ -133,8 +133,7 @@ export class OpdsService {
                         return result;
                     }
 
-                    this.sendWwwAuthenticationToAuthenticationProcess(data, responseUrl);
-                    return result;
+                    return this.sendWwwAuthenticationToAuthenticationProcess(data, responseUrl);
                 }
             }
         }
@@ -220,6 +219,7 @@ export class OpdsService {
         opdsAuthDoc.Authentication = [opdsAuth];
 
         this.dispatchAuthenticationProcess(opdsAuthDoc, responseUrl);
+        return this.opdsFeedViewConverter.convertOpdsAuthToView(opdsAuthDoc, responseUrl);
     }
 
     private wwwAuthenticateIsValid(wwwAuthenticate: string) {
@@ -278,10 +278,7 @@ export class OpdsService {
 
             this.dispatchAuthenticationProcess(r2OpdsAuth, responseUrl);
 
-            return {
-                title: getTranslator().translate("catalog.opds.auth.unauthorized"),
-                publications: [],
-            }; // need to refresh the page
+            return this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, baseUrl);
 
         } else if (isOpdsPub) {
             const r2OpdsPublication = TaJsonDeserialize(

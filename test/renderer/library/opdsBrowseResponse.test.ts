@@ -1,14 +1,14 @@
 import { expect, jest, test } from "@jest/globals";
 import { runSaga } from "redux-saga";
 import { Action } from "history";
-import { apiActions } from "readium-desktop/common/redux/actions";
+import { apiActions, authActions, historyActions } from "readium-desktop/common/redux/actions";
 import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 import { handOffBrowseResponse, takeBrowseResponse } from "readium-desktop/renderer/library/opds/browseResponse";
 import { routerActions } from "readium-desktop/renderer/library/redux/actions";
-import { browseWatcher } from "readium-desktop/renderer/library/redux/sagas/opds";
+import { authenticationDone, browseWatcher, presentAuthentication } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/httpBrowser";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { replace } from "redux-first-history";
+import { goBack, push, replace } from "redux-first-history";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 
 jest.mock("electron", () => ({ shell: { openExternal: jest.fn() } }));
@@ -70,4 +70,40 @@ test("returns to catalogs without browsing an invalid route", async () => {
         }, Action.Push)).toPromise();
     expect(opdsBrowse).not.toHaveBeenCalled();
     expect(dispatched).toContainEqual(replace("/opds"));
+});
+
+
+test("presents a background credential challenge without fetching it again and restores the previous page", async () => {
+    const path = "/opds/catalog/browse/3/borrow/url";
+    const dispatched: unknown[] = [];
+    const state = { router: { location: { pathname: "/catalog" } } };
+    jest.mocked(parseOpdsBrowserRoute).mockReturnValueOnce(undefined);
+    await runSaga({ dispatch: (action: unknown) => dispatched.push(action), getState: () => state },
+        presentAuthentication, authActions.present.build("https://example.org/login", { title: "Login" })).toPromise();
+    expect(dispatched).toContainEqual(push(path));
+    expect(takeBrowseResponse(path).data.opds.title).toBe("Login");
+    state.router.location.pathname = path;
+    await runSaga({ dispatch: (action: unknown) => dispatched.push(action), getState: () => state }, authenticationDone).toPromise();
+    expect(dispatched).toContainEqual(goBack());
+});
+
+test("refreshes an inline challenge already shown in the OPDS browser", async () => {
+    const dispatched: unknown[] = [];
+    const state = { router: { location: { pathname: "/opds/catalog/browse/3/borrow/url" } } };
+    await runSaga({ dispatch: (action: unknown) => dispatched.push(action), getState: () => state },
+        presentAuthentication, authActions.present.build("https://example.org/borrow", { title: "Login" })).toPromise();
+    expect(dispatched).toEqual([]);
+    await runSaga({ dispatch: (action: unknown) => dispatched.push(action), getState: () => state }, authenticationDone).toPromise();
+    expect(dispatched).toContainEqual(historyActions.refresh.build());
+});
+
+
+test("does not redirect the user if they leave the inline authentication page", async () => {
+    const dispatched: unknown[] = [];
+    const state = { router: { location: { pathname: "/opds/catalog/browse/3/borrow/url" } } };
+    await runSaga({ dispatch: (action: unknown) => dispatched.push(action), getState: () => state },
+        presentAuthentication, authActions.present.build("https://example.org/borrow", { title: "Login" })).toPromise();
+    state.router.location.pathname = "/catalog";
+    await runSaga({ dispatch: (action: unknown) => dispatched.push(action), getState: () => state }, authenticationDone).toPromise();
+    expect(dispatched).toEqual([]);
 });

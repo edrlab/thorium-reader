@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { authActions } from "readium-desktop/common/redux/actions";
 import { createReduxHistoryContext } from "redux-first-history";
 import { History } from "history";
 import { reduxSyncMiddleware } from "readium-desktop/renderer/library/redux/middleware/sync";
@@ -33,7 +34,7 @@ export function initStore(preloadedState: Partial<ILibraryRootState>):
     const store = createStore(
         rootReducer(routerReducer),
         preloadedState,
-        composeWithDevTools(
+        composeWithDevTools({ actionSanitizer: authActions.submit.sanitize })(
             applyMiddleware(
                 routerMiddleware,
                 reduxSyncMiddleware,
