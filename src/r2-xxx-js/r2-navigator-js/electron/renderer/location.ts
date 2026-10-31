@@ -611,13 +611,14 @@ export function handleLink(
     previous: boolean | undefined,
     useGoto: boolean,
     rcss?: IEventPayload_R2_EVENT_READIUMCSS,
+    keepMediaOverlays?: boolean,
 ) {
     debug(`handleLink: ${href}`);
 
     const special = href.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://");
     if (special) {
         debug("handleLink R2 URL");
-        const okay = loadLink(href, previous, useGoto, rcss);
+        const okay = loadLink(href, previous, useGoto, rcss, undefined, keepMediaOverlays);
         if (!okay) {
             debug(`Readium link fail?! ${href}`);
         }
@@ -625,7 +626,7 @@ export function handleLink(
         debug(`Skip navigation/link to local filesystem: ${href}`);
     } else {
         debug("handleLink non-R2 URL");
-        const okay = loadLink(href, previous, useGoto, rcss);
+        const okay = loadLink(href, previous, useGoto, rcss, undefined, keepMediaOverlays);
         if (!okay) {
             if (/^https?:\/\/127\.0\.0\.1/.test(href)) { // href.startsWith("https://127.0.0.1")
                 debug(`Internal link, fails to match publication document: ${href}`);
@@ -649,6 +650,7 @@ export function handleLinkUrl(
 export function handleLinkLocator(
     location: Locator | undefined,
     rcss?: IEventPayload_R2_EVENT_READIUMCSS,
+    keepMediaOverlays?: boolean,
 ) {
     const rangeInfo = location?.locations?.caretInfo?.rangeInfo;
 
@@ -711,7 +713,7 @@ export function handleLinkLocator(
         // NOTE that decodeURIComponent() must be called on the toString'ed URL hrefToLoad
         // tslint:disable-next-line:max-line-length
         // (in case linkToLoad.Href contains Unicode characters, in which case they get percent-encoded by the URL.toString())
-        handleLink(hrefToLoad, undefined, useGoto, rcss);
+        handleLink(hrefToLoad, undefined, useGoto, rcss, keepMediaOverlays);
     }
 }
 
@@ -746,6 +748,7 @@ function loadLink(
     useGoto: boolean,
     rcss: IEventPayload_R2_EVENT_READIUMCSS | undefined,
     secondWebView?: boolean,
+    keepMediaOverlays?: boolean,
     ): boolean {
 
     if (typeof win.READIUM2.opacityMaskCounter === "undefined" || !secondWebView) {
@@ -758,7 +761,14 @@ function loadLink(
         return false;
     }
 
-    mediaOverlaysInterrupt();
+    // keepMediaOverlays: the caller is re-positioning the document already
+    // shown (after a ReadiumCSS change), so the readaloud is only interrupted
+    // if the document has to be reloaded (see below). When it is merely
+    // scrolled, its reading-location report decides: a report inside the
+    // current text/audio pair keeps it going (or paused).
+    if (!keepMediaOverlays) {
+        mediaOverlaysInterrupt();
+    }
 
     if (!hrefToLoad.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
         debug(`LOAD LINK not internal? ${hrefToLoad} ... ${publicationURL}`);
@@ -1307,6 +1317,11 @@ function loadLink(
         }
 
         return true;
+    }
+
+    // The document is (re)loaded below: the readaloud cannot carry on in it.
+    if (keepMediaOverlays) {
+        mediaOverlaysInterrupt();
     }
 
     // if (!isFixedLayout(pubLink)) {
