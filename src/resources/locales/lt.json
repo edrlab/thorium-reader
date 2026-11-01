@@ -363,7 +363,7 @@
             "tagsFailed": ""
         },
         "open": {
-            "failed": "",
+            "failed": "Nepavyko atverti šio leidinio.",
             "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“.",
             "missingLicense": ""
         },
