@@ -279,13 +279,13 @@
             "success": "Importavimas sėkmingai užbaigtas."
         },
         "diagnostics": {
-            "category": "",
+            "category": "Kategorija: {{- category}}",
             "causedBy": "",
             "downloadSource": "",
-            "error": "",
+            "error": "Klaida",
             "httpStatus": "",
             "invalidUrl": "",
-            "source": "",
+            "source": "Šaltinis: {{- source}}",
             "url": ""
         },
         "download": {
@@ -315,7 +315,7 @@
                 "acquisitionUrlMissing": "",
                 "cbzNoImages": "",
                 "contextMissing": "",
-                "daisyConversionFailed": "",
+                "daisyConversionFailed": "Nepavyko konvertuoti DAISY leidinio.",
                 "manifestContext": "",
                 "manifestImportFailed": "",
                 "manifestInvalidJson": "",
