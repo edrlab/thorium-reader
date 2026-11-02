@@ -91,14 +91,15 @@ export function* exportAnnotationSet(notes: INoteState[], publicationView: Publi
     debug("fileType:", fileType);
 
     const locale = yield* selectTyped((state: ICommonRootState) => state.i18n.locale);
-    const readiumAnnotationSet = yield* callTyped(() => convertAnnotationStateArrayToReadiumAnnotationSet(locale, notes, publicationView, annoSetTitle, fileType === "html" ? LEGACY_ANNOTATION_CONTEXT : undefined));
+    const exportPackage = __TH__EPUB_ANNOTATION_PACKAGE_EXPORT_ENABLED__ && publicationView.isEPUB && fileType === "annotation";
+    const readiumAnnotationSet = yield* callTyped(() => convertAnnotationStateArrayToReadiumAnnotationSet(locale, notes, publicationView, annoSetTitle, exportPackage ? undefined : LEGACY_ANNOTATION_CONTEXT));
 
     debug("readiumAnnotationSet generated, prepare to download it");
 
     const {htmlContent, overrideHTMLTemplate} = (yield* selectTyped((state: ICommonRootState) => state.noteExport));
     const htmlMustacheTemplateContent = overrideHTMLTemplate ? htmlContent : noteExportHtmlMustacheTemplate || noteExportHtmlMustacheTemplate;
 
-    const extension = fileType === "annotation" ? (publicationView.isEPUB ? EXT_ANNOTATIONS : EXT_ANNOTATIONS_LEGACY) : ".html";
+    const extension = fileType === "annotation" ? (exportPackage ? EXT_ANNOTATIONS : EXT_ANNOTATIONS_LEGACY) : ".html";
     const serializedAnnotationSet = JsonStringifySortedKeys(readiumAnnotationSet, 2);
     const fileData = extension === EXT_ANNOTATIONS ?
         yield* callTyped(() => createDetachedAnnotationPackage(serializedAnnotationSet)) :
