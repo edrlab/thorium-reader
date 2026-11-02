@@ -21,6 +21,7 @@ export type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url">>;
 
 export interface IOpdsApi {
     getUserProfile: (identifier: string) => SagaGenerator<IOpdsUserProfile | undefined>;
+    getBookshelfUrl: (identifier: string) => SagaGenerator<string>;
     searchRegistry: (query: string, page?: number) => SagaGenerator<RegistrySearchResult>;
     getProgressionServiceStatus: (
         url: string,
@@ -33,7 +34,6 @@ export interface IOpdsApi {
         identifier: string,
     ) => SagaGenerator<void>;
     findAllFeeds: (
-        refreshAuthentication?: boolean,
     ) => SagaGenerator<IOpdsFeedView[]>;
     addFeed: (
         data: OpdsFeed,
@@ -55,6 +55,7 @@ export interface IOpdsApi {
 
 export interface IOpdsModuleApi {
     "opds/getUserProfile": IOpdsApi["getUserProfile"];
+    "opds/getBookshelfUrl": IOpdsApi["getBookshelfUrl"];
     "opds/searchRegistry": IOpdsApi["searchRegistry"];
     "opds/getProgressionServiceStatus": IOpdsApi["getProgressionServiceStatus"];
     "opds/getFeed": IOpdsApi["getFeed"];

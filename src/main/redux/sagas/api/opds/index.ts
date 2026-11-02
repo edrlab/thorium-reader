@@ -13,10 +13,12 @@ import { getUrlWithSearchLinks } from "./getUrlWithSearchLinks";
 
 import { getProgressionServiceStatus } from "./getProgressionServiceStatus";
 import { getUserProfile } from "./getUserProfile";
+import { getBookshelfUrl } from "./getBookshelfUrl";
 import { searchRegistry } from "./searchRegistry";
 
 export const opdsApi: IOpdsApi = {
     getUserProfile,
+    getBookshelfUrl,
     searchRegistry,
     getProgressionServiceStatus,
     getFeed,

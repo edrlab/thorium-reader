@@ -20,7 +20,6 @@ export const OPDS_OPEN_SEARCH_DATA_SEPARATOR = "^$%*£@";
 export interface IOpdsFeedView extends Identifiable {
     title: string;
     url: string;
-    authentified: boolean;
     authenticationUrl?: string;
     favorite?: boolean;
     color: TOpdsFeedColor;
