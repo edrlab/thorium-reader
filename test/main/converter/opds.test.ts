@@ -426,9 +426,9 @@ describe("inline Basic authentication", () => {
         expect(dispatch).not.toHaveBeenCalled();
     });
 
-    it("keeps browser authentication documents out of the inline flow", () => {
+    it("keeps SAML documents out of the inline flow", () => {
         const view = createConverter().convertOpdsAuthToView(TaJsonDeserialize({
-            id: baseUrl, title: "Browser", authentication: [{ type: "http://opds-spec.org/auth/oauth/implicit" }],
+            id: baseUrl, title: "Browser", authentication: [{ type: "http://librarysimplified.org/authtype/SAML-2.0" }],
         }, OPDSAuthenticationDoc), baseUrl);
         expect(view.auth.credentialsUrl).toBeUndefined();
     });
@@ -447,5 +447,23 @@ it.each(["http://opds-spec.org/auth/local", "http://opds-spec.org/auth/oauth/pas
             authenticationId: "provider", labelLogin: "Card", labelPassword: "PIN",
             oauthUrl: "https://example.org/catalog/token", oauthRefreshUrl: "https://example.org/catalog/refresh",
         });
+    },
+);
+
+
+it.each(["http://opds-spec.org/auth/oauth/implicit", "http://opds-spec.org/auth/oauth/authorization-code-pkce"])(
+    "renders %s as an external authentication result without starting a modal", async type => {
+        const service = new OpdsService();
+        Object.assign(service, { opdsFeedViewConverter: createConverter() });
+        const modal = jest.spyOn(service as unknown as { dispatchAuthenticationProcess: () => void }, "dispatchAuthenticationProcess");
+        const result = await service.opdsRequestTransformer({
+            url: baseUrl, responseUrl: baseUrl, isSuccess: false, isFailure: true, statusCode: 401,
+            contentType: authenticationType, response: { json: async () => ({
+                id: "provider", title: "Sign in", authentication: [{ type, links: [{ rel: "authenticate", href: "/authorize" }] }],
+            }) },
+        } as unknown as IHttpGetResult<IOpdsResultView>);
+        expect(result.auth).toMatchObject({ external: true, authenticationType: type, credentialsUrl: baseUrl,
+            oauthUrl: "https://example.org/authorize" });
+        expect(modal).not.toHaveBeenCalled();
     },
 );

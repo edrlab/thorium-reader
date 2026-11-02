@@ -6,6 +6,9 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
+import { startExternalAuthentication, matchesExternalAuthenticationCallback, IExternalAuthenticationSession } from "./externalAuthentication";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { getFeed } from "./api/opds/feed";
 import { submitInlineAuthentication } from "./inlineAuthentication";
 import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY } from "readium-desktop/common/streamerProtocol";
 import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
@@ -24,7 +27,7 @@ import { Headers } from "node-fetch";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, opdsActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { takeSpawnLeading, takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import {
@@ -126,7 +129,7 @@ const LINK_TYPE: TLinkType[] = [
 
 const opdsAuthFlow =
     (opdsRequestFromCustomProtocol: ReturnType<typeof getOpdsRequestCustomProtocolEventChannel>) =>
-        function*([doc, baseUrl, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser]: TOpdsAuthenticationChannel) {
+        function*([doc, baseUrl, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser, onInterrupted]: TOpdsAuthenticationChannel) {
 
             debug("opds authenticate flow");
             const baseUrlParsed = tryCatchSync(() => new URL(baseUrl), filename_);
@@ -253,7 +256,7 @@ const opdsAuthFlow =
                             yield spawn(function* () {
                                 debug("OPDS auth retry GO!", opdsCustomProtocolRequestParsed.url, baseUrl, JSON.stringify(doc, null, 4));
                                 const opdsAuthChannel = getOpdsAuthenticationChannel();
-                                opdsAuthChannel.put([doc, baseUrl, true]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
+                                opdsAuthChannel.put([doc, baseUrl, true, onInterrupted]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
                             });
 
                             return;
@@ -296,6 +299,61 @@ const opdsAuthFlow =
                 }
             }
         };
+
+async function prepareExternalAuthentication(url: string): Promise<IExternalAuthenticationSession> {
+    const target = new URL(url);
+    if (target.protocol !== "https:" && target.protocol !== "http:") throw new Error("Invalid authentication URL");
+    const response = await httpGet(url);
+    const baseUrl = response.responseUrl || url;
+    const doc = TaJsonDeserialize(await response.response.json(), OPDSAuthenticationDoc);
+    const auth = opdsAuthDocConverter(doc, baseUrl);
+    if (!auth || (auth.authenticationType !== OPDS_AUTHORIZATION_CODE_PKCE_TYPE
+        && auth.authenticationType !== "http://opds-spec.org/auth/oauth/implicit")) {
+        throw new Error("Unsupported external authentication method");
+    }
+    const pkce = auth.authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE
+        ? createOpdsPkceTransaction({
+            allowInsecureLoopback: ENABLE_DEV_TOOLS,
+            authorizationUrl: auth.links?.authenticate?.url || "",
+            tokenUrl: auth.links?.refresh?.url || "",
+        }) : undefined;
+    const implicitAuthData = { authenticationDocumentId: "", nonce: "" };
+    const authorizationUrl = getHtmlAuthenticationUrl(auth, pkce, implicitAuthData);
+    const authorization = new URL(authorizationUrl);
+    if (authorization.protocol !== "https:" && authorization.protocol !== "http:") throw new Error("Invalid authorization URL");
+    const expectedState = authorization.searchParams.get("state");
+    let active = true;
+    return {
+        authorizationUrl,
+        openFallback: async () => {
+            const win = await createOpdsAuthenticationModalWin(authorizationUrl, true);
+            if (!active) {
+                if (win && !win.isDestroyed()) win.close();
+                return undefined;
+            }
+            return win;
+        },
+        dispose: () => { active = false; },
+        complete: async request => {
+            if (request.method !== "GET" || !matchesExternalAuthenticationCallback(request.url, expectedState, !!pkce)) return false;
+            const callback = new URL(request.url);
+            const params = new URLSearchParams(callback.hash.slice(1) || callback.search.slice(1));
+            if (params.get("error")) throw new Error("Authentication denied");
+            const parsed = parseRequestFromCustomProtocol(request, auth.authenticationType, implicitAuthData);
+            if (!parsed) return false;
+            const [, error] = await opdsSetAuthCredentials(parsed, {
+                id: auth.id || undefined,
+                opdsAuthenticationUrl: baseUrl,
+                tokenType: "Bearer",
+                refreshUrl: pkce?.tokenUrl || auth.links?.refresh?.url,
+                authenticateUrl: pkce?.authorizationUrl || auth.links?.authenticate?.url,
+                pkce: !!pkce,
+            }, auth.authenticationType, pkce, () => active);
+            if (error) throw error;
+            return true;
+        },
+    };
+}
 
 function* opdsAuthWipeData() {
 
@@ -353,11 +411,14 @@ export function saga() {
     const opdsRequestMediaChannel = getOpdsRequestMediaCustomProtocolEventChannel();
 
     return all([
-        takeSpawnLeadingChannel(
-            opdsAuthChannel,
-            opdsAuthFlow(opdsRequestChannel),
-            (e) => debug("redux OPDS authentication channel error", e),
-        ),
+        startExternalAuthentication({
+            prepare: prepareExternalAuthentication,
+            getCatalog: getFeed,
+            openExternal: (url: string) => shell.openExternal(url),
+            callbacks: opdsRequestChannel,
+            legacy: { requests: opdsAuthChannel, run: opdsAuthFlow(opdsRequestChannel),
+                onError: (error: unknown) => debug("redux OPDS authentication channel error", error) },
+        }),
         takeSpawnEvery(
             authActions.submit.ID,
             submitInlineAuthentication,
@@ -426,6 +487,7 @@ async function opdsSetAuthCredentials(
     authCredentials: IOpdsAuthenticationToken,
     authenticationType: TAuthenticationType,
     pkceTransaction?: IOpdsPkceTransaction,
+    isActive: () => boolean = () => true,
 ): Promise<[undefined, Error]> {
 
     if (!opdsCustomProtocolRequestParsed) {
@@ -566,6 +628,7 @@ async function opdsSetAuthCredentials(
                 if (typeof newCredentials.accessToken === "string") {
 
                     debug("new opds authentication credentials");
+                    if (!isActive()) return [, new Error("Authentication cancelled")];
                     await httpSetAuthenticationToken(newCredentials);
 
                     return [, undefined];
@@ -604,6 +667,7 @@ async function opdsSetAuthCredentials(
                     );
                     const tokenType = tokenResponse.tokenType.charAt(0).toUpperCase() +
                         tokenResponse.tokenType.slice(1);
+                    if (!isActive()) return [, new Error("Authentication cancelled")];
                     await httpSetAuthenticationToken({
                         ...authCredentials,
                         accessToken: tokenResponse.accessToken,
@@ -632,6 +696,7 @@ async function opdsSetAuthCredentials(
             if (typeof newCredentials.accessToken === "string") {
 
                 debug("new opds authentication credentials");
+                if (!isActive()) return [, new Error("Authentication cancelled")];
                 await httpSetAuthenticationToken(newCredentials);
 
                 return [, undefined];
@@ -648,10 +713,9 @@ async function opdsSetAuthCredentials(
 }
 
 const _implicitAuthData = { authenticationDocumentId: "", nonce: "" };
-const setAndGetImplicitNonceForImplicitAuthentication = () => (_implicitAuthData.nonce = nanoid(16), _implicitAuthData.nonce);
 const getImplicitAuthData = () => _implicitAuthData;
 
-function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed, pkceTransaction?: IOpdsPkceTransaction) {
+function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed, pkceTransaction?: IOpdsPkceTransaction, implicitAuthData = getImplicitAuthData()) {
     let browserUrl: string;
     switch (auth.authenticationType) {
         case OPDS_AUTHORIZATION_CODE_PKCE_TYPE: {
@@ -669,8 +733,8 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed, pkceTransaction?: IO
                 const browserUrlParsed = new URL(auth.links?.authenticate?.url);
 
                 // Record the OPDS Authentication Document's Id for later verification
-                const implicitAuthData = getImplicitAuthData();
                 implicitAuthData.authenticationDocumentId = auth.id;
+                implicitAuthData.nonce = nanoid(16);
 
                 // client_id: Required.
                 // Any Authentication Provider that supports OPDS Authentication 1.0 and exposes an Authentication Flow based on OAuth
@@ -683,7 +747,7 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed, pkceTransaction?: IO
                 browserUrlParsed.searchParams.set("response_type", "token");
 
                 // state: Optional, but helps to prevent unsolicited flows
-                browserUrlParsed.searchParams.set("state", encodeURIComponent_RFC3986(setAndGetImplicitNonceForImplicitAuthentication()));
+                browserUrlParsed.searchParams.set("state", encodeURIComponent_RFC3986(implicitAuthData.nonce));
 
                 // redirect_uri: Optional, but good to include since it's mandatory if a client has more than one redirect URI configurated
                 // Note: Trailing slash is necessary as it is specified in the OPDS Authentication 1.0 specification
@@ -940,7 +1004,9 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
         {
             title,
             width: libWinBound?.width || 800,
+            minWidth: libWinBound?.width || 800,
             height: libWinBound?.height || 600,
+            minHeight: libWinBound?.height || 600,
             parent: libWin,
             modal: true,
             show: false,
@@ -1130,7 +1196,7 @@ interface IParseRequestFromCustomProtocol<T = string> {
         [key in T & string]?: string;
     };
 }
-function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest, authenticationType: TAuthenticationType)
+function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest, authenticationType: TAuthenticationType, implicitAuthData = getImplicitAuthData())
     : IParseRequestFromCustomProtocol<TLabelName | TAuthName | TDigestInfo | typeof URL_OPDS_AUTH_RETRY> | undefined {
 
     debug("########");
@@ -1238,8 +1304,6 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest, authentic
                 }
 
                 if (authenticationType === "http://opds-spec.org/auth/oauth/implicit") {
-                    const implicitAuthData = getImplicitAuthData();
-
                     if (data.id && implicitAuthData.authenticationDocumentId && data.id !== implicitAuthData.authenticationDocumentId) {
                         debug("OAuth 2.0 implicit grant flow ID mismatch!", "expected (auth doc):", implicitAuthData.authenticationDocumentId, "actual (URL query param):", data.id);
                         return undefined;

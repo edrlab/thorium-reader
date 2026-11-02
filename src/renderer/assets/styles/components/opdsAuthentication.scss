@@ -68,7 +68,7 @@
     }
   }
 
-  > button[type="submit"] {
+  > button {
     width: 100%;
     min-height: 44px;
     border-radius: 6px;
@@ -103,6 +103,12 @@
       overflow-wrap: anywhere;
       cursor: pointer;
     }
+  }
+
+  .message {
+    margin: 24px 0;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
   }
 
   .error {

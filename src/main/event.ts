@@ -29,7 +29,7 @@ export const getOpenUrlWithOpdsSchemeEventChannel = () => openUrlWithOpdsSchemeE
 // OPDS2 authentication
 //
 
-export type TOpdsAuthenticationChannel = [doc: OPDSAuthenticationDoc, baseUrl: string, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser: boolean];
+export type TOpdsAuthenticationChannel = [doc: OPDSAuthenticationDoc, baseUrl: string, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser: boolean, onInterrupted?: () => void];
 
 const opdsAuthenticationChannel = channel<TOpdsAuthenticationChannel>();
 

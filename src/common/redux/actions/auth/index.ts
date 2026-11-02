@@ -13,7 +13,12 @@ import * as logout from "./logout";
 import * as submit from "./submit";
 import * as submitted from "./submitted";
 
+import * as externalRequest from "./externalRequest";
+import * as externalStatus from "./externalStatus";
+
 export {
+    externalRequest,
+    externalStatus,
     submit,
     submitted,
     done,
