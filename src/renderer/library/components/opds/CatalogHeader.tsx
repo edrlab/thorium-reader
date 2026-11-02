@@ -14,17 +14,20 @@ import { Link } from "react-router-dom";
 import { resolveDisplayType } from "readium-desktop/renderer/library/routing";
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: IBreadCrumbItem, previousLocation: IBreadCrumbItem, rootLocation?: IBreadCrumbItem}>> = (props) => {
 
     const { currentLocation, previousLocation, rootLocation } = props;
     const dispatch = useDispatch();
+    const [__] = useTranslator();
+    const labelStyle: React.CSSProperties = { fontSize: "16px", fontWeight: 400, lineHeight: 1.5, minWidth: 0, overflowWrap: "anywhere", whiteSpace: "normal" };
     const location = useSelector((state: ILibraryRootState) => state.router.location);
     const savedDisplayType = useSelector((state: ILibraryRootState) => state.settings.libraryView?.displayType);
 
     return (
-        <div style={{display: "flex", alignItems: "center", gap: "20px", minWidth: 0, maxWidth: "100%"}}>
+        <nav aria-label={__("opds.breadcrumbRoot")} style={{display: "flex", alignItems: "center", gap: "20px", minWidth: 0, maxWidth: "100%"}}>
             {previousLocation ?
             <Link
                 style={{width: "20px", height: "20px", flexShrink: 0, transform: "rotate(180deg)"}}
@@ -65,14 +68,14 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
             }
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", minWidth: 0, overflowWrap: "anywhere" }}>
                 {rootLocation && rootLocation.path !== currentLocation?.path && <>
-                    <Link to={{ pathname: rootLocation.path }}
+                    <Link style={labelStyle} to={{ pathname: rootLocation.path }}
                         state={{ displayType: resolveDisplayType(location.state, savedDisplayType) }}>
                         {rootLocation.name}
                     </Link>
                     <span aria-hidden="true">›</span>
                 </>}
-                <h4 style={{ fontSize: "16px", margin: 0, minWidth: 0 }} aria-current="page">{currentLocation?.name}</h4>
+                <span style={labelStyle} aria-current="page">{currentLocation?.name}</span>
             </div>
-        </div>
+        </nav>
     );
 };

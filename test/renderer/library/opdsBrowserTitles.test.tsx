@@ -40,7 +40,7 @@ test("uses the card name for the heading and the loaded root title for the bread
     mockBreadcrumb = opdsBreadcrumbReducer(mockBreadcrumb, breadcrumbTitleUpdate.build(rootPath, "Online catalog"));
     const html = render();
     expect(html).toContain("<h1>My library</h1>");
-    expect(html).toContain('aria-current="page">Online catalog</h4>');
+    expect(html).toContain('aria-current="page">Online catalog</span>');
     expect(mockBreadcrumb[1].path).toBe(rootPath);
 });
 
@@ -52,30 +52,30 @@ test("retains the root feed title while displaying the current feed title", () =
     const html = render();
     expect(html).toContain("<h1>My library</h1>");
     expect(html).toContain('href="'+rootPath+'">Online catalog</a>');
-    expect(html).toContain('aria-current="page">Crime</h4>');
+    expect(html).toContain('aria-current="page">Crime</span>');
     expect(mockBreadcrumb.at(-1).path).toBe(mockPath);
 });
 
 test("keeps the navigation label for untitled feeds, including whitespace-only titles", () => {
     mockBreadcrumb = opdsBreadcrumbReducer(mockBreadcrumb, breadcrumbTitleUpdate.build(rootPath, "   "));
-    expect(render()).toContain('aria-current="page">My library</h4>');
+    expect(render()).toContain('aria-current="page">My library</span>');
     mockPath = buildOpdsBrowserRoute("a", "New books", childUrl, 3);
     mockBreadcrumb = opdsBreadcrumbReducer(mockBreadcrumb, browseRequest.build("a", 3, "New books", childUrl));
     mockBreadcrumb = opdsBreadcrumbReducer(mockBreadcrumb, breadcrumbTitleUpdate.build(mockPath, ""));
-    expect(render()).toContain('aria-current="page">New books</h4>');
+    expect(render()).toContain('aria-current="page">New books</span>');
 });
 
 test("uses the card name when both feed title and navigation label are missing", () => {
     mockPath = buildOpdsBrowserRoute("a", "", rootUrl);
     mockBreadcrumb = opdsBreadcrumbReducer(undefined, browseRequest.build("a", 1, "", rootUrl));
-    expect(render()).toContain('aria-current="page">My library</h4>');
+    expect(render()).toContain('aria-current="page">My library</span>');
 });
 
 test("direct Shelf entry and catalog switching do not use route labels for the heading", () => {
     mockPath = buildOpdsBrowserRoute("b", "Shelf", childUrl);
     mockBreadcrumb = opdsBreadcrumbReducer(undefined, browseRequest.build("b", 1, "Shelf", childUrl));
     expect(render()).toContain("<h1>Another library</h1>");
-    expect(render()).toContain('aria-current="page">Shelf</h4>');
+    expect(render()).toContain('aria-current="page">Shelf</span>');
 });
 
 test("ignores late titles from another route and updates a refreshed feed title", () => {
