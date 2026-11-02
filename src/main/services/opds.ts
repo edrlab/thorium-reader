@@ -133,7 +133,15 @@ export class OpdsService {
                         return result;
                     }
 
-                    this.sendWwwAuthenticationToAuthenticationProcess(data, responseUrl);
+                    if (data.type === "basic") {
+                        result.auth = {
+                            credentialsUrl: baseUrl,
+                            logoImageUrl: undefined, labelLogin: undefined, labelPassword: undefined,
+                            oauthUrl: undefined, oauthRefreshUrl: undefined,
+                        };
+                    } else {
+                        this.sendWwwAuthenticationToAuthenticationProcess(data, baseUrl);
+                    }
                     return result;
                 }
             }
@@ -276,6 +284,10 @@ export class OpdsService {
                 OPDSAuthenticationDoc,
             );
 
+            const view = this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, baseUrl);
+            if (view.auth?.credentialsUrl) {
+                return view;
+            }
             this.dispatchAuthenticationProcess(r2OpdsAuth, responseUrl);
 
             return {

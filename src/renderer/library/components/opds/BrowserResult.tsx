@@ -27,6 +27,7 @@ import Slider from "../utils/Slider";
 import Entry from "./Entry";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
+import { AuthenticationForm } from "./AuthenticationForm";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 
@@ -63,7 +64,10 @@ export class BrowserResult extends React.Component<IProps, undefined> {
         } else if (browserData?.result) {
             const browserResult = browserData.result;
 
-            if (browserResult?.data?.problemDetails) {
+            if (browserResult.data?.opds?.auth?.credentialsUrl) {
+                status = browserResult.data.opds.title || __("catalog.opds.auth.login");
+                content = <AuthenticationForm auth={browserResult.data.opds.auth} __={__} />;
+            } else if (browserResult?.data?.problemDetails) {
                 const { data: { problemDetails: {
                     type,
                     title,

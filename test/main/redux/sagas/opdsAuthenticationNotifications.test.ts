@@ -1,3 +1,4 @@
+jest.mock("readium-desktop/main/redux/sagas/api/opds/feed", () => ({ findAllFeeds: jest.fn() }));
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { runSaga } from "redux-saga";
 jest.mock("typed-redux-saga/macro", () => jest.requireActual("typed-redux-saga"));

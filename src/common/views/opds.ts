@@ -125,7 +125,15 @@ export interface IOpdsFacetView {
     links: IOpdsNavigationLinkView[];
 }
 
+export type TInlineOpdsAuthenticationType = "http://opds-spec.org/auth/basic"
+    | "http://opds-spec.org/auth/local" | "http://opds-spec.org/auth/oauth/password";
+
 export interface IOpdsAuthView {
+    authenticationType?: TInlineOpdsAuthenticationType;
+    authenticationId?: string;
+    credentialsUrl?: string;
+    registerUrl?: string;
+    helpUrls?: string[];
     logoImageUrl: string;
 
     labelLogin: string;

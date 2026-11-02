@@ -545,7 +545,7 @@ export class OpdsFeedViewConverter {
         const title = r2OpdsAuth.Title;
         let logoImageUrl: string | undefined;
 
-        const logoLink = r2OpdsAuth.Links.find(
+        const logoLink = r2OpdsAuth.Links?.find(
             (l) =>
                 l.Rel && l.Rel.includes("logo"));
 
@@ -553,9 +553,10 @@ export class OpdsFeedViewConverter {
             logoImageUrl = urlPathResolve(baseUrl, logoLink.Href);
         }
 
-        const oauth = r2OpdsAuth.Authentication.find(
-            (a) =>
-                a.Type === "http://opds-spec.org/auth/oauth/password");
+        const method = r2OpdsAuth.Authentication?.find(a =>
+            a.Type === "http://opds-spec.org/auth/basic" || a.Type === "http://opds-spec.org/auth/local"
+            || a.Type === "http://opds-spec.org/auth/oauth/password");
+        const oauth = method;
 
         let labelLogin: string | undefined;
         let labelPassword: string | undefined;
@@ -582,11 +583,18 @@ export class OpdsFeedViewConverter {
                 }
             }
         }
+        const methodLinks = [...(method?.Links || []), ...(r2OpdsAuth.Links || [])];
+        const register = methodLinks.find(l => l.Rel?.includes("register"));
         const auth: IOpdsAuthView = {
+            credentialsUrl: method ? baseUrl : undefined,
+            authenticationType: method?.Type as IOpdsAuthView["authenticationType"],
+            authenticationId: r2OpdsAuth.Id,
+            registerUrl: register ? urlPathResolve(baseUrl, register.Href) : undefined,
+            helpUrls: methodLinks.filter(l => l.Rel?.includes("help")).map(l => urlPathResolve(baseUrl, l.Href)),
             logoImageUrl,
 
-            labelLogin,
-            labelPassword,
+            labelLogin: method?.Labels?.Login || labelLogin,
+            labelPassword: method?.Labels?.Password || labelPassword,
 
             oauthUrl,
             oauthRefreshUrl,

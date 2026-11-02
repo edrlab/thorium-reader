@@ -10,7 +10,12 @@ import * as done from "./done";
 import * as cancel from "./cancel";
 import * as logout from "./logout";
 
+import * as submit from "./submit";
+import * as submitted from "./submitted";
+
 export {
+    submit,
+    submitted,
     done,
     wipeData,
     cancel,
