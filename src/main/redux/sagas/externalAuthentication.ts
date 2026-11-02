@@ -117,6 +117,10 @@ export function* watchExternalAuthentication(dependencies: IExternalAuthenticati
                 task = yield fork(function* () {
                     try { yield call(dependencies.legacy.run, next.legacy); }
                     catch (error) { dependencies.legacy.onError(error); }
+                    finally {
+                        const wasCancelled: boolean = yield cancelled();
+                        if (wasCancelled) next.legacy[3]?.();
+                    }
                 });
                 continue;
             }

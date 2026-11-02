@@ -7,7 +7,7 @@ import { forwardOpdsAuthenticationRedirect } from "readium-desktop/main/opdsAuth
 import { getOpdsRequestCustomProtocolEventChannel, TregisterHttpProtocolHandler } from "readium-desktop/main/redux/sagas/getEventChannel";
 import { runExternalAuthentication, IExternalAuthenticationSession } from "readium-desktop/main/redux/sagas/externalAuthentication";
 
-jest.mock("electron", () => ({ app: { listeners: () => [], on: jest.fn() }, session: { fromPartition: jest.fn() } }));
+jest.mock("electron", () => ({ app: { listeners: (): Array<() => void> => [], on: jest.fn() }, session: { fromPartition: jest.fn() } }));
 jest.mock("readium-desktop/main/customization/watcher", () => ({ customizationStartFileWatcherFromWellKnownFolder: jest.fn() }));
 
 const register = jest.fn<(scheme: string, handler: (request: Electron.ProtocolRequest, callback: TregisterHttpProtocolHandler["callback"]) => void) => void>();

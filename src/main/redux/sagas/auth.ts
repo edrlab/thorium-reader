@@ -129,7 +129,7 @@ const LINK_TYPE: TLinkType[] = [
 
 const opdsAuthFlow =
     (opdsRequestFromCustomProtocol: ReturnType<typeof getOpdsRequestCustomProtocolEventChannel>) =>
-        function*([doc, baseUrl, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser]: TOpdsAuthenticationChannel) {
+        function*([doc, baseUrl, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser, onInterrupted]: TOpdsAuthenticationChannel) {
 
             debug("opds authenticate flow");
             const baseUrlParsed = tryCatchSync(() => new URL(baseUrl), filename_);
@@ -256,7 +256,7 @@ const opdsAuthFlow =
                             yield spawn(function* () {
                                 debug("OPDS auth retry GO!", opdsCustomProtocolRequestParsed.url, baseUrl, JSON.stringify(doc, null, 4));
                                 const opdsAuthChannel = getOpdsAuthenticationChannel();
-                                opdsAuthChannel.put([doc, baseUrl, true]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
+                                opdsAuthChannel.put([doc, baseUrl, true, onInterrupted]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
                             });
 
                             return;
