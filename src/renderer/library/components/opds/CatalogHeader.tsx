@@ -16,18 +16,18 @@ import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/br
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
-export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: IBreadCrumbItem, previousLocation: IBreadCrumbItem}>> = (props) => {
+export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: IBreadCrumbItem, previousLocation: IBreadCrumbItem, rootLocation?: IBreadCrumbItem}>> = (props) => {
 
-    const { currentLocation, previousLocation } = props;
+    const { currentLocation, previousLocation, rootLocation } = props;
     const dispatch = useDispatch();
     const location = useSelector((state: ILibraryRootState) => state.router.location);
     const savedDisplayType = useSelector((state: ILibraryRootState) => state.settings.libraryView?.displayType);
 
     return (
-        <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+        <div style={{display: "flex", alignItems: "center", gap: "20px", minWidth: 0, maxWidth: "100%"}}>
             {previousLocation ?
             <Link
-                style={{width: "20px", height: "20px", transform: "rotate(180deg)"}}
+                style={{width: "20px", height: "20px", flexShrink: 0, transform: "rotate(180deg)"}}
                 to={{
                     pathname: previousLocation?.path,
                 }}
@@ -63,7 +63,16 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
             </Link>
             : <></>
             }
-            <h4 style={{fontSize: "16px"}}>{currentLocation?.name}</h4>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", minWidth: 0, overflowWrap: "anywhere" }}>
+                {rootLocation && rootLocation.path !== currentLocation?.path && <>
+                    <Link to={{ pathname: rootLocation.path }}
+                        state={{ displayType: resolveDisplayType(location.state, savedDisplayType) }}>
+                        {rootLocation.name}
+                    </Link>
+                    <span aria-hidden="true">›</span>
+                </>}
+                <h4 style={{ fontSize: "16px", margin: 0, minWidth: 0 }} aria-current="page">{currentLocation?.name}</h4>
+            </div>
         </div>
     );
 };

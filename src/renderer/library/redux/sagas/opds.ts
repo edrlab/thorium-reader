@@ -130,6 +130,10 @@ export function* browseWatcher(action: routerActions.locationChanged.TAction) {
             return;
         }
 
+        const feed = opdsBrowseAction.payload.data?.opds;
+        if (opdsBrowseAction.payload.isSuccess && !feed?.auth && feed?.title?.trim()) {
+            yield put(opdsActions.breadcrumbTitleUpdate.build(path, feed.title));
+        }
         yield call(updateHeaderLinkWatcher, opdsBrowseAction);
     }
 }

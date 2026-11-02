@@ -4,7 +4,7 @@ import { Action } from "history";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 import { handOffBrowseResponse, takeBrowseResponse } from "readium-desktop/renderer/library/opds/browseResponse";
-import { routerActions } from "readium-desktop/renderer/library/redux/actions";
+import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
 import { browseWatcher } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/httpBrowser";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
@@ -70,4 +70,19 @@ test("returns to catalogs without browsing an invalid route", async () => {
         }, Action.Push)).toPromise();
     expect(opdsBrowse).not.toHaveBeenCalled();
     expect(dispatched).toContainEqual(replace("/opds"));
+});
+
+test.each([
+    ["Server title", true], ["", true], ["   ", true], ["Unauthorized", false],
+] as const)("updates the breadcrumb from feed metadata %s (success: %s), even without links", async (title, success) => {
+    const path = "/opds/catalog/browse/3/title/url";
+    const result = apiActions.result.build({ requestId: "browseOpdsApiResult", moduleId: "httpbrowser", methodId: "browse" },
+        { url: "https://example.org/borrow", isSuccess: success, isFailure: !success, data: { opds: { title } } });
+    jest.mocked(opdsBrowse).mockImplementationOnce(function*() { return result; });
+    const dispatched: unknown[] = [];
+    await runSaga({ dispatch: (action: unknown) => dispatched.push(action) }, browseWatcher, routerActions.locationChanged.build({
+        pathname: path, search: "", hash: "", state: undefined, key: "title",
+    }, Action.Push)).toPromise();
+    const updates = dispatched.filter(action => (action as { type: string }).type === opdsActions.breadcrumbTitleUpdate.ID);
+    expect(updates).toEqual(success && title.trim() ? [opdsActions.breadcrumbTitleUpdate.build(path, title)] : []);
 });
