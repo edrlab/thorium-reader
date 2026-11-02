@@ -1,3 +1,4 @@
+jest.mock("readium-desktop/main/redux/sagas/api/opds/feed", () => ({ findAllFeeds: jest.fn() }));
 import { describe, expect, it, jest, beforeEach } from "@jest/globals";
 import { runSaga } from "redux-saga";
 jest.mock("typed-redux-saga/macro", () => jest.requireActual("typed-redux-saga"));
@@ -9,7 +10,8 @@ jest.mock("readium-desktop/common/utils/isURL", () => ({ __esModule: true, defau
 
 import { httpGet } from "readium-desktop/main/network/http";
 import { diMainGet } from "readium-desktop/main/di";
-import { customizationActions } from "readium-desktop/common/redux/actions";
+import { findAllFeeds } from "readium-desktop/main/redux/sagas/api/opds/feed";
+import { customizationActions, historyActions } from "readium-desktop/common/redux/actions";
 import { triggerCatalogOpdsAuthentication } from "readium-desktop/main/redux/sagas/opdsAuthentication";
 
 const transform = jest.fn<(...args: unknown[]) => Promise<unknown>>();
@@ -60,4 +62,17 @@ describe("feed card login", () => {
             customizationActions.triggerOpdsAuth.build(home, home)).toPromise();
         expect(get).toHaveBeenNthCalledWith(2, auth);
     });
+});
+
+
+it("opens the OPDS result view for Basic login from a feed card", async () => {
+    jest.mocked(diMainGet).mockReturnValue({ opdsRequestTransformer: transform } as never);
+    const feed = { identifier: "catalog", title: "Catalog", url: home, authentified: false, color: "gray" as const };
+    jest.mocked(findAllFeeds).mockImplementation(function* () { return [feed]; });
+    get.mockResolvedValue(response("application/opds-authentication+json"));
+    transform.mockResolvedValue({ title: "Login", auth: { credentialsUrl: shelf } });
+    const dispatch = jest.fn();
+    await runSaga({ dispatch }, triggerCatalogOpdsAuthentication,
+        customizationActions.triggerOpdsAuth.build(home, shelf)).toPromise();
+    expect(dispatch).toHaveBeenCalledWith(historyActions.pushFeed.build({ ...feed, url: shelf }));
 });

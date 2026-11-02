@@ -23,6 +23,7 @@ jest.mock("readium-desktop/main/db/repository/publication", () => ({
 }));
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSGroup } from "@r2-opds-js/opds/opds2/opds2-group";
@@ -386,3 +387,65 @@ describe("OPDS hold cancellation properties", () => {
         expect(result.holdPosition).toBe(52);
     });
 });
+
+
+describe("inline Basic authentication", () => {
+    it("returns form metadata for an authentication document without opening a window", async () => {
+        const doc = {
+            id: "https://example.org/auth", title: "Sign in",
+            authentication: [{ type: "http://opds-spec.org/auth/basic", labels: { login: "Card", password: "PIN" } }],
+            links: [{ rel: "logo", href: "logo.png" }, { rel: "help", href: "/help" }, { rel: "register", href: "/register" }],
+        };
+        const converter = createConverter();
+        const view = converter.convertOpdsAuthToView(TaJsonDeserialize(doc, OPDSAuthenticationDoc), baseUrl);
+        expect(view.auth).toMatchObject({
+            credentialsUrl: baseUrl, labelLogin: "Card", labelPassword: "PIN",
+            logoImageUrl: "https://example.org/catalog/logo.png",
+            helpUrls: ["https://example.org/help"], registerUrl: "https://example.org/register",
+        });
+        const service = new OpdsService();
+        Object.assign(service, { opdsFeedViewConverter: converter });
+        const dispatch = jest.spyOn(service as unknown as { dispatchAuthenticationProcess: () => void }, "dispatchAuthenticationProcess");
+        const result = await service.opdsRequestTransformer({
+            url: baseUrl, isSuccess: false, isFailure: true, statusCode: 401,
+            contentType: authenticationType, response: { json: async () => doc },
+        } as unknown as IHttpGetResult<IOpdsResultView>);
+        expect(result.auth.credentialsUrl).toBe(baseUrl);
+        expect(dispatch).not.toHaveBeenCalled();
+    });
+
+    it("returns a form for a plain Basic challenge using the effective URL", async () => {
+        const service = new OpdsService();
+        const dispatch = jest.spyOn(service as unknown as { sendWwwAuthenticationToAuthenticationProcess: () => void }, "sendWwwAuthenticationToAuthenticationProcess");
+        const result = await service.opdsRequestTransformer({
+            url: baseUrl, responseUrl: "https://example.org/protected", isSuccess: false, isFailure: true,
+            statusCode: 401, contentType: "text/plain",
+            response: { headers: { get: () => 'Basic realm="Catalog"' } },
+        } as unknown as IHttpGetResult<IOpdsResultView>);
+        expect(result.auth.credentialsUrl).toBe("https://example.org/protected");
+        expect(dispatch).not.toHaveBeenCalled();
+    });
+
+    it("keeps browser authentication documents out of the inline flow", () => {
+        const view = createConverter().convertOpdsAuthToView(TaJsonDeserialize({
+            id: baseUrl, title: "Browser", authentication: [{ type: "http://opds-spec.org/auth/oauth/implicit" }],
+        }, OPDSAuthenticationDoc), baseUrl);
+        expect(view.auth.credentialsUrl).toBeUndefined();
+    });
+});
+
+
+it.each(["http://opds-spec.org/auth/local", "http://opds-spec.org/auth/oauth/password"])(
+    "exposes inline credentials and endpoints for %s", type => {
+        const view = createConverter().convertOpdsAuthToView(TaJsonDeserialize({
+            id: "provider", title: "Login", authentication: [{ type,
+                labels: { login: "Card", password: "PIN" },
+                links: [{ rel: "authenticate", href: "token" }, { rel: "refresh", href: "refresh" }],
+            }],
+        }, OPDSAuthenticationDoc), baseUrl);
+        expect(view.auth).toMatchObject({ authenticationType: type, credentialsUrl: baseUrl,
+            authenticationId: "provider", labelLogin: "Card", labelPassword: "PIN",
+            oauthUrl: "https://example.org/catalog/token", oauthRefreshUrl: "https://example.org/catalog/refresh",
+        });
+    },
+);

@@ -61,6 +61,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     // authActions.done.ID, // not used
     authActions.cancel.ID,
+    authActions.submitted.ID,
 
     // sessionActions.enable.ID,
 

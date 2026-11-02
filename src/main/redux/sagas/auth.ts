@@ -6,6 +6,7 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
+import { submitInlineAuthentication } from "./inlineAuthentication";
 import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY } from "readium-desktop/common/streamerProtocol";
 import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
 
@@ -356,6 +357,11 @@ export function saga() {
             opdsAuthChannel,
             opdsAuthFlow(opdsRequestChannel),
             (e) => debug("redux OPDS authentication channel error", e),
+        ),
+        takeSpawnEvery(
+            authActions.submit.ID,
+            submitInlineAuthentication,
+            (e) => debug("Inline authentication submission failed", e),
         ),
         takeSpawnEvery(
             authActions.wipeData.ID,
