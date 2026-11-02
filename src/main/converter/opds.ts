@@ -555,7 +555,9 @@ export class OpdsFeedViewConverter {
 
         const method = r2OpdsAuth.Authentication?.find(a =>
             a.Type === "http://opds-spec.org/auth/basic" || a.Type === "http://opds-spec.org/auth/local"
-            || a.Type === "http://opds-spec.org/auth/oauth/password");
+            || a.Type === "http://opds-spec.org/auth/oauth/password"
+            || a.Type === "http://opds-spec.org/auth/oauth/implicit"
+            || a.Type === "http://opds-spec.org/auth/oauth/authorization-code-pkce");
         const oauth = method;
 
         let labelLogin: string | undefined;
@@ -587,6 +589,8 @@ export class OpdsFeedViewConverter {
         const register = methodLinks.find(l => l.Rel?.includes("register"));
         const auth: IOpdsAuthView = {
             credentialsUrl: method ? baseUrl : undefined,
+            external: method?.Type === "http://opds-spec.org/auth/oauth/implicit"
+                || method?.Type === "http://opds-spec.org/auth/oauth/authorization-code-pkce",
             authenticationType: method?.Type as IOpdsAuthView["authenticationType"],
             authenticationId: r2OpdsAuth.Id,
             registerUrl: register ? urlPathResolve(baseUrl, register.Href) : undefined,

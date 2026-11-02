@@ -31,6 +31,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     authActions.wipeData.ID,
     authActions.submit.ID,
+    authActions.externalRequest.ID,
 
     readerActions.openRequest.ID,
     readerActions.closeRequest.ID,

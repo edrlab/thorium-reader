@@ -128,8 +128,12 @@ export interface IOpdsFacetView {
 export type TInlineOpdsAuthenticationType = "http://opds-spec.org/auth/basic"
     | "http://opds-spec.org/auth/local" | "http://opds-spec.org/auth/oauth/password";
 
+export type TExternalOpdsAuthenticationType = "http://opds-spec.org/auth/oauth/implicit"
+    | "http://opds-spec.org/auth/oauth/authorization-code-pkce";
+
 export interface IOpdsAuthView {
-    authenticationType?: TInlineOpdsAuthenticationType;
+    external?: boolean;
+    authenticationType?: TInlineOpdsAuthenticationType | TExternalOpdsAuthenticationType;
     authenticationId?: string;
     credentialsUrl?: string;
     registerUrl?: string;

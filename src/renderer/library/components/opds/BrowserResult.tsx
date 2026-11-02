@@ -27,6 +27,8 @@ import Slider from "../utils/Slider";
 import Entry from "./Entry";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
+import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { ExternalAuthentication } from "./ExternalAuthentication";
 import { AuthenticationForm } from "./AuthenticationForm";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
@@ -66,7 +68,10 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
             if (browserResult.data?.opds?.auth?.credentialsUrl) {
                 status = browserResult.data.opds.title || __("catalog.opds.auth.login");
-                content = <AuthenticationForm auth={browserResult.data.opds.auth} __={__} />;
+                content = browserResult.data.opds.auth.external
+                    ? <ExternalAuthentication auth={browserResult.data.opds.auth} __={__}
+                        catalogIdentifier={browserResult.isSuccess ? parseOpdsBrowserRoute(this.props.location.pathname)?.rootFeedIdentifier : undefined} />
+                    : <AuthenticationForm auth={browserResult.data.opds.auth} __={__} />;
             } else if (browserResult?.data?.problemDetails) {
                 const { data: { problemDetails: {
                     type,
