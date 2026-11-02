@@ -11,7 +11,7 @@ import * as React from "react";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
-import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
 import * as StarIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
