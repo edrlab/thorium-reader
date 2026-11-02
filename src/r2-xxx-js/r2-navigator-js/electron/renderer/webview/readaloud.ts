@@ -10,6 +10,7 @@ import { ipcRenderer } from "electron";
 
 import {
     R2_EVENT_TTS_DOC_END, R2_EVENT_TTS_DOC_BACK, R2_EVENT_TTS_IS_PAUSED, R2_EVENT_TTS_IS_PLAYING, R2_EVENT_TTS_IS_STOPPED,
+    R2_EVENT_TTS_LOOKAHEAD,
 } from "../../common/events";
 import {
     HighlightDrawTypeBackground, HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler, HighlightDrawTypeUnderline, IColor, IHighlight,
@@ -31,6 +32,10 @@ import {
 } from "../common/dom-text-utils";
 import { easings } from "../common/easings";
 import { IHTMLDialogElementWithPopup, PopupDialog, isPopupDialogOpen } from "./popup-dialog";
+import {
+    TtsLookAheadLifecycle, buildTtsLookAheadSnapshot, resumeTtsWithLookAhead, scheduleTtsLookAheadNavigation,
+    type ITtsLookAheadSource,
+} from "../common/tts-lookahead";
 import { createHighlights, destroyHighlight, ENABLE_CSS_HIGHLIGHTS, HIGHLIGHT_GROUP_TTS } from "./highlight";
 import { isRTL, clearImageZoomOutlineDebounced } from "./readium-css";
 
@@ -67,6 +72,7 @@ interface IHTMLDialogElementWithTTSState extends IHTMLDialogElementWithPopup {
 }
 
 let _dialogState: IHTMLDialogElementWithTTSState | undefined;
+const _ttsLookAheadLifecycle = new TtsLookAheadLifecycle();
 
 function resetState(stop: boolean) {
     if (stop) {
@@ -340,7 +346,11 @@ export function ttsResume() {
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (_dialogState.ttsUtterance as any).r2_cancel = false;
-                win.speechSynthesis.speak(_dialogState.ttsUtterance);
+                resumeTtsWithLookAhead(
+                    _dialogState.ttsUtterance,
+                    emitTtsLookAheadSnapshot,
+                    (utterance) => win.speechSynthesis.speak(utterance),
+                );
             }
         }, 0);
 
@@ -488,7 +498,12 @@ export function ttsNext(skipSentences: boolean, escape = false) {
             return;
         }
         ttsPause(true);
-        ttsPlayQueueIndexDebounced(ttsQueueIndex);
+        scheduleTtsLookAheadNavigation(
+            _ttsLookAheadLifecycle,
+            "next",
+            { escape, skipSentences },
+            () => ttsPlayQueueIndexDebounced(ttsQueueIndex),
+        );
     } else if (_resumableState) {
         ttsResume();
     }
@@ -552,7 +567,12 @@ export function ttsPrevious(skipSentences: boolean, escape = false) {
             return;
         }
         ttsPause(true);
-        ttsPlayQueueIndexDebounced(ttsQueueIndex);
+        scheduleTtsLookAheadNavigation(
+            _ttsLookAheadLifecycle,
+            "previous",
+            { escape, skipSentences },
+            () => ttsPlayQueueIndexDebounced(ttsQueueIndex),
+        );
     } else if (_resumableState) {
         ttsResume();
     }
@@ -566,7 +586,12 @@ export function ttsPreviewAndEventuallyPlayQueueIndex(n: number) {
     //     updateTTSInfo(getTtsQueueItemRef(_dialogState.ttsQueue, n), -1, undefined);
     // }
 
-    ttsPlayQueueIndexDebounced(n);
+    scheduleTtsLookAheadNavigation(
+        _ttsLookAheadLifecycle,
+        "slider",
+        {},
+        () => ttsPlayQueueIndexDebounced(n),
+    );
 }
 
 // const _getCssSelectorOptions = {
@@ -1546,6 +1571,33 @@ export function assignUtteranceVoice(utterance: SpeechSynthesisUtterance) {
     }
 }
 
+function emitTtsLookAheadSnapshot(utterance: SpeechSynthesisUtterance) {
+    if (!_dialogState || !_dialogState.ttsQueue || !_dialogState.ttsQueueItem) {
+        return;
+    }
+
+    const source: ITtsLookAheadSource = {
+        rate: utterance.rate,
+    };
+    if (utterance.voice) {
+        source.voiceName = utterance.voice.name;
+        source.voiceURI = utterance.voice.voiceURI;
+        source.lang = utterance.voice.lang;
+    } else if (utterance.lang) {
+        source.lang = utterance.lang;
+    }
+    const token = _ttsLookAheadLifecycle.createEmissionToken(source);
+    const snapshot = buildTtsLookAheadSnapshot(
+        _dialogState.ttsQueue,
+        _dialogState.ttsQueueItem.iGlobal,
+        token,
+        source,
+    );
+    if (snapshot && _ttsLookAheadLifecycle.acceptEmission(token)) {
+        ipcRenderer.sendToHost(R2_EVENT_TTS_LOOKAHEAD, snapshot);
+    }
+}
+
 export function ttsPlayQueueIndex(ttsQueueIndex: number, ttsAndMediaOverlaysManualPlayNext = false) {
 
     if (!_dialogState ||
@@ -1619,7 +1671,12 @@ export function ttsPlayQueueIndex(ttsQueueIndex: number, ttsAndMediaOverlaysManu
 
     if (txtStr === "") {
         highlights(false);
-        ttsPlayQueueIndexDebounced(ttsQueueIndex + 1);
+        scheduleTtsLookAheadNavigation(
+            _ttsLookAheadLifecycle,
+            "automatic",
+            {},
+            () => ttsPlayQueueIndexDebounced(ttsQueueIndex + 1),
+        );
         return;
     }
 
@@ -1682,14 +1739,24 @@ export function ttsPlayQueueIndex(ttsQueueIndex: number, ttsAndMediaOverlaysManu
         if (win.READIUM2.ttsAndMediaOverlaysManualPlayNext) {
 
             highlights(false);
-            ttsPlayQueueIndexDebounced(ttsQueueIndex + 1, true);
+            scheduleTtsLookAheadNavigation(
+                _ttsLookAheadLifecycle,
+                "automatic",
+                {},
+                () => ttsPlayQueueIndexDebounced(ttsQueueIndex + 1, true),
+            );
             ttsPause(true); // calls highlights(false);
 
             return;
         }
 
         highlights(false, true);
-        ttsPlayQueueIndexDebounced(ttsQueueIndex + 1);
+        scheduleTtsLookAheadNavigation(
+            _ttsLookAheadLifecycle,
+            "automatic",
+            {},
+            () => ttsPlayQueueIndexDebounced(ttsQueueIndex + 1),
+        );
     };
     utterance.onend = (_ev: SpeechSynthesisEvent) => {
         onEnd();
@@ -1708,6 +1775,7 @@ export function ttsPlayQueueIndex(ttsQueueIndex: number, ttsAndMediaOverlaysManu
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (utterance as any).r2_cancel = false;
+    emitTtsLookAheadSnapshot(utterance);
     setTimeout(() => {
         // note that isSkippable===true never reaches into a ttsQueueItem because we eject at compilation time instead of runtime / playback:
         // if (win.READIUM2.ttsSkippabilityEnabled && ttsQueueItem.item.isSkippable) {
@@ -1900,6 +1968,7 @@ ${win.READIUM2.ttsOverlayEnabled ?
 
     _dialogState.ttsQueue = ttsQueue;
     _dialogState.ttsQueueLength = ttsQueueLength;
+    _ttsLookAheadLifecycle.rebuildQueue();
 
     if (_dialogState.domSlider) {
         _dialogState.domSlider.addEventListener("input", (_ev: Event) => {
@@ -1948,7 +2017,12 @@ ${win.READIUM2.ttsOverlayEnabled ?
                         if (ttsQItem) {
                             if (ttsQItem.iGlobal !== _dialogState.ttsQueueItem.iGlobal) {
                                 ttsPause(true);
-                                ttsPlayQueueIndexDebounced(index);
+                                scheduleTtsLookAheadNavigation(
+                                    _ttsLookAheadLifecycle,
+                                    "jump",
+                                    {},
+                                    () => ttsPlayQueueIndexDebounced(index),
+                                );
                                 return;
                             }
                         }
