@@ -387,6 +387,12 @@
         },
         "addMenu": "Lisa OPDS-voog",
         "breadcrumbRoot": "Minu kataloogid",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Sinine",
             "gray": "Hall",

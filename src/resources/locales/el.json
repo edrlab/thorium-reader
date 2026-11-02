@@ -387,6 +387,12 @@
         },
         "addMenu": "Προσθήκη τροφοδοσίας OPDS",
         "breadcrumbRoot": "Κατάλογοι",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Μπλε",
             "gray": "Γκρι",

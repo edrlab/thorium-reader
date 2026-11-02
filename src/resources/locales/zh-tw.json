@@ -381,6 +381,12 @@
         },
         "addMenu": "添加 OPDS 訂閱來源",
         "breadcrumbRoot": "出版目錄",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",

@@ -411,6 +411,12 @@
         },
         "addMenu": "إضافة مصدر OPDS",
         "breadcrumbRoot": "الفهارس",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",

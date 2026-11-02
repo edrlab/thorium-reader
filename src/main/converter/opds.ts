@@ -714,6 +714,9 @@ export class OpdsFeedViewConverter {
                 up: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
                 search: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
                 authenticate: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "authenticate" }),
+                wishlist: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/wishlist" }),
+                history: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/history" }),
+                profile: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "profile" }),
                 bookshelf: r2OpdsFeed.Links.filter((link) => link.Href &&
                     (link.Rel?.includes("http://opds-spec.org/shelf") || link.Rel?.includes("shelf")))
                     .map((link) => this.convertLinkToView(link, baseUrl)),

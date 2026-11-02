@@ -10,8 +10,8 @@ import { diMainGet } from "readium-desktop/main/di";
 import { getOpdsUserProfile } from "readium-desktop/main/services/opdsUserProfile";
 import { call } from "typed-redux-saga/macro";
 
-export const getUserProfile: IOpdsApi["getUserProfile"] = function* (identifier) {
+export const getUserProfile: IOpdsApi["getUserProfile"] = function* (identifier, profileUrl) {
     const repository = diMainGet("opds-feed-repository");
     const feed = yield* call(() => repository.get(identifier));
-    return yield* call(getOpdsUserProfile, feed.url, feed.authenticationUrl);
+    return yield* call(getOpdsUserProfile, feed.url, feed.authenticationUrl, profileUrl);
 };
