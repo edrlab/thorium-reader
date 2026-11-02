@@ -9,18 +9,8 @@ import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "OPDS_REFRESH_CATALOG";
 
-export interface Payload {
-    cachedAuthentication?: boolean;
-}
-
-export function build(cachedAuthentication?: boolean): Action<typeof ID, Payload> {
-
-    return {
-        type: ID,
-        payload: {
-            ...(cachedAuthentication ? { cachedAuthentication } : {}),
-        },
-    };
+export function build(): Action<typeof ID> {
+    return { type: ID, payload: {} };
 }
 build.toString = () => ID; // Redux StringableActionCreator
 export type TAction = ReturnType<typeof build>;
