@@ -274,9 +274,9 @@
             "success": "Tuonti onnistui."
         },
         "diagnostics": {
-            "category": "",
-            "causedBy": "",
-            "downloadSource": "",
+            "category": "Luokka: {{- category}}",
+            "causedBy": "Syy:",
+            "downloadSource": "Lataa lähde: {{- source}}",
             "error": "",
             "httpStatus": "",
             "invalidUrl": "",
