@@ -48,3 +48,19 @@ test.each([[200, "0"], [204, undefined], [500, "0"]] as const)(
         expect(result.isSuccess).toBe(statusCode < 400);
     },
 );
+
+test.each([new URL("https://example.org/"), "https://example.org/", "https://redirect.example.org/feed"])(
+    "preserves the route URL when authentication returns %s", async (requestUrl) => {
+        const routeUrl = "https://example.org";
+        const opds = { title: "Shelf", publications: [{ documentTitle: "Book" }] };
+        mockTransform.mockResolvedValue(opds);
+        jest.mocked(httpGet).mockImplementation(async (_url, _options, callback) => callback({
+            url: requestUrl, responseUrl: "https://redirect.example.org/feed",
+            contentType: ContentType.Opds2, isSuccess: true, isFailure: false,
+        }));
+        const result = await runSaga({}, browse, routeUrl).toPromise();
+        expect(result.url).toBe(routeUrl);
+        expect(result.responseUrl).toBe("https://redirect.example.org/feed");
+        expect(result.data.opds).toEqual(opds);
+    },
+);

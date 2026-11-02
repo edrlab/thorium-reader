@@ -52,7 +52,7 @@ export const BrowserOptions = () => {
     const [profileLoading, setProfileLoading] = React.useState(false);
     const latestPath = React.useRef(location.pathname);
     latestPath.current = location.pathname;
-    const matchesRoute = result?.url === route?.url || (route?.url.startsWith("apiapp://") && result?.url === "");
+    const matchesRoute = result?.url === route?.url || result?.responseUrl === route?.url || (route?.url.startsWith("apiapp://") && result?.url === "");
     const successful = matchesRoute && !!result?.isSuccess && !!result.data?.opds && !result.data.opds.auth;
     const currentUrl = (matchesRoute && result?.responseUrl) || route?.url;
     const links: OpdsBrowserLinks = { ...(cached?.identifier === identifier ? cached.links : {}),

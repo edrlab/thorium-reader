@@ -157,3 +157,12 @@ test("supports keyboard opening, dismissing, and restoring focus to the options 
     expect(document.querySelector('[role="menu"]')).toBeNull();
     expect(document.activeElement).toBe(button);
 });
+
+test("shows Logout when IPC serializes the authenticated request URL as an empty object", async () => {
+    mockApi.mockResolvedValue({ catalogUrl: catalog, links: { shelf }, authenticated: true });
+    mockLocation.pathname = buildRoute("catalog-a", "Shelf", shelf.url, 3);
+    feed(shelf.url);
+    mockResult = { ...mockResult, url: {} as URL, responseUrl: shelf.url };
+    await render(); await open();
+    expect(item("logout")).not.toBeNull();
+});
