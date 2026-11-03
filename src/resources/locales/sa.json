@@ -13,7 +13,7 @@
         "editTag": "सङ्केतम् सम्पादयतु: {{- tag}}",
         "favoriteCatalog": "इष्टसूचीपत्रम्: {{- title}}",
         "increaseSetting": "{{- setting}} वर्धयतु",
-        "leftSlideButton": "वामतः अपसारयतु",
+        "leftSlideButton": "वामदिशि चालयतु",
         "loading": "आरोप्यमाणम्…",
         "mainContent": "मुख्यपाठ्यविषयः",
         "notificationCopied": "अंशफलके प्रतिलिखितम्:",
@@ -21,7 +21,7 @@
         "printPage": "पृष्ठम् {{page}}",
         "publicationDetails": "{{- field}}: {{- title}}",
         "resetSetting": "{{- setting}} पुनःस्थापयतु",
-        "rightSlideButton": "दक्षिणतः अपसारयतु",
+        "rightSlideButton": "दक्षिणदिशि चालयतु",
         "searching": "अन्वेषणम्…",
         "skipLink": "पाठ्यविषयम् प्रति गच्छतु",
         "toolbar": "साधनपट्टिका"
@@ -108,7 +108,6 @@
         "importAnnotation": "टिप्पण्यः आयातयतु",
         "lang": "भाषा",
         "lastRead": "अन्तिमपठनम्",
-        "login": "प्रविशतु",
         "logout": "निर्गच्छतु",
         "missing": "लुप्ताः सञ्चिकाः",
         "missingUnavailableDescription": "अस्य प्रकाशनस्य उद्घाटनम् अशक्यम्, यतः सङ्गृहीताः सञ्चिकाः अनुपलब्धाः. पुनः आयातयतु, अथवा विन्यासम् ततः सङ्ग्रहम् गत्वा अतिरिक्तम् सङ्ग्रहम् योजयतु परिवर्तयतु वा.",
@@ -163,15 +162,12 @@
         "update": "सम्पादयतु",
         "userProfile": {
             "available": "उपलब्धम्: {{count}}",
-            "bookshelf": "पुस्तकफलकम् उद्घाटयतु",
             "edit": "रूपरेखाम् सम्पादयतु",
             "holds": "आरक्षणानि",
             "loading": "लेखा आरोप्यमाणा…",
             "loans": "ग्रहणानि",
             "title": "लेखा",
-            "total": "मर्यादा: {{count}}",
-            "unavailable": "रूपरेखासूचना अनुपलब्धा.",
-            "used": "{{used}} / {{total}} प्रयुक्तम्"
+            "unavailable": "रूपरेखासूचना अनुपलब्धा."
         }
     },
     "dialog": {
@@ -387,6 +383,12 @@
         },
         "addMenu": "OPDS प्रवाहं योजयतु",
         "breadcrumbRoot": "सूचीपत्राणि",
+        "browserMenu": {
+            "history": "इतिहासः",
+            "options": "विकल्पाः",
+            "profile": "रूपरेखा",
+            "wishlist": "इच्छासूची"
+        },
         "color": {
             "blue": "नीलः",
             "gray": "धूसरः",
@@ -1111,6 +1113,7 @@
         "keyboard": {
             "advancedMenu": "कुञ्जिपटललघुमार्गानाम् उन्नतसूचिः",
             "cancel": "निरस्यतु",
+            "disableTooltips": "कुञ्जिपटललघुमार्गाणां सूचनाः निष्क्रिययतु",
             "disclaimer": "QWERTY कुञ्जीविन्यासे कुञ्जीनां भौतिकस्थानम् आधृत्य अनुप्रयोगस्य पूर्वनिर्धारितानि परिकल्पितानि",
             "editUserJson": "उपयोक्तृसञ्चिकां सम्पादयतु...",
             "exportToHTML": "HTML प्रति निर्यातयतु",
