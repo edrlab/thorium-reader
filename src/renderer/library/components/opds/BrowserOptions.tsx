@@ -32,7 +32,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
-import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opds/constants";
+import { BROWSE_OPDS_API_REQUEST_ID, ENABLE_CUSTOM_OPDS_FEED_SHORTCUTS } from "readium-desktop/renderer/library/opds/constants";
 import { buildOpdsBrowserRoute, parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
@@ -74,7 +74,7 @@ export const BrowserOptions = () => {
         const observed = opdsBrowserLinksFromView(result.data.opds.links);
         setCached(previous => ({ identifier, links: { ...(previous?.identifier === identifier ? previous.links : {}), ...observed } }));
         const discovered = result.data.opds.links?.custom;
-        if (discovered?.length) {
+        if (ENABLE_CUSTOM_OPDS_FEED_SHORTCUTS && discovered?.length) {
             setCustom(previous => {
                 const links = new Map(previous?.identifier === identifier ? previous.links : undefined);
                 for (const link of discovered) {

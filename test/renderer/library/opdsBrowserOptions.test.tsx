@@ -8,6 +8,11 @@ import type { IOpdsNavigationLink } from "readium-desktop/common/views/opds";
 import { historyActions } from "readium-desktop/common/redux/actions";
 import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opds/constants";
 
+jest.mock("readium-desktop/renderer/library/opds/constants", () => ({
+    ...jest.requireActual<object>("readium-desktop/renderer/library/opds/constants"),
+    ENABLE_CUSTOM_OPDS_FEED_SHORTCUTS: true,
+}));
+
 const mockApi = jest.fn<(method: string, ...args: unknown[]) => Promise<unknown>>();
 const mockDispatch = jest.fn();
 const mockNavigate = jest.fn();
