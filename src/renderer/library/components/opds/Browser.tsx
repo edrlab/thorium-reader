@@ -17,6 +17,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 
 // import BreadCrumb from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
+import { BrowserOptions } from "./BrowserOptions";
 // import Header from "./Header";
 import SearchForm from "./SearchForm";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -55,6 +56,7 @@ class Browser extends React.Component<IProps, undefined> {
                 title={catalogTitle}
                 // secondaryHeader={secondaryHeader}
                 catalogHeader={catalogHeader}
+                catalogOptions={<BrowserOptions />}
                 search={search}
             >
                 {this.props.breadrumb.length ?

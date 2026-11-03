@@ -108,7 +108,6 @@
         "importAnnotation": "Import notes",
         "lang": "Language",
         "lastRead": "Last Read",
-        "login": "Login",
         "logout": "Logout",
         "missing": "Missing files",
         "missingUnavailableDescription": "This publication cannot be opened because its stored files are unavailable. Re-import it, or go to Settings and then Storage to add or change the additional storage.",
@@ -163,15 +162,12 @@
         "update": "Edit",
         "userProfile": {
             "available": "Available: {{count}}",
-            "bookshelf": "Open bookshelf",
             "edit": "Edit profile",
             "holds": "Holds",
             "loading": "Loading account…",
             "loans": "Loans",
             "title": "Account",
-            "total": "Limit: {{count}}",
-            "unavailable": "Profile information is unavailable.",
-            "used": "{{used}} of {{total}} used"
+            "unavailable": "Profile information is unavailable."
         }
     },
     "dialog": {
@@ -387,6 +383,12 @@
         },
         "addMenu": "Add OPDS feed",
         "breadcrumbRoot": "Catalogs",
+        "browserMenu": {
+            "history": "History",
+            "options": "Catalog options",
+            "profile": "User profile",
+            "wishlist": "Wishlist"
+        },
         "color": {
             "blue": "Blue",
             "gray": "Gray",
@@ -1111,6 +1113,7 @@
         "keyboard": {
             "advancedMenu": "Keyboard shortcuts advanced menu",
             "cancel": "Cancel",
+            "disableTooltips": "Disable keyboard shortcuts tooltips",
             "disclaimer": "The application defaults were designed based on the physical location of keys on a QWERTY layout",
             "editUserJson": "Edit user file...",
             "exportToHTML": "Export to HTML",

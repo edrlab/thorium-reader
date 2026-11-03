@@ -71,7 +71,7 @@ import {
 import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
 import { ReaderSettings } from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
 import { ReadingAudio } from "readium-desktop/renderer/reader/components/ReadingAudio";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
@@ -567,7 +567,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                 <div>
                     <ul>
                         <li>
-                        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                        <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                         <Focusable>
                             <button
                                 className={stylesReader.menu_button}
@@ -579,6 +579,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             </button>
                             </Focusable>
                             <ToolTippy
+                                immediate={true}
                                 placement="bottom"
                                 label={ __("reader.navigation.backHomeTitle") }
                                 tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.CloseReader]}
@@ -647,7 +648,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     !useMO &&
                                                     this.props.ttsState === TTSStateEnum.STOPPED) ?
                                                     <li className={stylesReader.button_audio}>
-                                                        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                        <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                                                         <Focusable>
                                                         <button
                                                             className={stylesReader.menu_button}
@@ -669,6 +670,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                         </button>
                                                         </Focusable>
                                                         <ToolTippy
+                                                            immediate={true}
                                                             placement="bottom"
                                                             label={`${this.props.publicationHasMediaOverlays ? __("reader.media-overlays.activate") : __("reader.tts.activate")}`}
                                                             tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.AudioPlayPause]}
@@ -678,7 +680,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     </li>
                                                     : <>
                                                         <li>
-                                                            <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                            <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                                                             <Focusable>
                                                             <button
                                                                 className={stylesReader.menu_button}
@@ -698,6 +700,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             </button>
                                                             </Focusable>
                                                             <ToolTippy
+                                                                immediate={true}
                                                                 placement="bottom"
                                                                 label={`${useMO ? __("reader.media-overlays.stop") : __("reader.tts.stop")}`}
                                                                 tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.AudioStop]}
@@ -706,7 +709,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             </TooltipTrigger>
                                                         </li>
                                                         <li>
-                                                            <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                            <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                                                             <Focusable>
                                                             <button
                                                                 className={stylesReader.menu_button}
@@ -740,6 +743,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             </button>
                                                             </Focusable>
                                                             <ToolTippy
+                                                                immediate={true}
                                                                 placement="bottom"
                                                                 label={
                                                                     isRTL ?
@@ -761,7 +765,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             !useMO &&
                                                             this.props.ttsState === TTSStateEnum.PLAYING) ?
                                                             <li style={{ backgroundColor: "var(--color-brand-primary)" }}>
-                                                                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                                <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                                                                 <Focusable>
                                                                 <button
                                                                     className={stylesReader.menu_button}
@@ -780,6 +784,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                 </button>
                                                                 </Focusable>
                                                                 <ToolTippy
+                                                                    immediate={true}
                                                                     placement="bottom"
                                                                     label={
                                                                         useMO ?
@@ -793,7 +798,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             </li>
                                                             :
                                                             <li>
-                                                                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                                <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                                                                 <Focusable>
                                                                 <button
                                                                     className={classNames(isRTL ? stylesReader.RTL_FLIP : undefined, stylesReader.menu_button)}
@@ -815,6 +820,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                 </button>
                                                                 </Focusable>
                                                                 <ToolTippy
+                                                                    immediate={true}
                                                                     placement="bottom"
                                                                     label={
                                                                         useMO ?
@@ -828,7 +834,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             </li>
                                                         }
                                                         <li>
-                                                            <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                                            <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                                                             <Focusable>
                                                             <button
                                                                 className={stylesReader.menu_button}
@@ -863,6 +869,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             </button>
                                                             </Focusable>
                                                             <ToolTippy
+                                                                immediate={true}
                                                                 placement="bottom"
                                                                 label={
                                                                     isRTL ?
@@ -1349,11 +1356,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <option value={200}>200%</option>
                                     </select> */}
 
-                                    <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                                    <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                                     <Focusable>
                                     <SelectRef
                                         id="buttonFXLZoom"
-                                        aria-label={__("reader.navigation.pdfscalemode")}
+                                        aria-label={__("reader.settings.pdfZoom.title")}
                                         items={fxlOptions}
                                         selectedKey={fxlOptions.find(({ value }) => this.props.ReaderSettingsProps.fxlZoomPercent === value)?.id || 0}
                                         defaultSelectedKey={fxlOptions.find(({ value }) => this.props.ReaderSettingsProps.fxlZoomPercent === value)?.id || 0}
@@ -1369,8 +1376,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </SelectRef>
                                     </Focusable>
                                     <ToolTippy
+                                        immediate={true}
                                         placement="bottom"
-                                        label={__("reader.navigation.pdfscalemode")}
+                                        label={__("reader.settings.pdfZoom.title")}
                                         tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.FXLZoomReset, this.props.keyboardShortcuts.FXLZoomIn, this.props.keyboardShortcuts.FXLZoomOut]}
                                         tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.FXLZoomReset.name"), __("settings.keyboard.list.FXLZoomIn.name"), __("settings.keyboard.list.FXLZoomOut.name")]}
                                         tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.FXLZoomReset.description"), __("settings.keyboard.list.FXLZoomIn.description"), __("settings.keyboard.list.FXLZoomOut.description")]} />
@@ -1381,7 +1389,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         <li role="presentation" aria-hidden="true" style={{width: "1px", height: "30px", backgroundColor: "var(--color-gray-200)", margin: "auto 5px"}}></li>
                         <li className={classNames(stylesReader.blue)}>
 
-                            <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                            <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                             <Focusable>
                             <button
                                 className={classNames(stylesReader.menu_button)}
@@ -1396,6 +1404,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             </button>
                             </Focusable>
                             <ToolTippy
+                                immediate={true}
                                 placement="bottom"
                                 label={__("reader.navigation.ZenModeTitle")}
                                 tooltipkeyboardShortcuts={[this.props.keyboardShortcuts.ToggleReaderZenMode, this.props.keyboardShortcuts.ToggleReaderFullscreen]}
@@ -1773,7 +1782,7 @@ function AnnotationButton({
                     ref={annotationPopoverTriggerRef}
                     {...(annotationPopoverOpen && { style: { backgroundColor: "var(--color-brand-primary)" } })}
                 >
-                    <TooltipTrigger delay={0} closeDelay={0} trigger="focus">
+                    <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="focus">
                     <Focusable isDisabled={props.isDivina || isAudioBook}>
                         <input
                             disabled={props.isDivina || isAudioBook}
@@ -1802,8 +1811,8 @@ function AnnotationButton({
                         />
                     </Focusable>
                     <ToolTippy
+                        immediate={false}
                         offset={15}
-                        noReveal={false}
                         placement="bottom"
                         label={`${__("reader.navigation.annotationTitle")} — ${__("reader.annotations.noSelectionToast")}`}
                         tooltipkeyboardShortcuts={[props.keyboardShortcuts.AnnotationsCreate, props.keyboardShortcuts.AnnotationsCreateQuick, props.keyboardShortcuts.FocusReaderNavigationAnnotations, props.keyboardShortcuts.AnnotationsToggleMargin]}
@@ -1814,7 +1823,7 @@ function AnnotationButton({
                     {
                         // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
                     }
-                    <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                    <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                     <Focusable excludeFromTabOrder>
                     <label
                         htmlFor="annotationButton"
@@ -1834,7 +1843,7 @@ function AnnotationButton({
                     </label>
                     </Focusable>
                     <ToolTippy
-                        noReveal={false}
+                        immediate={false}
                         placement="bottom"
                         label={`${__("reader.navigation.annotationTitle")} — ${__("reader.annotations.noSelectionToast")}`}
                         tooltipkeyboardShortcuts={[props.keyboardShortcuts.AnnotationsCreate, props.keyboardShortcuts.AnnotationsCreateQuick, props.keyboardShortcuts.FocusReaderNavigationAnnotations, props.keyboardShortcuts.AnnotationsToggleMargin]}

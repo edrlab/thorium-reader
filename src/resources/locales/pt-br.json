@@ -108,7 +108,6 @@
         "importAnnotation": "Importar notas",
         "lang": "Idioma",
         "lastRead": "Última leitura",
-        "login": "Login",
         "logout": "Logout",
         "missing": "Arquivos ausentes",
         "missingUnavailableDescription": "Não é possível abrir esta publicação porque os arquivos armazenados nela estão indisponíveis. Importe-a novamente ou acesse Configurações e, em seguida, Armazenamento, para adicionar ou alterar o armazenamento adicional.",
@@ -163,15 +162,12 @@
         "update": "Editar",
         "userProfile": {
             "available": "Disponível: {{count}}",
-            "bookshelf": "Abrir estante",
             "edit": "Editar perfil",
             "holds": "Retenções",
             "loading": "Carregando conta…",
             "loans": "Empréstimos",
             "title": "Conta",
-            "total": "Limite: {{count}}",
-            "unavailable": "As informações do perfil não estão disponíveis.",
-            "used": "{{used}} de {{total}} utilizados"
+            "unavailable": "As informações do perfil não estão disponíveis."
         }
     },
     "dialog": {
@@ -393,6 +389,12 @@
         },
         "addMenu": "Adicionar origem OPDS",
         "breadcrumbRoot": "Catálogos",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Azul",
             "gray": "Cinza",
@@ -1118,6 +1120,7 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Cancelar",
+            "disableTooltips": "",
             "disclaimer": "Os atalhos foram definidos a partir do layout de teclado QWERTY",
             "editUserJson": "Editar arquivo de usuário...",
             "exportToHTML": "Exportar em HTML",

@@ -13,7 +13,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { authActions, downloadActions, toastActions } from "readium-desktop/common/redux/actions";
+import { downloadActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ok } from "readium-desktop/common/utils/assert";
 import { IHttpGetResult, THttpOptions } from "readium-desktop/common/utils/http";
 import { createTempDir } from "readium-desktop/main/fs/path";
@@ -30,7 +30,7 @@ import {
 import { Channel, channel, eventChannel } from "@redux-saga/core";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
-import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
+import { requestOpdsAuthentication } from "./requestOpdsAuthentication";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import isURL from "readium-desktop/common/utils/isURL";
@@ -360,18 +360,10 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
             OPDSAuthenticationDoc,
         );
 
-        const opdsAuthChannel = getOpdsAuthenticationChannel();
+        const authenticated = yield* callTyped(requestOpdsAuthentication, r2OpdsAuth, linkHref);
+        debug("authentication attempt finished");
 
-        debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
-        opdsAuthChannel.put([r2OpdsAuth, linkHref, false]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
-
-        const {cancel} = yield* raceTyped({
-            cancel: takeTyped(authActions.cancel.build),
-            done: takeTyped(authActions.done.build),
-        });
-        debug("authentication modal closed");
-
-        if (cancel) {
+        if (!authenticated) {
             controller.abort();
             throw new DownloadCancelled();
         }

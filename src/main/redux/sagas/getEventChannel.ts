@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { subscribeToOpdsAuthenticationRedirects } from "readium-desktop/main/opdsAuthenticationRedirect";
 import { app, powerMonitor, session } from "electron";
 import { URL_PROTOCOL_OPDS, URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
 import { channel as channelSaga, eventChannel, buffers } from "redux-saga";
@@ -162,6 +163,7 @@ export function getOpdsRequestCustomProtocolEventChannel() {
 
     const channel = eventChannel<TregisterHttpProtocolHandler>(
         (emit) => {
+            const unsubscribeRedirects = subscribeToOpdsAuthenticationRedirects(emit);
             const authSession = session.fromPartition(SESSION_PARTITION_AUTH, { cache: false });
 
             if (authSession) {
@@ -173,6 +175,7 @@ export function getOpdsRequestCustomProtocolEventChannel() {
             }
 
             return () => {
+                unsubscribeRedirects();
                 authSession?.protocol.unregisterProtocol(URL_PROTOCOL_OPDS);
             };
         },

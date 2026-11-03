@@ -108,7 +108,6 @@
         "importAnnotation": "",
         "lang": "언어선택",
         "lastRead": "최근 읽은 자료",
-        "login": "",
         "logout": "",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -163,15 +162,12 @@
         "update": "편집",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -381,6 +377,12 @@
         },
         "addMenu": "OPDS feed 추가",
         "breadcrumbRoot": "카탈로그",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -1104,6 +1106,7 @@
         "keyboard": {
             "advancedMenu": "메뉴",
             "cancel": "취소",
+            "disableTooltips": "",
             "disclaimer": "",
             "editUserJson": "사용자 파일 편집...",
             "exportToHTML": "",

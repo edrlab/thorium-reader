@@ -16,15 +16,14 @@ jest.mock("inversify", () => ({
 }));
 jest.mock("readium-desktop/main/network/http", () => ({
     getAuthenticationToken: jest.fn(),
-}));
-jest.mock("readium-desktop/main/services/opdsAuthenticated", () => ({
-    isOpdsAuthenticated: jest.fn(),
+    httpGet: jest.fn(),
 }));
 jest.mock("readium-desktop/main/db/repository/publication", () => ({
     PublicationRepository: class PublicationRepository {},
 }));
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSGroup } from "@r2-opds-js/opds/opds2/opds2-group";
@@ -33,8 +32,7 @@ import type { IOpdsResultView } from "readium-desktop/common/views/opds";
 import { normalizeOpdsAuthenticationLink, OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsService } from "readium-desktop/main/services/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
-import { isOpdsAuthenticated } from "readium-desktop/main/services/opdsAuthenticated";
-import { opdsActions } from "readium-desktop/common/redux/actions";
+import { httpGet } from "readium-desktop/main/network/http";
 
 const baseUrl = "https://example.org/catalog/feed.json";
 const authenticationType = "application/opds-authentication+json";
@@ -83,47 +81,12 @@ describe("OPDS group self links", () => {
     });
 });
 
-describe("background feed authentication", () => {
-    it("returns before checking authentication, deduplicates checks and refreshes only on changes", async () => {
-        const converter = createConverter();
-        const dispatch = jest.fn();
-        Object.assign(converter, { store: { dispatch } });
+describe("feed conversion", () => {
+    it("does not check authentication when listing cards", async () => {
         const document = { identifier: "feed", title: "Catalog", url: baseUrl, createdAt: 0, updatedAt: 0 };
-        let resolveAuthentication: (value: boolean) => void;
-        jest.mocked(isOpdsAuthenticated).mockImplementation(() => new Promise<boolean>((resolve) => {
-            resolveAuthentication = resolve;
-        }));
-
-        expect((await converter.convertDocumentToView(document, true)).authentified).toBeUndefined();
-        expect(isOpdsAuthenticated).not.toHaveBeenCalled();
-        await converter.convertDocumentToView(document, true);
+        expect(await createConverter().convertDocumentToView(document)).toMatchObject({ url: baseUrl });
         await new Promise<void>((resolve) => setImmediate(resolve));
-        expect(isOpdsAuthenticated).toHaveBeenCalledTimes(1);
-        const foreground = converter.convertDocumentToView(document);
-        expect(isOpdsAuthenticated).toHaveBeenCalledTimes(1);
-        resolveAuthentication(true);
-        expect((await foreground).authentified).toBe(true);
-        await new Promise<void>((resolve) => setImmediate(resolve));
-        expect(dispatch).toHaveBeenCalledWith(opdsActions.refresh.build(true));
-
-        expect((await converter.convertDocumentToView(document, true, false)).authentified).toBe(true);
-        await new Promise<void>((resolve) => setImmediate(resolve));
-        expect(isOpdsAuthenticated).toHaveBeenCalledTimes(1);
-
-        expect((await converter.convertDocumentToView(document, true)).authentified).toBe(true);
-        await new Promise<void>((resolve) => setImmediate(resolve));
-        resolveAuthentication(true);
-        await new Promise<void>((resolve) => setImmediate(resolve));
-        expect(dispatch).toHaveBeenCalledTimes(1);
-
-        await converter.convertDocumentToView(document, true);
-        await new Promise<void>((resolve) => setImmediate(resolve));
-        resolveAuthentication(false);
-        await new Promise<void>((resolve) => setImmediate(resolve));
-        expect(dispatch).toHaveBeenCalledTimes(2);
-        expect((await converter.convertDocumentToView(document, true)).authentified).toBeUndefined();
-        jest.mocked(isOpdsAuthenticated).mockResolvedValue(false);
-        await new Promise<void>((resolve) => setImmediate(resolve));
+        expect(httpGet).not.toHaveBeenCalled();
     });
 });
 
@@ -424,3 +387,83 @@ describe("OPDS hold cancellation properties", () => {
         expect(result.holdPosition).toBe(52);
     });
 });
+
+
+describe("inline Basic authentication", () => {
+    it("returns form metadata for an authentication document without opening a window", async () => {
+        const doc = {
+            id: "https://example.org/auth", title: "Sign in",
+            authentication: [{ type: "http://opds-spec.org/auth/basic", labels: { login: "Card", password: "PIN" } }],
+            links: [{ rel: "logo", href: "logo.png" }, { rel: "help", href: "/help" }, { rel: "register", href: "/register" }],
+        };
+        const converter = createConverter();
+        const view = converter.convertOpdsAuthToView(TaJsonDeserialize(doc, OPDSAuthenticationDoc), baseUrl);
+        expect(view.auth).toMatchObject({
+            credentialsUrl: baseUrl, labelLogin: "Card", labelPassword: "PIN",
+            logoImageUrl: "https://example.org/catalog/logo.png",
+            helpUrls: ["https://example.org/help"], registerUrl: "https://example.org/register",
+        });
+        const service = new OpdsService();
+        Object.assign(service, { opdsFeedViewConverter: converter });
+        const dispatch = jest.spyOn(service as unknown as { dispatchAuthenticationProcess: () => void }, "dispatchAuthenticationProcess");
+        const result = await service.opdsRequestTransformer({
+            url: baseUrl, isSuccess: false, isFailure: true, statusCode: 401,
+            contentType: authenticationType, response: { json: async () => doc },
+        } as unknown as IHttpGetResult<IOpdsResultView>);
+        expect(result.auth.credentialsUrl).toBe(baseUrl);
+        expect(dispatch).not.toHaveBeenCalled();
+    });
+
+    it("returns a form for a plain Basic challenge using the effective URL", async () => {
+        const service = new OpdsService();
+        const dispatch = jest.spyOn(service as unknown as { sendWwwAuthenticationToAuthenticationProcess: () => void }, "sendWwwAuthenticationToAuthenticationProcess");
+        const result = await service.opdsRequestTransformer({
+            url: baseUrl, responseUrl: "https://example.org/protected", isSuccess: false, isFailure: true,
+            statusCode: 401, contentType: "text/plain",
+            response: { headers: { get: () => 'Basic realm="Catalog"' } },
+        } as unknown as IHttpGetResult<IOpdsResultView>);
+        expect(result.auth.credentialsUrl).toBe("https://example.org/protected");
+        expect(dispatch).not.toHaveBeenCalled();
+    });
+
+    it("keeps SAML documents out of the inline flow", () => {
+        const view = createConverter().convertOpdsAuthToView(TaJsonDeserialize({
+            id: baseUrl, title: "Browser", authentication: [{ type: "http://librarysimplified.org/authtype/SAML-2.0" }],
+        }, OPDSAuthenticationDoc), baseUrl);
+        expect(view.auth.credentialsUrl).toBeUndefined();
+    });
+});
+
+
+it.each(["http://opds-spec.org/auth/local", "http://opds-spec.org/auth/oauth/password"])(
+    "exposes inline credentials and endpoints for %s", type => {
+        const view = createConverter().convertOpdsAuthToView(TaJsonDeserialize({
+            id: "provider", title: "Login", authentication: [{ type,
+                labels: { login: "Card", password: "PIN" },
+                links: [{ rel: "authenticate", href: "token" }, { rel: "refresh", href: "refresh" }],
+            }],
+        }, OPDSAuthenticationDoc), baseUrl);
+        expect(view.auth).toMatchObject({ authenticationType: type, credentialsUrl: baseUrl,
+            authenticationId: "provider", labelLogin: "Card", labelPassword: "PIN",
+            oauthUrl: "https://example.org/catalog/token", oauthRefreshUrl: "https://example.org/catalog/refresh",
+        });
+    },
+);
+
+
+it.each(["http://opds-spec.org/auth/oauth/implicit", "http://opds-spec.org/auth/oauth/authorization-code-pkce"])(
+    "renders %s as an external authentication result without starting a modal", async type => {
+        const service = new OpdsService();
+        Object.assign(service, { opdsFeedViewConverter: createConverter() });
+        const modal = jest.spyOn(service as unknown as { dispatchAuthenticationProcess: () => void }, "dispatchAuthenticationProcess");
+        const result = await service.opdsRequestTransformer({
+            url: baseUrl, responseUrl: baseUrl, isSuccess: false, isFailure: true, statusCode: 401,
+            contentType: authenticationType, response: { json: async () => ({
+                id: "provider", title: "Sign in", authentication: [{ type, links: [{ rel: "authenticate", href: "/authorize" }] }],
+            }) },
+        } as unknown as IHttpGetResult<IOpdsResultView>);
+        expect(result.auth).toMatchObject({ external: true, authenticationType: type, credentialsUrl: baseUrl,
+            oauthUrl: "https://example.org/authorize" });
+        expect(modal).not.toHaveBeenCalled();
+    },
+);

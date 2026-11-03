@@ -996,6 +996,12 @@ declare namespace typed_i18n {
   readonly "addFormApiapp": { readonly "title": string },
   readonly "addMenu": string,
   readonly "breadcrumbRoot": string,
+  readonly "browserMenu": {
+    readonly "history": string,
+    readonly "options": string,
+    readonly "profile": string,
+    readonly "wishlist": string
+  },
   readonly "color": {
     readonly "blue": string,
     readonly "gray": string,
@@ -1064,6 +1070,16 @@ declare namespace typed_i18n {
   (_: "opds.addFormApiapp.title", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
+  (_: "opds.browserMenu", __?: {}): {
+  readonly "history": string,
+  readonly "options": string,
+  readonly "profile": string,
+  readonly "wishlist": string
+};
+  (_: "opds.browserMenu.history", __?: {}): string;
+  (_: "opds.browserMenu.options", __?: {}): string;
+  (_: "opds.browserMenu.profile", __?: {}): string;
+  (_: "opds.browserMenu.wishlist", __?: {}): string;
   (_: "opds.color", __?: {}): {
   readonly "blue": string,
   readonly "gray": string,
@@ -2978,6 +2994,7 @@ declare namespace typed_i18n {
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
+    readonly "disableTooltips": string,
     readonly "disclaimer": string,
     readonly "editUserJson": string,
     readonly "exportToHTML": string,
@@ -3379,6 +3396,7 @@ declare namespace typed_i18n {
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
   readonly "cancel": string,
+  readonly "disableTooltips": string,
   readonly "disclaimer": string,
   readonly "editUserJson": string,
   readonly "exportToHTML": string,
@@ -3633,6 +3651,7 @@ declare namespace typed_i18n {
 };
   (_: "settings.keyboard.advancedMenu", __?: {}): string;
   (_: "settings.keyboard.cancel", __?: {}): string;
+  (_: "settings.keyboard.disableTooltips", __?: {}): string;
   (_: "settings.keyboard.disclaimer", __?: {}): string;
   (_: "settings.keyboard.editUserJson", __?: {}): string;
   (_: "settings.keyboard.exportToHTML", __?: {}): string;

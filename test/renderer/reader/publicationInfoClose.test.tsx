@@ -119,7 +119,7 @@ test("heading navigation restores reader controls before loading the target", as
             type: DialogTypeName.PublicationInfoReader,
             data: { publication: {}, handleLinkUrl: navigate },
         },
-        reader: { info: {} },
+        reader: { info: { publicationIdentifier: "publication-1" } },
     };
     const store = createStore((state: typeof initialState = initialState, action: { type: string }) =>
         action.type === "close" ? { ...state, dialog: { ...state.dialog, open: false } } : state,

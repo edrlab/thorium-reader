@@ -17,7 +17,7 @@ import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/compo
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -46,7 +46,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.help")}</p>
             </div>
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
-                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                 <input type="checkbox" id="screenReaderSettings" className={stylesGlobal.checkbox_custom_input} name="screenReaderSettings" checked={screenReaderActivate} onChange={onChange} />
                 <Focusable excludeFromTabOrder>
                 <label htmlFor="screenReaderSettings" className={stylesGlobal.checkbox_custom_label}>
@@ -81,7 +81,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                     </label>
                     </Focusable>
                     <ToolTippy
-                        noReveal={true}
+                        immediate={true}
                         placement="bottom"
                         label={ undefined }
                         tooltipkeyboardShortcuts={[keyboardShortcuts.ToggleScreenReaderOptimize]}

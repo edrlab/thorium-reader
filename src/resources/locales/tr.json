@@ -108,7 +108,6 @@
         "importAnnotation": "Notları içe aktar",
         "lang": "Dil",
         "lastRead": "Son Okunan",
-        "login": "Giriş yap",
         "logout": "Oturumu Kapat",
         "missing": "Eksik dosyalar",
         "missingUnavailableDescription": "Bu eser, depolanan dosyaları kullanılamadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
@@ -163,15 +162,12 @@
         "update": "Düzenle",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -387,6 +383,12 @@
         },
         "addMenu": "OPDS Beslemesi ekle",
         "breadcrumbRoot": "Kataloglar",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Mavi",
             "gray": "Gri",
@@ -1111,6 +1113,7 @@
         "keyboard": {
             "advancedMenu": "Klavye kısayolları gelişmiş menüsü",
             "cancel": "İptal",
+            "disableTooltips": "",
             "disclaimer": "Uygulama varsayılanları, QWERTY klavye düzenindeki tuşların fiziki konumları esas alınarak tasarlanmıştır",
             "editUserJson": "Kullanıcı dosyasını düzenle...",
             "exportToHTML": "HTML olarak dışa aktar",

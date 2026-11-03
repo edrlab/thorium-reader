@@ -108,7 +108,6 @@
         "importAnnotation": "Importeer aantekeningen",
         "lang": "Taal",
         "lastRead": "Laatst gelezen",
-        "login": "Inloggen",
         "logout": "Uitloggen",
         "missing": "Ontbrekende bestanden",
         "missingUnavailableDescription": "Deze publicatie kan niet worden geopend omdat de opgeslagen bestanden niet beschikbaar zijn. Importeer de publicatie opnieuw of ga naar Instellingen en vervolgens naar Opslag om extra opslagruimte toe te voegen of te wijzigen.",
@@ -163,15 +162,12 @@
         "update": "Wijzig",
         "userProfile": {
             "available": "Beschikbaar: {{count}}",
-            "bookshelf": "Bekijk boekenplank",
             "edit": "Wijzig profiel",
             "holds": "Reserveringen",
             "loading": "Het account wordt geladen…",
             "loans": "Aantal geleend",
             "title": "Account",
-            "total": "Limiet: {{count}}",
-            "unavailable": "Profielinformatie niet beschikbaar.",
-            "used": "{{used}} van {{total}} gebruikt"
+            "unavailable": "Profielinformatie niet beschikbaar."
         }
     },
     "dialog": {
@@ -387,6 +383,12 @@
         },
         "addMenu": "Voeg OPDS feed toe",
         "breadcrumbRoot": "Catalogi",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Blauw",
             "gray": "Grijs",
@@ -1111,6 +1113,7 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuleer",
+            "disableTooltips": "",
             "disclaimer": "Snelkoppelingen zijn gedefinieerd op basis van de QWERTY-toetsenbordindeling",
             "editUserJson": "Wijzig gebruikersbestand...",
             "exportToHTML": "Exporteer naar HTML",

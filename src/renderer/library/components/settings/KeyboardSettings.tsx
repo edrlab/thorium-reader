@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
+import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 import classNames from "classnames";
+import os from "node:os";
 import * as React from "react";
 import { FocusScope } from "react-aria";
 import { Button, DialogTrigger, OverlayArrow, Popover, Dialog as PopoverDialog, Pressable, Tooltip, TooltipTrigger } from "react-aria-components";
@@ -14,10 +16,20 @@ import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
 import { DEBUG_KEYBOARD, defaultKeyboardShortcuts, keyboardShortcutMatches, keyboardShortcutsMatch, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutScopeZone, TKeyboardShortcutsMap } from "readium-desktop/common/keyboard";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
+import { keyboardActions, settingsActions, toastActions } from "readium-desktop/common/redux/actions/";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
+import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as MacCmdIcon from "readium-desktop/renderer/assets/icons/maccommand-icon.svg";
+import * as MacOptionIcon from "readium-desktop/renderer/assets/icons/macoption-icon.svg";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
+import * as ShiftIcon from "readium-desktop/renderer/assets/icons/shift-icon.svg";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as WindowsIcon from "readium-desktop/renderer/assets/icons/windows-icon.svg";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
@@ -25,13 +37,12 @@ import * as stylesInputs from "readium-desktop/renderer/assets/styles/components
 import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import { PrettifyKeyboardShortcut } from "readium-desktop/renderer/common/components/Keyboard";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import {
     applyKeyboardLayoutMap,
     ensureKeyboardListenerIsInstalled, getKeyboardCodes, invalidateKeyboardLayoutMap,
@@ -41,20 +52,7 @@ import {
 } from "readium-desktop/renderer/common/keyboard";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
-
-import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
-
-import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
-import * as MacCmdIcon from "readium-desktop/renderer/assets/icons/maccommand-icon.svg";
-import * as MacOptionIcon from "readium-desktop/renderer/assets/icons/macoption-icon.svg";
-import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
-import * as ShiftIcon from "readium-desktop/renderer/assets/icons/shift-icon.svg";
-import * as WindowsIcon from "readium-desktop/renderer/assets/icons/windows-icon.svg";
 import SVG from "../../../common/components/SVG";
-
-import os from "node:os";
-import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
-import { PrettifyKeyboardShortcut } from "readium-desktop/renderer/common/components/Keyboard";
 import { useDispatch } from "../../../common/hooks/useDispatch";
 import { useTranslator } from "../../../common/hooks/useTranslator";
 
@@ -533,6 +531,42 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         return (
             <>
+<section className={stylesSettings.section} style={{ gap: "0" }}>
+    <div dir={isRTL ? "rtl" : "ltr"}
+        className={stylesAnnotations.annotations_checkbox}>
+        <input type="checkbox" id="disableTooltips" className={stylesGlobal.checkbox_custom_input} name="disableTooltips"
+            checked={this.props.disableKeyboardShortcutsTooltips} onChange={() => this.props.toggleDisableKeyboardShortcutsTooltips(this.props.disableKeyboardShortcutsTooltips)} />
+        <label htmlFor="disableTooltips" className={stylesGlobal.checkbox_custom_label}>
+            <div
+                tabIndex={0}
+                role="checkbox"
+                aria-checked={this.props.disableKeyboardShortcutsTooltips}
+                aria-label={__("settings.keyboard.disableTooltips")}
+                onKeyDown={(e) => {
+                    if (e.key === " ") {
+                        e.preventDefault();
+                    }
+                }}
+                onKeyUp={(e) => {
+                    if (e.key === " ") {
+                        e.preventDefault();
+                        this.props.toggleDisableKeyboardShortcutsTooltips(this.props.disableKeyboardShortcutsTooltips);
+                    }
+                }}
+                className={stylesGlobal.checkbox_custom}
+                style={{ border: this.props.disableKeyboardShortcutsTooltips ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: this.props.disableKeyboardShortcutsTooltips ? "var(--color-brand-primary)" : "transparent" }}>
+                {this.props.disableKeyboardShortcutsTooltips ?
+                    <SVG ariaHidden svg={CheckIcon} />
+                    :
+                    <></>
+                }
+            </div>
+            <div aria-hidden>
+                <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.keyboard.disableTooltips")}</h4>
+            </div>
+        </label>
+    </div>
+</section>
                 <section onKeyDown={
                     this.state.editKeyboardShortcutId ? ((e: React.KeyboardEvent<HTMLDivElement>) => {
                         if (e.key === "Escape") {
@@ -1028,6 +1062,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
+        disableKeyboardShortcutsTooltips: state.settings.disableKeyboardShortcutsTooltips,
+        // disableKeyboardShortcutsTooltips: state.keyboard.disableKeyboardShortcutsTooltips,
         keyboardShortcuts: state.keyboard.shortcuts,
         locale: state.i18n.locale, // refresh
     };
@@ -1035,6 +1071,10 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
+        toggleDisableKeyboardShortcutsTooltips: (disableTooltips: boolean) => {
+            dispatch(settingsActions.disableKeyboardShortcutsTooltips.build(!disableTooltips));
+            dispatch(keyboardActions.disableKeyboardShortcutsTooltips.build(!disableTooltips));
+        },
         setKeyboardShortcuts:
             (data: TKeyboardShortcutsMap) => dispatch(keyboardActions.setShortcuts.build(data, true)),
         showKeyboardShortcuts: () => dispatch(keyboardActions.showShortcuts.build(true)),

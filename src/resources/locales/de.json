@@ -108,7 +108,6 @@
         "importAnnotation": "Notizen importieren",
         "lang": "Sprache",
         "lastRead": "Zuletzt gelesen",
-        "login": "Anmelden",
         "logout": "Abmelden",
         "missing": "Fehlende Dateien",
         "missingUnavailableDescription": "Diese Publikation kann nicht geöffnet werden, da die darin gespeicherten Dateien nicht verfügbar sind. Importieren Sie sie erneut oder gehen Sie zu Einstellungen und dann zu Speicher, um zusätzlichen Speicherplatz hinzuzufügen oder anzupassen.",
@@ -163,15 +162,12 @@
         "update": "Bearbeiten",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -387,6 +383,12 @@
         },
         "addMenu": "OPDS-Feed hinzufügen",
         "breadcrumbRoot": "Kataloge",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -1111,6 +1113,7 @@
         "keyboard": {
             "advancedMenu": "Menü",
             "cancel": "Abbrechen",
+            "disableTooltips": "",
             "disclaimer": "Tastenkombinationen orientieren sich am QWERTY-Tastaturlayout.",
             "editUserJson": "Benutzerdatei bearbeiten ...",
             "exportToHTML": "Nach HTML exportieren",

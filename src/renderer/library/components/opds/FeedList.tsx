@@ -19,7 +19,7 @@ import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
-import { authActions, customizationActions, opdsActions } from "readium-desktop/common/redux/actions";
+import { opdsActions } from "readium-desktop/common/redux/actions";
 import { subscribeToAction } from "readium-desktop/renderer/common/redux/middleware/actionSubscriber";
 import { FeedCard } from "./FeedCard";
 
@@ -60,11 +60,10 @@ class FeedList extends React.Component<IProps, IState> {
             "opds/setFeedFavorite",
         ], this.loadFeeds);
 
-        this.unsubscribeAction = subscribeToAction(opdsActions.refresh.ID, (action) => {
+        this.unsubscribeAction = subscribeToAction(opdsActions.refresh.ID, () => {
             // console.log("Refresh opds feed list requested by the action ID=", opdsActions.refresh.ID);
 
-            const { cachedAuthentication } = (action as opdsActions.refresh.TAction).payload || {};
-            this.loadFeeds(!cachedAuthentication).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+            this.loadFeeds().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
         });
     }
 
@@ -109,9 +108,9 @@ class FeedList extends React.Component<IProps, IState> {
     //     event.preventDefault();
     //     this.props.openDeleteDialog(feed);
     // }
-    private async loadFeeds(refreshAuthentication = true) {
+    private async loadFeeds() {
         try {
-            const feedsResult = await apiAction("opds/findAllFeeds", refreshAuthentication);
+            const feedsResult = await apiAction("opds/findAllFeeds");
 
             this.setState({ feedsResult });
             if (this.props.setFeedsResult) {
@@ -139,12 +138,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 },
             ));
         },
-        logout: (feedUrl: string) => {
-            dispatch(authActions.logout.build(feedUrl));
-        },
-        triggerAuth: (feedUrl: string, authenticationUrl: string) => {
-            dispatch(customizationActions.triggerOpdsAuth.build(feedUrl, authenticationUrl));
-        },
+
     };
 };
 

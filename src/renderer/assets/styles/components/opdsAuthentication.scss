@@ -1,0 +1,119 @@
+.authentication {
+  box-sizing: border-box;
+  width: min(100%, 440px);
+  margin: 32px auto;
+  padding: clamp(24px, 5cqi, 40px);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 12px;
+  background: var(--color-neutral-base);
+  color: var(--color-text-primary);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 5%);
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 32px;
+
+    img {
+      display: block;
+      width: auto;
+      max-width: 160px;
+      height: 72px;
+      object-fit: contain;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+  }
+
+  .field {
+    margin: 0 0 24px;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+      height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--color-gray-400);
+      border-radius: 6px;
+      background: var(--color-neutral-base);
+      color: var(--color-text-primary);
+      font: inherit;
+      font-weight: 400;
+
+      &:focus-visible {
+        outline: 2px solid var(--color-brand-primary);
+        outline-offset: 2px;
+        border-color: var(--color-brand-primary);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+      }
+    }
+  }
+
+  > button {
+    width: 100%;
+    min-height: 44px;
+    border-radius: 6px;
+    font: inherit;
+    font-weight: 600;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-gray-200);
+
+    button {
+      max-width: 100%;
+      padding: 4px;
+      border: 0;
+      background: transparent;
+      color: var(--color-brand-primary);
+      font: inherit;
+      font-size: 0.875rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      overflow-wrap: anywhere;
+      cursor: pointer;
+    }
+  }
+
+  .message {
+    margin: 24px 0;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  .error {
+    margin: 0 0 24px;
+    color: var(--color-error-text);
+    line-height: 1.5;
+  }
+}
