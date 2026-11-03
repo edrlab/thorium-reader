@@ -132,7 +132,7 @@
                 "username": "उपयोक्तृनाम / विद्युत्सन्देशसङ्केतः"
             },
             "info": {
-                "availableSince": "आरभ्य",
+                "availableSince": "{{- date}} आरभ्य",
                 "availableState": {
                     "available": "उपलब्धम्",
                     "ready": "सज्जम्",
@@ -140,7 +140,7 @@
                     "unavailable": "अनुपलब्धम्",
                     "unknown": "अज्ञातम्"
                 },
-                "availableUntil": "यावत्",
+                "availableUntil": "{{- date}} यावत्",
                 "copyAvalaible": "उपलब्धम्",
                 "copyTotal": "प्रतिलिप्यः",
                 "holdPosition": "आरक्षणक्रमः",

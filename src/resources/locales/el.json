@@ -132,7 +132,7 @@
                 "username": "Όνομα χρήστη / διεύθυνση ηλεκτρονικού ταχυδρομείου"
             },
             "info": {
-                "availableSince": "Από",
+                "availableSince": "Από {{- date}}",
                 "availableState": {
                     "available": "Διαθέσιμο",
                     "ready": "Έτοιμο",
@@ -140,7 +140,7 @@
                     "unavailable": "Μη διαθέσιμο",
                     "unknown": "Άγνωστο"
                 },
-                "availableUntil": "Μέχρι",
+                "availableUntil": "Μέχρι {{- date}}",
                 "copyAvalaible": "Διαθέσιμο",
                 "copyTotal": "Αντίγραφα",
                 "holdPosition": "Κράτηση θέσης",

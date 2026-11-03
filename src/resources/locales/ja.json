@@ -132,7 +132,7 @@
                 "username": "ユーザー名 / メールアドレス"
             },
             "info": {
-                "availableSince": "いつから",
+                "availableSince": "{{- date}}から利用可能",
                 "availableState": {
                     "available": "利用できます",
                     "ready": "準備中",
@@ -140,7 +140,7 @@
                     "unavailable": "利用できません",
                     "unknown": "利用可能か不明です"
                 },
-                "availableUntil": "いつまで",
+                "availableUntil": "{{- date}}まで利用可能",
                 "copyAvalaible": "利用できます",
                 "copyTotal": "コピー",
                 "holdPosition": "待機順番",

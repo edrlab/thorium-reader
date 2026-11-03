@@ -132,7 +132,7 @@
                 "username": "उपयोगकर्ता नाम/ईमेल पता"
             },
             "info": {
-                "availableSince": "से उपलब्ध",
+                "availableSince": "{{- date}} से उपलब्ध",
                 "availableState": {
                     "available": "उपलब्ध",
                     "ready": "तैयार",
@@ -140,7 +140,7 @@
                     "unavailable": "अनुपलब्ध",
                     "unknown": "अज्ञात"
                 },
-                "availableUntil": "तक उपलब्ध",
+                "availableUntil": "{{- date}} तक उपलब्ध",
                 "copyAvalaible": "उपलब्ध",
                 "copyTotal": "प्रतियाँ",
                 "holdPosition": "होल्ड स्थिति",

@@ -133,7 +133,7 @@
                 "username": "نام کاربری / نشانی ایمیل"
             },
             "info": {
-                "availableSince": "",
+                "availableSince": "از {{- date}} در دسترس است",
                 "availableState": {
                     "available": "در دسترس",
                     "ready": "آماده",
@@ -141,7 +141,7 @@
                     "unavailable": "",
                     "unknown": ""
                 },
-                "availableUntil": "",
+                "availableUntil": "تا {{- date}} در دسترس است",
                 "copyAvalaible": "",
                 "copyTotal": "",
                 "holdPosition": "",

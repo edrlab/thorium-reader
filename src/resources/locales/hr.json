@@ -132,7 +132,7 @@
                 "username": ""
             },
             "info": {
-                "availableSince": "Od",
+                "availableSince": "Od {{- date}}",
                 "availableState": {
                     "available": "Dostupno",
                     "ready": "Spremno",
@@ -140,7 +140,7 @@
                     "unavailable": "Nedostupno",
                     "unknown": "Nepoznato"
                 },
-                "availableUntil": "Do",
+                "availableUntil": "Do {{- date}}",
                 "copyAvalaible": "Dostupno",
                 "copyTotal": "Ukupno kopija",
                 "holdPosition": "Status rezervacije",

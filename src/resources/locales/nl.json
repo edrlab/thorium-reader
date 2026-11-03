@@ -132,7 +132,7 @@
                 "username": "Gebruikersnaam / e-mailadres"
             },
             "info": {
-                "availableSince": "Sinds",
+                "availableSince": "Sinds {{- date}}",
                 "availableState": {
                     "available": "Beschikbaar",
                     "ready": "Klaar",
@@ -140,7 +140,7 @@
                     "unavailable": "Niet beschikbaar",
                     "unknown": "Onbekend"
                 },
-                "availableUntil": "Tot",
+                "availableUntil": "Tot {{- date}}",
                 "copyAvalaible": "Aantal beschikbaar",
                 "copyTotal": "Aantal exemplaren",
                 "holdPosition": "Je reserveringen",

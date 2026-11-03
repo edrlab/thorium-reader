@@ -132,7 +132,7 @@
                 "username": "Brugernavn / email-adresse"
             },
             "info": {
-                "availableSince": "Siden",
+                "availableSince": "Siden {{- date}}",
                 "availableState": {
                     "available": "Til rådighed",
                     "ready": "Klar",
@@ -140,7 +140,7 @@
                     "unavailable": "Ikke til rådighed",
                     "unknown": "Ukendt"
                 },
-                "availableUntil": "Indtil",
+                "availableUntil": "Indtil {{- date}}",
                 "copyAvalaible": "Til rådighed",
                 "copyTotal": "Kopier",
                 "holdPosition": "Din position på ventelisten",

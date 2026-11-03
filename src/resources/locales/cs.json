@@ -132,7 +132,7 @@
                 "username": "Uživatelské jméno / e-mailová adresa"
             },
             "info": {
-                "availableSince": "Od",
+                "availableSince": "Od {{- date}}",
                 "availableState": {
                     "available": "Dostupný",
                     "ready": "Připraveno",
@@ -140,7 +140,7 @@
                     "unavailable": "Nedostupné",
                     "unknown": "Neznámé"
                 },
-                "availableUntil": "Do",
+                "availableUntil": "Do {{- date}}",
                 "copyAvalaible": "Dostupné",
                 "copyTotal": "Kopie",
                 "holdPosition": "Držet pozici",

@@ -132,7 +132,7 @@
                 "username": "اسم المستخدم / البريد الإلكتروني"
             },
             "info": {
-                "availableSince": "منذ",
+                "availableSince": "منذ {{- date}}",
                 "availableState": {
                     "available": "متوفر",
                     "ready": "جاهز",
@@ -140,7 +140,7 @@
                     "unavailable": "غير متوفر",
                     "unknown": "مجهول"
                 },
-                "availableUntil": "حتى",
+                "availableUntil": "حتى {{- date}}",
                 "copyAvalaible": "متوفر",
                 "copyTotal": "النُّسخ",
                 "holdPosition": "حفظ الموضع",

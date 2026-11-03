@@ -132,7 +132,7 @@
                 "username": "Brukernavn / e-postadresse"
             },
             "info": {
-                "availableSince": "Tilgjengelig fra",
+                "availableSince": "Tilgjengelig fra {{- date}}",
                 "availableState": {
                     "available": "Tilgjengelig",
                     "ready": "Klar",
@@ -140,7 +140,7 @@
                     "unavailable": "Ikke tilgjengelig",
                     "unknown": "Ukjent"
                 },
-                "availableUntil": "Tilgjengelig til",
+                "availableUntil": "Tilgjengelig til {{- date}}",
                 "copyAvalaible": "Antall tilgjengelige",
                 "copyTotal": "Antall eksemplarer",
                 "holdPosition": "Din plass i reservasjonskøen",

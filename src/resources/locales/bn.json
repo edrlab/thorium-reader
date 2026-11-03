@@ -132,7 +132,7 @@
                 "username": ""
             },
             "info": {
-                "availableSince": "",
+                "availableSince": "{{- date}} থেকে উপলব্ধ",
                 "availableState": {
                     "available": "",
                     "ready": "",
@@ -140,7 +140,7 @@
                     "unavailable": "",
                     "unknown": ""
                 },
-                "availableUntil": "",
+                "availableUntil": "{{- date}} পর্যন্ত উপলব্ধ",
                 "copyAvalaible": "",
                 "copyTotal": "",
                 "holdPosition": "",

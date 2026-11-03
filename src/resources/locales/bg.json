@@ -132,7 +132,7 @@
                 "username": ""
             },
             "info": {
-                "availableSince": "от",
+                "availableSince": "от {{- date}}",
                 "availableState": {
                     "available": "Наличен",
                     "ready": "Готов",
@@ -140,7 +140,7 @@
                     "unavailable": "Не е наличен",
                     "unknown": "Неизвестен"
                 },
-                "availableUntil": "до",
+                "availableUntil": "до {{- date}}",
                 "copyAvalaible": "Наличен",
                 "copyTotal": "Копия",
                 "holdPosition": "Вашата запазена позиция",
