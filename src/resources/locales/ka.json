@@ -120,10 +120,13 @@
         "numberOfPages": "გვერდების რაოდენობა",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "გადაფიქრება",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "შესვლა",
+                "openExternalBrowser": "",
                 "password": "",
                 "register": "",
                 "retry": "",

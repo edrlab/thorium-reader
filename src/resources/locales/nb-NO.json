@@ -120,10 +120,13 @@
         "numberOfPages": "Antall sider",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Avbryt",
                 "external": "Innloggingssiden åpnes i nettleseren din. Følg instruksjonene der. Når du er logget inn, går nettleseren tilbake til dette programmet.",
+                "externalBrowserInstructions": "",
                 "fallback": "Merk: Hvis du får problemer med innlogging via standardmetoden i nettleseren, kan du prøve igjen med den alternative innloggingsmetoden i programmet.",
                 "login": "Logg inn",
+                "openExternalBrowser": "",
                 "password": "Passord",
                 "register": "Registrer deg",
                 "retry": "Prøv igjen",

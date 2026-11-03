@@ -109,6 +109,22 @@
     margin: 24px 0;
     line-height: 1.6;
     overflow-wrap: anywhere;
+
+    p {
+      font-weight: bold;
+    }
+  }
+
+  .separator {
+    margin: 24px 0;
+    border: 0;
+    border-top: 1px solid var(--color-gray-200);
+
+    + .links {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
   }
 
   .error {

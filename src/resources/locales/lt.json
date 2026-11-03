@@ -120,10 +120,13 @@
         "numberOfPages": "Puslapių skaičius",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Nutraukti",
                 "external": "Jūsų interneto naršyklėje atsidarys prisijungimo puslapis, sekite instrukcijas. Kai prisijungsite, interneto naršyklė grąžins jus į šią programą.",
+                "externalBrowserInstructions": "",
                 "fallback": "Pastaba: jei kyla problemų prisijungiant naudojant numatytąjį žiniatinklio naršyklės metodą, bandykite dar kartą naudodami alternatyvų programos metodą.",
                 "login": "Prisijungim/as",
+                "openExternalBrowser": "",
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
                 "retry": "Bandyti dar kartą",

@@ -120,10 +120,13 @@
         "numberOfPages": "Liczba stron",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Anuluj",
                 "external": "Strona logowania otworzy się w przeglądarce internetowej. Postępuj zgodnie z instrukcjami. Po zalogowaniu przeglądarka przekieruje Cię z powrotem do tej aplikacji.",
+                "externalBrowserInstructions": "",
                 "fallback": "Uwaga: w przypadku problemów z logowaniem domyślną metodą przeglądarki, spróbuj ponownie za pomocą metody alternatywnej wbudowanej w aplikację.",
                 "login": "Login",
+                "openExternalBrowser": "",
                 "password": "Hasło",
                 "register": "Rejestracja",
                 "retry": "Spróbuj ponownie",

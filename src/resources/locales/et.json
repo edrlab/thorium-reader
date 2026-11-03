@@ -120,10 +120,13 @@
         "numberOfPages": "Lehtede arv",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Katkesta",
                 "external": "Sisselogimisleht avaneb sinu veebibrauseris, palun järgi sealseid juhiseid. Pärast sisselogimist suunab veebibrauser sind tagasi sellesse rakendusse.",
+                "externalBrowserInstructions": "",
                 "fallback": "Märkus: kui sisselogimisel tekib probleeme vaikimisi meetodiga veebibrauseri kaudu, proovi uuesti rakenduse siseselt.",
                 "login": "Logi sisse",
+                "openExternalBrowser": "",
                 "password": "Salasõna",
                 "register": "Registreeru",
                 "retry": "Proovi uuesti",
