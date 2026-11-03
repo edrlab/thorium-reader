@@ -132,7 +132,7 @@
                 "username": "Kullanıcı adı / E-posta adresi"
             },
             "info": {
-                "availableSince": "Tarihinden beri",
+                "availableSince": "Başlangıç tarihi: {{- date}}",
                 "availableState": {
                     "available": "Mevcut",
                     "ready": "Hazır",
@@ -140,7 +140,7 @@
                     "unavailable": "Mevcut değil",
                     "unknown": "Bilinmeyen"
                 },
-                "availableUntil": "Tarihine kadar",
+                "availableUntil": "Bitiş tarihi: {{- date}}",
                 "copyAvalaible": "Mevcut",
                 "copyTotal": "Kopyalar",
                 "holdPosition": "Bekleme konumu",

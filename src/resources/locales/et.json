@@ -132,7 +132,7 @@
                 "username": "Kasutajanimi / e-posti aadress"
             },
             "info": {
-                "availableSince": "Alates",
+                "availableSince": "Alates {{- date}}",
                 "availableState": {
                     "available": "Saadaval",
                     "ready": "Valmis",
@@ -140,7 +140,7 @@
                     "unavailable": "Pole saadaval",
                     "unknown": "Tundmatu"
                 },
-                "availableUntil": "Kuni",
+                "availableUntil": "Kuni {{- date}}",
                 "copyAvalaible": "Saadaval",
                 "copyTotal": "Koopiaid",
                 "holdPosition": "Broneeringu olek",

@@ -132,7 +132,7 @@
                 "username": "Имя пользователя / Адрес электронной почты"
             },
             "info": {
-                "availableSince": "C",
+                "availableSince": "С {{- date}}",
                 "availableState": {
                     "available": "Имеется в наличии",
                     "ready": "Готово",
@@ -140,7 +140,7 @@
                     "unavailable": "Недоступно",
                     "unknown": "Неизвестно"
                 },
-                "availableUntil": "До",
+                "availableUntil": "До {{- date}}",
                 "copyAvalaible": "Количество доступных",
                 "copyTotal": "Количество копий",
                 "holdPosition": "Удерживать позицию",

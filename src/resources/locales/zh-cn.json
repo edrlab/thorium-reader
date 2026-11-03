@@ -132,7 +132,7 @@
                 "username": "用户名/电子邮件地址"
             },
             "info": {
-                "availableSince": "开始时间",
+                "availableSince": "开始时间：{{- date}}",
                 "availableState": {
                     "available": "在售",
                     "ready": "准备中",
@@ -140,7 +140,7 @@
                     "unavailable": "售空",
                     "unknown": "不明"
                 },
-                "availableUntil": "结束时间",
+                "availableUntil": "结束时间：{{- date}}",
                 "copyAvalaible": "在售数",
                 "copyTotal": "拷贝数",
                 "holdPosition": "你的持仓位置",

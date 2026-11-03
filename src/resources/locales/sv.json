@@ -132,7 +132,7 @@
                 "username": "Användarnamn/e-postadress"
             },
             "info": {
-                "availableSince": "Sedan",
+                "availableSince": "Sedan {{- date}}",
                 "availableState": {
                     "available": "Tillgänglig",
                     "ready": "Klar",
@@ -140,7 +140,7 @@
                     "unavailable": "Otillgänglig",
                     "unknown": "Okänt"
                 },
-                "availableUntil": "Till",
+                "availableUntil": "Till {{- date}}",
                 "copyAvalaible": "Tillgänglig",
                 "copyTotal": "Antal exemplar",
                 "holdPosition": "Din plats i reservationskön",

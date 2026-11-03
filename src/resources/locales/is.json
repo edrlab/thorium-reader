@@ -132,7 +132,7 @@
                 "username": "Notandanafn / netfang"
             },
             "info": {
-                "availableSince": "Frá",
+                "availableSince": "Frá {{- date}}",
                 "availableState": {
                     "available": "Tiltæk",
                     "ready": "Tilbúin",
@@ -140,7 +140,7 @@
                     "unavailable": "Ekki tiltæk",
                     "unknown": "Óþekkt"
                 },
-                "availableUntil": "Til",
+                "availableUntil": "Til {{- date}}",
                 "copyAvalaible": "Tiltæk",
                 "copyTotal": "Eintök",
                 "holdPosition": "Staða í biðröð",

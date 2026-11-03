@@ -132,7 +132,7 @@
                 "username": ""
             },
             "info": {
-                "availableSince": "",
+                "availableSince": "זמין מ־{{- date}}",
                 "availableState": {
                     "available": "",
                     "ready": "",
@@ -140,7 +140,7 @@
                     "unavailable": "",
                     "unknown": ""
                 },
-                "availableUntil": "",
+                "availableUntil": "זמין עד {{- date}}",
                 "copyAvalaible": "",
                 "copyTotal": "",
                 "holdPosition": "",

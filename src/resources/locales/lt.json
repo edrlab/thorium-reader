@@ -132,7 +132,7 @@
                 "username": "Naudotojo vardas / El. pašto adresas"
             },
             "info": {
-                "availableSince": "Prieinama nuo",
+                "availableSince": "Prieinama nuo {{- date}}",
                 "availableState": {
                     "available": "Prieinama",
                     "ready": "Paruošta",
@@ -140,7 +140,7 @@
                     "unavailable": "Neprieinama",
                     "unknown": "Nežinoma"
                 },
-                "availableUntil": "Prieinama iki",
+                "availableUntil": "Prieinama iki {{- date}}",
                 "copyAvalaible": "Prieinamų kopijų skaičius",
                 "copyTotal": "Kopijų skaičius",
                 "holdPosition": "Jūsų vieta eilėje",

@@ -132,7 +132,7 @@
                 "username": "Nazwa użytkownika / adres e-mail"
             },
             "info": {
-                "availableSince": "Od",
+                "availableSince": "Od {{- date}}",
                 "availableState": {
                     "available": "Dostępne",
                     "ready": "Gotowe",
@@ -140,7 +140,7 @@
                     "unavailable": "Niedostępne",
                     "unknown": "Nieznane"
                 },
-                "availableUntil": "Do",
+                "availableUntil": "Do {{- date}}",
                 "copyAvalaible": "Dostępne",
                 "copyTotal": "Kopie",
                 "holdPosition": "Pozycja w kolejce",

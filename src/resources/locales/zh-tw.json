@@ -132,7 +132,7 @@
                 "username": "使用者名稱/電子郵件地址"
             },
             "info": {
-                "availableSince": "開始時間",
+                "availableSince": "開始時間：{{- date}}",
                 "availableState": {
                     "available": "在售",
                     "ready": "準備中",
@@ -140,7 +140,7 @@
                     "unavailable": "不可用",
                     "unknown": "不明"
                 },
-                "availableUntil": "直到",
+                "availableUntil": "結束時間：{{- date}}",
                 "copyAvalaible": "可用",
                 "copyTotal": "副本",
                 "holdPosition": "保持位置",

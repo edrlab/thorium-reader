@@ -132,7 +132,7 @@
                 "username": "Uporabniško ime/E-poštni naslov"
             },
             "info": {
-                "availableSince": "Od",
+                "availableSince": "Od {{- date}}",
                 "availableState": {
                     "available": "Na voljo",
                     "ready": "Pripravljeno",
@@ -140,7 +140,7 @@
                     "unavailable": "Ni na voljo",
                     "unknown": "Neznano"
                 },
-                "availableUntil": "Do",
+                "availableUntil": "Do {{- date}}",
                 "copyAvalaible": "Na voljo",
                 "copyTotal": "Kopije",
                 "holdPosition": "Zadrži položaj",

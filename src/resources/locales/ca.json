@@ -132,7 +132,7 @@
                 "username": "Usuari / Direcció de correu eletrònic"
             },
             "info": {
-                "availableSince": "Des de",
+                "availableSince": "Des de {{- date}}",
                 "availableState": {
                     "available": "Disponible",
                     "ready": "Llest",
@@ -140,7 +140,7 @@
                     "unavailable": "No disponible",
                     "unknown": "Desconegut"
                 },
-                "availableUntil": "Fins",
+                "availableUntil": "Fins a {{- date}}",
                 "copyAvalaible": "Número de disponibles",
                 "copyTotal": "Número de còpies",
                 "holdPosition": "La teua ubicació",

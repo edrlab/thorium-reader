@@ -132,7 +132,7 @@
                 "username": ""
             },
             "info": {
-                "availableSince": "თარიღიდან",
+                "availableSince": "დაწყების თარიღი: {{- date}}",
                 "availableState": {
                     "available": "ხელმისაწვდომია",
                     "ready": "მზადაა",
@@ -140,7 +140,7 @@
                     "unavailable": "ხელმიუწვდომელია",
                     "unknown": "უცნობია"
                 },
-                "availableUntil": "თარიღამდე",
+                "availableUntil": "დასრულების თარიღი: {{- date}}",
                 "copyAvalaible": "ხელმისაწვდომი რაოდენობა",
                 "copyTotal": "ასლების რაოდენობა",
                 "holdPosition": "შენი შეკვეთის პოზიცია",

@@ -132,7 +132,7 @@
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
             "info": {
-                "availableSince": "Lähtien",
+                "availableSince": "{{- date}} alkaen",
                 "availableState": {
                     "available": "Saatavilla",
                     "ready": "Valmis",
@@ -140,7 +140,7 @@
                     "unavailable": "Ei saatavilla",
                     "unknown": "Tuntematon"
                 },
-                "availableUntil": "Asti",
+                "availableUntil": "{{- date}} asti",
                 "copyAvalaible": "Saatavilla oleva määrä",
                 "copyTotal": "Kopioiden määrä",
                 "holdPosition": "Varauksesi tila",
