@@ -1,0 +1,1522 @@
+{
+    "accessibility": {
+        "annotationNote": "अङ्कनटिप्पणी",
+        "bookMenu": "सूचिः",
+        "bookmarkNote": "पुस्तकचिह्नटिप्पणी",
+        "cancelDownload": "अवतारणम् निरस्यतु: {{- title}}",
+        "closeDialog": "पिधत्तु",
+        "closeNotification": "सूचनाम् पिधत्तु",
+        "copyNotificationInstruction": "सूचनाम् प्रतिलिखतु",
+        "decreaseSetting": "{{- setting}} न्यूनयतु",
+        "downloadProgress": "अवतारणप्रगतिः: {{- title}}",
+        "downloadProgressUnknown": "अवतारणप्रगतिः अज्ञाता.",
+        "editTag": "सङ्केतम् सम्पादयतु: {{- tag}}",
+        "favoriteCatalog": "इष्टसूचीपत्रम्: {{- title}}",
+        "increaseSetting": "{{- setting}} वर्धयतु",
+        "leftSlideButton": "वामदिशि चालयतु",
+        "loading": "आरोप्यमाणम्…",
+        "mainContent": "मुख्यपाठ्यविषयः",
+        "notificationCopied": "अंशफलके प्रतिलिखितम्:",
+        "notificationCopyFailed": "सूचनाम् प्रतिलेखितुम् अशक्यम्",
+        "printPage": "पृष्ठम् {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "{{- setting}} पुनःस्थापयतु",
+        "rightSlideButton": "दक्षिणदिशि चालयतु",
+        "searching": "अन्वेषणम्…",
+        "skipLink": "पाठ्यविषयम् प्रति गच्छतु",
+        "toolbar": "साधनपट्टिका"
+    },
+    "apiapp": {
+        "documentation": "Thorium प्रलेखः",
+        "howItWorks": "कथम् कार्यम्?",
+        "informations": "फ्रान्स्देशे बहूनाम् सार्वजनिकपुस्तकालयाणाम् यन्त्रपठ्यसूचीपत्राणाम् प्रदानम् (OPDS सदृशम्, न तु समम्), येन पाठकानाम् स्वीयपुस्तकफलकात् अङ्कीयप्रकाशनानाम् अवतारणम् सम्भवम्. Thorium Reader मध्ये अस्याः तन्त्रविद्यायाः समावेशेन अङ्कीयपुस्तकम् श्रव्यपुस्तकम् वा साक्षात् Thorium Reader मध्ये त्वरितपठनाय अवतारयितुम् शक्यम्.\nफ्रान्सीयसार्वजनिकपुस्तकालयलेखाम् Thorium Reader सह कथम् संयोजयितव्यम्? सरलम्. अन्वेषणक्षेत्रे फ्रान्सीयनगरम् ('Paris') अथवा पुस्तकालयनाम्नः अंशम् लिखित्वा अन्वेषणकुञ्जिकाम् नुदतु. अन्वेषणानुरूपाणाम् सार्वजनिकपुस्तकालयाणाम् सूचिः दृश्या. पुस्तकालयम् चित्वा योजयतु नुदतु. अद्यतनानाम् सूचीपत्राणाम् सूच्याम् एतम् पुस्तकालयम् चिनोतु: प्रमाणीकरणप्रपत्रम् प्रदर्शितम्. उपयोक्तृनाम/विद्युत्सन्देशसङ्केतम् गुह्यपदम् च लिखित्वा प्रविशतु नुदतु. अधुना स्वीयपुस्तकफलकस्य पाठ्यविषयः दृश्यः, यतः पूर्वगृहीतानाम् अङ्कीयपुस्तकानाम् श्रव्यपुस्तकानाम् च अवतारणम् पठनम् च शक्यम्.",
+        "noLibraryFound": "पुस्तकालयः अलब्धः ({{- name}})"
+    },
+    "app": {
+        "edit": {
+            "copy": "प्रतिलिखतु",
+            "cut": "छिनत्तु",
+            "paste": "निवेशयतु",
+            "print": "मुद्रयतु",
+            "redo": "पुनः करोतु",
+            "selectAll": "सर्वम् चिनोतु",
+            "title": "सम्पादयतु",
+            "undo": "निवर्तयतु"
+        },
+        "hide": "{{- appName}} गोपयतु",
+        "quit": "{{- appName}} त्यजतु",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "न",
+                        "yes": "आम्"
+                    },
+                    "help": "यदि अनुप्रयोगस्य पिधाने उद्घाटिताः पाठकगवाक्षाः अग्रिमप्रारम्भे स्वयम् पुनः उद्घाटयितव्याः, तर्हि एतत् सक्रियम् करोतु.",
+                    "message": "पठनसत्रस्य रक्षणम् पुनर्स्थापनम् च",
+                    "title": "सत्रम् रक्षतु?"
+                }
+            }
+        },
+        "update": {
+            "message": "नूतनम् संस्करणम् उपलब्धम्, अधिकज्ञानाय नुदतु.",
+            "title": "{{- appName}} तन्त्रांशअद्यतनम्.",
+            "whatsnew": "नूतनम् संस्करणम् संस्थापितम्, अधिकज्ञानाय नुदतु"
+        },
+        "window": {
+            "showLibrary": "पुस्तकालयम् / पुस्तकफलकम् दर्शयतु",
+            "trayHint": "{{- appName}} अद्यापि सूचनाक्षेत्रे सक्रियः. पुस्तकालयस्य दर्शनाय सूचनाक्षेत्रचिह्नम् नुदतु.",
+            "trayTooltip": "{{- appName}} - पुस्तकालयस्य दर्शनार्थम् गोपनार्थम् वा नुदतु"
+        }
+    },
+    "catalog": {
+        "AddToFavorites": "इष्टेषु योजयतु",
+        "about": {
+            "title": "{{- appName}} परिचयः (जालतः)"
+        },
+        "addBookToLib": "आयातयतु",
+        "addTags": "सङ्केतम् योजयतु",
+        "addTagsButton": "योजयतु",
+        "allBooks": "सर्वाणि प्रकाशनानि",
+        "bookInfo": "प्रकाशनपरिचयः",
+        "column": {
+            "ascending": "आरोहणम्",
+            "descending": "अवरोहणम्",
+            "unsorted": "अक्रमितम्"
+        },
+        "customization": {
+            "fallback": {
+                "description": "रूपरेखावर्णनम् अनुपलब्धम्",
+                "publications": "रूपरेखाप्रकाशनानि",
+                "screen": "शीर्षकम् अनुपलब्धम्",
+                "title": "रूपरेखाशीर्षकम्"
+            }
+        },
+        "delete": "अपाकरोतु",
+        "deleteBook": "अपाकरोतु",
+        "deleteTag": "सङ्केतम् अपाकरोतु",
+        "description": "वर्णनम्",
+        "downloaded": "अवतारितम्",
+        "emptyTagList": "सङ्केतितानि प्रकाशनानि अनुपलब्धानि.",
+        "entry": {
+            "continueReading": "पठनम् अनुवर्तताम्",
+            "lastAdditions": "सद्योयोजितम्"
+        },
+        "export": "नामान्तरेण रक्षतु",
+        "exportAnnotation": "टिप्पण्यः निर्यातयतु",
+        "format": "प्रारूपम्",
+        "importAnnotation": "टिप्पण्यः आयातयतु",
+        "lang": "भाषा",
+        "lastRead": "अन्तिमपठनम्",
+        "logout": "निर्गच्छतु",
+        "missing": "लुप्ताः सञ्चिकाः",
+        "missingUnavailableDescription": "अस्य प्रकाशनस्य उद्घाटनम् अशक्यम्, यतः सङ्गृहीताः सञ्चिकाः अनुपलब्धाः. पुनः आयातयतु, अथवा विन्यासम् ततः सङ्ग्रहम् गत्वा अतिरिक्तम् सङ्ग्रहम् योजयतु परिवर्तयतु वा.",
+        "moreInfo": "प्रकाशनविवरणम्",
+        "myBooks": "मम प्रकाशनानि",
+        "noPublicationHelpL1": "सञ्चिकाः अत्र निक्षिपतु",
+        "noPublicationHelpL2": "अथवा उपरि \"{{- importTitle }}\" कुञ्जिकाम् प्रयोजयतु.",
+        "noPublicationHelpL3": "LCP-रक्षितानि प्रकाशनानि समर्थितानि.",
+        "noPublicationHelpL4": "समर्थिताः प्रत्ययाः:",
+        "numberOfPages": "पृष्ठसङ्ख्या",
+        "opds": {
+            "auth": {
+                "cancel": "निरस्यतु",
+                "external": "प्रवेशपृष्ठम् जालदर्शके उद्घाटनीयम्, निर्देशान् अनुसरतु. प्रवेशानन्तरम् जालदर्शकात् एतम् अनुप्रयोगम् प्रति प्रत्यावर्तनम्.",
+                "fallback": "टिप्पणी: पूर्वनिर्धारितजालदर्शकविधिना प्रवेशसमस्यायाम् वैकल्पिकेन अनुप्रयोगान्तर्विधिना पुनः प्रयतताम्.",
+                "login": "प्रविशतु",
+                "password": "गुह्यपदम्",
+                "register": "पञ्जीकरोतु",
+                "retry": "पुनः प्रयतताम्",
+                "unauthorized": "अनधिकृतः",
+                "unauthorizedUnsupportedType": "अनधिकृतः (असमर्थितः WWWAuthenticate प्रकारः '{{- type}}')",
+                "username": "उपयोक्तृनाम / विद्युत्सन्देशसङ्केतः"
+            },
+            "info": {
+                "availableSince": "आरभ्य",
+                "availableState": {
+                    "available": "उपलब्धम्",
+                    "ready": "सज्जम्",
+                    "reserved": "आरक्षितम्",
+                    "unavailable": "अनुपलब्धम्",
+                    "unknown": "अज्ञातम्"
+                },
+                "availableUntil": "यावत्",
+                "copyAvalaible": "उपलब्धम्",
+                "copyTotal": "प्रतिलिप्यः",
+                "holdPosition": "आरक्षणक्रमः",
+                "holdTotal": "धृतम्",
+                "numberOfItems": "वस्तुसङ्ख्या",
+                "priveValue": "मूल्यम्",
+                "state": "अवस्था"
+            }
+        },
+        "openFolder": "निर्देशिकाम् उद्घाटयतु",
+        "publisher": "प्रकाशकः",
+        "readBook": "पठतु",
+        "released": "प्रकाशितदिने",
+        "removeFromFavorites": "इष्टेभ्यः निष्कासयतु",
+        "selectTableHeaders": "दर्शनीयान् स्तम्भान् चिनोतु",
+        "sort": "क्रमेण",
+        "tag": "सङ्केतः",
+        "tags": "सङ्केताः",
+        "update": "सम्पादयतु",
+        "userProfile": {
+            "available": "उपलब्धम्: {{count}}",
+            "edit": "रूपरेखाम् सम्पादयतु",
+            "holds": "आरक्षणानि",
+            "loading": "लेखा आरोप्यमाणा…",
+            "loans": "ग्रहणानि",
+            "title": "लेखा",
+            "unavailable": "रूपरेखासूचना अनुपलब्धा."
+        }
+    },
+    "dialog": {
+        "annotations": {
+            "descAuthor": "द्वारा '{{- author}}'",
+            "descCreator": "रचयित्रा",
+            "descList_one": "{{- count}} टिप्पणी {{- creator}} '{{- title}}' {{- author}} मध्ये आयातयितव्या",
+            "descList_other": "{{- count}} टिप्पण्यः {{- creator}} '{{- title}}' {{- author}} मध्ये आयातयितव्याः",
+            "descNewer_one": "विरोधः: {{- count}} नूतनतरा टिप्पणी",
+            "descNewer_other": "विरोधः: {{- count}} नूतनतराः टिप्पण्यः",
+            "descOlder_one": "विरोधः: {{- count}} प्राचीनतरा टिप्पणी",
+            "descOlder_other": "विरोधः: {{- count}} प्राचीनतराः टिप्पण्यः",
+            "descTitle": "अङ्कनशीर्षकम्: ",
+            "importAll": "सर्वाः टिप्पण्यः आयातयतु",
+            "importWithoutConflict": "केवलम् अविरुद्धाः टिप्पण्यः आयातयतु",
+            "origin": "मूलप्रकाशनम्: '{{- title}}' {{- author}}",
+            "title": "टिप्पण्यः आयातयतु?"
+        },
+        "cancel": "निरस्यतु",
+        "customization": {
+            "splashscreen": {
+                "dontShow": "पुनः न दर्शनीयम्",
+                "fallbackWelcomeScreen": "स्वागतपटलम् अप्रदत्तम्",
+                "state": "अवस्था: {{- state}}",
+                "title": "अनुकूलनरूपरेखायाः सज्जीकरणम् सक्रियीकरणम् च"
+            }
+        },
+        "deleteAnnotations": "अङ्कनानि अपाकरोतु?",
+        "deleteAnnotationsText_one": "किम् {{- count}} टिप्पणी अपाकर्तव्या?",
+        "deleteAnnotationsText_other": "किम् {{- count}} टिप्पण्यः अपाकर्तव्याः?",
+        "deleteBookmarks": "पुस्तकचिह्नानि अपाकरोतु?",
+        "deleteBookmarksText_one": "किम् {{- count}} पुस्तकचिह्नम् अपाकर्तव्यम्?",
+        "deleteBookmarksText_other": "किम् {{- count}} पुस्तकचिह्नानि अपाकर्तव्यानि?",
+        "deleteFeed": "सूचीपत्रम् अपाकरोतु?",
+        "deletePublication": "प्रकाशनम् अपाकरोतु?",
+        "deletePublicationWithNotes": "चेतावनी: अस्य प्रकाशनस्य अङ्कनानि पुस्तकचिह्नानि वा विद्यमानानि, तानि अपि अपाकर्तव्यानि! (यदि तेषाम् रक्षणम् इष्टम्, प्रकाशनस्य अपाकरणात् पूर्वं टिप्पण्यः निर्यातयतु)",
+        "import": "आयातम् पुष्टीकरोतु:",
+        "importError": "त्रुटिः समुत्पन्ना, सञ्चिकाप्रत्ययम् परीक्षताम् ({{acceptedExtension}})",
+        "renew": "ग्रहणम् नवीकरोतु/विस्तारयतु?",
+        "return": "प्रकाशनम् प्रत्यर्पयतु?",
+        "yes": "आम्"
+    },
+    "error": {
+        "errorBox": {
+            "error": "त्रुटिसन्देशः:",
+            "message": "{{- filename}} मध्ये त्रुटिः",
+            "title": "आन्तरिकी {{- appName}} त्रुटिः"
+        }
+    },
+    "header": {
+        "allBooks": "सर्वाणि प्रकाशनानि",
+        "catalogs": "सूचीपत्राणि",
+        "downloads": "अवतारणानि",
+        "fitlerTagTitle": "सङ्केतेन छाननम्",
+        "gridTitle": "जालकम्",
+        "home": "पुस्तकफलकसूचिः",
+        "homeTitle": "गृहम्",
+        "importTitle": "प्रकाशनम् आयातयतु",
+        "listTitle": "सारणी",
+        "myCatalogs": "मम सूचीपत्राणि",
+        "refreshTitle": "पुनरारोपणम्",
+        "searchPlaceholder": "अन्वेषणम्",
+        "searchTitle": "अन्वेषणम्",
+        "settings": "विन्यासः",
+        "settingsLabel": "अनुप्रयोगविन्यासः",
+        "viewMode": "दर्शनरीतिः"
+    },
+    "library": {
+        "filter": {
+            "addFilters": "छानकानि योजयतु",
+            "filterBy": "एतेन छाननम्",
+            "selectOption": "एकम् पदम् चिनोतु"
+        },
+        "lcp": {
+            "hidePassphrase": "गुह्यपदम् गोपयतु",
+            "hint": "इङ्गितम्:",
+            "open": "उद्घाटयतु",
+            "password": "गुह्यपदम्",
+            "sentence": "अस्य प्रकाशनस्य उद्घाटनाय LCP गुह्यपदम् आवश्यकम्",
+            "showPassphrase": "गुह्यपदम् दर्शयतु",
+            "urlHint": "किम् गुह्यपदम् विस्मृतम्? साहाय्याय अत्र नुदतु.",
+            "whatIsLcp?": "LCP किम्?",
+            "whatIsLcpInfoDetails": "LCP इत्यस्य विस्तारः 'अनुज्ञप्तस्य पाठ्यविषयस्य संरक्षणम्'.",
+            "whatIsLcpInfoDetailsLink": "अधिकज्ञानाय EDRLab जालस्थलस्य एतम् बन्धम् नुदतु."
+        },
+        "sorting": {
+            "addSorting": "क्रमणम् योजयतु",
+            "author": "लेखकः",
+            "language": "भाषा",
+            "readingState": "पठनावस्था",
+            "sortBy": "क्रमेण: ",
+            "title": "शीर्षकम्"
+        }
+    },
+    "message": {
+        "annotations": {
+            "alreadyImported": "सर्वाः टिप्पण्यः पूर्वमेव आयातिताः.",
+            "emptyFile": "सञ्चिकायाम् टिप्पण्यः अनुपलब्धाः.",
+            "nothing": "आयातयितुम् सज्जा टिप्पणी अनुपलब्धा, आयातस्य परित्यागः",
+            "success": "आयातः सफलतया समाप्तः."
+        },
+        "diagnostics": {
+            "category": "वर्गः: {{- category}}",
+            "causedBy": "कारणम्:",
+            "downloadSource": "अवतारणस्रोतः: {{- source}}",
+            "error": "त्रुटिः",
+            "httpStatus": "HTTP स्थितिः: {{- status}}",
+            "invalidUrl": "[अमान्यः URL]",
+            "source": "स्रोतः: {{- source}}",
+            "url": "URL: {{- url}}"
+        },
+        "download": {
+            "cancelled": "अवतारणम् निरस्तम्.",
+            "errors": {
+                "failed": "अवतारणम् विफलम्.",
+                "hashMismatch": "अवतारितसञ्चिकायाः अखण्डतापरीक्षा विफला: अपेक्षितः SHA-256 सारांशः {{- expected}}, लब्धः {{- actual}}.",
+                "httpGet": "HTTP अवतारणम् विफलम्: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "अस्थायी अवतारणसञ्चिकानाम अमान्यम्.",
+                "invalidLink": "अवतारणबन्धः अमान्यः.",
+                "invalidTempDirectory": "अस्थायी अवतारणनिर्देशिका अमान्या.",
+                "lengthMismatch": "अवतारितसञ्चिकायाः अखण्डतापरीक्षा विफला: अपेक्षितानि {{- expected}} अष्टकानि, लब्धानि {{- actual}} अष्टकानि.",
+                "pathMissing": "अवतारितसञ्चिकायाः पथः लुप्तः.",
+                "publicationLinkMissing": "अनुज्ञापत्रे प्रकाशनस्य अवतारणबन्धः अनुपस्थितः.",
+                "readStreamMissing": "अवतारणधारा अनुपलब्धा.",
+                "streamClosed": "समाप्तेः पूर्वं अवतारणधारा पिहिता.",
+                "tooManyFilenameAttempts": "अद्वितीयम् अस्थायी अवतारणसञ्चिकानाम निर्मातुम् अशक्यम्: {{- path}}"
+            },
+            "failed": "“{{- hostname}}” तः अवतारयितुम् अशक्यम्. पुनः प्रयतताम्.",
+            "integrityFailed": "“{{- hostname}}” तः अवतारणम् अपूर्णम् क्षतम् वा. पुनः प्रयतताम्.",
+            "saveFailed": "अवतारणम् रक्षितुम् अशक्यम्. उपलब्धम् सङ्ग्रहम् अनुमतीः च परीक्षताम्.",
+            "startedWithTitle": "{{- title}} अवतार्यमाणम्."
+        },
+        "import": {
+            "alreadyImport": "[{{- title}}] पूर्वमेव आयातितम्.",
+            "errors": {
+                "acquisitionUrlMissing": "प्रकाशनस्य अवतारण-URL लुप्तः अमान्यः वा.",
+                "cbzNoImages": "CBZ सञ्चये समर्थितानि चित्राणि अनुपलब्धानि.",
+                "contextMissing": "लुप्तम्",
+                "daisyConversionFailed": "DAISY प्रकाशनम् परिवर्तयितुम् अशक्यम्.",
+                "manifestContext": "अपरिचितम् प्रकाशनप्रकटस्य @context {{- url}} इत्यत्र: {{- context}}",
+                "manifestImportFailed": "प्रकाशनप्रकटस्य आयातः विफलः.",
+                "manifestInvalidJson": "{{- url}} इत्यत्र प्रकाशनप्रकटस्य JSON अमान्यम्.",
+                "manifestMissing": "प्रकाशनप्रकटः लुप्तः.",
+                "manifestNotFound": "{{- url}} इत्यत्र प्रकाशनप्रकटः अलब्धः.",
+                "manifestParsingFailed": "{{- url}} इत्यत्र प्रकाशनप्रकटस्य विश्लेषणम् अशक्यम्.",
+                "noImportResult": "आयातात् प्रकाशनम् अप्राप्तम्.",
+                "notImported": "प्रकाशनम् पुस्तकालये योजयितुम् अशक्यम्.",
+                "profileAssetUrl": "अमान्यः रूपरेखाप्रकाशन-URL: {{- path}}",
+                "profileEmpty": "अनुकूलनरूपरेखायाः ZIP सञ्चयः रिक्तः.",
+                "profileEntryMissing": "अनुकूलनरूपरेखायाम् प्रकाशनम् अलब्धम्: {{- path}}",
+                "profileMissing": "स्वनियता रूपरेखा न लब्धा: {{- id}}",
+                "profileNotZip": "स्वनियता रूपरेखा ZIP-पुरालेखरूपा नास्ति।"
+            },
+            "failed": "“{{- name}}” आयातयितुं न शक्यम्।",
+            "invalidLicense": "“{{- name}}” आयातयितुं न शक्यम्। प्रकाशनस्य अनुज्ञापत्रम् अमान्यम्।",
+            "invalidPublication": "“{{- name}}” आयातयितुं न शक्यम्। प्रकाशनस्य रचनासूचिः अनुपलब्धा।",
+            "lcpLicenseMalformed": "LCP अनुज्ञापत्रम् विकृतम्।",
+            "success": "[{{- title}}] इत्यस्य आयातनं सम्पन्नम्।",
+            "unsupportedFormat": "“{{- name}}” आयातयितुं न शक्यम्। अस्याः सञ्चिकायाः स्वरूपम् असमर्थितम्।"
+        },
+        "notifications": {
+            "annotationImportFailed": "अङ्कनानाम् आयातनम् असम्भवम्। सञ्चिका वैधम् अङ्कननिर्यातनम् इति परीक्ष्यताम्।",
+            "annotationPublicationUnavailable": "प्रकाशनम् अनुपलब्धम् इति कारणात् अङ्कनानाम् आयातनम् असम्भवम्। प्रकाशनं पुनः आयातयितुं प्रयतताम्।",
+            "annotationStopPlayback": "अङ्कनस्य निर्माणात् पूर्वं उच्चैःपठनं ध्वनिवादनं वा स्थगयतु।",
+            "authenticationFailed": "अस्मिन् सूचीपत्रे प्रवेशः असम्भवः। संयोजनं परीक्ष्यताम्, पुनः प्रयतताम्।",
+            "catalogLinkFailed": "इदं सूचीपत्रम् योजयितुं न शक्यम्। लिङ्कं संयोजनं च परीक्ष्यताम्।",
+            "catalogUpdateFailed": "इदं सूचीपत्रम् अद्यतनीकर्तुं न शक्यम्। तस्य विन्यासः परीक्ष्यताम्, पुनः प्रयतताम्।",
+            "copyLimit": "अस्य प्रकाशनस्य प्रतिलिप्यनुज्ञा क्षीणा।",
+            "deleteFailed": "इदं प्रकाशनम् अपाकर्तुं न शक्यम्। पुनः प्रयतताम्।",
+            "exportFailed": "इदं प्रकाशनम् निर्यातयितुं न शक्यम्। गन्तव्यपुटम् उपलब्धं चक्रिकास्थानं च परीक्ष्यताम्।",
+            "openFileFailed": "इयं सञ्चिका उद्घाटयितुं न शक्या। सा उपलब्धा समर्थितस्वरूपयुक्ता च इति परीक्ष्यताम्।",
+            "openLinkFailed": "अस्य प्रकाशनस्य लिङ्कम् उद्घाटयितुं न शक्यम्। लिङ्कं परीक्ष्यताम्, पुनः प्रयतताम्।",
+            "printLimit": "अस्य प्रकाशनस्य मुद्रणानुज्ञा क्षीणा।",
+            "profileActivationFailed": "इयं रूपरेखा सक्रिययितुं न शक्या। रूपरेखासम्पूटं परीक्ष्यताम् अथवा तस्य प्रदाता सम्बोध्यताम्।",
+            "profileBusy": "अन्या रूपरेखाक्रिया अधुना प्रचलन्ती। तस्याः समाप्तिं प्रतीक्षताम्, ततः पुनः प्रयतताम्।",
+            "profileProvisionFailed": "इयं रूपरेखा संस्थापयितुं न शक्या। रूपरेखासम्पूटं परीक्ष्यताम् अथवा तस्य प्रदाता सम्बोध्यताम्।",
+            "profileTimeout": "रूपरेखासंस्थापनस्य कालः समाप्तः। संयोजनं परीक्ष्यताम्, पुनः प्रयतताम्।",
+            "publicationUnavailable": "इदं प्रकाशनम् अनुपलब्धम्। पुनः आयातयितुं प्रयतताम्।",
+            "readingPositionFailed": "भवतः पठनस्थानं निर्देष्टुं न शक्यम्। पुनः प्रयतताम्।",
+            "recoveryPartialFailure": "{{- recovered}} प्रकाशनानि पुनःप्राप्तानि; {{- failed}} प्रकाशनानि पुनःप्राप्तुं न शक्यानि।",
+            "renewFailed": "इदम् आदानं नवीकर्तुं न शक्यम्। पुनः प्रयतताम् अथवा स्वकीयः पुस्तकालयः सम्बोध्यताम्।",
+            "returnFailed": "इदम् आदानं प्रत्यावर्तयितुं न शक्यम्। पुनः प्रयतताम् अथवा स्वकीयः पुस्तकालयः सम्बोध्यताम्।",
+            "storageRefreshFailed": "सङ्ग्रहविन्यासः रक्षितः, किन्तु पुस्तकालयस्य नवीकरणम् असम्भवम्। पुस्तकालयं नवीकर्तुं प्रयतताम्।",
+            "tagsFailed": "प्रकाशनस्य सङ्केताः रक्षितुं न शक्याः। पुनः प्रयतताम्।"
+        },
+        "open": {
+            "failed": "इदं प्रकाशनम् उद्घाटयितुं न शक्यम्।",
+            "folderNotFound": "प्रकाशननिर्देशिका न लब्धा। प्रकाशनं पुनः आयातयतु, अथवा विन्यासः > सङ्ग्रहः इत्यत्र अतिरिक्तं सङ्ग्रहं विन्यस्यतु।",
+            "missingLicense": "इदं प्रकाशनम् उद्घाटयितुं न शक्यम्। तद् गुप्तीकृतम्, किन्तु तस्य LCP अनुज्ञापत्रम् अनुपलब्धम्।"
+        },
+        "storage": {
+            "recovery": {
+                "failure": "प्रकाशनपुनःप्राप्तिः विफला।",
+                "success_one": "{{- count}} प्रकाशनम् पुनःप्राप्तम्।",
+                "success_other": "{{- count}} प्रकाशनानि पुनःप्राप्तानि।"
+            },
+            "removed": "प्रकाशननिर्देशिका अपाकृता।",
+            "updateFailed": "प्रकाशननिर्देशिकायाः अद्यतनीकरणं विफलम्: {{- message}}",
+            "updated": "प्रकाशननिर्देशिका अद्यतनीकृता।"
+        },
+        "wipeData": "प्रवेशदत्तांशः अपमार्जितः (प्रवेशटोकनानि कुकीजश्च)"
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "योजयतु",
+            "name": "नाम:",
+            "namePlaceholder": "नाम",
+            "url": "लिङ्क:",
+            "urlPlaceholder": "लिङ्क"
+        },
+        "addFormApiapp": {
+            "title": "पुस्तकालयस्य खातं योजयतु"
+        },
+        "addMenu": "OPDS प्रवाहं योजयतु",
+        "breadcrumbRoot": "सूचीपत्राणि",
+        "browserMenu": {
+            "history": "इतिहासः",
+            "options": "विकल्पाः",
+            "profile": "रूपरेखा",
+            "wishlist": "इच्छासूची"
+        },
+        "color": {
+            "blue": "नीलः",
+            "gray": "धूसरः",
+            "green": "हरितः",
+            "orange": "नारङ्गः",
+            "pink": "पाटलः",
+            "purple": "नीललोहितः",
+            "red": "रक्तः",
+            "title": "सूचीपत्रवर्णः",
+            "yellow": "पीतः"
+        },
+        "documentation": "OPDS आधिकारिकं जालस्थानम्",
+        "empty": "किमपि प्रकाशनम् न लब्धम्",
+        "firstPage": "प्रथमम्",
+        "informations": "अल्पैः नुदनैः सार्वजनिकेभ्यः पुस्तकालयेभ्यः अङ्कीयपुस्तकविक्रेतृभ्यश्च अङ्कीयानां प्रकाशनानां परिशीलनम् अवतारणं च यत्र शक्यम्, स लोकः कल्प्यताम्। एतद् एव मुक्तप्रकाशनवितरणप्रणाली (OPDS) इति सूचीपत्रस्वरूपं प्रददाति। OPDS द्वारा विविध-ईपुस्तक-प्रदातॄणां सूचीपत्रेषु सञ्चरणम्, पञ्जीकरणम्, आदानम्, प्रकाशनस्य क्रयः, स्वकीयस्य पुस्तकफलकस्य दर्शनं च शक्यम्। तत्क्षणपठनाय ईपुस्तकम् श्रव्यपुस्तकं वा Thorium Reader मध्ये प्रत्यक्षम् अवतारयितुम् अपि शक्यम्।\nतर्हि OPDS सूचीपत्रं कथं लभ्यते? सुलभम् एतत्। सूचीपत्रगामिनः अधिसम्बन्धस्य (URL) अन्वेषणम् क्रियताम्। अयं URL उपरिस्थे लिङ्कक्षेत्रे प्रतिलिख्यताम्। सर्वेषां सक्रिय-OPDS-सूचीपत्राणाम् एकस्थानं नास्ति इति स्मर्यताम्। इष्टः पुस्तकालयः पुस्तकविक्रेता वा सम्बोध्यताम्, तेषाम् OPDS सूचीपत्र-URL याच्यताम्। आरम्भस्थानम् अनिश्चितं चेत् Wikipedia इत्यस्मिन् विविधासु भाषासु OPDS सूचीपत्राणां कतिचन पञ्जिकाः सन्ति, ताः उपकारिण्यः भवेयुः।\nनामक्षेत्रं भवतः सुविधायै त्यक्तम्; तेन Thorium Reader मध्ये प्रवाहस्य परिचयः सुगमः।",
+        "lastPage": "अन्तिमम्",
+        "menu": {
+            "aboutBook": "प्रकाशनविषये",
+            "addExtract": "उद्धरणम् आयातयतु",
+            "cancelHold": "आरक्षणं निरस्यतु",
+            "cancelHoldError": "इदम् आरक्षणं निरसितुं न शक्यम्। पुनः प्रयतताम्।",
+            "goBuyBook": "प्रकाशनं क्रीणातु",
+            "goLoanBook": "प्रकाशनम् आददातु",
+            "goRevokeLoanBook": "आदानं प्रत्याहरतु",
+            "goSubBook": "सदस्यतां गृह्णातु",
+            "placeHold": "आरक्षणं स्थापयतु"
+        },
+        "network": {
+            "error": "प्रवाहस्य अभिगमे त्रुटिः",
+            "noInternet": "अन्तर्जाल-अभावः",
+            "noInternetMessage": "जालतन्तुम्, मोडेमम्, राउटरम्, wifi वा परीक्षितुं प्रयतताम्",
+            "reject": "क्षम्यताम्, अप्रत्याशिता त्रुटिः!",
+            "timeout": "जालकालसमाप्तिः, पश्चात् पुनः प्रयतताम्"
+        },
+        "next": "अग्रिमम्",
+        "previous": "पूर्वम्",
+        "registry": {
+            "empty": "न कानिचित् सूचीपत्राणि लब्धानि।",
+            "error": "पञ्जिकायाः अन्वेषणम् असम्भवम्। पुनः प्रयतताम्।",
+            "loading": "सूचीपत्राणाम् अन्वेषणम्…",
+            "title": "सूचीपत्राणाम् अन्वेषणम्"
+        },
+        "resumeBrowsing": "विचरणं पुनरारभताम्",
+        "shelf": "फलकः",
+        "updateForm": {
+            "name": "नाम:",
+            "title": "OPDS प्रवाहं सम्पादयतु",
+            "updateButton": "सम्पादयतु",
+            "url": "लिङ्क:"
+        },
+        "whatIsOpds": "OPDS किम्?"
+    },
+    "publ-a11y-display-guide": {
+        "accessibility-summary": {
+            "accessibility-summary-title": "अभिगम्यतासारांशः"
+        },
+        "additional-accessibility-information": {
+            "additional-accessibility-information-aria": {
+                "compact": "ARIA-भूमिकाः समाविष्टाः",
+                "descriptive": "पाठ्यविषयः ARIA-भूमिकाभिः संवर्धितः, संगठनस्य अनुकूलनाय सञ्चरणस्य सुकरतायै च"
+            },
+            "additional-accessibility-information-audio-descriptions": {
+                "compact": "ध्वन्युपवर्णनानि",
+                "descriptive": "ध्वन्युपवर्णनानि"
+            },
+            "additional-accessibility-information-braille": {
+                "compact": "ब्रेल",
+                "descriptive": "ब्रेल"
+            },
+            "additional-accessibility-information-full-ruby-annotations": {
+                "compact": "पूर्णाः Ruby-टीकाः",
+                "descriptive": "पूर्णाः Ruby-टीकाः"
+            },
+            "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
+                "compact": "अग्रध्वनेः पृष्ठध्वनेश्च मध्ये उच्चं वैषम्यम्",
+                "descriptive": "अग्रध्वनेः पृष्ठध्वनेश्च मध्ये उच्चं वैषम्यम्"
+            },
+            "additional-accessibility-information-high-contrast-between-text-and-background": {
+                "compact": "अग्रपाठस्य पृष्ठभूमेश्च मध्ये उच्चं वैषम्यम्",
+                "descriptive": "अग्रपाठस्य पृष्ठभूमेश्च मध्ये उच्चं वैषम्यम्"
+            },
+            "additional-accessibility-information-large-print": {
+                "compact": "बृहन्मुद्रणम्",
+                "descriptive": "बृहन्मुद्रणम्"
+            },
+            "additional-accessibility-information-page-breaks": {
+                "compact": "पृष्ठविच्छेदाः समाविष्टाः",
+                "descriptive": "मूलमुद्रणस्रोतसः पृष्ठविच्छेदाः समाविष्टाः"
+            },
+            "additional-accessibility-information-ruby-annotations": {
+                "compact": "काश्चन Ruby-टीकाः",
+                "descriptive": "काश्चन Ruby-टीकाः"
+            },
+            "additional-accessibility-information-sign-language": {
+                "compact": "सङ्केतभाषा",
+                "descriptive": "सङ्केतभाषा"
+            },
+            "additional-accessibility-information-tactile-graphics": {
+                "compact": "स्पर्शचित्राणि समाविष्टानि",
+                "descriptive": "दृष्टिहीनानां कृते दृश्यतत्त्वानाम् अभिगमसुकरतायै स्पर्शचित्राणि समाकलितानि"
+            },
+            "additional-accessibility-information-tactile-objects": {
+                "compact": "स्पर्शयोग्यानि 3D-वस्तूनि",
+                "descriptive": "स्पर्शयोग्यानि 3D-वस्तूनि"
+            },
+            "additional-accessibility-information-text-to-speech-hinting": {
+                "compact": "पाठवाक्सङ्केतनं प्रदत्तम्",
+                "descriptive": "पाठवाक्सङ्केतनं प्रदत्तम्"
+            },
+            "additional-accessibility-information-title": "अतिरिक्ताभिगम्यतासूचना"
+        },
+        "conformance": {
+            "conformance-a": {
+                "compact": "इदं प्रकाशनम् न्यूनतमाभिगम्यतामानकानां पूरकम्",
+                "descriptive": "प्रकाशने अनुरूपताकथनम् अस्ति यत् तत् EPUB Accessibility मानकं WCAG 2 स्तर A मानकं च पूरयति"
+            },
+            "conformance-aa": {
+                "compact": "इदं प्रकाशनम् स्वीकृताभिगम्यतामानकानां पूरकम्",
+                "descriptive": "प्रकाशने अनुरूपताकथनम् अस्ति यत् तत् EPUB Accessibility मानकं WCAG 2 स्तर AA मानकं च पूरयति"
+            },
+            "conformance-aaa": {
+                "compact": "इदं प्रकाशनम् स्वीकृताभिगम्यतामानकानाम् अतिपूरकम्",
+                "descriptive": "प्रकाशने अनुरूपताकथनम् अस्ति यत् तत् EPUB Accessibility मानकं WCAG 2 स्तर AAA मानकं च पूरयति"
+            },
+            "conformance-certifier": {
+                "compact": "प्रकाशनस्य प्रमाणनकर्ता "
+            },
+            "conformance-certifier-credentials": {
+                "compact": "प्रमाणकस्य प्रत्ययः "
+            },
+            "conformance-details-certifier-report": {
+                "compact": "अधिकसूचनार्थं प्रमाणकस्य प्रतिवेदनम् अवलोक्यताम्"
+            },
+            "conformance-details-claim": {
+                "compact": "अस्य प्रकाशनस्य पूर्तिदावा",
+                "descriptive": "अस्य प्रकाशनस्य पूर्तिदावा"
+            },
+            "conformance-details-epub-accessibility-1-0": {
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
+            },
+            "conformance-details-epub-accessibility-1-1": {
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
+            },
+            "conformance-details-level-a": {
+                "compact": "स्तरः A",
+                "descriptive": "स्तरः A"
+            },
+            "conformance-details-level-aa": {
+                "compact": "स्तरः AA",
+                "descriptive": "स्तरः AA"
+            },
+            "conformance-details-level-aaa": {
+                "compact": "स्तरः AAA",
+                "descriptive": "स्तरः AAA"
+            },
+            "conformance-details-wcag-2-0": {
+                "compact": "WCAG 2.0"
+            },
+            "conformance-details-wcag-2-1": {
+                "compact": "WCAG 2.1",
+                "descriptive": "जाल-पाठ्यविषय-अभिगम्यता-दिशानिर्देशाः (WCAG) 2.1"
+            },
+            "conformance-details-wcag-2-2": {
+                "compact": "WCAG 2.2",
+                "descriptive": "जाल-पाठ्यविषय-अभिगम्यता-दिशानिर्देशाः (WCAG) 2.2"
+            },
+            "conformance-no": {
+                "compact": "सूचना नोपलब्धा",
+                "descriptive": "सूचना नोपलब्धा"
+            },
+            "conformance-title": "अनुरूपता",
+            "conformance-unknown-standard": {
+                "compact": "अस्य प्रकाशनस्य अभिगम्यतायै स्वीकृतमानकानाम् अनुरूपता निर्धारयितुं न शक्या",
+                "descriptive": "अस्य प्रकाशनस्य अभिगम्यतायै स्वीकृतमानकानाम् अनुरूपता निर्धारयितुं न शक्या"
+            }
+        },
+        "hazards": {
+            "hazards-flashing": {
+                "compact": "स्फुरन् पाठ्यविषयः",
+                "descriptive": "प्रकाशने स्फुरन् पाठ्यविषयः अस्ति, यः प्रकाशसंवेदनजम् अपस्मारं जनयितुम् अर्हति"
+            },
+            "hazards-flashing-none": {
+                "compact": "न स्फुरन् पाठ्यविषयः",
+                "descriptive": "प्रकाशने स्फुरतः पाठ्यविषयस्य अभावः"
+            },
+            "hazards-flashing-unknown": {
+                "compact": "स्फुरतः पाठ्यविषयस्य उपस्थितिः अज्ञाता",
+                "descriptive": "स्फुरतः पाठ्यविषयस्य उपस्थितिः अज्ञाता"
+            },
+            "hazards-motion": {
+                "compact": "गत्यनुकरणम्",
+                "descriptive": "प्रकाशने गत्यनुकरणानि सन्ति, यानि गतिजन्यां ग्लानिं जनयितुम् अर्हति"
+            },
+            "hazards-motion-none": {
+                "compact": "न गत्यनुकरणम्",
+                "descriptive": "प्रकाशने गत्यनुकरणस्य अभावः"
+            },
+            "hazards-motion-unknown": {
+                "compact": "गत्यनुकरणस्य उपस्थितिः अज्ञाता",
+                "descriptive": "गत्यनुकरणस्य उपस्थितिः अज्ञाता"
+            },
+            "hazards-no-metadata": {
+                "compact": "सूचना नोपलब्धा",
+                "descriptive": "सूचना नोपलब्धा"
+            },
+            "hazards-none": {
+                "compact": "न आपदः",
+                "descriptive": "प्रकाशने आपदाम् अभावः"
+            },
+            "hazards-sound": {
+                "compact": "ध्वनयः",
+                "descriptive": "असुखकरध्वनियुक्तं प्रकाशनम्"
+            },
+            "hazards-sound-none": {
+                "compact": "न ध्वनयः",
+                "descriptive": "प्रकाशने ध्वनीनाम् अभावः"
+            },
+            "hazards-sound-unknown": {
+                "compact": "ध्वनीनाम् उपस्थितिः अज्ञाता",
+                "descriptive": "ध्वनीनाम् उपस्थितिः अज्ञाता"
+            },
+            "hazards-title": "आपदः",
+            "hazards-unknown": {
+                "compact": "आपदाम् उपस्थितिः अज्ञाता",
+                "descriptive": "आपदाम् उपस्थितिः अज्ञाता"
+            }
+        },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "केषुचित् क्षेत्राधिकारेषु अभिगम्यतामुक्तेः दावा",
+                "descriptive": "प्रकाशकः केषुचित् क्षेत्राधिकारेषु अभिगम्यतावश्यकताभ्यः मुक्तिं प्रतिजानीते।"
+            },
+            "legal-considerations-title": "वैधानिकाः विचाराः"
+        },
+        "navigation": {
+            "navigation-index": {
+                "compact": "अनुक्रमणिका",
+                "descriptive": "निर्दिष्टप्रविष्टिषु लिङ्कैः सहिता अनुक्रमणिका"
+            },
+            "navigation-no-metadata": {
+                "compact": "सूचना नोपलब्धा",
+                "descriptive": "सूचना नोपलब्धा"
+            },
+            "navigation-page-navigation": {
+                "compact": "पृष्ठं गच्छतु",
+                "descriptive": "मुद्रितस्रोतसंस्करणस्य पृष्ठेषु गमनाय पृष्ठसूचिः"
+            },
+            "navigation-structural": {
+                "compact": "शीर्षकाणि",
+                "descriptive": "संरचितसञ्चरणाय शीर्षकाणि, सारण्यः, इत्यादीनि तत्त्वानि"
+            },
+            "navigation-title": "सञ्चरणम्",
+            "navigation-toc": {
+                "compact": "विषयसूचिः",
+                "descriptive": "लिङ्कैः पाठस्य सर्वेषां अध्यायानां गमनाय विषयसूचिः"
+            }
+        },
+        "rich-content": {
+            "rich-content-accessible-chemistry-as-latex": {
+                "compact": "LaTeX-रूपे रासायनिकसूत्राणि",
+                "descriptive": "सुगमरूपे रासायनिकसूत्राणि (LaTeX)"
+            },
+            "rich-content-accessible-chemistry-as-mathml": {
+                "compact": "MathML-रूपे रासायनिकसूत्राणि",
+                "descriptive": "सुगमरूपे रासायनिकसूत्राणि (MathML)"
+            },
+            "rich-content-accessible-math-as-latex": {
+                "compact": "LaTeX-रूपे गणितम्",
+                "descriptive": "सुगमरूपे गणितसूत्राणि (LaTeX)"
+            },
+            "rich-content-accessible-math-as-mathml": {
+                "compact": "MathML-रूपे गणितम्",
+                "descriptive": "सुगमरूपे गणितसूत्राणि (MathML)"
+            },
+            "rich-content-accessible-math-described": {
+                "compact": "गणितस्य पाठवर्णनानि प्रदत्तानि",
+                "descriptive": "गणितस्य पाठवर्णनानि प्रदत्तानि"
+            },
+            "rich-content-closed-captions": {
+                "compact": "निमीलित-अनुशीर्षक-युक्तानि दृश्यानि",
+                "descriptive": "प्रकाशनेषु समाविष्टानि निमीलित-अनुशीर्षक-युक्तानि दृश्यानि"
+            },
+            "rich-content-extended": {
+                "compact": "सूचनासमृद्धानि चित्राणि विस्तारितवर्णनैः वर्णितानि",
+                "descriptive": "सूचनासमृद्धानि चित्राणि विस्तारितवर्णनैः वर्णितानि"
+            },
+            "rich-content-open-captions": {
+                "compact": "अनावृत्त-अनुशीर्षक-युक्तानि दृश्यानि",
+                "descriptive": "प्रकाशनेषु समाविष्टानि अनावृत्त-अनुशीर्षक-युक्तानि दृश्यानि"
+            },
+            "rich-content-title": "समृद्धः पाठ्यविषयः",
+            "rich-content-transcript": {
+                "compact": "प्रदत्ताः प्रतिलेखाः",
+                "descriptive": "प्रदत्ताः प्रतिलेखाः"
+            },
+            "rich-content-unknown": {
+                "compact": "सूचना नोपलब्धा",
+                "descriptive": "सूचना नोपलब्धा"
+            }
+        },
+        "ways-of-reading": {
+            "ways-of-reading-nonvisual-reading-alt-text": {
+                "compact": "वैकल्पिकः पाठः",
+                "descriptive": "चित्रगत-वैकल्पिकपाठवर्णनानि"
+            },
+            "ways-of-reading-nonvisual-reading-no-metadata": {
+                "compact": "अचाक्षुषपठनस्य सूचना नोपलब्धा",
+                "descriptive": "अचाक्षुषपठनस्य सूचना नोपलब्धा"
+            },
+            "ways-of-reading-nonvisual-reading-none": {
+                "compact": "उच्चैःपठने गतिशीलब्रेले वा अपठनीयम्",
+                "descriptive": "पाठ्यविषयः उच्चैःपठनवाचा गतिशीलब्रेलेन वा पठयितुं न शक्यः"
+            },
+            "ways-of-reading-nonvisual-reading-not-fully": {
+                "compact": "उच्चैःपठने गतिशीलब्रेले वा न पूर्णपठनीयम्",
+                "descriptive": "पाठ्यविषयस्य न सर्वः अंशः उच्चैःपठनवाचा गतिशीलब्रेलेन वा पठनीयः"
+            },
+            "ways-of-reading-nonvisual-reading-readable": {
+                "compact": "उच्चैःपठने गतिशीलब्रेले वा पठनीयम्",
+                "descriptive": "सर्वः पाठ्यविषयः उच्चैःपठनवाचा गतिशीलब्रेलेन वा पठितुं शक्यः"
+            },
+            "ways-of-reading-prerecorded-audio-complementary": {
+                "compact": "पूर्वाङ्किताः ध्वन्यंशाः",
+                "descriptive": "पूर्वाङ्किताः ध्वन्यंशाः पाठ्यविषये निहिताः"
+            },
+            "ways-of-reading-prerecorded-audio-only": {
+                "compact": "केवलं पूर्वाङ्कितध्वनिः",
+                "descriptive": "पाठविकल्परहितं श्रव्यपुस्तकम्"
+            },
+            "ways-of-reading-prerecorded-audio-synchronized": {
+                "compact": "पाठेन समन्वितः पूर्वाङ्कितध्वनिः",
+                "descriptive": "सर्वः पाठ्यविषयः पाठेन समन्वितेन पूर्वाङ्कितध्वनिना उपलब्धः"
+            },
+            "ways-of-reading-title": "पठनप्रकाराः",
+            "ways-of-reading-visual-adjustments-modifiable": {
+                "compact": "आकृतिः परिवर्तनीया",
+                "descriptive": "पठनतन्त्रस्य क्षमत्यनुसारं पाठस्य पृष्ठविन्यासस्य च आकृतिः परिवर्तयितुं शक्या (अक्षरकुलम् अक्षरप्रमाणं च, अनुच्छेदानां वाक्यानां पदानां वर्णानां च अन्तरस्थानानि, तथा पृष्ठभूमौ पाठस्य च वर्णः)"
+            },
+            "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "आकृतिपरिवर्तनस्य सूचना नोपलब्धा",
+                "descriptive": "आकृतिपरिवर्तनस्य सूचना नोपलब्धा"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "आकृतिः अपरिवर्तनीया",
+                "descriptive": "पठनानुभवः मुद्रितसंस्करणस्य समीपः इति हेतोः पाठः पृष्ठविन्यासश्च परिवर्तयितुं न शक्यौ, किन्तु पठनतन्त्राणि आवर्धनविकल्पान् प्रदातुम् अर्हति"
+            }
+        }
+    },
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "सर्वः पाठ्यविषयः उच्चैःपठनवाचा गतिशीलब्रेलेन वा पठितुं शक्यः"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "चित्रगतः वैकल्पिकपाठः",
+                "displayTransformability": "पाठस्य पृष्ठविन्यासस्य च आकृतिः परिवर्तयितुं शक्या",
+                "longDescription": "पूर्णवर्णितानि आलेखीयसाधनानि",
+                "printPageNumbers": "मुद्रितस्रोतसंस्करणस्य पृष्ठेषु गमनाय पृष्ठसूचिः",
+                "readingOrder": "पठनक्रमः",
+                "synchronizedAudioText": "पाठः & ध्वनिः समन्वितौ",
+                "tableOfContents": "विषयसूचिः"
+            },
+            "accessibilityHazard": {
+                "flashing": "स्फुरणम्",
+                "motionSimulation": "गत्यनुकरणम्",
+                "name": "आपत्:",
+                "noFlashing": "न स्फुरणम्",
+                "noMotionSimulation": "न गत्यनुकरणम्",
+                "noSound": "न ध्वनिः",
+                "none": "न किञ्चन",
+                "sound": "ध्वनिः",
+                "unknown": "अज्ञातम्"
+            },
+            "certifierReport": "प्रमाणकस्य विवरणम्:",
+            "conformsTo": "अनुरूपता:",
+            "moreInformation": "अधिका सूचना",
+            "name": "अभिगम्यता",
+            "noA11y": "अभिगम्यतासूचना न उपलब्धा"
+        },
+        "actions": "क्रियाः",
+        "audio": {
+            "tracks": "ध्वनिपथाः"
+        },
+        "author": "लेखकः",
+        "cancelledLcp": "अस्य प्रकाशनस्य LCP-अनुज्ञा निरस्ता।",
+        "certificateRevoked": "प्रत्याहृतं LCP-अनुज्ञाप्रमाणपत्रम्।",
+        "certificateSignatureInvalid": "LCP-अनुज्ञाप्रमाणपत्रस्य अमान्यः हस्ताक्षरः।",
+        "cover": {
+            "img": "आवरणचित्रम्",
+            "zoom": "आवरणचित्रं वर्धयतु"
+        },
+        "day": "दिनम्",
+        "days": "दिनानि",
+        "duration": {
+            "title": "अवधिः"
+        },
+        "expired": "ऋणम् अवधिगतम्",
+        "expiredLcp": "अस्य प्रकाशनस्य LCP-अनुज्ञा अवधिगता।",
+        "incorrectPassphrase": "सङ्गृहीतं गुह्यपदं प्रकाशनस्य अनुरूपं न, अथवा प्रविष्टं गुह्यपदम् अशुद्धम्।",
+        "lcpNotSupported": "चेतावनी: इयं Thorium Desktop पाठकस्य पूर्वप्रकाशन-आवृत्तिः, उत्पादन-LCP-अनुज्ञाः असहिताः, केवलं प्रमाणपत्रसत्यापनं विना LCP 'आधाररूपरेखा'-विगुप्तीकरणं सहितम्।",
+        "lcpRightsCopy": "प्रतिलिपितानि अक्षराणि",
+        "lcpRightsPrint": "मुद्रितानि पृष्ठानि",
+        "lcpStart": "आरम्भः",
+        "licenceLCP": "अनुज्ञा (LCP)",
+        "licenseCertificateDateInvalid": "LCP-प्रदातुः प्रमाणपत्रम् अनुज्ञाप्रदानतिथितः पूर्वं अवधिगतम् ({{- dateTime}})।",
+        "licenseOutOfDate": "कालविगता LCP-अनुज्ञा।",
+        "licenseSignatureInvalid": "LCP-अनुज्ञायाः अमान्यः हस्ताक्षरः।",
+        "licensed": "अनुज्ञाप्राप्तम्",
+        "markAsRead": "पठितम् इति चिह्नयतु",
+        "notStarted": "न आरब्धम्",
+        "onGoing": "प्रगतिगतम्",
+        "progression": {
+            "remoteDescription": "{{- device}} इत्यस्मात् नूतनतरं पठनस्थानम् {{- progression}}% इत्यत्र उपलब्धम्।",
+            "remoteTitle": "अन्ययन्त्रात् पुनरारम्भः?",
+            "title": "प्रगतिः",
+            "useRemote": "स्थानं गच्छतु"
+        },
+        "read": "समाप्तम्",
+        "remainingTime": "ऋणम् (अवशिष्टकालः)",
+        "remoteProgression": {
+            "checking": "सक्षमीकृतम्, सेवा परीक्ष्यमाणा...",
+            "disabled": "अस्य प्रकाशनस्य कृते न सक्षमीकृतम्।",
+            "empty": "दूरस्थप्रगतिः न रक्षिता।",
+            "position": "दूरस्थप्रगतिः: {{percent}}% ({{device}})।",
+            "ready": "सक्षमीकृतं सज्जं च।",
+            "title": "पठनप्रगतिसमन्वयः:",
+            "unavailable": "सक्षमीकृतम्, सेवा तु अनुपलब्धा।"
+        },
+        "renewButton": "पुनर्नवीकरोतु",
+        "returnButton": "प्रत्यर्पयतु",
+        "returnedLcp": "इदं LCP-रक्षितं प्रकाशनं प्रत्यर्पितम्।",
+        "revokedLcp": "अस्य प्रकाशनस्य LCP-अनुज्ञा प्रत्याहृता।",
+        "seeLess": "अल्पं पश्यतु",
+        "seeMore": "अधिकं पश्यतु",
+        "timeLeft": "अवशिष्टकालः",
+        "title": "शीर्षकम्",
+        "userKeyCheckInvalid": "अशुद्धं गुह्यपदम्।"
+    },
+    "reader": {
+        "annotations": {
+            "Color": "वर्णः",
+            "addNote": "टिप्पणीं योजयतु",
+            "advancedMode": "तत्कालविधिः (चयनानन्तरं स्वतः सृष्टिः)",
+            "annotationsExport": {
+                "description": "निर्यातिताः टिप्पण्यः नामयतु:",
+                "title": "शीर्षकम्"
+            },
+            "annotationsOptions": "अङ्कनविकल्पाः",
+            "date": "संशोधनतिथिः",
+            "error": {
+                "pdf": {
+                    "validationSelection": "अस्मात् चयनतः PDF-अङ्कनस्य सृष्टिः असाध्या।"
+                }
+            },
+            "export": "टिप्पण्यः यथा रक्षतु...",
+            "filter": {
+                "all": "सर्वम्",
+                "filterByColor": "वर्णेन छननम्",
+                "filterByCreator": "स्रष्ट्रा छननम्",
+                "filterByDrawtype": "प्रकारेण छननम्",
+                "filterByTag": "सूचकेन छननम्",
+                "filterOptions": "छननविकल्पाः",
+                "none": "न किमपि"
+            },
+            "hide": "मा दर्शयतु",
+            "highlight": "उद्दीपनम्",
+            "noSelectionToast": "अङ्कनसृष्टेः पूर्वं पाठं चिनोतु।",
+            "note": "{{- color}} टिप्पणी",
+            "quickAnnotations": "शीघ्रसृष्टिः (सम्पादकं विहाय)",
+            "saveNote": "रक्षतु",
+            "sorting": {
+                "lastcreated": "अन्तिमं सृष्टम्",
+                "lastmodified": "अन्तिमं संशोधितम्",
+                "progression": "प्रगतिः",
+                "sortingOptions": "व्यूहनविकल्पाः"
+            },
+            "toggleMarginMarks": "उपान्तेषु दर्शयतु",
+            "type": {
+                "outline": "परिरेखा",
+                "solid": "सघनपृष्ठभूमिः",
+                "strikethrough": "मध्यरेखा",
+                "underline": "अधोरेखा"
+            }
+        },
+        "bookmarks": {
+            "index": "पुस्तकचिह्नम् {{- index}}"
+        },
+        "divina": {
+            "mute": "ध्वनिं मौनयतु",
+            "unmute": "ध्वनिं प्रवर्तयतु"
+        },
+        "dock": {
+            "dockDefault": "फलकम् आच्छादकोत्पतनरूपेण दर्शयतु",
+            "dockLeft": "फलकं वामतः निबध्नातु",
+            "dockRight": "फलकं दक्षिणतः निबध्नातु"
+        },
+        "fxl": {
+            "fit": "समायोजनम्"
+        },
+        "goToContent": "पाठ्यविषयं गच्छतु",
+        "imgViewer": {
+            "title": "चित्रदर्शकः (आवर्धनम्)",
+            "zoomIn": "आवर्धनं वर्धयतु",
+            "zoomOut": "आवर्धनं न्यूनयतु",
+            "zoomReset": "आवर्धनं पुनःस्थापयतु"
+        },
+        "marks": {
+            "annotations": "अङ्कनानि",
+            "annotationsReadium": "Readium अङ्कनानि",
+            "bookmarks": "पुस्तकचिह्नानि",
+            "delete": "अपाकरोतु",
+            "edit": "सम्पादयतु",
+            "goTo": "पृष्ठं गच्छतु",
+            "landmarks": "स्थानचिह्नानि",
+            "saveMark": "रक्षतु",
+            "search": "अन्वेषणम्",
+            "searchResult": "अन्वेषणम् [{{- searchText}}]",
+            "toc": "विषयानुक्रमणिका"
+        },
+        "media-overlays": {
+            "activate": "उच्चैःपठनं सक्रिययतु",
+            "captions": "शीर्षिकाः / स्वच्छदृश्यम्",
+            "captionsDescription": "न्यूनशीर्षिकाशैल्या सहितं सरलीकृतं पाठदृश्यम्।",
+            "disableContinuousPlay": "निरन्तरवादनं निष्क्रिययतु",
+            "disableContinuousPlayDescription": "अग्रिमं वस्तु स्वयमेव मा वादयतु, वर्तमानवस्तुनः वादनसमाप्त्यनन्तरं तत्कालं विरमतु।",
+            "ignoreAndUseTTS": "पूर्वमुद्रितां ध्वनिम् उपेक्षताम्, TTS प्रयोजयतु",
+            "ignoreAndUseTTSDescription": "EPUB माध्यमस्तरणानि उपेक्षताम्, ततः पाठोच्चारणेन पठतु",
+            "next": "अग्रिमम् उच्चैःपठनम्",
+            "pause": "उच्चैःपठनं विरामयतु",
+            "play": "उच्चैःपठनं वादयतु",
+            "previous": "पूर्वतनम् उच्चैःपठनम्",
+            "skip": "लङ्घनीयता",
+            "skipDescription": "पृष्ठविच्छेद-पादटिप्पणी-अन्तटिप्पणी-आदीनां सहायिकपाठ्यविषयस्य लङ्घनम् / उपेक्षा।",
+            "speed": "उच्चैःपठनस्य वादनगतिः",
+            "stop": "उच्चैःपठनं समापयतु",
+            "title": "उच्चैःपठनम्",
+            "useTTSHighlightsForMO": "अनुकूलोद्दीपनम्",
+            "useTTSHighlightsForMODescription": "लेखकरचिताः शैलीः निष्क्रिययतु"
+        },
+        "navigation": {
+            "ZenModeExit": "Zen विधेः निर्गच्छतु",
+            "ZenModeTitle": "Zen विधिः",
+            "annotationTitle": "अङ्कनम्",
+            "backHomeTitle": "इदं पठनगवाक्षं पिधत्तु (पुस्तकफलकं प्रति)",
+            "bookmarkTitle": "पुस्तकचिह्नम्",
+            "currentPage": "वर्तमानपृष्ठम्: {{- current}}",
+            "currentPageTotal": "वर्तमानपृष्ठम्: {{- current}}/{{- total}}",
+            "goTo": "तत्र गच्छतु",
+            "goToError": "पृष्ठविच्छेदः अविद्यमानः",
+            "goToPlaceHolder": "पृष्ठसङ्ख्यां प्रवेशयतु",
+            "goToTitle": "पृष्ठं गच्छतु",
+            "history": "सञ्चरणेतिहासः",
+            "historyNext": "सञ्चरणेतिहासे अग्रतः कूर्दतु",
+            "historyPrevious": "सञ्चरणेतिहासे पृष्ठतः कूर्दतु",
+            "infoTitle": "सूचना",
+            "magnifyingGlassButton": "प्रकाशनस्य अन्वेषणम्",
+            "openTableOfContentsTitle": "सञ्चरणम्",
+            "page": "पृष्ठम्",
+            "pdfscalemode": "पृष्ठसमायोजनम् अथवा पृष्ठविस्तारः",
+            "print": "मुद्रयतु",
+            "printDisabled": "मुद्रणं निषिद्धम्",
+            "screenNext": "अग्रे गच्छतु",
+            "screenPrevious": "पृष्ठतः गच्छतु",
+            "settingsTitle": "पाठकस्य विन्यासः"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "हरितनीलः",
+                "darkorange": "गाढनारङ्गः",
+                "darkyellow": "गाढपीतः",
+                "green": "हरितः",
+                "orange": "नारङ्गः",
+                "purple": "नीललोहितः",
+                "red": "रक्तः",
+                "yellow": "पीतः"
+            }
+        },
+        "picker": {
+            "search": {
+                "founds_one": "{{- count}} प्राप्तिः",
+                "founds_other": "{{- count}} प्राप्तयः",
+                "input": "अनुरूप्यः पाठः",
+                "next": "अग्रिमम्",
+                "notFound": "न प्राप्तयः",
+                "previous": "पूर्वतनम्",
+                "results": "फलानि",
+                "submit": "अन्वेषयतु"
+            },
+            "searchTitle": "अन्वेषणम्:"
+        },
+        "print": {
+            "descriptionLcpCount": "अवशिष्टपृष्ठानां सीमा: {{- count}}",
+            "descriptionLcpPrintable": "पूर्वमुद्रितानि पृष्ठानि: {{- printable}} ({{- count}})",
+            "howTo": "मुद्रणाय पृष्ठपरिधेः चयनविधिः",
+            "lcpInfo": "अस्मिन् प्रकाशने मुद्रणीयपृष्ठसङ्ख्या {{- count}} इत्यन्तं परिमिता। अपेक्षितानि पृष्ठानि अत्र चिनोतु।",
+            "noPagesLcpLimitReached": "LCP-सीमा प्राप्ता",
+            "noPrintablePages": "न मुद्रणीयानि पृष्ठानि",
+            "pageHelpInfo": "पृष्ठचयनस्य वाक्यरचना:",
+            "pageHelpInfo1": "एकपृष्ठस्य निर्देशार्थं पृष्ठसङ्ख्यां प्रवेशयतु (उदा. \"6\")",
+            "pageHelpInfo2": "सन्निकटपृष्ठपरिधेः निर्देशार्थं रेखाचिह्नेन विभक्तं पृष्ठसङ्ख्याद्वयं प्रवेशयतु (उदा. \"6-13\")",
+            "pageHelpInfo3": "अनेकपृष्ठानां पृष्ठपरिधीनां वा विभागार्थम् अर्धविरामचिह्नं प्रयोजयतु (उदा. \"5;14-20;37\")",
+            "pageHelpInfo4": "प्रकाशनस्य प्रथमपृष्ठस्य वा अन्तिमपृष्ठस्य निर्देशार्थं परिधेः प्रथमपृष्ठं वा अन्तिमपृष्ठं त्यजतु (उदा. \"-16\" इति \"1-16\" इत्यस्य समम्, तथा \"34-\" इति \"34-100\" इत्यस्य समम्, कुलपृष्ठसङ्ख्या 100 इति कल्पिते ग्रन्थे)",
+            "pages": "पृष्ठानि",
+            "preview": "पूर्वावलोकनम्",
+            "print": "मुद्रयतु",
+            "printablePages": "मुद्रणीयानि पृष्ठानि (कुलम्)",
+            "title": "मुद्रणीयपृष्ठानां चयनम्"
+        },
+        "settings": {
+            "column": {
+                "auto": "पूर्वनिर्धारितम्",
+                "one": "1 स्तम्भः",
+                "title": "स्तम्भाः",
+                "two": "2 स्तम्भौ"
+            },
+            "customFontSelected": "व्यक्तिगतम् अक्षररूपं चितम्",
+            "customizeReader": "पाठस्वरूपणम् अनुकूलयतु",
+            "disabled": "निष्क्रियम्",
+            "display": "प्रदर्शनम्",
+            "disposition": {
+                "title": "रचना"
+            },
+            "enablePageBreakMarginIndicators": "उपान्ते पृष्ठविच्छेदान् दर्शयतु",
+            "font": "अक्षररूपम्",
+            "fontSize": "अक्षररूपस्य आकारः",
+            "increaseFontSize": "अक्षररूपस्य आकारं वर्धयतु",
+            "infoCustomFont": "तस्य नाम लिखित्वा सञ्चालनतन्त्रात् स्वीयम् अक्षररूपं चिनोतु",
+            "justification": "संरेखणम्",
+            "justify": "समरेखणम्",
+            "letterSpacing": "अक्षरान्तरम्",
+            "lineSpacing": "पङ्क्त्यन्तरम्",
+            "margin": "उपान्तः",
+            "mathjax": "MathJax सक्रिययतु",
+            "noFootnotes": "उत्पतनपादटिप्पणीः निष्क्रिययतु",
+            "noRTLFlip": "दक्षिणतः-वामतः अन्तराफलकं निष्क्रिययतु",
+            "noRuby": "जापानी Ruby गोपयतु",
+            "noTemporaryNavTargetOutline": "दृश्यसञ्चरणसूचकान् निष्क्रिययतु",
+            "paginated": "पृष्ठीकृतम्",
+            "paraSpacing": "अनुच्छेदान्तरम्",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100%",
+                    "150pct": "150%",
+                    "200pct": "200%",
+                    "300pct": "300%",
+                    "500pct": "500%",
+                    "50pct": "50%",
+                    "fit": "पृष्ठसमायोजनम्",
+                    "width": "पृष्ठविस्तारः"
+                },
+                "title": "आवर्धनम्"
+            },
+            "preset": {
+                "apply": "प्रयोजयतु",
+                "applyDetails": "वर्तमानप्रकाशने इष्टविन्यासं प्रयोजयतु।",
+                "reset": "पुनःस्थापयतु",
+                "resetDetails": "इष्टविन्यासं पुनःस्थापयतु (पूर्वनिर्धारितः विन्यासः)।",
+                "save": "रक्षतु",
+                "saveDetails": "अनेन कर्मणा वर्तमानविन्यासस्य रक्षा, अर्थात् इष्टाः प्रदर्शनविकल्पाः पाठस्वरूपणविकल्पाः च। ततः अन्यपाठकगवाक्षेषु 'प्रयोजयतु' नोदनेन अन्यप्रकाशनेषु विन्यासः प्रयोज्यः।",
+                "title": "प्राथमिकताः"
+            },
+            "preview": "पूर्वावलोकनम्",
+            "reduceFontSize": "अक्षररूपस्य आकारं न्यूनयतु",
+            "reduceMotion": "गतिं न्यूनयतु",
+            "scrolled": "अनुसञ्चरणीयम्",
+            "spacing": "अन्तरम्",
+            "spreadModeEven": "पृष्ठप्रसारः 'सम' (पूर्वनिर्धारितः 'विषम')",
+            "text": "पाठः",
+            "theme": {
+                "name": {
+                    "Contrast1": "व्यतिरेकः 1",
+                    "Contrast2": "व्यतिरेकः 2",
+                    "Contrast3": "व्यतिरेकः 3",
+                    "Contrast4": "व्यतिरेकः 4",
+                    "Neutral": "तटस्थम्",
+                    "Night": "रात्रिः",
+                    "Paper": "पत्रम्",
+                    "Sepia": "कपिशम्"
+                },
+                "title": "रूपविधानम्"
+            },
+            "wordSpacing": "पदान्तरम्"
+        },
+        "svg": {
+            "left": "वामम्",
+            "right": "दक्षिणम्"
+        },
+        "toc": {
+            "publicationNoToc": "न विषयानुक्रमणिका"
+        },
+        "tts": {
+            "activate": "पाठोच्चारणम् (TTS) सक्रिययतु",
+            "language": "TTS भाषा",
+            "next": "अग्रिमम् TTS",
+            "options": "TTS विकल्पाः",
+            "pause": "TTS विरामयतु",
+            "play": "TTS वादयतु",
+            "previous": "पूर्वम् TTS",
+            "sentenceDetect": "TTS पाठविभागः",
+            "sentenceDetectDescription": "दीर्घानुच्छेदानां वाक्येषु विभागः।",
+            "speed": "TTS वादनगतिः",
+            "stop": "TTS स्थगयतु",
+            "voice": "TTS स्वरः"
+        }
+    },
+    "settings": {
+        "annotationCreator": {
+            "creator": "अङ्कनकर्ता (ऐच्छिकम्)",
+            "help": "निर्दिष्टे सति निर्यातितानां टिप्पणीनाम् अधिदत्तांशे एतन्नाम्नः समावेशः।",
+            "name": "नाम",
+            "organization": "संस्था",
+            "person": "व्यक्तिः",
+            "type": "प्रकारः:"
+        },
+        "auth": {
+            "help": "अनेन कर्मणा सर्वेषाम् OPDS प्रवेशप्रमाणपत्राणाम् अपाकरणम्।",
+            "title": "प्रकाशनसूचीपत्राणां प्रवेशः",
+            "wipeData": "प्रवेशदत्तांशम् अपाकरोतु"
+        },
+        "keyboard": {
+            "advancedMenu": "कुञ्जिपटललघुमार्गानाम् उन्नतसूचिः",
+            "cancel": "निरस्यतु",
+            "disableTooltips": "कुञ्जिपटललघुमार्गाणां सूचनाः निष्क्रिययतु",
+            "disclaimer": "QWERTY कुञ्जीविन्यासे कुञ्जीनां भौतिकस्थानम् आधृत्य अनुप्रयोगस्य पूर्वनिर्धारितानि परिकल्पितानि",
+            "editUserJson": "उपयोक्तृसञ्चिकां सम्पादयतु...",
+            "exportToHTML": "HTML प्रति निर्यातयतु",
+            "keyboardShortcuts": "कुञ्जिपटललघुमार्गाः",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "पुस्तकचिह्ननिर्माणसंवादम् उद्घाटयतु, पाठ्यनामलेखम् (टिप्पणी), वर्णं सूचकं च सम्पादयतु",
+                    "name": "नामलेखसहितं पुस्तकचिह्ननिर्माणम्"
+                },
+                "AnnotationsCreate": {
+                    "description": "चयनितदस्तावेजपाठस्य अङ्कननिर्माणसंवादम् उद्घाटयतु, पाठ्यटिप्पणीम्, उद्दीपनवर्णं, प्रकारं, सूचकं च सम्पादयतु",
+                    "name": "अङ्कननिर्माणम्"
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "चयनितपाठस्य शीघ्रम् अङ्कननिर्माणम्, अन्तिमप्रयुक्तोद्दीपनवर्णेन अन्तिमप्रयुक्तप्रकारेण च (टिप्पण्याः सूचकस्य च रिक्तता)",
+                    "name": "शीघ्राङ्कननिर्माणम्"
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "अङ्कनस्य पुस्तकचिह्नस्य च दृश्यसूचकानां दस्तावेजपार्श्वे पाठे वा परिवर्तनम्",
+                    "name": "अङ्कनपार्श्वस्य परिवर्तनम्"
+                },
+                "AudioNext": {
+                    "description": "कथने अग्रिमश्रव्यकण्डं प्रति गमनम् (EPUB3 Media Overlays, पाठोच्चारणम्, अथवा पूर्वमुद्रितं श्रव्यपुस्तकम्)",
+                    "name": "अग्रिमः श्रव्यकण्डः"
+                },
+                "AudioNextAlt": {
+                    "description": "कथने अग्रिमश्रव्यकण्डं प्रति गमनम् (EPUB3 Media Overlays, पाठोच्चारणस्य उच्चैःपठनम्, अथवा पूर्वमुद्रितं श्रव्यपुस्तकम्)। वर्तमानायाः निष्क्रमणार्हायाः संरचनायाः लङ्घनम्",
+                    "name": "अग्रिमः श्रव्यकण्डः (निष्क्रमणम्)"
+                },
+                "AudioPlayPause": {
+                    "description": "वर्तमानकथनस्य वादनम्/विरामस्य परिवर्तनम् (EPUB3 Media Overlays, पाठोच्चारणस्य उच्चैःपठनम्, अथवा पूर्वमुद्रितं श्रव्यपुस्तकम्)",
+                    "name": "श्रव्यस्य वादनम्/विरामः"
+                },
+                "AudioPrevious": {
+                    "description": "कथने पूर्वश्रव्यकण्डं प्रति प्रत्यागमनम् (EPUB3 Media Overlays, पाठोच्चारणस्य उच्चैःपठनम्, अथवा पूर्वमुद्रितं श्रव्यपुस्तकम्)",
+                    "name": "पूर्वः श्रव्यकण्डः"
+                },
+                "AudioPreviousAlt": {
+                    "description": "कथने पूर्वश्रव्यकण्डं प्रति प्रत्यागमनम् (EPUB3 Media Overlays, पाठोच्चारणस्य उच्चैःपठनम्, अथवा पूर्वमुद्रितं श्रव्यपुस्तकम्)। वर्तमानायाः निष्क्रमणार्हायाः संरचनायाः लङ्घनम्",
+                    "name": "पूर्वः श्रव्यकण्डः (निष्क्रमणम्)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "EPUB3 Media Overlays श्रव्यवादनगत्याः TTS उच्चैःपठनवाक्गत्याः वा न्यूनीकरणम्",
+                    "name": "श्रव्यगत्याः न्यूनीकरणम्"
+                },
+                "AudioSpeedIncrease": {
+                    "description": "EPUB3 Media Overlays श्रव्यवादनगत्याः TTS उच्चैःपठनवाक्गत्याः वा वर्धनम्",
+                    "name": "श्रव्यगत्याः वर्धनम्"
+                },
+                "AudioSpeedReset": {
+                    "description": "EPUB3 Media Overlays श्रव्यवादनगत्याः TTS उच्चैःपठनवाक्गत्याः वा पुनःस्थापनम्",
+                    "name": "श्रव्यगत्याः पुनःस्थापनम्"
+                },
+                "AudioStop": {
+                    "description": "वर्तमानश्रव्यस्य स्थगनम् (EPUB3 Media Overlays, पाठोच्चारणस्य उच्चैःपठनम्, अथवा पूर्वमुद्रितं श्रव्यपुस्तकम्)",
+                    "name": "श्रव्यस्य स्थगनम्"
+                },
+                "CloseReader": {
+                    "description": "पाठकगवाक्षस्य पिधानम्, पुस्तकालयं प्रति प्रत्यागमनं च",
+                    "name": "पाठकं पिधत्तु"
+                },
+                "FXLZoomIn": {
+                    "description": "नियतविन्यासे एकपृष्ठस्य द्विपृष्ठप्रसारस्य वा आवर्धनम्।",
+                    "name": "FXL आवर्धनम्"
+                },
+                "FXLZoomOut": {
+                    "description": "नियतविन्यासे एकपृष्ठस्य द्विपृष्ठप्रसारस्य वा अपावर्धनम्।",
+                    "name": "FXL अपावर्धनम्"
+                },
+                "FXLZoomReset": {
+                    "description": "नियतविन्यासे एकपृष्ठस्य द्विपृष्ठप्रसारस्य वा आवर्धनस्य पुनःस्थापनम्।",
+                    "name": "FXL आवर्धनस्य पुनःस्थापनम्"
+                },
+                "FocusMain": {
+                    "description": "आलेख्योपयोक्तृसन्धानस्य 'मुख्य' सीमाचिह्ने कुञ्जिपटलकेन्द्रीकरणम्। पाठकगवाक्षे प्रकाशनस्य पाठ्यविषये प्रवेशः",
+                    "name": "मुख्यपाठ्यविषये केन्द्रीकरणम्"
+                },
+                "FocusMainDeep": {
+                    "description": "पाठकगवाक्षे पटपाठकानां कृते विश्वसनीयतरया विधया प्रकाशनस्य पाठ्यविषये कुञ्जिपटलकेन्द्रीकरणम्",
+                    "name": "मुख्यपाठ्यविषये गहनकेन्द्रीकरणम्"
+                },
+                "FocusReaderGotoPage": {
+                    "description": "पाठकगवाक्षस्य संचरणफलके 'पृष्ठगमन' विभागे कुञ्जिपटलकेन्द्रीकरणम्",
+                    "name": "'पृष्ठं प्रति गमनम्' इत्यत्र केन्द्रीकरणम्"
+                },
+                "FocusReaderNavigation": {
+                    "description": "पाठकगवाक्षस्य संचरणफलके कुञ्जिपटलकेन्द्रीकरणम्",
+                    "name": "संचरणफलके केन्द्रीकरणम्"
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "पाठकगवाक्षस्य संचरणफलके 'अङ्कनानि' विभागे कुञ्जिपटलकेन्द्रीकरणम्",
+                    "name": "'अङ्कनानि' इत्यत्र केन्द्रीकरणम्"
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "पाठकगवाक्षस्य संचरणफलके 'पुस्तकचिह्नानि' विभागे कुञ्जिपटलकेन्द्रीकरणम्",
+                    "name": "'पुस्तकचिह्नानि' इत्यत्र केन्द्रीकरणम्"
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "पाठकगवाक्षस्य संचरणफलके 'अन्वेषणम्' विभागे कुञ्जिपटलकेन्द्रीकरणम्",
+                    "name": "'अन्वेषणम्' इत्यत्र केन्द्रीकरणम्"
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "पाठकगवाक्षस्य संचरणफलके 'विषयानुक्रमणिका' विभागे कुञ्जिपटलकेन्द्रीकरणम्",
+                    "name": "'विषयानुक्रमणिका' इत्यत्र केन्द्रीकरणम्"
+                },
+                "FocusReaderSettings": {
+                    "description": "पाठकगवाक्षस्य विन्यासफलके कुञ्जिपटलकेन्द्रीकरणम् (प्रदर्शनरुचयः इत्यादि)",
+                    "name": "पाठकविन्यासे केन्द्रीकरणम्"
+                },
+                "FocusSearch": {
+                    "description": "पाठकगवाक्षस्य पाठ्यान्वेषणनिवेशे कुञ्जिपटलकेन्द्रीकरणम्, पुस्तकालयगवाक्षे च पुस्तकफलकस्य अन्वेषणम् सक्रियस्य OPDS प्रवाहस्य अन्वेषणं वा",
+                    "name": "अन्वेषणादेशः"
+                },
+                "FocusToolbar": {
+                    "description": "आलेख्योपयोक्तृसन्धानस्य सीमाचिह्नक्षेत्रे 'लङ्घनसम्बन्धः' इत्यस्य अव्यवहितपूर्वं कुञ्जिपटलकेन्द्रीकरणम् (तेन पुस्तकालयगवाक्षस्य पाठकगवाक्षस्य वा मुख्यपाठ्यविषयक्षेत्रे केन्द्रीकरणम्)",
+                    "name": "उपकरणपट्टिकायां केन्द्रीकरणम्"
+                },
+                "NavigateNextChapter": {
+                    "description": "पाठकगवाक्षे प्रकाशनस्य पठनक्रमे अग्रिमदस्तावेजं प्रति संचरणम् (यथा पुस्तकमेरौ अध्यायः)। अवधेयम्, अस्य पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः अपि विद्यमानः",
+                    "name": "अग्रिमाध्यायं प्रति गमनम्"
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "पाठकगवाक्षे प्रकाशनस्य पठनक्रमे अग्रिमदस्तावेजं प्रति संचरणम् (यथा पुस्तकमेरौ अध्यायः)। एषः पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः",
+                    "name": "अग्रिमाध्यायं प्रति गमनम् (वैकल्पिकम्)"
+                },
+                "NavigateNextHistory": {
+                    "description": "पाठकगवाक्षे संचरणेतिहासे एकं सोपानम् अग्रे गमनम्",
+                    "name": "अग्रिमेतिहासं प्रति गमनम्"
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "पुस्तकालयगवाक्षे प्रकाशनानां पृष्ठांकितायाः सूच्याः अग्रिमपृष्ठस्य प्रदर्शनम्। अवधेयम्, अस्य पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः अपि विद्यमानः",
+                    "name": "पुस्तकालयस्य अग्रिमपृष्ठं प्रति गमनम्"
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "पुस्तकालयगवाक्षे प्रकाशनानां पृष्ठांकितायाः सूच्याः अग्रिमपृष्ठस्य प्रदर्शनम्। एषः पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः",
+                    "name": "पुस्तकालयस्य अग्रिमपृष्ठं प्रति गमनम् (वैकल्पिकम्)"
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "सूचीपत्राणां / OPDS प्रवाहानां पुस्तकालयगवाक्षे अग्रिमपृष्ठांकनसम्बन्धस्य अनुसरणम्। अवधेयम्, अस्य पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः अपि विद्यमानः",
+                    "name": "OPDS अग्रिमपृष्ठं प्रति गमनम्"
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "सूचीपत्राणां / OPDS प्रवाहानां पुस्तकालयगवाक्षे अग्रिमपृष्ठांकनसम्बन्धस्य अनुसरणम्। एषः पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः",
+                    "name": "OPDS अग्रिमपृष्ठं प्रति गमनम् (वैकल्पिकम्)"
+                },
+                "NavigateNextPage": {
+                    "description": "पाठकगवाक्षे प्रकाशने अग्रिमं 'पृष्ठम्' प्रति वर्तनम्। अवधेयम्, अस्य पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः अपि विद्यमानः",
+                    "name": "अग्रिमपृष्ठं प्रति गमनम्"
+                },
+                "NavigateNextPageAlt": {
+                    "description": "पाठकगवाक्षे प्रकाशने अग्रिमं 'पृष्ठम्' प्रति वर्तनम्। एषः पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः",
+                    "name": "अग्रिमपृष्ठं प्रति गमनम् (वैकल्पिकम्)"
+                },
+                "NavigatePreviousChapter": {
+                    "description": "पाठकगवाक्षे प्रकाशनस्य पठनक्रमे पूर्वदस्तावेजं प्रति संचरणम् (यथा पुस्तकमेरौ अध्यायः)। अवधेयम्, अस्य पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः अपि विद्यमानः",
+                    "name": "पूर्वाध्यायं प्रति गमनम्"
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "पाठकगवाक्षे प्रकाशनस्य पठनक्रमे पूर्वदस्तावेजं प्रति संचरणम् (यथा पुस्तकमेरौ अध्यायः)। एषः पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः",
+                    "name": "पूर्वाध्यायं प्रति गमनम् (वैकल्पिकम्)"
+                },
+                "NavigatePreviousHistory": {
+                    "description": "पाठकगवाक्षे संचरणेतिहासे एकं सोपानं पश्चात् गमनम्",
+                    "name": "पूर्वेतिहासं प्रति गमनम्"
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "पुस्तकालयगवाक्षे प्रकाशनानां पृष्ठांकितायाः सूच्याः पूर्वपृष्ठस्य प्रदर्शनम्। अवधेयम्, अस्य पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः अपि विद्यमानः",
+                    "name": "पुस्तकालयस्य पूर्वपृष्ठं प्रति गमनम्"
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "पुस्तकालयगवाक्षे प्रकाशनानां पृष्ठांकितायाः सूच्याः पूर्वपृष्ठस्य प्रदर्शनम्। एषः पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः",
+                    "name": "पुस्तकालयस्य पूर्वपृष्ठं प्रति गमनम् (वैकल्पिकम्)"
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "सूचीपत्राणां / OPDS प्रवाहानां पुस्तकालयगवाक्षे पूर्वपृष्ठांकनसम्बन्धस्य अनुसरणम्। अवधेयम्, अस्य पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः अपि विद्यमानः",
+                    "name": "OPDS पूर्वपृष्ठं प्रति गमनम्"
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "सूचीपत्राणां / OPDS प्रवाहानां पुस्तकालयगवाक्षे पूर्वपृष्ठांकनसम्बन्धस्य अनुसरणम्। एषः पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः",
+                    "name": "OPDS पूर्वपृष्ठं प्रति गमनम् (वैकल्पिकम्)"
+                },
+                "NavigatePreviousPage": {
+                    "description": "पाठकगवाक्षे प्रकाशने पूर्वं 'पृष्ठम्' प्रति वर्तनम्। अवधेयम्, अस्य पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः अपि विद्यमानः",
+                    "name": "पूर्वपृष्ठं प्रति गमनम्"
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "पाठकगवाक्षे प्रकाशने पूर्वं 'पृष्ठम्' प्रति वर्तनम्। एषः पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः",
+                    "name": "पूर्वपृष्ठं प्रति गमनम् (वैकल्पिकम्)"
+                },
+                "NavigateToBegin": {
+                    "description": "पाठकगवाक्षे प्रकाशनस्य आरम्भं प्रति गमनम्",
+                    "name": "आरम्भं प्रति गमनम्"
+                },
+                "NavigateToEnd": {
+                    "description": "पाठकगवाक्षे प्रकाशनस्य अन्तं प्रति गमनम्",
+                    "name": "अन्तं प्रति गमनम्"
+                },
+                "OpenReaderInfo": {
+                    "description": "पाठकगवाक्षे प्रकाशनस्य सूचनासंवादम् उद्घाटयतु",
+                    "name": "प्रकाशनसूचनायाः प्रदर्शनम्"
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "पाठकगवाक्षे प्रकाशनस्य सूचनाप्रदर्शकम् उत्पतनसंवादम् उद्घाटयतु, वर्तमानपठनस्थानस्य सन्दर्भदर्शिनी विभागे कुञ्जिपटलकेन्द्रीकरणं च",
+                    "name": "प्रकाशनसूचनायाः प्रदर्शनम्, पठनस्थानस्य दर्शनम्"
+                },
+                "Print": {
+                    "description": "पाठकगवाक्षे मुद्रणसंवादम् उद्घाटयतु",
+                    "name": "मुद्रयतु"
+                },
+                "SearchNext": {
+                    "description": "पाठकगवाक्षस्य अन्वेषणोपकरणे अग्रिमान्वेषणफलं प्रति गमनम्। अवधेयम्, अस्य पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः अपि विद्यमानः",
+                    "name": "अग्रिमम् अन्वेषणफलम्"
+                },
+                "SearchNextAlt": {
+                    "description": "पाठकगवाक्षस्य अन्वेषणोपकरणे अग्रिमान्वेषणफलं प्रति गमनम्। एषः पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः",
+                    "name": "अग्रिमम् अन्वेषणफलम् (वैकल्पिकम्)"
+                },
+                "SearchPrevious": {
+                    "description": "पाठकगवाक्षस्य अन्वेषणोपकरणे पूर्वान्वेषणफलं प्रति गमनम्। अवधेयम्, अस्य पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः अपि विद्यमानः",
+                    "name": "पूर्वम् अन्वेषणफलम्"
+                },
+                "SearchPreviousAlt": {
+                    "description": "पाठकगवाक्षस्य अन्वेषणोपकरणे पूर्वान्वेषणफलं प्रति गमनम्। एषः पूर्वनिर्धारितस्य वैकल्पिकः कुञ्जिपटललघुमार्गः",
+                    "name": "पूर्वम् अन्वेषणफलम् (वैकल्पिकम्)"
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "पाठकगवाक्षे पटपाठकानुकूलेन वाक्पाठेन वर्तमानपठनस्थानस्य सन्दर्भस्य वर्णनम्",
+                    "name": "पठनस्थानस्य वर्णनम् (वाक्)"
+                },
+                "ToggleBookmark": {
+                    "description": "सम्प्रति चयनितं पुस्तकचिह्नम् अपाकरोतु, अन्यथा नूतनं पुस्तकचिह्नं योजयतु",
+                    "name": "पुस्तकचिह्नस्य परिवर्तनम्"
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "पाठकगवाक्षे प्रणालीपूर्णपटस्य सक्रियीकरणं सामान्यगवाक्षविधेः पुनःस्थापनं वा। अवधेयम्, एतत् 'ध्यानविधेः' भिन्नम्, यया उपयोक्तृसन्धानस्य सरलीकरणम्",
+                    "name": "पूर्णपटस्य परिवर्तनम्"
+                },
+                "ToggleReaderZenMode": {
+                    "description": "पाठकगवाक्षे ध्यानविधेः सक्रियीकरणं निर्गमनं वा, यया पठनकाले उपयोक्तृसन्धानस्य सरलीकरणम्",
+                    "name": "ध्यानविधेः परिवर्तनम्"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "पुस्तकालयगवाक्षे पटपाठकानां अनुकूलितसमर्थनस्य परिवर्तनम्",
+                    "name": "पटपाठकानुकूलनानां परिवर्तनम्"
+                }
+            },
+            "loadUserJson": "उपयोक्तृसञ्चिकातः आरोपयतु",
+            "noShortcutFound": "अनेन नामलेखेन कोऽपि लघुमार्गः न लब्धः",
+            "resetDefaults": "पुनःस्थापयतु (पूर्वनिर्धारितानि आरोपयतु)",
+            "save": "रक्षतु",
+            "searchPlaceholder": "लघुमार्गस्य अन्वेषणाय लिखतु"
+        },
+        "language": {
+            "languageChoice": "भाषा"
+        },
+        "library": {
+            "enableAPIAPP": "'PNB' पुस्तकालयप्रणालीम् सक्रिययतु",
+            "title": "फ्रान्सीयपुस्तकालयखातानां प्रवेशः"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "पूर्वनिर्धारितप्रतिरूपम् आरोपयतु",
+                "enableCheckbox": "HTML प्रतिरूपम् अनुकूलयतु",
+                "overrideHTMLTemplate": "टिप्पण्यः निर्यातयतु (अङ्कनानि पुस्तकचिह्नानि च)"
+            }
+        },
+        "profiles": {
+            "info": "सहभागीविक्रेतुः चिह्नमूद्रया वर्णैश्च अनुप्रयोगस्य अनुकूलनाय रूपरेखाः परिवर्तयतु। प्रत्येकस्याः रूपरेखायाः अनुकुलितः अनुभवः।",
+            "thorium": {
+                "description": "Thorium Vanilla रूपरेखा मूलरूपा, EDRLab द्वारा परिकल्पिता।",
+                "title": "Thorium vanilla"
+            },
+            "version": "संस्करणम्: {{- version}}"
+        },
+        "screenReaderActivate": {
+            "help": "अनुप्रयोगेन सहायकप्रौद्योगिकीयाः उपस्थितिज्ञाने पटपाठकैः सह उपयोक्तृसन्धानस्य श्रेष्ठतरं प्रवर्तनम्",
+            "invite": "पटपाठकाय अनुकूलयतु",
+            "message": "पटपाठकानाम् उन्नतसमर्थनम्",
+            "title": "पटपाठकानुभवस्य संवर्धनम्"
+        },
+        "session": {
+            "title": "सत्ररक्षणम् सक्रिययतु"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "कालगतानि प्रकाशनानि सम्बद्धं उपयोक्तृदत्तांशं च स्वयमेव अपाकरोतु",
+            "lcpAutoDeleteExpiredPublicationsDescription": "कालगतानां ऋणानां स्वचालितम् अपाकरणं सुनिश्चितम् (व्यक्तिगतानि अङ्कनानि, पठनपुस्तकचिह्नानि, इत्यादि च सहितम्)। 'साझागणकाः' इति वातावरणेषु, यथा पुस्तकालयकक्षेषु विश्वविद्यालयकक्षेषु वा, एतत् उपयोगि।",
+            "title": "साझागणकविधिः"
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "अतिरिक्तसङ्ग्रहं चिनोतु",
+                "changeDirectory": "अतिरिक्तसङ्ग्रहं नवीकरोतु",
+                "removeStorageDirectory": "अतिरिक्तसङ्ग्रहम् अपाकरोतु"
+            },
+            "beta": {
+                "availability": "एतत् वैशिष्ट्यं Thorium इत्यस्य अद्यतनसंस्करणेषु एव कार्यक्षमम्; बाह्यपुटपुस्तकानि Thorium 3.4 अथवा ततः पूर्वं न दृश्यमानानि।",
+                "integrity": "एतां निर्देशिकां सुरक्षितां सुलभां च रक्षतु। तस्याः अपाकरणम्, प्रवेशप्रतिबन्धम्, मन्दस्य अस्थिरस्य वा सङ्ग्रहस्य (जालचक्रिकाणाम् इव) प्रयोगं च वर्जयतु।",
+                "migration": "Thorium द्वारा भवदीयपुस्तकानां स्थानान्तरणं न स्वचालितम्: अतिरिक्तसङ्ग्रहस्य नवीकरणे प्रकाशनानि नूतनस्थानं प्रति हस्तेन नेतव्यानि। तस्य अपाकरणे प्रकाशनानि मूलसङ्ग्रहं प्रति हस्तेन नेतव्यानि।",
+                "summary": "सम्प्रति बीटावस्थायां स्थितस्य अस्य वैशिष्ट्यस्य विषये अधिकं जानातु",
+                "warning": "अस्मिन् पुटे सञ्चिकाः हस्तेन मा परिवर्तयतु, यतः पुस्तकेषु पाठके वा समस्यासम्भवः। एतत् पुटं Thorium द्वारा प्रशासितं सुरक्षितं पुस्तकालयम् इव मन्यताम्।"
+            },
+            "configuration": {
+                "chooseFolderDescription": "Thorium कृते अतिरिक्तसङ्ग्रहरूपेण उपयोक्तव्यां निर्देशिकां चिनोतु।",
+                "configuredDescription": "अतिरिक्तसङ्ग्रहः विन्यस्तः, नूतनसङ्गृहीतानां प्रकाशनानाम् उपयोगाय सज्जश्च।",
+                "notConfiguredDescription": "Thorium Reader मध्ये आयातितानि प्रकाशनानि चयनितायां निर्देशिकायां सङ्ग्रहीतव्यानि। पूर्वम् आयातितानि प्रकाशनानि मूलप्रणालीसङ्ग्रहे अवस्थितव्यानि।"
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "अनुवर्तताम्",
+                    "description": "एतत् वैशिष्ट्यं सम्प्रति बीटावस्थायाम्। निर्देशिकायाः चयनेन अतिरिक्तसङ्ग्रहस्य विन्यासाय किम् अनुवर्तताम्?",
+                    "title": "अतिरिक्तसङ्ग्रहं चिनोतु"
+                },
+                "edit": {
+                    "confirm": "निर्देशिकां सम्पादयतु",
+                    "description": "अतिरिक्तसङ्ग्रहस्य नवीकरणे सावधानता अपेक्षिता। Thorium द्वारा विद्यमानानां प्रकाशनानां स्थानान्तरणं न करणीयम्; तत् हस्तेन करणीयम्। किम् अनुवर्तताम्?",
+                    "title": "अतिरिक्तसङ्ग्रहं नवीकरोतु"
+                },
+                "remove": {
+                    "confirm": "निर्देशिकाम् अपाकरोतु",
+                    "description": "अतिरिक्तसङ्ग्रहस्य अपाकरणे सावधानता अपेक्षिता। Thorium द्वारा विद्यमानानां प्रकाशनानां स्थानान्तरणं न करणीयम्; तत् हस्तेन करणीयम्। किम् अनुवर्तताम्?",
+                    "title": "अतिरिक्तसङ्ग्रहम् अपाकरोतु"
+                }
+            },
+            "locations": {
+                "defaultDescription": "अनुप्रयोगेन प्रशासितानि प्रकाशनानि पूर्वनिर्धारितरूपेण अत्र सङ्गृहीतानि:",
+                "defaultInternal": "प्रणालीसङ्ग्रहः",
+                "externalStorage": "बाह्यसङ्ग्रहः",
+                "title": "स्थानानि"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "पुनःप्राप्तियोग्यानि प्रकाशनानि परीक्षताम्",
+                    "checkAgain": "पुनः परीक्षताम्",
+                    "recover": "प्रकाशनानि पुनःप्राप्नोतु",
+                    "recovering": "पुनःप्राप्तिः..."
+                },
+                "available": "एकं वा अधिकानि प्रकाशनानि चक्रिकायाम् उपलब्धानि, किन्तु दत्तांशकोशे अनुपस्थितानि। पुनःप्राप्तिः सम्भवा।",
+                "checking": "प्रकाशनसङ्ग्रहस्य परीक्षा...",
+                "description": "सुरक्षितं पुनःप्राप्तुं योग्यानि प्रकाशनानि अन्वेष्टुं प्रकाशनसङ्ग्रहं परीक्षताम्।",
+                "dialog": {
+                    "confirm": "पुनःप्राप्नोतु",
+                    "description_one": "Thorium इत्यनेन चक्रिकायाम् {{- count}} प्रकाशनम् लब्धम्, यत् दत्तांशकोशात् अनुपस्थितम्। किम् तत् Thorium मध्ये पुनः आयातयतु?",
+                    "description_other": "Thorium इत्यनेन चक्रिकायाम् {{- count}} प्रकाशनानि लब्धानि, यानि दत्तांशकोशात् अनुपस्थितानि। किम् तानि Thorium मध्ये पुनः आयातयतु?",
+                    "title": "प्रकाशनानि पुनःप्राप्नोतु"
+                },
+                "none": "पुनःप्राप्तियोग्यानि प्रकाशनानि न लब्धानि।",
+                "recoverableCount_one": "{{- count}} प्रकाशनम् मूलसङ्ग्रहपरिचायकेन पुनःप्राप्तियोग्यम्।",
+                "recoverableCount_other": "{{- count}} प्रकाशनानि मूलसङ्ग्रहपरिचायकेन पुनःप्राप्तियोग्यानि।",
+                "title": "पुनःप्राप्तिः"
+            }
+        },
+        "tabs": {
+            "advanced": "उन्नतम्",
+            "general": "सामान्यम्",
+            "keyboardShortcuts": "कुञ्जिपटललघुमार्गाः",
+            "profiles": "रूपरेखाः",
+            "storage": "सङ्ग्रहः"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "दूरमितिमापनानि निष्क्रिययतु",
+            "disableTelemetryMeasurementsDescription": "सक्षमीकरणे Thorium द्वारा दूरमितिमापनानि अप्रेषितानि।",
+            "title": "दूरमितिः"
+        },
+        "theme": {
+            "auto": "स्वचालितम्",
+            "dark": "श्यामम्",
+            "description": "अनुप्रयोगरूपविधानम् प्रचालनप्रणाल्या सङ्गतम्।",
+            "light": "शुक्लम्",
+            "title": "अनुप्रयोगरूपविधानम्"
+        },
+        "window": {
+            "keepLibraryWindowInBackgroundOnReaderClose": "पाठकगवाक्षाणां पिधानानन्तरं पृष्ठभूमौ पुस्तकालयं रक्षतु",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "सक्षमीकरणे पाठकगवाक्षस्य पिधाने पुस्तकालयगवाक्षस्य पुनःस्थापनं केन्द्रीकरणं वा अविद्यमानम्।",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "पाठकगवाक्षाणाम् उद्घाटनानन्तरं पुस्तकालयं लघूकरोतु",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "सक्षमीकरणे पाठकगवाक्षस्य उद्घाटनेन पुस्तकालयगवाक्षस्य लघूकरणम्।",
+            "minimizeLibraryToTray": "पुस्तकालयं प्रणालीसूचनाक्षेत्रे लघूकरोतु",
+            "minimizeLibraryToTrayDescription": "सक्षमीकरणे पुस्तकालयगवाक्षस्य लघूकरणेन Windows सूचनाक्षेत्रे Thorium इत्यस्य प्रचलनम्।",
+            "oneReaderWindowPerPublication": "प्रति प्रकाशनम् एकस्य पाठकगवाक्षस्य प्रयोगः",
+            "oneReaderWindowPerPublicationDescription": "सक्षमीकरणे पूर्वम् उद्घाटितस्य प्रकाशनस्य पुनरुद्घाटने अन्यस्य उद्घाटनं विना तस्य पाठकगवाक्षे केन्द्रीकरणम्।",
+            "title": "गवाक्षव्यवहारः"
+        }
+    },
+    "tts": {
+        "highlight": {
+            "mainColor": "मुख्यवर्णः",
+            "maskBlockWordOutline": "आच्छादनखण्डः, शब्दपरिधिः",
+            "maskBlockWordSolidBackground": "आच्छादनखण्डः, शब्दघनपृष्ठभूमिः",
+            "maskBlockWordUnderline": "आच्छादनखण्डः, शब्दाधोरेखा",
+            "maskWordOutline": "आच्छादनम्, शब्दपरिधिः",
+            "maskWordSolidBackground": "आच्छादनम्, शब्दघनपृष्ठभूमिः",
+            "maskWordUnderline": "आच्छादनम्, शब्दाधोरेखा",
+            "outlineWordOutline": "परिधिः, शब्दपरिधिः",
+            "outlineWordSolidBackground": "परिधिः, शब्दघनपृष्ठभूमिः",
+            "outlineWordUnderline": "परिधिः, शब्दाधोरेखा",
+            "preview": "TTS उद्दीपनशैल्याः पूर्वावलोकनम्",
+            "solidBackgroundWordOutline": "घनपृष्ठभूमिः, शब्दपरिधिः",
+            "solidBackgroundWordSolidBackground": "घनपृष्ठभूमिः, शब्दघनपृष्ठभूमिः",
+            "solidBackgroundWordUnderline": "घनपृष्ठभूमिः, शब्दाधोरेखा",
+            "style": "TTS उद्दीपनशैली",
+            "underlineWordOutline": "अधोरेखा, शब्दपरिधिः",
+            "underlineWordSolidBackground": "अधोरेखा, शब्दघनपृष्ठभूमिः",
+            "underlineWordUnderline": "अधोरेखा, शब्दाधोरेखा",
+            "wordColor": "शब्दवर्णः"
+        }
+    }
+}
