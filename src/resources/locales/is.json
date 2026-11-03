@@ -120,10 +120,13 @@
         "numberOfPages": "Fjöldi síðna",
         "opds": {
             "auth": {
+                "alternateLogin": "",
                 "cancel": "Hætta við",
                 "external": "Innskráningarsíðan opnast í vafranum. Fylgdu leiðbeiningunum þar. Að innskráningu lokinni fer vafrinn aftur í þetta forrit.",
+                "externalBrowserInstructions": "",
                 "fallback": "Athugaðu: Ef innskráning í sjálfgefnum vafra gengur ekki skaltu reyna aftur með innskráningu inni í forritinu.",
                 "login": "Skrá inn",
+                "openExternalBrowser": "",
                 "password": "Lykilorð",
                 "register": "Nýskrá",
                 "retry": "Reyna aftur",

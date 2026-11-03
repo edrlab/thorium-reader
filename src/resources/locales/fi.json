@@ -120,10 +120,13 @@
         "numberOfPages": "Sivumäärä",
         "opds": {
             "auth": {
+                "alternateLogin": "",
                 "cancel": "Peru",
                 "external": "Kirjautumissivu aukeaa verkkoselaimessa, seuraa sivun ohjeita. Kun olet kirjautunut sisään, verkkoselain palauttaa sinut tähän sovellukseen.",
+                "externalBrowserInstructions": "",
                 "fallback": "Huom. Jos kirjautuminen selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
                 "login": "Kirjaudu",
+                "openExternalBrowser": "",
                 "password": "Salasana",
                 "register": "Rekisteröidy",
                 "retry": "Yritä uudelleen",

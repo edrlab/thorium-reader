@@ -50,20 +50,24 @@ export const ExternalAuthentication = ({ auth, catalogIdentifier, __ }: { auth: 
                 : status === "expired" ? <p className={styles.error}>{__("opds.network.timeout")}</p>
                 : <p>{__("catalog.opds.auth.external")}</p>}
         </div>
-        {authorizationUrl && <div className={styles.links}>
-            <button type="button" onClick={openExternal}>{new URL(authorizationUrl).origin}</button>
-        </div>}
+        <hr className={styles.separator} />
+        <p className={styles.message}>{__("catalog.opds.auth.externalBrowserInstructions")}</p>
+        <button className={stylesButtons.button_primary_blue} type="button" title={authorizationUrl}
+            disabled={!authorizationUrl || status === "preparing" || status === "complete"}
+            onClick={openExternal}>{__("catalog.opds.auth.openExternalBrowser")}</button>
+        <hr className={styles.separator} />
         <p className={styles.message}>{__("catalog.opds.auth.fallback")}</p>
-        <button className={stylesButtons.button_primary_blue} type="button"
+        <button className={stylesButtons.button_secondary_blue} type="button"
             disabled={status === "preparing" || status === "complete"} onClick={() => {
                 setStatus("preparing");
                 dispatch(authActions.externalRequest.build(auth.credentialsUrl, requestId, "retry", catalogIdentifier));
-            }}>{__("catalog.opds.auth.retry")}</button>
-        <div className={styles.links}>
+            }}>{__("catalog.opds.auth.alternateLogin")}</button>
+        <hr className={styles.separator} />
+        <footer className={styles.links}>
             <button type="button" onClick={() => {
                 dispatch(authActions.externalRequest.build(auth.credentialsUrl, requestId, "cancel"));
                 dispatch(authActions.cancel.build());
             }}>{__("catalog.opds.auth.cancel")}</button>
-        </div>
+        </footer>
     </section>;
 };

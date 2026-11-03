@@ -120,10 +120,13 @@
         "numberOfPages": "பக்கங்களின் எண்ணிக்கை",
         "opds": {
             "auth": {
+                "alternateLogin": "",
                 "cancel": "ரத்துசெய்",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "புகுபதிவு",
+                "openExternalBrowser": "",
                 "password": "கடவுச்சொல்",
                 "register": "பதிவு செய்யுங்கள்",
                 "retry": "",

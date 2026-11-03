@@ -120,10 +120,13 @@
         "numberOfPages": "Брой страници",
         "opds": {
             "auth": {
+                "alternateLogin": "",
                 "cancel": "Откажи",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "Влез",
+                "openExternalBrowser": "",
                 "password": "",
                 "register": "",
                 "retry": "",

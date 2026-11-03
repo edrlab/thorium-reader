@@ -120,10 +120,13 @@
         "numberOfPages": "Orrialde-kopurua",
         "opds": {
             "auth": {
+                "alternateLogin": "",
                 "cancel": "Utzi",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "Hasi saioa",
+                "openExternalBrowser": "",
                 "password": "Pasahitza",
                 "register": "Izena eman",
                 "retry": "",

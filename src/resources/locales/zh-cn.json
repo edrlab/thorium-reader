@@ -120,10 +120,13 @@
         "numberOfPages": "页码",
         "opds": {
             "auth": {
+                "alternateLogin": "",
                 "cancel": "取消",
                 "external": "登录页面将会在您的网络浏览器中打开，请跟随引导操作。完成登录后，网络浏览器会使您回到该应用程序。",
+                "externalBrowserInstructions": "",
                 "fallback": "注意：若遇到默认浏览器登录问题，请尝试使用备选的应用内登录方式。",
                 "login": "登录",
+                "openExternalBrowser": "",
                 "password": "密码",
                 "register": "注册",
                 "retry": "再试一次",

@@ -120,10 +120,13 @@
         "numberOfPages": "頁碼",
         "opds": {
             "auth": {
+                "alternateLogin": "",
                 "cancel": "取消",
                 "external": "登入頁面將在您的瀏覽器中打開，請按照提示操作。登入成功後，瀏覽器將自動返回此應用程式。",
+                "externalBrowserInstructions": "",
                 "fallback": "注意：如果使用預設的網頁瀏覽器方法登入出現問題，請嘗試使用應用程式內的備用登入方法。",
                 "login": "登入",
+                "openExternalBrowser": "",
                 "password": "密碼",
                 "register": "註冊",
                 "retry": "在試一次",

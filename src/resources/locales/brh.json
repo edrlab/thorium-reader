@@ -120,10 +120,13 @@
         "numberOfPages": "",
         "opds": {
             "auth": {
+                "alternateLogin": "",
                 "cancel": "",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "",
+                "openExternalBrowser": "",
                 "password": "",
                 "register": "",
                 "retry": "",

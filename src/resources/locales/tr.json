@@ -120,10 +120,13 @@
         "numberOfPages": "Sayfa sayısı",
         "opds": {
             "auth": {
+                "alternateLogin": "",
                 "cancel": "İptal",
                 "external": "giriş sayfası web tarayıcınızda açılacak, lütfen talimatları izleyin. Giriş yaptıktan sonra, web tarayıcısı sizi bu uygulamaya geri döndürecek.",
+                "externalBrowserInstructions": "",
                 "fallback": "Not: Varsayılan web tarayıcısı yöntemiyle giriş sorunları yaşamanız durumunda, uygulama içi alternatif yöntemle tekrar deneyin.",
                 "login": "Giriş Yap",
+                "openExternalBrowser": "",
                 "password": "Şifre",
                 "register": "Kaydol",
                 "retry": "Yeniden dene",

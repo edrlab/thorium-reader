@@ -60,13 +60,20 @@ export function* runExternalAuthentication(dependencies: IExternalAuthentication
         session = yield call(dependencies.prepare, url);
         // Listen before opening either browser: a provider can redirect immediately.
         task = yield fork(waitForCallback, session, dependencies.callbacks);
+        let status: authActions.externalStatus.Status = "waiting";
         if (command === "retry") {
             win = yield call(session.openFallback);
             if (!win) throw new Error("Unable to open the authentication browser");
+            status = "fallback";
         } else {
-            yield call(dependencies.openExternal, session.authorizationUrl);
+            try {
+                yield call(dependencies.openExternal, session.authorizationUrl);
+            } catch {
+                // Keep the session available for the manual browser button.
+                status = "failed";
+            }
         }
-        yield put(authActions.externalStatus.build(requestId, win ? "fallback" : "waiting", session.authorizationUrl));
+        yield put(authActions.externalStatus.build(requestId, status, session.authorizationUrl));
         const result: { complete?: boolean; expired?: boolean; closed?: boolean } = yield race({
             complete: join(task),
             expired: delay(240000, true),

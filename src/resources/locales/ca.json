@@ -120,10 +120,13 @@
         "numberOfPages": "Nombre de pàgines",
         "opds": {
             "auth": {
+                "alternateLogin": "",
                 "cancel": "Cancel·lar",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "Iniciar sessió",
+                "openExternalBrowser": "",
                 "password": "Contrasenya",
                 "register": "Registre",
                 "retry": "Torna-ho a provar",
