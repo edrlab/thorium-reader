@@ -251,6 +251,7 @@ export function* addFeed(
                     const candidates = [
                         ...(opdsFeedView.links?.authenticationDocument || []),
                         ...(opdsFeedView.links?.bookshelf || []),
+                        ...(opdsFeedView.links?.authenticate || []),
                     ];
                     for (const authDoc of candidates) {
                         try {
