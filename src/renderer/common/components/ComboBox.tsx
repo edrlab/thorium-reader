@@ -9,7 +9,7 @@ import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import classNames from "classnames";
 import * as React from "react";
 import { Focusable, TooltipTriggerProps } from "react-aria";
-import { Button, ComboBox as ComboBoxReactAria, FieldError, Group, Input, Label, ListBox, ListBoxItem, Popover, Text, Tooltip, TooltipTrigger, ValidationResult } from "react-aria-components";
+import { Button, ComboBox as ComboBoxReactAria, FieldError, Group, Input, Label, ListBox, ListBoxItem, Popover, Text, TooltipTrigger, ValidationResult } from "react-aria-components";
 import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
@@ -39,7 +39,6 @@ export interface MyComboBoxProps<T extends object>
     placeholder?: string;
     customWidth?: number;
     inputId?: string;
-    labelInfos?: React.ReactNode;
 }
 
 // function forwardRef<T extends object>(
@@ -205,16 +204,6 @@ export function ComboBox<T extends object>(
                 <div style={{width: customWidth ? `${customWidth}px` : ""}}>
                     <Label dir={isRTL ? "rtl" : "ltr"} className={StylesCombobox.react_aria_Label}>
                         {label}
-                        {props.labelInfos &&
-                            <TooltipTrigger>
-                                <Button style={{ width: "15px", height: "15px", marginLeft: "3px" }}>
-                                    <SVG ariaHidden svg={InfoIcon} />
-                                </Button>
-                                <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{ border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-gray-100)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)", margin: "0", height: "fit-content" }}>
-                                    {props.labelInfos}
-                                </Tooltip>
-                            </TooltipTrigger>
-                        }
                     </Label>
                 <ToolTipButton
                 tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
@@ -228,16 +217,6 @@ export function ComboBox<T extends object>(
                 :
                 <Label dir={isRTL ? "rtl" : "ltr"} className={StylesCombobox.react_aria_Label}>
                     {label}
-                    {props.labelInfos &&
-                        <TooltipTrigger>
-                            <Button style={{ width: "15px", height: "15px", marginLeft: "3px" }}>
-                                <SVG ariaHidden svg={InfoIcon} />
-                            </Button>
-                            <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{ border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-gray-100)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)", margin: "0", height: "fit-content" }}>
-                                {props.labelInfos}
-                            </Tooltip>
-                        </TooltipTrigger>
-                    }
                 </Label>
                 )
                 : <></>

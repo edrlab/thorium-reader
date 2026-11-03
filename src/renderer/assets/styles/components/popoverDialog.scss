@@ -98,9 +98,10 @@
   }
 
   .display_options_item {
-    background-color: transparent;
+    // background-color: transparent;
     color: var(--color-text-primary);
     font-size: 12px;
+    margin: 0;
 
     &[data-disabled] {
       background-color: var(--color-gray-50);
@@ -151,7 +152,7 @@
 
       &:has(#reader-settings-nav) {
         width: 100%;
-        margin: 0 20px 0 5px;
+        // margin: 0 20px 0 5px;
       }
 
       > button {
@@ -200,7 +201,7 @@
 .docked_header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   padding: 10px;
   background-color: var(--color-header-docked);
   border-bottom: 1px solid var(--color-gray-100);

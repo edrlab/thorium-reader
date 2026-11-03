@@ -100,7 +100,7 @@ const SelectRefComponent = ({ isEpub, setSection, dockedMode, dockedModeRef, opt
     );
 };
 
-export const DockedHeader = ({ dockedMode, dockingMode, isEpub, setSection, dockedModeRef, options, optionSelected, optionDisabled, section, allowCustomContainer, panel }: DockedHeaderProps) => {
+export const DockedHeader = ({ dockedMode, dockingMode, isEpub, setSection, dockedModeRef, options, optionSelected, optionDisabled, section, panel }: DockedHeaderProps) => {
 
     const setReaderConfig = useSaveReaderConfig();
     const setDockingMode = (value: ReaderConfig["readerDockingMode"]) => {
@@ -113,12 +113,11 @@ export const DockedHeader = ({ dockedMode, dockingMode, isEpub, setSection, dock
 
     const [__] = useTranslator();
 
-    const showAllowCustom = dockedMode && isEpub && allowCustomContainer;
     const selectRef = <SelectRefComponent key="select-ref" isEpub={isEpub} setSection={setSection} dockedMode={dockedMode} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} optionDisabled={optionDisabled} section={section} panel={panel} />;
     return (
         <>
             <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                {showAllowCustom ? allowCustomContainer() : selectRef}
+                {selectRef}
                 <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
                     <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left"} aria-label={__("reader.dock.dockLeft")} onClick={setDockingModeLeftSide}>
                         <SVG ariaHidden={true} svg={DockLeftIcon} />
@@ -137,7 +136,6 @@ export const DockedHeader = ({ dockedMode, dockingMode, isEpub, setSection, dock
                     </Dialog.Close>
                 </div>
             </div>
-            {showAllowCustom ? selectRef : <></>}
         </>
     );
 };

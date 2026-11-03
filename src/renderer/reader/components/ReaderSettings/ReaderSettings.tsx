@@ -356,14 +356,14 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     <TabPanelOrRegion id="tab-text" focusId="readerSettings_tabs-tab-text" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-text")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <section className={stylesSettings.settings_tab}>
                             <h3>{__("reader.settings.font")}</h3>
-                            <section className={stylesSettings.settings_display_section}>
+                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px"}}>
                                 <FontSize overridePublisherDefault={overridePublisherDefault} />
                                 <FontFamily overridePublisherDefault={overridePublisherDefault} />
                             </section>
                             {!isPdf && 
                             <>
                             <h3>{__("reader.settings.justification")}</h3>
-                            <section className={stylesSettings.settings_display_section}>
+                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px"}}>
                                 <ReadingDisplayAlign overridePublisherDefault={overridePublisherDefault} />
                             </section>
                             </>
@@ -375,7 +375,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                     <SVG aria-hidden svg={GuearIcon} />
                                 </button>
                             </h3>
-                            <section className={stylesSettings.settings_display_section}>
+                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px"}}>
                             {isSpacingAdvancedOpen ? <ReaderSpacingAdvanced overridePublisherDefault={overridePublisherDefault} /> : <ReaderSpacingPresets overridePublisherDefault={overridePublisherDefault} />}
                             </section>
                             <AllowCustomContainer />
@@ -392,11 +392,11 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             {!isPdf && 
                             <>
                                 <h3>{__("reader.settings.disposition.title")}</h3>
-                                <ReadingDisplayLayout isFXL={props.isFXL} />
+                                <ReadingDisplayLayout isFXL={props.isFXL} dockedMode={dockedMode} />
                             </>
                             }
                             <h3>{__("reader.settings.column.title")}</h3>
-                            <ReadingDisplayCol isPdf={props.isPdf} pdfCol={props.pdfPlayerSpreadMode === 0 ? "1" : props.pdfPlayerSpreadMode > 0 ? "2" : "1" /* OR "auto" */} spreadModeEven={props.pdfPlayerSpreadMode === 2} />
+                            <ReadingDisplayCol isPdf={props.isPdf} pdfCol={props.pdfPlayerSpreadMode === 0 ? "1" : props.pdfPlayerSpreadMode > 0 ? "2" : "1" /* OR "auto" */} spreadModeEven={props.pdfPlayerSpreadMode === 2} dockedMode={dockedMode} />
                         </section>
                     </TabPanelOrRegion>
                     {!isPdf && (

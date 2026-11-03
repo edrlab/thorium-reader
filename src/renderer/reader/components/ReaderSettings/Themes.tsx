@@ -88,7 +88,7 @@ export const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
                                         : 1;
 
     return (
-        <section className={stylesSettings.settings_display_section}>
+        <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px"}}>
             <RadioGroup aria-label={__("reader.settings.theme.title")} orientation="horizontal" style={{ display: "flex", gap: dockedMode ? "10px" : "20px", marginTop: "5px", flexWrap: "wrap" }}
                 value={themeOptions.find((theme) => theme.id === defaultKey).value}
                 onValueChange={(option) => {

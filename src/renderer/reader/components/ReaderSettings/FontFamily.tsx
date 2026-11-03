@@ -15,6 +15,10 @@ import { usePublisherReaderConfig, useSavePublisherReaderConfig } from "readium-
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { Button, Tooltip, TooltipTrigger } from "react-aria-components";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 
 export const FontFamily = ({ overridePublisherDefault }: { overridePublisherDefault: boolean }) => {
     const [__] = useTranslator();
@@ -56,15 +60,15 @@ export const FontFamily = ({ overridePublisherDefault }: { overridePublisherDefa
         // a"b:c    ;d;<e>f'g&h
         val = trimNormaliseWhitespaceAndCollapse(
             val.
-            replace(/"/g, "").
-            replace(/:/g, "").
-            replace(/'/g, "").
-            replace(/;/g, "").
-            replace(/</g, "").
-            replace(/>/g, "").
-            replace(/\\/g, "").
-            replace(/\//g, "").
-            replace(/&/g, ""),
+                replace(/"/g, "").
+                replace(/:/g, "").
+                replace(/'/g, "").
+                replace(/;/g, "").
+                replace(/</g, "").
+                replace(/>/g, "").
+                replace(/\\/g, "").
+                replace(/\//g, "").
+                replace(/&/g, ""),
         );
         if (!val) { // includes empty string (falsy)
             val = undefined;
@@ -74,9 +78,21 @@ export const FontFamily = ({ overridePublisherDefault }: { overridePublisherDefa
         }
     };
 
+    const labelInfos = <div className={stylesSettings.session_text} style={{ margin: "0", backgroundColor: "var(--color-gray-100)" }}>
+        {
+            options.find((v) => v.name === inputval) ?
+                <p>{__("reader.settings.infoCustomFont")}</p>
+                :
+                <p>{__("reader.settings.customFontSelected")}</p>
+        }
+    </div>;
+
+
+    const isRTL = langStringIsRTL(locale);
 
     return (
         <div>
+            <div style={{display: "flex", alignItems: "center", gap:"8px"}}>
             <ComboBox className={stylesSettings.range_size_container} label="Family" defaultItems={options} selectedKey={defaultkey} placeholder={inputval} isDisabled={!overridePublisherDefault}
                 onSelectionChange={
                     (key: React.Key) => {
@@ -98,31 +114,34 @@ export const FontFamily = ({ overridePublisherDefault }: { overridePublisherDefa
                     }}
                 allowsCustomValue
                 onInputChange={(v) => setInputval(v)}
-                labelInfos={<div className={stylesSettings.session_text} style={{ margin: "0", backgroundColor: "var(--color-gray-100)" }}>
-                {
-                    options.find((v) => v.name === inputval) ?
-                    <p>{__("reader.settings.infoCustomFont")}</p>
-                    :
-                    <p>{__("reader.settings.customFontSelected")}</p>
-                }
-            </div>}
             >
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
             </ComboBox>
+            {labelInfos &&
+                <TooltipTrigger>
+                    <Button style={{ width: "15px", height: "15px", marginLeft: "3px" }}>
+                        <SVG ariaHidden svg={InfoIcon} />
+                    </Button>
+                    <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{ border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-gray-100)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)", margin: "0", height: "fit-content" }}>
+                        {labelInfos}
+                    </Tooltip>
+                </TooltipTrigger>
+            }
+            </div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", justifyContent: "space-between", padding: "10px 20px 5px 0" }}>
                 <label style={{ flexGrow: 1, margin: "0" }}>{__("reader.settings.preview")}:</label>
                 {fontFamily ?
-                <span
-                    aria-hidden
-                    style={{
-                        fontSize: "1.4em",
-                        lineHeight: "1.2em",
-                        display: "block",
-                        fontFamily,
-                        width: "160px",
-                    }}>{fontName}
-                </span>
-                : <></>
+                    <span
+                        aria-hidden
+                        style={{
+                            fontSize: "1.4em",
+                            lineHeight: "1.2em",
+                            display: "block",
+                            fontFamily,
+                            width: "160px",
+                        }}>{fontName}
+                    </span>
+                    : <></>
                 }
             </div>
         </div>
