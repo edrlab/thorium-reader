@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { expect, jest, test } from "@jest/globals";
 import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
 import type { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { ContentType } from "readium-desktop/utils/contentType";
 
 jest.mock("readium-desktop/renderer/assets/styles/components/buttons.scss", () => ({}));
 jest.mock("readium-desktop/renderer/assets/styles/global.scss", () => ({}));
@@ -55,6 +56,33 @@ function render(publication: Partial<IOpdsPublicationView>) {
         />,
     );
 }
+
+test.each([ContentType.webpub, ContentType.AudioBook])(
+    "disables %s import when the same acquisition list offers LCP",
+    (type) => {
+        const manifest = { url: "https://example.com/manifest", type, title: "Manifest" };
+        const lcp = { url: "https://example.com/license", type: ContentType.Lcp, title: "LCP" };
+        for (const key of ["openAccessLinks", "sampleOrPreviewLinks"] as const) {
+            const html = render({ [key]: [manifest, lcp] });
+            expect(html).toMatch(/<button[^>]*disabled=""[^>]*title="Manifest"/);
+            expect(html).not.toMatch(/<button[^>]*disabled=""[^>]*title="LCP"/);
+            expect(render({ [key]: [manifest] })).not.toContain("disabled");
+        }
+        // A protected full publication must not prevent importing an unprotected sample.
+        expect(render({ openAccessLinks: [lcp], sampleOrPreviewLinks: [manifest] })).not.toContain("disabled");
+    },
+);
+
+test.each([ContentType.Lcp, ContentType.AudioBookPackedLcp, ContentType.lcppdf])(
+    "recognizes %s in indirect acquisitions",
+    (type) => {
+        const html = render({ openAccessLinks: [
+            { url: "https://example.com/manifest", type: ContentType.webpub, title: "Manifest" },
+            { url: "https://example.com/acquire", properties: { indirectAcquisitionTypes: { top: type, child: undefined } } },
+        ] });
+        expect(html).toMatch(/<button[^>]*disabled=""[^>]*title="Manifest"/);
+    },
+);
 
 test.each([OPDSAvailabilityEnum.Unavailable, OPDSAvailabilityEnum.Reserved])(
     "hides Borrow for %s while retaining link properties and other actions",

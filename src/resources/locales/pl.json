@@ -108,7 +108,6 @@
         "importAnnotation": "Importuj notatki",
         "lang": "Język",
         "lastRead": "Ostatnio czytane",
-        "login": "Zaloguj się",
         "logout": "Wyloguj się",
         "missing": "Brakujące pliki",
         "missingUnavailableDescription": "Nie można otworzyć tej publikacji, ponieważ jej pliki są niedostępne. Zaimportuj je ponownie lub przejdź do sekcji „Ustawienia”, a następnie do sekcji „Przestrzeń dyskowa”, aby dodać lub zmienić dodatkową przestrzeń dyskową.",
@@ -163,15 +162,12 @@
         "update": "Edytuj",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -399,6 +395,12 @@
         },
         "addMenu": "Dodaj kanał OPDS",
         "breadcrumbRoot": "Katalogi",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -1125,6 +1127,7 @@
         "keyboard": {
             "advancedMenu": "Zaawansowane menu skrótów klawiszowych",
             "cancel": "Anuluj",
+            "disableTooltips": "",
             "disclaimer": "Domyślne ustawienia aplikacji zostały zaprojektowane na podstawie fizycznego rozmieszczenia klawiszy w układzie QWERTY",
             "editUserJson": "Edytuj plik użytkownika...",
             "exportToHTML": "Eksportuj do HTML",

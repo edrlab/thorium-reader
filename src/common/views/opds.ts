@@ -20,7 +20,6 @@ export const OPDS_OPEN_SEARCH_DATA_SEPARATOR = "^$%*£@";
 export interface IOpdsFeedView extends Identifiable {
     title: string;
     url: string;
-    authentified: boolean;
     authenticationUrl?: string;
     favorite?: boolean;
     color: TOpdsFeedColor;
@@ -126,7 +125,19 @@ export interface IOpdsFacetView {
     links: IOpdsNavigationLinkView[];
 }
 
+export type TInlineOpdsAuthenticationType = "http://opds-spec.org/auth/basic"
+    | "http://opds-spec.org/auth/local" | "http://opds-spec.org/auth/oauth/password";
+
+export type TExternalOpdsAuthenticationType = "http://opds-spec.org/auth/oauth/implicit"
+    | "http://opds-spec.org/auth/oauth/authorization-code-pkce";
+
 export interface IOpdsAuthView {
+    external?: boolean;
+    authenticationType?: TInlineOpdsAuthenticationType | TExternalOpdsAuthenticationType;
+    authenticationId?: string;
+    credentialsUrl?: string;
+    registerUrl?: string;
+    helpUrls?: string[];
     logoImageUrl: string;
 
     labelLogin: string;
@@ -186,6 +197,9 @@ export interface IOpdsLinkView {
 }
 
 export interface IOpdsNavigationLink {
+    wishlist?: IOpdsLinkView[];
+    history?: IOpdsLinkView[];
+    profile?: IOpdsLinkView[];
     authenticate?: IOpdsLinkView[];
     next: IOpdsLinkView[];
     previous: IOpdsLinkView[];

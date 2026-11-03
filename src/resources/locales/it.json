@@ -108,7 +108,6 @@
         "importAnnotation": "Importa le note",
         "lang": "Lingua",
         "lastRead": "Ultima lettura",
-        "login": "Login",
         "logout": "Logout",
         "missing": "File mancanti",
         "missingUnavailableDescription": "Questa pubblicazione non può essere aperta perché i file depositati non sono disponibili. Si prega di reimportarli o di cliccare su Impostazioni e poi su Spazio d'archiviazione per aggiungere o modificare lo spazio d'archiviazione.",
@@ -163,15 +162,12 @@
         "update": "Modifica",
         "userProfile": {
             "available": "Disponibili: {{count}}",
-            "bookshelf": "Apri la biblioteca",
             "edit": "Modifica il profilo",
             "holds": "Prenotazioni",
             "loading": "Caricamento dell'account…",
             "loans": "Prestiti",
             "title": "Account",
-            "total": "Limite: {{count}}",
-            "unavailable": "Le informazioni del profilo non sono disponibili.",
-            "used": "{{used}} di {{total}} utilizzati"
+            "unavailable": "Le informazioni del profilo non sono disponibili."
         }
     },
     "dialog": {
@@ -393,6 +389,12 @@
         },
         "addMenu": "Aggiungi un catalogo OPDS",
         "breadcrumbRoot": "Cataloghi",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Blu",
             "gray": "Grigio",
@@ -1118,6 +1120,7 @@
         "keyboard": {
             "advancedMenu": "Menu delle scorciatoie da tastiera",
             "cancel": "Annulla",
+            "disableTooltips": "",
             "disclaimer": "Le impostazioni predefinite dell'applicazione sono state progettate in base alla posizione fisica dei tasti in una tastiera QWERTY",
             "editUserJson": "Modifica il file utente...",
             "exportToHTML": "Esporta in HTML",

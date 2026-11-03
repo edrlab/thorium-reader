@@ -5,24 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as enableAPIAPP from "./enableAPIAPP";
+import * as disableKeyboardShortcutsTooltips from "./disableKeyboardShortcutsTooltips";
+
 import * as disableGoogleAnalyticsTelemetry from "./disableGoogleAnalyticsTelemetry";
+import * as enableAPIAPP from "./enableAPIAPP";
 import * as keepLibraryWindowInBackgroundOnReaderClose from "./keepLibraryWindowInBackgroundOnReaderClose";
 import * as keepLibraryWindowInBackgroundOnReaderOpen from "./keepLibraryWindowInBackgroundOnReaderOpen";
-import * as libraryView from "./libraryView";
 import * as lcpAutoDeleteExpiredPublications from "./lcpAutoDeleteExpiredPublications";
 import * as lcpAutoDeleteExpiredPublicationsForced from "./lcpAutoDeleteExpiredPublicationsForced";
+import * as libraryView from "./libraryView";
 import * as minimizeLibraryToTray from "./minimizeLibraryToTray";
 import * as oneReaderWindowPerPublication from "./oneReaderWindowPerPublication";
 
 export {
-    disableGoogleAnalyticsTelemetry,
-    enableAPIAPP,
+    disableGoogleAnalyticsTelemetry, disableKeyboardShortcutsTooltips, enableAPIAPP,
     keepLibraryWindowInBackgroundOnReaderClose,
-    keepLibraryWindowInBackgroundOnReaderOpen,
-    libraryView,
-    lcpAutoDeleteExpiredPublications,
-    lcpAutoDeleteExpiredPublicationsForced,
-    minimizeLibraryToTray,
+    keepLibraryWindowInBackgroundOnReaderOpen, lcpAutoDeleteExpiredPublications,
+    lcpAutoDeleteExpiredPublicationsForced, libraryView, minimizeLibraryToTray,
     oneReaderWindowPerPublication,
 };
+

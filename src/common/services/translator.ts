@@ -8,10 +8,10 @@
 // import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 
 // SEE PACKAGE.JSON:
-// ar bg bn brh ca cs da de el en es et eu fi fr gl he hr is it ja ka ko lt nb-NO nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
-// 35 languages
+// ar bg bn brh ca cs da de el en es et eu fi fr gl he hi hr is it ja ka ko lt nb-NO nl pl pt-br pt-pt ru sa sl sv ta tr zh-cn zh-tw
+// 38 languages
 // minus 7 incomplete ones (see `__TH__IS_DEV__ || __TH__IS_CI__` in this source file)
-// ==> 28 supported locales in PROD (see `appx` in `package.json`)
+// ==> 31 supported locales in PROD (see `appx` in `package.json`)
 import arCatalog from "readium-desktop/resources/locales/ar.json";
 import bgCatalog from "readium-desktop/resources/locales/bg.json";
 // import bnCatalog from "readium-desktop/resources/locales/bn.json";
@@ -29,6 +29,7 @@ import fiCatalog from "readium-desktop/resources/locales/fi.json";
 import frCatalog from "readium-desktop/resources/locales/fr.json";
 import glCatalog from "readium-desktop/resources/locales/gl.json";
 import heCatalog from "readium-desktop/resources/locales/he.json";
+import hiCatalog from "readium-desktop/resources/locales/hi.json";
 import hrCatalog from "readium-desktop/resources/locales/hr.json";
 import isCatalog from "readium-desktop/resources/locales/is.json";
 import itCatalog from "readium-desktop/resources/locales/it.json";
@@ -42,6 +43,7 @@ import plCatalog from "readium-desktop/resources/locales/pl.json";
 import ptBrCatalog from "readium-desktop/resources/locales/pt-br.json";
 import ptPtCatalog from "readium-desktop/resources/locales/pt-pt.json";
 import ruCatalog from "readium-desktop/resources/locales/ru.json";
+import saCatalog from "readium-desktop/resources/locales/sa.json";
 import slCatalog from "readium-desktop/resources/locales/sl.json";
 import svCatalog from "readium-desktop/resources/locales/sv.json";
 import taCatalog from "readium-desktop/resources/locales/ta.json";
@@ -120,6 +122,9 @@ i18nextInstance.init({
         "gl": {
             translation: glCatalog,
         },
+        "hi": {
+            translation: hiCatalog,
+        },
         "is" : {
             translation: isCatalog,
         },
@@ -149,6 +154,9 @@ i18nextInstance.init({
         },
         "ru" : {
             translation: ruCatalog,
+        },
+        "sa": {
+            translation: saCatalog,
         },
         "sl": {
             translation: slCatalog,
@@ -236,6 +244,7 @@ export const availableLanguages = {
     "fi": "Suomi (Finnish)",
     "fr": "Français (French)",
     "gl": "Galician",
+    "hi": "हिन्दी (Hindī)",
     "is": "íslenska (Icelandic)",
     "it": "Italiano (Italian)",
     "ja": "日本語 (Japanese)",
@@ -246,6 +255,7 @@ export const availableLanguages = {
     "pt-BR": "Português Brasileiro (Portuguese - Brazil)",
     "pt-PT": "Português (Portuguese - Portugal)",
     "ru": "Русский (Russian)",
+    "sa": "संस्कृतम् (Saṃskṛtam)",
     "sl": "Slovenščina (Slovene)",
     "sv": "Svenska (Swedish)",
     "ta": "தமிழ் (Tamil)",

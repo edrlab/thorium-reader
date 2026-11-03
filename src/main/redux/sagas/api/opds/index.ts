@@ -13,10 +13,16 @@ import { getUrlWithSearchLinks } from "./getUrlWithSearchLinks";
 
 import { getProgressionServiceStatus } from "./getProgressionServiceStatus";
 import { getUserProfile } from "./getUserProfile";
+import { getBookshelfUrl } from "./getBookshelfUrl";
 import { searchRegistry } from "./searchRegistry";
 
+import { getBrowserOptions, logoutCatalog } from "./browserOptions";
+
 export const opdsApi: IOpdsApi = {
+    getBrowserOptions,
+    logoutCatalog: withErrorNotification(logoutCatalog, "message.notifications.authenticationFailed"),
     getUserProfile,
+    getBookshelfUrl,
     searchRegistry,
     getProgressionServiceStatus,
     getFeed,

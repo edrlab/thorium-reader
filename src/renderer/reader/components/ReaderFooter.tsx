@@ -36,7 +36,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
 import {
     TKeyboardEventOnAnchor, TMouseEventOnAnchor, TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
@@ -204,8 +204,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             role="navigation"
                         aria-label={this.props.__("reader.navigation.history")}>
 
-                        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
-                        <Focusable excludeFromTabOrder>
+                        <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
+                        <Focusable>
                             <button
                                 className={leftHistoryButtonEnabled ? undefined : stylesReaderFooter.disabled}
                                 aria-disabled={leftHistoryButtonEnabled ? undefined : true}
@@ -223,21 +223,21 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                     // window.history.go(-1);
 
                                 }}
-                                title={isRTL ? __("reader.navigation.historyNext") : __("reader.navigation.historyPrevious")}
+                                aria-label={isRTL ? __("reader.navigation.historyNext") : __("reader.navigation.historyPrevious")}
                             >
                                 <SVG ariaHidden={true} svg={BackIcon} />
                             </button>
                         </Focusable>
                         <ToolTippy
-                            noReveal={true}
+                            immediate={true}
                             placement="top"
-                            label={ undefined }
+                            label={isRTL ? __("reader.navigation.historyNext") : __("reader.navigation.historyPrevious")}
                             tooltipkeyboardShortcuts={[!isRTL ? this.props.keyboardShortcuts.NavigatePreviousHistory : this.props.keyboardShortcuts.NavigateNextHistory]}
                             tooltipkeyboardShortcutsNames={[!isRTL ? __("settings.keyboard.list.NavigatePreviousHistory.name") : __("settings.keyboard.list.NavigateNextHistory.name")]}
                             tooltipkeyboardShortcutsDescriptions={[!isRTL ? __("settings.keyboard.list.NavigatePreviousHistory.description") : __("settings.keyboard.list.NavigateNextHistory.description")]} />
                         </TooltipTrigger>
-                        <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
-                        <Focusable excludeFromTabOrder>
+                        <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
+                        <Focusable>
                             <button
                                 className={rightHistoryButtonEnabled ? undefined : stylesReaderFooter.disabled}
                                 aria-disabled={rightHistoryButtonEnabled ? undefined : true}
@@ -255,15 +255,15 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                     // window.history.go(1);
 
                                 }}
-                                title={isRTL ? __("reader.navigation.historyPrevious") : __("reader.navigation.historyNext")}
+                                aria-label={isRTL ? __("reader.navigation.historyPrevious") : __("reader.navigation.historyNext")}
                             >
                                 <SVG ariaHidden={true} svg={ForwardIcon} />
                             </button>
                         </Focusable>
                         <ToolTippy
-                            noReveal={true}
+                            immediate={true}
                             placement="top"
-                            label={ undefined }
+                            label={isRTL ? __("reader.navigation.historyPrevious") : __("reader.navigation.historyNext")}
                             tooltipkeyboardShortcuts={[isRTL ? this.props.keyboardShortcuts.NavigatePreviousHistory : this.props.keyboardShortcuts.NavigateNextHistory]}
                             tooltipkeyboardShortcutsNames={[isRTL ? __("settings.keyboard.list.NavigatePreviousHistory.name") : __("settings.keyboard.list.NavigateNextHistory.name")]}
                             tooltipkeyboardShortcutsDescriptions={[isRTL ? __("settings.keyboard.list.NavigatePreviousHistory.description") : __("settings.keyboard.list.NavigateNextHistory.description")]} />

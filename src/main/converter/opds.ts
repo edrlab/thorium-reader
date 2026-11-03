@@ -43,8 +43,6 @@ import { diSymbolTable } from "../diSymbolTable";
 import { type Store } from "redux";
 import { RootState } from "../redux/states";
 import { PublicationRepository } from "../db/repository/publication";
-import { isOpdsAuthenticated } from "readium-desktop/main/services/opdsAuthenticated";
-import { opdsActions } from "readium-desktop/common/redux/actions";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -143,134 +141,16 @@ export class OpdsFeedViewConverter {
     // @inject(diSymbolTable["opds-service"])
     // private readonly opdsService!: OpdsService;
 
-    private readonly authenticationStatus = new Map<string, boolean>();
-    private readonly authenticationChecks = new Set<string>();
-    private readonly pendingAuthentication = new Map<string, Promise<boolean | undefined>>();
-
-    private checkAuthentication(document: OpdsFeedDocument, key: string): Promise<boolean | undefined> {
-        let pending = this.pendingAuthentication.get(key);
-        if (typeof pending === "undefined") {
-            pending = this.getAuthenticationStatus(document).then((status) => {
-                this.authenticationStatus.set(key, !!status);
-                return status;
-            }).finally(() => this.pendingAuthentication.delete(key));
-            this.pendingAuthentication.set(key, pending);
-        }
-        return pending;
-    }
-
-    public async convertDocumentToView(
-        document: OpdsFeedDocument,
-        backgroundAuthentication = false,
-        refreshAuthentication = true,
-    ): Promise<IOpdsFeedView> {
-        const key = JSON.stringify([document.url, document.authenticationUrl]);
-        let authentified: boolean;
-        if (backgroundAuthentication) {
-            authentified = this.authenticationStatus.get(key) || undefined;
-            if (refreshAuthentication && !this.authenticationChecks.has(key)) {
-                this.authenticationChecks.add(key);
-                // Let the API response be sent before starting network work.
-                setImmediate(() => {
-                    void (async () => {
-                        try {
-                            const status = !!(await this.checkAuthentication(document, key));
-                            // Compare with the value returned to this list, even if
-                            // a foreground conversion has since populated the cache.
-                            const previous = !!authentified;
-                            if (status !== previous) {
-                                this.store.dispatch(opdsActions.refresh.build(true));
-                            }
-                        } catch (e) {
-                            debug("Background OPDS authentication check failed", e);
-                        } finally {
-                            this.authenticationChecks.delete(key);
-                        }
-                    })();
-                });
-            }
-        } else {
-            authentified = await this.checkAuthentication(document, key);
-        }
-
+    public async convertDocumentToView(document: OpdsFeedDocument): Promise<IOpdsFeedView> {
         return {
             identifier: document.identifier,
             title: document.title,
             url: document.url,
-            authentified,
             authenticationUrl: document.authenticationUrl,
             favorite: document.favorite || false,
             color: getOpdsFeedColor(document.color),
             icon: getOpdsFeedIcon(document.icon),
         };
-    }
-
-    private async getAuthenticationStatus(document: OpdsFeedDocument): Promise<boolean | undefined> {
-
-        let authentified: boolean = undefined;
-
-        const feedUrl = document.url;
-        let catalogLinkUrl: URL;
-        try {
-
-            if (feedUrl.startsWith("apiapp://")) {
-                if (feedUrl.startsWith("apiapp://")) {
-                    const urlApiapp = feedUrl.slice("apiapp://".length);
-                    const [idGln, urlLib] = urlApiapp.split(":apiapp:");
-
-                    debug("APIAPP");
-                    debug("ID_GNL=", idGln);
-                    debug("URL_LIB=", urlLib);
-                    if (urlLib) {
-                        catalogLinkUrl = (new URL(urlLib));
-                        catalogLinkUrl.host = `apiapploans.org.edrlab.thoriumreader.break.${idGln}.break.${catalogLinkUrl.host}`;
-                    }
-                }
-            } else {
-
-                catalogLinkUrl = (new URL(feedUrl));
-            }
-
-        } catch (e) {
-            debug(e);
-        }
-        if (catalogLinkUrl) {
-            if (await isOpdsAuthenticated(catalogLinkUrl, document.authenticationUrl)) {
-                debug("catalog authentified: ", catalogLinkUrl.host);
-                authentified = true;
-            } else {
-                debug("catalog NOT authentified: ", catalogLinkUrl.host);
-            }
-        } else {
-            debug("No catalogLinkUrl found, return");
-        }
-
-        // let's trigger the same event as customization profile catalog
-        // const feedHasAuthenticationFunction = async () => {
-        //     try {
-        //         const response = await httpGetWithAuth(false)(document.url);
-        //         const opdsService = diMainGet("opds-service"); // circular-reference issue
-        //         const opdsView = await opdsService.opdsRequestTransformer(response);
-        //         if (!opdsView) {
-        //             const bookshelf = opdsView.links?.bookshelf;
-        //             if (bookshelf?.length) {
-        //                 if (bookshelf[0].url) {
-        //                     const bookshelfUrl = bookshelf[0].url;
-        //                     const response = await httpGetWithAuth(false)(bookshelfUrl);
-        //                     const mimeType = parseContentType(response.contentType);
-        //                     if (contentTypeisOpdsAuth(mimeType)) {
-        //                         return true;
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     } catch {
-        //         // ignore
-        //     }
-        //     return false;
-        // }
-
-        return authentified;
     }
 
     public convertOpdsNavigationLinkToView(link: OPDSLink, baseUrl: string): IOpdsNavigationLinkView {
@@ -665,7 +545,7 @@ export class OpdsFeedViewConverter {
         const title = r2OpdsAuth.Title;
         let logoImageUrl: string | undefined;
 
-        const logoLink = r2OpdsAuth.Links.find(
+        const logoLink = r2OpdsAuth.Links?.find(
             (l) =>
                 l.Rel && l.Rel.includes("logo"));
 
@@ -673,9 +553,12 @@ export class OpdsFeedViewConverter {
             logoImageUrl = urlPathResolve(baseUrl, logoLink.Href);
         }
 
-        const oauth = r2OpdsAuth.Authentication.find(
-            (a) =>
-                a.Type === "http://opds-spec.org/auth/oauth/password");
+        const method = r2OpdsAuth.Authentication?.find(a =>
+            a.Type === "http://opds-spec.org/auth/basic" || a.Type === "http://opds-spec.org/auth/local"
+            || a.Type === "http://opds-spec.org/auth/oauth/password"
+            || a.Type === "http://opds-spec.org/auth/oauth/implicit"
+            || a.Type === "http://opds-spec.org/auth/oauth/authorization-code-pkce");
+        const oauth = method;
 
         let labelLogin: string | undefined;
         let labelPassword: string | undefined;
@@ -702,11 +585,20 @@ export class OpdsFeedViewConverter {
                 }
             }
         }
+        const methodLinks = [...(method?.Links || []), ...(r2OpdsAuth.Links || [])];
+        const register = methodLinks.find(l => l.Rel?.includes("register"));
         const auth: IOpdsAuthView = {
+            credentialsUrl: method ? baseUrl : undefined,
+            external: method?.Type === "http://opds-spec.org/auth/oauth/implicit"
+                || method?.Type === "http://opds-spec.org/auth/oauth/authorization-code-pkce",
+            authenticationType: method?.Type as IOpdsAuthView["authenticationType"],
+            authenticationId: r2OpdsAuth.Id,
+            registerUrl: register ? urlPathResolve(baseUrl, register.Href) : undefined,
+            helpUrls: methodLinks.filter(l => l.Rel?.includes("help")).map(l => urlPathResolve(baseUrl, l.Href)),
             logoImageUrl,
 
-            labelLogin,
-            labelPassword,
+            labelLogin: method?.Labels?.Login || labelLogin,
+            labelPassword: method?.Labels?.Password || labelPassword,
 
             oauthUrl,
             oauthRefreshUrl,
@@ -822,6 +714,9 @@ export class OpdsFeedViewConverter {
                 up: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
                 search: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
                 authenticate: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "authenticate" }),
+                wishlist: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/wishlist" }),
+                history: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/history" }),
+                profile: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "profile" }),
                 bookshelf: r2OpdsFeed.Links.filter((link) => link.Href &&
                     (link.Rel?.includes("http://opds-spec.org/shelf") || link.Rel?.includes("shelf")))
                     .map((link) => this.convertLinkToView(link, baseUrl)),
