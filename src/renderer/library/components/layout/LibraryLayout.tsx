@@ -135,7 +135,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         {this.props.secondaryHeader}
                         {(page === __("opds.breadcrumbRoot")) ?
                             <div className={stylesCatalogs.opds_header}>
-                                <h2 className={stylesAllBooks.allBooks_header}>{this.props.headerLinks?.title || "-"}</h2>
+                                <h1 className={stylesAllBooks.allBooks_header} style={{ overflowWrap: "anywhere", minWidth: 0 }}>{this.props.title || "-"}</h1>
                                 {this.props.catalogHeader ?
                                     <div className={stylesCatalogs.opds_header_actions}>
                                         {

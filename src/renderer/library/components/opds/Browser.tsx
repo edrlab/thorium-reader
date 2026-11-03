@@ -6,77 +6,53 @@
 // ==LICENSE-END==
 
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
-
 import * as React from "react";
-import { connect } from "react-redux";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
-import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-
-// import BreadCrumb from "../layout/BreadCrumb";
-import BrowserResult from "./BrowserResult";
-import { BrowserOptions } from "./BrowserOptions";
-// import Header from "./Header";
-import SearchForm from "./SearchForm";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as ForbiddenIcon from "readium-desktop/renderer/assets/icons/forbidden-icon.svg";
+import { useLocation } from "react-router-dom";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
+import { BrowserOptions } from "./BrowserOptions";
+import BrowserResult from "./BrowserResult";
+import SearchForm from "./SearchForm";
 import { CatalogHeader } from "./CatalogHeader";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
-}
+export const Browser = () => {
+    const [__] = useTranslator();
+    const location = useLocation();
+    const route = parseOpdsBrowserRoute(location.pathname);
+    const identifier = route?.rootFeedIdentifier;
+    const breadcrumb = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb);
+    const search = useSelector((state: ILibraryRootState) => state.opds.browser.search);
+    const [catalog, getCatalog] = useApi("opds-browser-catalog:" + identifier, "opds/getFeed");
+    React.useEffect(() => {
+        if (identifier) getCatalog(identifier);
+    }, [identifier, getCatalog]);
+    // The catalog card name is independent of the feed and of direct Shelf entry.
+    const catalogTitle = catalog?.data?.result?.title;
+    const current = breadcrumb[breadcrumb.length - 1];
+    const root = breadcrumb[1];
+    const fallback = route?.title?.trim() || catalogTitle || "-";
+    const currentLocation = current && { ...current, name: current.name?.trim() || fallback };
+    const rootLocation = root && { ...root, name: root.name?.trim() || catalogTitle || fallback };
+    return (
+        <LibraryLayout
+            page={__("opds.breadcrumbRoot")}
+            title={catalogTitle}
+            catalogHeader={<CatalogHeader currentLocation={currentLocation} rootLocation={rootLocation}
+                previousLocation={breadcrumb[breadcrumb.length - 2]} />}
+            catalogOptions={<BrowserOptions />}
+            search={search ? <SearchForm /> : undefined}
+        >
+            {breadcrumb.length ? <BrowserResult /> : <p className={stylesCatalogs.noPublication}>
+                <SVG ariaHidden svg={ForbiddenIcon} />{__("opds.empty")}
+            </p>}
+        </LibraryLayout>
+    );
+};
 
-class Browser extends React.Component<IProps, undefined> {
-
-    constructor(props: IProps) {
-        super(props);
-    }
-
-    public render(): React.ReactElement<IProps>  {
-        // const secondaryHeader = <Header/>;
-        // const breadCrumb = <BreadCrumb />;
-        const search = this.props.search ? <SearchForm /> : null;
-        const catalogTitle = this.props.breadrumb[1]?.name;
-        const lastBreadCrumb = this.props.breadrumb[this.props.breadrumb.length - 1];
-        const previousLocation = this.props.breadrumb[this.props.breadrumb.length - 2];
-        const catalogHeader = <CatalogHeader currentLocation={lastBreadCrumb} previousLocation={previousLocation} />;
-
-        return (
-            <LibraryLayout
-                page={this.props.__("opds.breadcrumbRoot")}
-                title={catalogTitle}
-                // secondaryHeader={secondaryHeader}
-                catalogHeader={catalogHeader}
-                catalogOptions={<BrowserOptions />}
-                search={search}
-            >
-                {this.props.breadrumb.length ?
-                    <BrowserResult/>
-                    :
-                    <p className={stylesCatalogs.noPublication}>
-                        <SVG ariaHidden svg={ForbiddenIcon} />
-                        {this.props.__("opds.empty")}
-                    </p>
-                }
-            </LibraryLayout>
-        );
-    }
-}
-
-const mapStateToProps = (state: ILibraryRootState) => ({
-    breadrumb: state.opds.browser.breadcrumb,
-    search: state.opds.browser.search,
-    location: state.router.location,
-    locale: state.i18n.locale, // refresh
-});
-
-export default connect(mapStateToProps, undefined)(withTranslator(Browser));
+export default Browser;
