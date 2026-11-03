@@ -17,6 +17,11 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
+const truncateBreadcrumbLabel = (label: string) => {
+    const characters = Array.from(label);
+    return characters.length > 30 ? `${characters.slice(0, 30).join("")}...` : label;
+};
+
 export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: IBreadCrumbItem, previousLocation: IBreadCrumbItem, rootLocation?: IBreadCrumbItem}>> = (props) => {
 
     const { currentLocation, previousLocation, rootLocation } = props;
@@ -69,8 +74,10 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", minWidth: 0, overflowWrap: "anywhere" }}>
                 {rootLocation && rootLocation.path !== currentLocation?.path && <>
                     <Link style={labelStyle} to={{ pathname: rootLocation.path }}
+                        title={rootLocation.name}
+                        aria-label={rootLocation.name}
                         state={{ displayType: resolveDisplayType(location.state, savedDisplayType) }}>
-                        {rootLocation.name}
+                        {truncateBreadcrumbLabel(rootLocation.name)}
                     </Link>
                     <span aria-hidden="true">›</span>
                 </>}
