@@ -120,7 +120,7 @@
         "numberOfPages": "Antal sidor",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Avbryt",
                 "external": "Loginsidan kommer att öppnas i din webbläsare. Följ instruktionerna. Efter att du har loggat in så kommer du att komma tillbaka till det här programmet.",
                 "externalBrowserInstructions": "",

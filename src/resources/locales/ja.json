@@ -120,7 +120,7 @@
         "numberOfPages": "ページ数",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "キャンセル",
                 "external": "ウェブ ブラウザーでログインページが開かれたら、表示される指示に従ってください。ログインが完了すると、ウェブ ブラウザーはこのアプリに戻ります。",
                 "externalBrowserInstructions": "",

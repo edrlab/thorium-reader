@@ -120,7 +120,7 @@
         "numberOfPages": "पृष्ठों की संख्या",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "रद्द करें",
                 "external": "लॉगिन पृष्ठ आपके वेब ब्राउज़र में खुलेगा, कृपया निर्देशों का पालन करें। लॉग इन होने के बाद वेब ब्राउज़र आपको इस एप्लिकेशन पर वापस ले आएगा।",
                 "externalBrowserInstructions": "",

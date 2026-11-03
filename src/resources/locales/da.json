@@ -120,7 +120,7 @@
         "numberOfPages": "Antal sider",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Annullér",
                 "external": "Login-siden åbnes i din webbrowser. Følg venligst instruktionerne. Når du er logget ind, fører webbrowseren dig tilbage til denne applikation.",
                 "externalBrowserInstructions": "",

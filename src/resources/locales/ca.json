@@ -120,7 +120,7 @@
         "numberOfPages": "Nombre de pàgines",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Cancel·lar",
                 "external": "",
                 "externalBrowserInstructions": "",

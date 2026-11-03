@@ -120,7 +120,7 @@
         "numberOfPages": "Aantal pagina's",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Annuleer",
                 "external": "Deze inlogpagina zal geopend worden in jouw webbrowser, volg alsjeblieft de instructies. Wanneer je ingelogd bent zal de webbrowser je terug sturen naar deze applicatie.",
                 "externalBrowserInstructions": "",

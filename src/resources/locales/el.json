@@ -120,7 +120,7 @@
         "numberOfPages": "Σύνολο σελίδων",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Ακύρωση",
                 "external": "Η σελίδα σύνδεσης θα ανοίξει στον browser σας. Ακολουθήστε τις οδηγίες. Μόλις συνδεθείτε, θα επιστρέψετε σε αυτήν την εφαρμογή.",
                 "externalBrowserInstructions": "",

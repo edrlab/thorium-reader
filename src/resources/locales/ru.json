@@ -120,7 +120,7 @@
         "numberOfPages": "Количество страниц",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Отменить",
                 "external": "В вашем браузере откроется страница входа. Следуйте инструкциям. После выполнения входа браузер вернёт вас в это приложение.",
                 "externalBrowserInstructions": "",

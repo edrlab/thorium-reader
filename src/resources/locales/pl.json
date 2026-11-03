@@ -120,7 +120,7 @@
         "numberOfPages": "Liczba stron",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Anuluj",
                 "external": "Strona logowania otworzy się w przeglądarce internetowej. Postępuj zgodnie z instrukcjami. Po zalogowaniu przeglądarka przekieruje Cię z powrotem do tej aplikacji.",
                 "externalBrowserInstructions": "",

@@ -120,7 +120,7 @@
         "numberOfPages": "页码",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "取消",
                 "external": "登录页面将会在您的网络浏览器中打开，请跟随引导操作。完成登录后，网络浏览器会使您回到该应用程序。",
                 "externalBrowserInstructions": "",

@@ -120,7 +120,7 @@
         "numberOfPages": "Puslapių skaičius",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Nutraukti",
                 "external": "Jūsų interneto naršyklėje atsidarys prisijungimo puslapis, sekite instrukcijas. Kai prisijungsite, interneto naršyklė grąžins jus į šią programą.",
                 "externalBrowserInstructions": "",

@@ -120,7 +120,7 @@
         "numberOfPages": "頁碼",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "取消",
                 "external": "登入頁面將在您的瀏覽器中打開，請按照提示操作。登入成功後，瀏覽器將自動返回此應用程式。",
                 "externalBrowserInstructions": "",

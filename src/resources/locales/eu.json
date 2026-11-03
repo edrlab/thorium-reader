@@ -120,7 +120,7 @@
         "numberOfPages": "Orrialde-kopurua",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Utzi",
                 "external": "",
                 "externalBrowserInstructions": "",

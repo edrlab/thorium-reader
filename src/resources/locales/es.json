@@ -120,7 +120,7 @@
         "numberOfPages": "Número de páginas",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Cancelar",
                 "external": "Se abrirá la página de inicio de sesión en su navegador web; siga las instrucciones. Una vez que haya iniciado sesión, el navegador web volverá a la aplicación.",
                 "externalBrowserInstructions": "",

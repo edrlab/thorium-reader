@@ -210,7 +210,7 @@ declare namespace typed_i18n {
   readonly "numberOfPages": string,
   readonly "opds": {
     readonly "auth": {
-      readonly "alternateLogin": string,
+      readonly "alternativeLogin": string,
       readonly "cancel": string,
       readonly "external": string,
       readonly "externalBrowserInstructions": string,
@@ -324,7 +324,7 @@ declare namespace typed_i18n {
   (_: "catalog.numberOfPages", __?: {}): string;
   (_: "catalog.opds", __?: {}): {
   readonly "auth": {
-    readonly "alternateLogin": string,
+    readonly "alternativeLogin": string,
     readonly "cancel": string,
     readonly "external": string,
     readonly "externalBrowserInstructions": string,
@@ -358,7 +358,7 @@ declare namespace typed_i18n {
   }
 };
   (_: "catalog.opds.auth", __?: {}): {
-  readonly "alternateLogin": string,
+  readonly "alternativeLogin": string,
   readonly "cancel": string,
   readonly "external": string,
   readonly "externalBrowserInstructions": string,
@@ -372,7 +372,7 @@ declare namespace typed_i18n {
   readonly "unauthorizedUnsupportedType": string,
   readonly "username": string
 };
-  (_: "catalog.opds.auth.alternateLogin", __?: {}): string;
+  (_: "catalog.opds.auth.alternativeLogin", __?: {}): string;
   (_: "catalog.opds.auth.cancel", __?: {}): string;
   (_: "catalog.opds.auth.external", __?: {}): string;
   (_: "catalog.opds.auth.externalBrowserInstructions", __?: {}): string;

@@ -120,7 +120,7 @@
         "numberOfPages": "Fjöldi síðna",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Hætta við",
                 "external": "Innskráningarsíðan opnast í vafranum. Fylgdu leiðbeiningunum þar. Að innskráningu lokinni fer vafrinn aftur í þetta forrit.",
                 "externalBrowserInstructions": "",

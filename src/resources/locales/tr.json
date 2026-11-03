@@ -120,7 +120,7 @@
         "numberOfPages": "Sayfa sayısı",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "İptal",
                 "external": "giriş sayfası web tarayıcınızda açılacak, lütfen talimatları izleyin. Giriş yaptıktan sonra, web tarayıcısı sizi bu uygulamaya geri döndürecek.",
                 "externalBrowserInstructions": "",

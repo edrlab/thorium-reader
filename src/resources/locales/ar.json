@@ -120,7 +120,7 @@
         "numberOfPages": "عدد الصفحات",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "إلغاء",
                 "external": "ستفتح صفحة تسجيل الدخول في متصفح الويب الخاص بك، يرجى اتباع التعليمات. بعد تسجيل الدخول، سيعيدك متصفح الويب إلى هذا التطبيق.",
                 "externalBrowserInstructions": "",

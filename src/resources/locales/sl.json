@@ -120,7 +120,7 @@
         "numberOfPages": "Število strani",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Prekliči",
                 "external": "V vašem spletnem brskalniku se bo odprla prijavna stran, sledite navodilom. Ko se prijavite, vas bo spletni brskalnik vrnil v to aplikacijo.",
                 "externalBrowserInstructions": "",

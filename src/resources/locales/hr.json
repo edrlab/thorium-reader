@@ -120,7 +120,7 @@
         "numberOfPages": "Broj stranica",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Poništi",
                 "external": "",
                 "externalBrowserInstructions": "",

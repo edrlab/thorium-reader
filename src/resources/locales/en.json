@@ -120,7 +120,7 @@
         "numberOfPages": "Number of pages",
         "opds": {
             "auth": {
-                "alternateLogin": "Alternate login",
+                "alternativeLogin": "Alternative login",
                 "cancel": "Cancel",
                 "external": "The login page will open in your web browser, please follow the instructions. Once logged-in, the web browser will return you to this application.",
                 "externalBrowserInstructions": "If the web browser does not open automatically, click on the following link.",

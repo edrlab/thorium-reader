@@ -120,7 +120,7 @@
         "numberOfPages": "पृष्ठसङ्ख्या",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "निरस्यतु",
                 "external": "प्रवेशपृष्ठम् जालदर्शके उद्घाटनीयम्, निर्देशान् अनुसरतु. प्रवेशानन्तरम् जालदर्शकात् एतम् अनुप्रयोगम् प्रति प्रत्यावर्तनम्.",
                 "externalBrowserInstructions": "",

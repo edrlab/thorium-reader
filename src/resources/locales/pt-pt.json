@@ -120,7 +120,7 @@
         "numberOfPages": "Número de páginas",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Cancelar",
                 "external": "A página de autenticação será aberta no navegador Web; siga as instruções apresentadas. Depois de se autenticar, o navegador regressará a esta aplicação.",
                 "externalBrowserInstructions": "",

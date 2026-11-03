@@ -120,7 +120,7 @@
         "numberOfPages": "Lehtede arv",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Katkesta",
                 "external": "Sisselogimisleht avaneb sinu veebibrauseris, palun järgi sealseid juhiseid. Pärast sisselogimist suunab veebibrauser sind tagasi sellesse rakendusse.",
                 "externalBrowserInstructions": "",

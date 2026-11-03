@@ -61,7 +61,7 @@ export const ExternalAuthentication = ({ auth, catalogIdentifier, __ }: { auth: 
             disabled={status === "preparing" || status === "complete"} onClick={() => {
                 setStatus("preparing");
                 dispatch(authActions.externalRequest.build(auth.credentialsUrl, requestId, "retry", catalogIdentifier));
-            }}>{__("catalog.opds.auth.alternateLogin")}</button>
+            }}>{__("catalog.opds.auth.alternativeLogin")}</button>
         <hr className={styles.separator} />
         <footer className={styles.links}>
             <button type="button" onClick={() => {

@@ -14,7 +14,7 @@ jest.mock("react-redux", () => ({ useDispatch: () => jest.fn() }));
 jest.mock("readium-desktop/resources/locales/es.json", () => {
     const locale = jest.requireActual<typeof en>("readium-desktop/resources/locales/es.json");
     const auth = { ...locale.catalog.opds.auth, openExternalBrowser: "" };
-    delete auth.alternateLogin;
+    delete auth.alternativeLogin;
     return { ...locale, catalog: { ...locale.catalog, opds: { ...locale.catalog.opds, auth } } };
 });
 
@@ -22,14 +22,14 @@ test.each([en, fr])("shows the external and alternate login actions without cred
     const auth = { external: true, credentialsUrl: "https://example.org/auth", logoImageUrl: "https://example.org/logo.png" } as IOpdsAuthView;
     const html = renderToStaticMarkup(<ExternalAuthentication auth={auth}
         __={key => key.split(".").reduce((value: unknown, part) => (value as Record<string, unknown>)[part], locale) as string} />);
-    const { alternateLogin, cancel, externalBrowserInstructions, fallback, openExternalBrowser } = locale.catalog.opds.auth;
+    const { alternativeLogin, cancel, externalBrowserInstructions, fallback, openExternalBrowser } = locale.catalog.opds.auth;
     const sections = html.split(/<hr[^>]*\/>/);
     expect(sections).toHaveLength(4);
     expect(sections[0]).toContain(auth.logoImageUrl);
     expect(sections[1]).toContain(renderToStaticMarkup(<p>{externalBrowserInstructions}</p>));
     expect(sections[1]).toContain(openExternalBrowser);
     expect(sections[2]).toContain(renderToStaticMarkup(<p>{fallback}</p>));
-    expect(sections[2]).toContain(alternateLogin);
+    expect(sections[2]).toContain(alternativeLogin);
     expect(sections[3]).toContain(cancel);
     expect(html).toContain(renderToStaticMarkup(<p>{locale.catalog.opds.auth.external}</p>));
     expect(html).toContain(locale.catalog.opds.auth.cancel);
@@ -41,7 +41,7 @@ test("falls back to English for empty and missing external login translations", 
     await setLocale("es");
     try {
         expect(translate("catalog.opds.auth.openExternalBrowser")).toBe(en.catalog.opds.auth.openExternalBrowser);
-        expect(translate("catalog.opds.auth.alternateLogin")).toBe(en.catalog.opds.auth.alternateLogin);
+        expect(translate("catalog.opds.auth.alternativeLogin")).toBe(en.catalog.opds.auth.alternativeLogin);
     } finally {
         await setLocale("en");
     }

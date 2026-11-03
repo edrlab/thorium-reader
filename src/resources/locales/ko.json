@@ -120,7 +120,7 @@
         "numberOfPages": "페이지 수",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "취소",
                 "external": "",
                 "externalBrowserInstructions": "",

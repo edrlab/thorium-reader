@@ -120,7 +120,7 @@
         "numberOfPages": "Sivumäärä",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Peru",
                 "external": "Kirjautumissivu aukeaa verkkoselaimessa, seuraa sivun ohjeita. Kun olet kirjautunut sisään, verkkoselain palauttaa sinut tähän sovellukseen.",
                 "externalBrowserInstructions": "",

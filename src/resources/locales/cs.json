@@ -120,7 +120,7 @@
         "numberOfPages": "Počet stránek",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Zrušit",
                 "external": "Přihlašovací stránka se otevře ve webovém prohlížeči, postupujte prosím podle pokynů. Po přihlášení vás webový prohlížeč vrátí do této aplikace.",
                 "externalBrowserInstructions": "",

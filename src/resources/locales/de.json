@@ -120,7 +120,7 @@
         "numberOfPages": "Seitenzahl",
         "opds": {
             "auth": {
-                "alternateLogin": "",
+                "alternativeLogin": "",
                 "cancel": "Abbrechen",
                 "external": "Die Anmeldeseite wird in Ihrem Webbrowser geöffnet. Bitte befolgen Sie die Anweisungen. Sobald Sie sich angemeldet haben, leitet der Webbrowser Sie zurück zu dieser Anwendung.",
                 "externalBrowserInstructions": "",
