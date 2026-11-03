@@ -31,9 +31,11 @@ export async function getOpdsBrowserOptions(catalogUrl: string, currentUrl: stri
                 const doc = await response.response.json() as { links?: unknown };
                 const base = response.responseUrl || url.toString();
                 result.links = { ...result.links, ...readOpdsBrowserLinks(doc?.links, base) };
-                if (!contentTypeisOpdsAuth(type) && Array.isArray(doc?.links)) {
-                    const auth = doc.links.find((link: { rel?: string | string[]; href?: string }) =>
-                        (Array.isArray(link?.rel) ? link.rel : [link?.rel]).includes("authenticate"));
+                const links = doc?.links;
+                if (!contentTypeisOpdsAuth(type) && Array.isArray(links)) {
+                    const findAuthLink = (rel: string) => links.find((link: { rel?: string | string[]; href?: string }) =>
+                        (Array.isArray(link?.rel) ? link.rel : [link?.rel]).includes(rel));
+                    const auth = findAuthLink("http://opds-spec.org/auth/document") || findAuthLink("authenticate");
                     if (auth?.href && urls.size < 6) urls.add(new URL(auth.href, base).toString());
                 }
             } finally {

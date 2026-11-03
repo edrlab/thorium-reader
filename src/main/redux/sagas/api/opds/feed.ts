@@ -246,7 +246,7 @@ export function* addFeed(
                     opdsFeedJson,
                     OPDSFeed,
                 );
-                const opdsFeedView = opdsFeedViewConverter.convertOpdsFeedToView(opdsFeed, data.url);
+                const opdsFeedView = opdsFeedViewConverter.convertOpdsFeedToView(opdsFeed, response.responseUrl || data.url);
                 if (opdsFeedView) {
                     const candidates = [...(opdsFeedView.links?.authenticate || []), ...(opdsFeedView.links?.bookshelf || [])];
                     for (const bookshelf of candidates) {
