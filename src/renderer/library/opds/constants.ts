@@ -7,3 +7,5 @@
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const OPDS_NAVIGATION_REQUEST_PREFIX = "opds-navigation:";
+
+export const ENABLE_CUSTOM_OPDS_FEED_SHORTCUTS = false;
