@@ -8,6 +8,7 @@
 import debug_ from "debug";
 import { startExternalAuthentication, matchesExternalAuthenticationCallback, IExternalAuthenticationSession } from "./externalAuthentication";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { logoutOpdsCatalog } from "readium-desktop/main/services/opdsLogout";
 import { getFeed } from "./api/opds/feed";
 import { submitInlineAuthentication } from "./inlineAuthentication";
 import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY } from "readium-desktop/common/streamerProtocol";
@@ -33,10 +34,8 @@ import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import {
     getOpdsAuthenticationChannel, TOpdsAuthenticationChannel,
 } from "readium-desktop/main/event";
-import { cleanCookieJar, removeCookiesFromHost } from "readium-desktop/main/network/fetch";
+import { cleanCookieJar } from "readium-desktop/main/network/fetch";
 import {
-    deleteAuthenticationToken,
-    getAuthenticationToken,
     httpGet,
     httpPost,
     httpSetAuthenticationToken,
@@ -433,41 +432,7 @@ export function saga() {
             authActions.logout.ID,
             function* (action: authActions.logout.TAction) {
                 const feedUrl = action.payload.feedUrl;
-                let catalogLinkUrl: URL;
-                try {
-                    if (feedUrl.startsWith("apiapp://")) {
-                        if (feedUrl.startsWith("apiapp://")) {
-                            const urlApiapp = feedUrl.slice("apiapp://".length);
-                            const [idGln, urlLib] = urlApiapp.split(":apiapp:");
-
-                            debug("APIAPP");
-                            debug("ID_GNL=", idGln);
-                            debug("URL_LIB=", urlLib);
-                            if (urlLib) {
-                                catalogLinkUrl = (new URL(urlLib));
-                                catalogLinkUrl.host = `apiapploans.org.edrlab.thoriumreader.break.${idGln}.break.${catalogLinkUrl.host}`;
-                            }
-                        }
-                    } else {
-
-                        catalogLinkUrl = (new URL(feedUrl));
-                    }
-                } catch (e) {
-                    debug(e);
-                }
-                if (!catalogLinkUrl) {
-                    debug("No catalogLinkUrl found, return");
-                }
-                // debug(JSON.stringify(catalogLinkUrl, null, 4));
-
-                yield* callTyped(() => removeCookiesFromHost(catalogLinkUrl.host));
-                yield* callTyped(() => deleteAuthenticationToken(catalogLinkUrl.host));
-                const authToken = yield* callTyped(() => getAuthenticationToken(catalogLinkUrl));
-                if (authToken?.accessToken) {
-                    debug("ERROR to Logout of the feed:", feedUrl);
-                } else {
-                    debug("LOGOUT from:", feedUrl);
-                }
+                yield* callTyped(logoutOpdsCatalog, feedUrl);
                 yield put(opdsActions.refresh.build());
             },
             (e) => debug("opds LOGOUT", e),

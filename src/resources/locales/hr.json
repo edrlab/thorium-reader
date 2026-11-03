@@ -393,6 +393,12 @@
         },
         "addMenu": "Dodaj OPDS katalog",
         "breadcrumbRoot": "Katalozi",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",

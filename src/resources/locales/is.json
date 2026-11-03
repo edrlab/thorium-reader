@@ -387,6 +387,12 @@
         },
         "addMenu": "Bæta við OPDS-veitu",
         "breadcrumbRoot": "Safnskrár",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",

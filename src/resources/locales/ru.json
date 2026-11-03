@@ -399,6 +399,12 @@
         },
         "addMenu": "Добавить OPDS каталог",
         "breadcrumbRoot": "Каталоги",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Синий",
             "gray": "Серый",

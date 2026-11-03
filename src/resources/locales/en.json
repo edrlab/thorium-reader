@@ -387,6 +387,12 @@
         },
         "addMenu": "Add OPDS feed",
         "breadcrumbRoot": "Catalogs",
+        "browserMenu": {
+            "history": "History",
+            "options": "Catalog options",
+            "profile": "User profile",
+            "wishlist": "Wishlist"
+        },
         "color": {
             "blue": "Blue",
             "gray": "Gray",

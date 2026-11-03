@@ -197,6 +197,9 @@ export interface IOpdsLinkView {
 }
 
 export interface IOpdsNavigationLink {
+    wishlist?: IOpdsLinkView[];
+    history?: IOpdsLinkView[];
+    profile?: IOpdsLinkView[];
     authenticate?: IOpdsLinkView[];
     next: IOpdsLinkView[];
     previous: IOpdsLinkView[];

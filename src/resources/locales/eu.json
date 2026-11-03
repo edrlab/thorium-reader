@@ -387,6 +387,12 @@
         },
         "addMenu": "OPDS katalogoa gehitzea",
         "breadcrumbRoot": "Katalogoak",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",

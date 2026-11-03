@@ -399,6 +399,12 @@
         },
         "addMenu": "Pridėti OPDS sklaidos kanalą",
         "breadcrumbRoot": "Katalogai",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Mėlyna",
             "gray": "Pilka",

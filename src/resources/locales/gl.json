@@ -387,6 +387,12 @@
         },
         "addMenu": "Engadir catálogo OPDS",
         "breadcrumbRoot": "Catálogos",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",

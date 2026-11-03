@@ -246,5 +246,7 @@ export function* browse(urlRaw: string, method: "GET" | "DELETE" = "GET"): SagaG
             );
         },
     ));
-    return result;
+    // Authenticated requests may replace the input with a URL object or retry a
+    // redirect target. Keep the route request identity as a serializable string.
+    return { ...result, url: urlRaw };
 }

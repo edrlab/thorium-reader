@@ -387,6 +387,12 @@
         },
         "addMenu": "Добави OPDS канал",
         "breadcrumbRoot": "Каталози",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",

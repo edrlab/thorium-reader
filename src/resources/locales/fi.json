@@ -387,6 +387,12 @@
         },
         "addMenu": "Lisää OPDS-syöte",
         "breadcrumbRoot": "Luettelot",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Sininen",
             "gray": "Harmaa",

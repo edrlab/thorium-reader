@@ -393,6 +393,12 @@
         },
         "addMenu": "Afegir catàleg OPDS",
         "breadcrumbRoot": "Catàlegs",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",

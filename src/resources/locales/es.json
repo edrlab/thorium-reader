@@ -393,6 +393,12 @@
         },
         "addMenu": "Añadir catálogo OPDS",
         "breadcrumbRoot": "Catálogos",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Azul",
             "gray": "Gris",
