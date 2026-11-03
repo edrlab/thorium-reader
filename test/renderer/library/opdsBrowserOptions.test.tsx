@@ -19,7 +19,7 @@ const shelf = { url: "https://example.org/loans", type: "application/opds+json" 
 const wishlist = { url: "https://example.org/wishlist", type: "application/opds+json" };
 const profile = { url: "https://example.org/profile", type: "application/opds-profile+json" };
 const mockState = () => ({ api: { [BROWSE_OPDS_API_REQUEST_ID]: { data: { result: mockResult } } },
-    opds: { browser: { breadcrumb: [{}, { name: "My catalog" }] } } });
+    opds: { browser: { header: {}, breadcrumb: [{}, { name: "My catalog" }] } } });
 jest.mock("readium-desktop/renderer/library/apiAction", () => ({ apiAction: mockApi }));
 jest.mock("readium-desktop/renderer/common/hooks/useSelector", () => ({ useSelector: (select: (state: unknown) => unknown) => select(mockState()) }));
 jest.mock("readium-desktop/renderer/common/hooks/useDispatch", () => ({ useDispatch: () => mockDispatch }));

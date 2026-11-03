@@ -7,6 +7,7 @@
 
 import * as styles from "readium-desktop/renderer/assets/styles/components/opdsBrowserOptions.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as WishlistIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
 import * as HistoryIcon from "readium-desktop/renderer/assets/icons/clock-reverse-icon.svg";
@@ -42,6 +43,7 @@ export const BrowserOptions = () => {
     const route = parseOpdsBrowserRoute(location.pathname);
     const identifier = route?.rootFeedIdentifier;
     const result = useSelector((state: ILibraryRootState) => apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("httpbrowser/browse")?.data?.result);
+    const home = useSelector((state: ILibraryRootState) => state.opds.browser.header.start);
     const catalogTitle = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb[1]?.name);
     const [open, setOpen] = React.useState(false);
     const [cached, setCached] = React.useState<{ identifier: string; links: OpdsBrowserLinks }>();
@@ -112,6 +114,7 @@ export const BrowserOptions = () => {
             </Button>
             <Popover placement="bottom end" offset={10} className={`${stylesDropDown.PopoverContent} ${styles.opds_options_popover}`} style={{ zIndex: OVERLAY_Z_INDEX }}>
                 <Menu aria-label={__("opds.browserMenu.options")} className={`${stylesDropDown.dropdown_menu} ${styles.opds_options_menu} R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE`} onAction={key => {
+                    if (key === "home" && home) { dispatchOpdsLink(dispatch)({ url: home, type: ContentType.Opds2 }, location, __("header.homeTitle")); return; }
                     if (key === "refresh") { dispatch(historyActions.refresh.build()); return; }
                     if (key === "logout") { void logout(); return; }
                     const link = links[key as keyof OpdsBrowserLinks];
@@ -120,6 +123,7 @@ export const BrowserOptions = () => {
                     dispatchOpdsLink(dispatch)({ ...link, type: link.type || (key === "profile" ? ContentType.Html : ContentType.Opds2) },
                         location, labels[key as keyof typeof labels]);
                 }}>
+                    {home && <MenuItem id="home" className={styles.opds_options_item}><SVG ariaHidden svg={HomeIcon} /><span>{__("header.homeTitle")}</span></MenuItem>}
                     {links.shelf && <MenuItem id="shelf" textValue={labels.shelf} className={`${styles.opds_options_item} R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE`}><SVG ariaHidden svg={ShelfIcon} /><span>{labels.shelf}</span></MenuItem>}
                     {links.wishlist && <MenuItem id="wishlist" textValue={labels.wishlist} className={`${styles.opds_options_item} R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE`}><SVG ariaHidden svg={WishlistIcon} /><span>{labels.wishlist}</span></MenuItem>}
                     {links.history && <MenuItem id="history" textValue={labels.history} className={`${styles.opds_options_item} R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE`}><SVG ariaHidden svg={HistoryIcon} /><span>{labels.history}</span></MenuItem>}

@@ -139,7 +139,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                                 {this.props.catalogHeader ?
                                     <div className={stylesCatalogs.opds_header_actions}>
                                         {
-                                            this.home()
+                                            !this.props.catalogOptions && this.home()
                                         }
                                         {
                                             this.props.catalogOptions || this.bookshelf()
