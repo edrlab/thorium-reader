@@ -114,6 +114,29 @@ test("retains discovered links across feeds and never carries them into another 
     expect(item("shelf")).toBeNull(); expect(item("wishlist")).toBeNull(); expect(item("logout")).toBeNull();
 });
 
+test("opens a discovered custom feed by its title after navigating within the catalog", async () => {
+    const custom = { url: "https://example.org/recommendations", title: "Staff Picks", type: "application/opds+json" };
+    feed(catalog, { custom: [custom, custom] });
+    await render();
+
+    const child = "https://example.org/child";
+    mockLocation.pathname = buildRoute("catalog-a", "Child", child, 3);
+    feed(child);
+    await render();
+    await open();
+
+    const entries = Array.from(document.querySelectorAll<HTMLElement>('[role="menuitem"]'))
+        .filter(element => element.textContent === custom.title);
+    expect(entries).toHaveLength(1);
+    await activate(entries[0]);
+    expect(mockLink).toHaveBeenCalledWith(custom, mockLocation, custom.title);
+
+    mockLocation.pathname = buildRoute("catalog-b", "Other", "https://other.example/catalog");
+    await render();
+    await open();
+    expect(item(`custom:${custom.url}`)).toBeNull();
+});
+
 test("offers logout only on a successful authenticated view and returns to root after clearing credentials", async () => {
     mockApi.mockResolvedValue({ catalogUrl: catalog, links: { shelf }, authenticated: true });
     mockLocation.pathname = buildRoute("catalog-a", "Shelf", shelf.url, 3); feed(shelf.url);

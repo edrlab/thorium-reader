@@ -16,7 +16,7 @@ import {
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getOpdsFeedColor, getOpdsFeedIcon } from "readium-desktop/common/models/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
-import { ContentType } from "readium-desktop/utils/contentType";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import { OPDS_PROGRESSION_MEDIA_TYPE, OPDS_PROGRESSION_REL } from "readium-desktop/common/models/opdsProgression";
 import { normalizeLcpHashedPassphrase } from "readium-desktop/utils/lcp";
 
@@ -92,6 +92,12 @@ const supportedFileTypeLinksForPayWallAcquisition = [
     ContentType.Xml,
     ContentType.AtomXml,
 ];
+
+const handledFeedRelations = new Set([
+    "next", "previous", "first", "last", "start", "up", "search", "authenticate", "self",
+    "shelf", "http://opds-spec.org/shelf", "http://opds-spec.org/wishlist",
+    "http://opds-spec.org/history", "profile",
+]);
 
 export const normalizeOpdsAuthenticationLink = (
     authenticate: unknown,
@@ -722,6 +728,13 @@ export class OpdsFeedViewConverter {
                     .map((link) => this.convertLinkToView(link, baseUrl)),
                 text: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { type: [ContentType.Html] }),
                 self: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
+                custom: r2OpdsFeed.Links.filter((link) => {
+                    const type = parseContentType(link.TypeLink);
+                    return link.Href && typeof link.Title === "string" && link.Title.trim() &&
+                        (type === ContentType.Opds2 || type === ContentType.AtomXml) &&
+                        !link.Rel?.some((rel) => handledFeedRelations.has(rel));
+                }).map((link) => this.convertLinkToView(link, baseUrl))
+                    .filter((link) => /^https?:\/\//i.test(link.url)),
             }
             : undefined;
         const metadata: IOpdsFeedMetadataView | undefined = r2OpdsFeed.Metadata
