@@ -88,7 +88,7 @@ test("maps every protocol 1 field without mutating the R2 snapshot", () => {
 
     const mapped = toVoiceLinkSnapshot(source);
 
-    expect(mapped).toEqual({
+    expect(mapped).toStrictEqual({
         currentSequence: 41,
         generation: 7,
         protocol: 1,
@@ -138,7 +138,7 @@ test("maps every protocol 1 field without mutating the R2 snapshot", () => {
             },
         ],
     });
-    expect(source).toEqual(before);
+    expect(source).toStrictEqual(before);
 });
 
 test("omits optional protocol fields whose R2 values are undefined", () => {
@@ -154,7 +154,9 @@ test("omits optional protocol fields whose R2 values are undefined", () => {
     };
     source.units.length = 1;
 
-    expect(toVoiceLinkSnapshot(source)).toEqual({
+    const mapped = toVoiceLinkSnapshot(source);
+
+    expect(mapped).toStrictEqual({
         currentSequence: 41,
         generation: 7,
         protocol: 1,
@@ -171,6 +173,16 @@ test("omits optional protocol fields whose R2 values are undefined", () => {
             },
         ],
     });
+    expect(Object.hasOwn(mapped, "synthesisHint")).toBe(false);
+    expect(Object.hasOwn(mapped.source, "voiceName")).toBe(false);
+    expect(Object.hasOwn(mapped.source, "voiceURI")).toBe(false);
+    expect(Object.hasOwn(mapped.source, "lang")).toBe(false);
+    expect(Object.hasOwn(mapped.units[0], "lang")).toBe(false);
+    expect(Object.hasOwn(mapped.units[0], "direction")).toBe(false);
+    expect(Object.hasOwn(mapped.units[0].block, "htmlTag")).toBe(false);
+    expect(Object.hasOwn(mapped.units[0].block, "headingLevel")).toBe(false);
+    expect(Object.hasOwn(mapped.units[0].block, "epubTypes")).toBe(false);
+    expect(Object.hasOwn(mapped.units[0].block, "ariaRole")).toBe(false);
 });
 
 test("activates from the case-sensitive VoiceLink token URI independently of its localized name", () => {
