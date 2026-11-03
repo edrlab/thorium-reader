@@ -250,8 +250,8 @@ export function* addFeed(
                 if (opdsFeedView) {
                     const candidates = [
                         ...(opdsFeedView.links?.authenticationDocument || []),
-                        ...(opdsFeedView.links?.bookshelf || []),
                         ...(opdsFeedView.links?.authenticate || []),
+                        ...(opdsFeedView.links?.bookshelf || []),
                     ];
                     for (const authDoc of candidates) {
                         try {

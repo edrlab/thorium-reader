@@ -37,6 +37,8 @@ export async function getOpdsBrowserOptions(catalogUrl: string, currentUrl: stri
                 result.links = { ...result.links, ...readOpdsBrowserLinks(doc?.links, base) };
                 const links = doc?.links;
                 if (discoverAuthenticationDocument && type === ContentType.Opds2 && Array.isArray(links)) {
+                    // Discover documents advertised by the feed. A URL found during
+                    // feed registration is already passed in as authenticationUrl below.
                     const auth = links.find((link: { rel?: string | string[]; href?: string }) =>
                         (Array.isArray(link?.rel) ? link.rel : [link?.rel]).includes("http://opds-spec.org/auth/document"));
                     if (auth?.href) discovered.add(new URL(auth.href, base).toString());
