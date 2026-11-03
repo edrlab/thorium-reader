@@ -108,7 +108,6 @@
         "importAnnotation": "",
         "lang": "ენა",
         "lastRead": "",
-        "login": "",
         "logout": "",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -163,15 +162,12 @@
         "update": "",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

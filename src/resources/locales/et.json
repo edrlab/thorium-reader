@@ -108,7 +108,6 @@
         "importAnnotation": "Impordi märkmed",
         "lang": "Keel",
         "lastRead": "Viimatiloetud",
-        "login": "Logi sisse",
         "logout": "Logi välja",
         "missing": "Puuduvad failid",
         "missingUnavailableDescription": "Kuna salvestatud failid pole saadaval, siis selle väljaande avamine pole võimalik. Võid ta uuesti importida või ava „Seadistused“ → „Andmeruum“ ning lisa või muuda täiendavat andmeruumi.",
@@ -163,15 +162,12 @@
         "update": "Muuda",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

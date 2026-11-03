@@ -108,7 +108,6 @@
         "importAnnotation": "Importer les notes",
         "lang": "Langue",
         "lastRead": "Dernière lecture",
-        "login": "Connexion",
         "logout": "Déconnexion",
         "missing": "Fichiers manquants",
         "missingUnavailableDescription": "Cette publication ne peut pas être chargée car ses fichiers ne sont pas disponibles. Il faut la réimporter ou aller dans Préférences > Stockage pour ajouter ou modifier le stockage additionnel.",
@@ -163,15 +162,12 @@
         "update": "Modifier",
         "userProfile": {
             "available": "Disponibles : {{count}}",
-            "bookshelf": "Ouvrir les prêts et réservations",
             "edit": "Modifier le profil",
             "holds": "Réservations",
             "loading": "Chargement du compte…",
             "loans": "Prêts",
             "title": "Compte",
-            "total": "Limite : {{count}}",
-            "unavailable": "Les informations du profil sont indisponibles.",
-            "used": "{{used}} sur {{total}} utilisés"
+            "unavailable": "Les informations du profil sont indisponibles."
         }
     },
     "dialog": {

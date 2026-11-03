@@ -108,7 +108,6 @@
         "importAnnotation": "Importar anotación",
         "lang": "Idioma",
         "lastRead": "Último leído",
-        "login": "Iniciar sesión",
         "logout": "Cerrar sesión",
         "missing": "Faltan archivos",
         "missingUnavailableDescription": "Esta publicación no se puede abrir porque sus archivos no se encuentran disponibles en el espacio de almacenamiento. Vuelve a importarla, o ve a Opciones, Almacenamiento, para añadir o cambiar el espacio de almacenamiento adicional.",
@@ -163,15 +162,12 @@
         "update": "Editar",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

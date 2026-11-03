@@ -108,7 +108,6 @@
         "importAnnotation": "Importér noter",
         "lang": "Sprog",
         "lastRead": "Senest læst",
-        "login": "Log ind",
         "logout": "Log ud",
         "missing": "Manglende filer",
         "missingUnavailableDescription": "Denne bog kan ikke åbnes, da dens filer ikke er tilgængelige. Re-importér eller gå til Indstillinger og Lagerplads for at ændre eller tilføje mere lagerplads.",
@@ -163,15 +162,12 @@
         "update": "Rediger",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

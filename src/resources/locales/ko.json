@@ -108,7 +108,6 @@
         "importAnnotation": "",
         "lang": "언어선택",
         "lastRead": "최근 읽은 자료",
-        "login": "",
         "logout": "",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -163,15 +162,12 @@
         "update": "편집",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

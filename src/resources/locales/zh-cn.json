@@ -108,7 +108,6 @@
         "importAnnotation": "导入笔记",
         "lang": "语言",
         "lastRead": "上次阅读",
-        "login": "登录",
         "logout": "登出",
         "missing": "缺失文件",
         "missingUnavailableDescription": "打不开这个出版物，因为储存文件无法访问。请重新导入出版物，或导航至“设置-储存”，添加或改变附加储存位置。",
@@ -163,15 +162,12 @@
         "update": "编辑",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

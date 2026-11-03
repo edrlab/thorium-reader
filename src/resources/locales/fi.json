@@ -108,7 +108,6 @@
         "importAnnotation": "Tuo muistiinpanot",
         "lang": "Kieli",
         "lastRead": "Luettu viimeksi",
-        "login": "Kirjaudu sisään",
         "logout": "Kirjaudu ulos",
         "missing": "Puuttuvat tiedostot",
         "missingUnavailableDescription": "Julkaisua ei voi avata, koska sen tallennettuja tiedostoja ei ole käytettävissä. Tuo julkaisu uudelleen tai siirry kohtaan asetukset, sitten tallennustila, jotta voit lisätä tai muuttaa tallennustilaa.",
@@ -163,15 +162,12 @@
         "update": "Muokkaa",
         "userProfile": {
             "available": "Saatavilla: {{count}}",
-            "bookshelf": "Avaa kirjahylly",
             "edit": "Muokkaa profiilia",
             "holds": "Varaukset",
             "loading": "Ladataan tiliä…",
             "loans": "Lainat",
             "title": "Tili",
-            "total": "Rajoitus: {{count}}",
-            "unavailable": "Profiilitietoja ei ole saatavilla",
-            "used": "{{used}} /{{total}} käytetty"
+            "unavailable": "Profiilitietoja ei ole saatavilla"
         }
     },
     "dialog": {

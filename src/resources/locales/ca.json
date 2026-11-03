@@ -108,7 +108,6 @@
         "importAnnotation": "Importar notes",
         "lang": "Idioma",
         "lastRead": "Última lectura",
-        "login": "Iniciar sessió",
         "logout": "Tancar sessió",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -163,15 +162,12 @@
         "update": "Editar",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

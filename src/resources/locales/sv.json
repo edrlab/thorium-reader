@@ -108,7 +108,6 @@
         "importAnnotation": "Importera anteckningar",
         "lang": "Språk",
         "lastRead": "Senast läst",
-        "login": "Logga in",
         "logout": "Logga ut",
         "missing": "Filer saknas",
         "missingUnavailableDescription": "Den här boken kan inte öppnas eftersom de lagrade filerna inte går att komma åt. Importera boken igen, eller gå till inställningar och sedan Lagring för att lägga till eller redigera extra lagring.",
@@ -163,15 +162,12 @@
         "update": "Redigera",
         "userProfile": {
             "available": "",
-            "bookshelf": "Öppna bokhylla",
             "edit": "Redigera användarprofil",
             "holds": "",
             "loading": "Läser in konto…",
             "loans": "Lån",
             "title": "Konto",
-            "total": "",
-            "unavailable": "",
-            "used": "{{used}} av {{total}} använda"
+            "unavailable": ""
         }
     },
     "dialog": {

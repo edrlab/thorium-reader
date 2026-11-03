@@ -108,7 +108,6 @@
         "importAnnotation": "メモを取りこむ",
         "lang": "言語",
         "lastRead": "最終閲覧",
-        "login": "ログイン",
         "logout": "ログアウト",
         "missing": "",
         "missingUnavailableDescription": "この出版物は、保存先のファイルがすでにないため開くことができません。再登録するか、設定の「保存先」から新しい保存先を加えるか、変更してください。",
@@ -163,15 +162,12 @@
         "update": "編集",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

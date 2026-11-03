@@ -108,7 +108,6 @@
         "importAnnotation": "Importovat poznámky",
         "lang": "Jazyk",
         "lastRead": "Naposledy čteno",
-        "login": "Přihlásit se",
         "logout": "Odhlásit se",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -163,15 +162,12 @@
         "update": "Upravit",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

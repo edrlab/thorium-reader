@@ -108,7 +108,6 @@
         "importAnnotation": "Notları içe aktar",
         "lang": "Dil",
         "lastRead": "Son Okunan",
-        "login": "Giriş yap",
         "logout": "Oturumu Kapat",
         "missing": "Eksik dosyalar",
         "missingUnavailableDescription": "Bu eser, depolanan dosyaları kullanılamadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
@@ -163,15 +162,12 @@
         "update": "Düzenle",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

@@ -108,7 +108,6 @@
         "importAnnotation": "Importar anotações",
         "lang": "Idioma",
         "lastRead": "Última leitura",
-        "login": "Iniciar sessão",
         "logout": "Terminar sessão",
         "missing": "",
         "missingUnavailableDescription": "Não foi possível abrir esta publicação porque os ficheiros armazenados não estão disponíveis. Importe-a novamente ou aceda a Configurações -> Armazenamento para adicionar ou alterar o espaço de armazenamento adicional.",
@@ -163,15 +162,12 @@
         "update": "Editar",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

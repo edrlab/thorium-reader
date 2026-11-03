@@ -108,7 +108,6 @@
         "importAnnotation": "",
         "lang": "Hizkuntza",
         "lastRead": "Azken Irakurketa",
-        "login": "",
         "logout": "",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -163,15 +162,12 @@
         "update": "Editatu",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

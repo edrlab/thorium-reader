@@ -108,7 +108,6 @@
         "importAnnotation": "Importer notater",
         "lang": "Språk",
         "lastRead": "Sist lest",
-        "login": "Logg inn",
         "logout": "Logg ut",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -163,15 +162,12 @@
         "update": "Rediger",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {

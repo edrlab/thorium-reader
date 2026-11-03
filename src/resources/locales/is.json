@@ -108,7 +108,6 @@
         "importAnnotation": "Sækja glósur",
         "lang": "Tungumál",
         "lastRead": "Síðast lesið",
-        "login": "Skrá inn",
         "logout": "Skrá út",
         "missing": "Skrár vantar",
         "missingUnavailableDescription": "Ekki er hægt að opna bókina þar sem vistaðar skrár hennar eru ekki tiltækar. Bættu bókinni við aftur eða farðu í Stillingar og síðan Geymsla til að bæta við eða breyta viðbótargeymslu.",
@@ -163,15 +162,12 @@
         "update": "Breyta",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
