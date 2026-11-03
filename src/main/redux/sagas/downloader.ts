@@ -302,7 +302,7 @@ function* publishDownloadProgress(
     const label = downloadLabel || filenames;
     const payload: downloadActions.progress.Payload = {
         id,
-        downloadLabel: label.length > 50 ? label.substring(0, 50) + "..." : label,
+        downloadLabel: label,
         downloadUrls: subDownloads.map((file) => file.url),
         // Copy the array so later samples never mutate a previously dispatched Redux payload.
         subDownloads: [...subDownloads],
