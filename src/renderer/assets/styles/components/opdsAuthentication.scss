@@ -109,6 +109,10 @@
     margin: 24px 0;
     line-height: 1.6;
     overflow-wrap: anywhere;
+
+    p {
+      font-weight: bold;
+    }
   }
 
   .separator {

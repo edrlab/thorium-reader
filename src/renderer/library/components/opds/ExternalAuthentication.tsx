@@ -48,7 +48,7 @@ export const ExternalAuthentication = ({ auth, catalogIdentifier, __ }: { auth: 
         <div role="status" aria-live="polite" className={styles.message}>
             {status === "failed" ? <p className={styles.error}>{__("message.notifications.authenticationFailed")}</p>
                 : status === "expired" ? <p className={styles.error}>{__("opds.network.timeout")}</p>
-                : <p>{__("catalog.opds.auth.external")}</p>}
+                    : <p>{__("catalog.opds.auth.external")}</p>}
         </div>
         <hr className={styles.separator} />
         <p className={styles.message}>{__("catalog.opds.auth.externalBrowserInstructions")}</p>
