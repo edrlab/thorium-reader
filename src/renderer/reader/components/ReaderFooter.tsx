@@ -21,7 +21,7 @@ import { connect } from "react-redux";
 import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import type { IReadiumPositionList } from "readium-desktop/common/readium/positions";
-import { getReadiumPositionProgression } from "readium-desktop/common/readium/positions";
+import { getReadingLocationProgression } from "readium-desktop/renderer/common/readingLocation";
 import { publicationActions } from "readium-desktop/common/redux/actions";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -150,6 +150,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         }
 
         const isAudioBook = isAudiobookFn(r2Publication);
+        const readingLocation = !isPdf && !isDivina && !isAudioBook ?
+            getReadingLocationProgression(currentLocation.locator, r2Publication.Spine, this.props.readiumPositionList) : undefined;
+        const currentSpineIndex = readingLocation?.spineIndex;
 
         const { __ } = this.props;
         // const { moreInfo } = this.state;
@@ -172,7 +175,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             : isPdf ?
                 parseInt(currentLocation.locator?.href, 10).toString()
                 :
-                ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator?.href)) + 1).toString()
+                ((currentSpineIndex ?? r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator?.href)) + 1).toString()
         ) ==
             (isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
                 (isDivina
@@ -365,7 +368,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                 // console.log(link.Href, currentLocation.locator?.href);
                                                 atCurrentLocation = currentLocation.locator?.href === link.Href;
                                             } else {
-                                                atCurrentLocation = currentLocation.locator?.href === link.Href;
+                                                atCurrentLocation = currentSpineIndex === undefined ?
+                                                    currentLocation.locator?.href === link.Href : currentSpineIndex === index;
                                             }
                                             // console.log(atCurrentLocation, currentLocation.locator?.href, link.Href);
                                             if (atCurrentLocation) {
@@ -476,13 +480,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                     <Tooltip placement="bottom" offset={0} className={stylesReaderFooter.tooltip_content}>
                                                         <div
                                                             id={stylesReaderFooter.arrow_box}
-                                                            style={this.getStyle()}
+                                                            style={this.getStyle(currentSpineIndex)}
                                                         >
                                                             <span>{`[${this.getCurrentChapter(link)+1} / ${this.getTotalChapters()}] `} {
                                                                 isPdf ? "" :
                                                                 ` ${link.Title ? `${link.Title}${atCurrentLocation && spineTitle ? ` (${spineTitle})` : ""}` : (atCurrentLocation && spineTitle ? spineTitle : "")}`}</span>
                                                             {atCurrentLocation ?
-                                                                this.getProgression(link, isAudioBook).map((str, i) => {
+                                                                this.getProgression(link, isAudioBook, readingLocation).map((str, i) => {
                                                                     return !str ? <></> :
                                                                     i === 0 ?
                                                                     <p key={`p${i}`}>{str}</p>
@@ -582,7 +586,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         };
     }
 
-    private getProgression(link: Link, isAudioBook: boolean): string[] {
+    private getProgression(link: Link, isAudioBook: boolean, readingLocation: ReturnType<typeof getReadingLocationProgression>): string[] {
         const { currentLocation, isDivina, isPdf, __, r2Publication } = this.props;
 
         if (!currentLocation) {
@@ -606,17 +610,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         // can return 0!
         const totalChapters = this.getTotalChapters();
         const locations = currentLocation.locator.locations;
-        const localProgression = typeof locations.progression === "number" &&
+        const localProgression = readingLocation?.local ?? (typeof locations.progression === "number" &&
             Number.isFinite(locations.progression) ?
-            Math.min(1, Math.max(0, locations.progression)) : 0;
+            Math.min(1, Math.max(0, locations.progression)) : 0);
         const fallbackGlobalProgression = totalChapters > 0 ?
             ((isPdf ? 1 : localProgression) + Math.max(0, currentChapter)) / totalChapters : 0;
-
-        const readiumPositionProgression = getReadiumPositionProgression(
-            currentLocation.locator,
-            this.props.readiumPositionList,
-            link.Href,
-        );
 
         const locatorTotalProgression = typeof locations.totalProgression === "number" &&
             Number.isFinite(locations.totalProgression) ?
@@ -624,7 +622,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         // Prefer Readium position progression, then the locator total progression,
         // and finally the legacy equal-chapter approximation.
-        const globalProgression = readiumPositionProgression?.totalProgression ??
+        const globalProgression = readingLocation?.total ??
             locatorTotalProgression ?? Math.min(1, Math.max(0, fallbackGlobalProgression));
 
         const globalProgressionLabel = `${__("publication.progression.title")} ${Math.round(globalProgression * 100)}%`;
@@ -645,7 +643,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
     // Get the style of the differents element of the arrow box
     // Take a function returning the good left css property
-    private getStyle(): React.CSSProperties {
+    private getStyle(currentSpineIndex: number | undefined): React.CSSProperties {
 
         const { currentLocation, r2Publication, isPdf, isDivina } = this.props;
 
@@ -695,7 +693,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 // console.log(link.Href, currentLocation.locator?.href);
                 atCurrentLocation = currentLocation.locator?.href === link.Href;
             } else {
-                atCurrentLocation = currentLocation.locator?.href === link.Href;
+                atCurrentLocation = currentSpineIndex === undefined ?
+                    currentLocation.locator?.href === link.Href : currentSpineIndex === index;
             }
             // console.log(atCurrentLocation, currentLocation.locator?.href, link.Href);
 

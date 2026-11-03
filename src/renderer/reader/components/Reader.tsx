@@ -31,6 +31,7 @@ import {
     createReadiumPositionList, IReadiumPositionList, isEpubPositionListPublication,
     mapLocatorToReadiumPosition,
 } from "readium-desktop/common/readium/positions";
+import { getReadingLocationProgression } from "readium-desktop/renderer/common/readingLocation";
 import { dialogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { IReaderPdfConfig, IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { rgbToHex } from "readium-desktop/common/rgb";
@@ -2173,7 +2174,10 @@ class Reader extends React.Component<IProps, IState> {
         // See "Progression" comp inside publicationInfoContent.tsx
         const readerReadingLocation = this.state.currentLocation ? this.state.currentLocation : undefined;
         const locatorExt = readerReadingLocation || this.props.publicationView.lastReadingLocation;
-        if (typeof locatorExt?.locator?.locations?.progression !== "number") {
+        const spine = this.props.r2Publication?.Spine;
+        const readingLocation = locatorExt?.locator && spine ?
+            getReadingLocationProgression(locatorExt.locator, spine, this.readiumPositionList) : undefined;
+        if (typeof locatorExt?.locator?.locations?.progression !== "number" && !(this.readiumPositionList && readingLocation)) {
             return;
         }
         try {
@@ -2267,16 +2271,14 @@ class Reader extends React.Component<IProps, IState> {
 
             } else if (this.props.r2Publication?.Spine && locatorExt.locator?.href) {
 
-                const spineIndex = this.props.r2Publication.Spine.findIndex((l) => {
-                    return l.Href === locatorExt.locator.href;
-                });
-                if (spineIndex >= 0) {
+                if (readingLocation) {
+                    const { spineIndex, total } = readingLocation;
                     if (isFixedLayoutPublication) {
                         const pageNum = spineIndex + 1;
                         const totalPages = this.props.r2Publication.Spine.length;
 
                         txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
-                        txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
+                        txtProgression = `${Math.round(100 * (this.readiumPositionList ? total : pageNum / totalPages))}%`;
 
                     } else {
 
@@ -2293,7 +2295,7 @@ class Reader extends React.Component<IProps, IState> {
                             txtPagination = this.props.__("reader.navigation.currentPage", { current: epubPage });
                         }
 
-                        const percent = Math.round(locatorExt.locator.locations.progression * 100);
+                        const percent = Math.round(total * 100);
                         txtProgression = `${spineIndex + 1}/${this.props.r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
 
                         if (locatorExt.headings) {
