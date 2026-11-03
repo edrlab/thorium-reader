@@ -55,7 +55,6 @@ class Entry extends React.Component<IProps, undefined> {
         );
 
         const getInitial = (title: string): string => {
-    // première lettre ou chiffre, en ignorant guillemets, parenthèses, etc.
     const match = title?.match(/[\p{L}\p{N}]/u);
     return match ? match[0].toLocaleUpperCase() : "•";
 };
