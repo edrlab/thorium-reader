@@ -1,0 +1,1521 @@
+{
+    "accessibility": {
+        "annotationNote": "एनोटेशन नोट",
+        "bookMenu": "मेनू",
+        "bookmarkNote": "बुकमार्क नोट",
+        "cancelDownload": "डाउनलोड रद्द करें: {{- title}}",
+        "closeDialog": "बंद करें",
+        "closeNotification": "सूचना बंद करें",
+        "copyNotificationInstruction": "सूचना कॉपी करें",
+        "decreaseSetting": "{{- setting}} घटाएँ",
+        "downloadProgress": "डाउनलोड प्रगति: {{- title}}",
+        "downloadProgressUnknown": "डाउनलोड प्रगति अज्ञात है।",
+        "editTag": "टैग संपादित करें: {{- tag}}",
+        "favoriteCatalog": "पसंदीदा कैटलॉग: {{- title}}",
+        "increaseSetting": "{{- setting}} बढ़ाएँ",
+        "leftSlideButton": "बाईं ओर स्लाइड करें",
+        "loading": "लोड हो रहा है…",
+        "mainContent": "मुख्य सामग्री",
+        "notificationCopied": "क्लिपबोर्ड में कॉपी किया गया:",
+        "notificationCopyFailed": "सूचना कॉपी नहीं की जा सकी",
+        "printPage": "पृष्ठ {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "{{- setting}} रीसेट करें",
+        "rightSlideButton": "दाईं ओर स्लाइड करें",
+        "searching": "खोज हो रही है…",
+        "skipLink": "सामग्री पर जाएँ",
+        "toolbar": "टूलबार"
+    },
+    "apiapp": {
+        "documentation": "थोरियम दस्तावेज़ीकरण",
+        "howItWorks": "यह कैसे काम करता है?",
+        "informations": "फ्रांस में, कई सार्वजनिक पुस्तकालय एक मशीन-पठनीय कैटलॉग प्रदान करते हैं (ओपीडीएस के समान लेकिन समान नहीं), जिससे उपयोगकर्ता अपने निजी बुकशेल्फ से डिजिटल प्रकाशन डाउनलोड कर सकते हैं। थोरियम रीडर में इस तकनीक को एकीकृत करने से आप ईबुक या ऑडियोबुक को सीधे थोरियम रीडर में डाउनलोड करके तुरंत पढ़ सकते हैं।\nआप अपने फ्रांसीसी सार्वजनिक पुस्तकालय खाते को थोरियम रीडर से कैसे जोड़ते हैं? यह सरल है। खोज क्षेत्र में एक फ्रांसीसी शहर ('पेरिस') या पुस्तकालय के नाम का हिस्सा दर्ज करें और खोज बटन दबाएँ। आपकी खोज से मेल खाने वाली सार्वजनिक पुस्तकालयों की सूची दिखाई देगी। एक पुस्तकालय चुनें और जोड़ें दबाएँ। अपडेटेड कैटलॉग सूची में, इस पुस्तकालय को चुनें: एक प्रमाणीकरण फॉर्म प्रदर्शित होगा। अपना उपयोगकर्ता नाम/ईमेल पता और पासवर्ड दर्ज करें, और लॉगिन दबाएँ। अब आप अपने निजी बुकशेल्फ की सामग्री देख सकते हैं, जहाँ से आप पहले उधार ली गई ईबुक और ऑडियोबुक डाउनलोड और पढ़ सकते हैं।",
+        "noLibraryFound": "कोई पुस्तकालय नहीं मिला ({{- name}})"
+    },
+    "app": {
+        "edit": {
+            "copy": "कॉपी करें",
+            "cut": "काटें",
+            "paste": "चिपकाएँ",
+            "print": "प्रिंट करें",
+            "redo": "पुनः करें",
+            "selectAll": "सभी चुनें",
+            "title": "संपादन",
+            "undo": "पूर्ववत करें"
+        },
+        "hide": "{{- appName}} छिपाएँ",
+        "quit": "{{- appName}} छोड़ें",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "नहीं",
+                        "yes": "हाँ"
+                    },
+                    "help": "इसे सक्रिय करें यदि आप चाहते हैं कि एप्लिकेशन बंद करने पर खुले हुए रीडर विंडो अगले लॉन्च पर स्वचालित रूप से फिर से खुलें।",
+                    "message": "पढ़ने का सत्र सहेजना और पुनर्स्थापित करना",
+                    "title": "सत्र सहेजें?"
+                }
+            }
+        },
+        "update": {
+            "message": "नया संस्करण उपलब्ध है, अधिक जानने के लिए क्लिक करें।",
+            "title": "{{- appName}} सॉफ्टवेयर अपडेट।",
+            "whatsnew": "नया संस्करण इंस्टॉल हो गया है, और जानने के लिए क्लिक करें"
+        },
+        "window": {
+            "showLibrary": "पुस्तकालय/बुकशेल्फ दिखाएँ",
+            "trayHint": "{{- appName}} अभी भी सूचना क्षेत्र में चल रहा है। पुस्तकालय दिखाने के लिए ट्रे आइकन पर क्लिक करें।",
+            "trayTooltip": "{{- appName}} - पुस्तकालय दिखाने या छिपाने के लिए क्लिक करें"
+        }
+    },
+    "catalog": {
+        "AddToFavorites": "पसंदीदा में जोड़ें",
+        "about": {
+            "title": "{{- appName}} के बारे में (ऑनलाइन)"
+        },
+        "addBookToLib": "आयात करें",
+        "addTags": "टैग जोड़ें",
+        "addTagsButton": "जोड़ें",
+        "allBooks": "सभी प्रकाशन",
+        "bookInfo": "प्रकाशन के बारे में",
+        "column": {
+            "ascending": "आरोही",
+            "descending": "अवरोही",
+            "unsorted": "असॉर्टेड"
+        },
+        "customization": {
+            "fallback": {
+                "description": "कोई प्रोफ़ाइल विवरण नहीं",
+                "publications": "प्रोफ़ाइल प्रकाशन",
+                "screen": "कोई शीर्षक नहीं",
+                "title": "प्रोफ़ाइल शीर्षक"
+            }
+        },
+        "delete": "हटाएँ",
+        "deleteBook": "हटाएँ",
+        "deleteTag": "टैग हटाएँ",
+        "description": "विवरण",
+        "downloaded": "डाउनलोड किया गया",
+        "emptyTagList": "कोई टैग किए गए प्रकाशन नहीं।",
+        "entry": {
+            "continueReading": "पढ़ना जारी रखें",
+            "lastAdditions": "हाल ही में जोड़ा गया"
+        },
+        "export": "इस रूप में सहेजें",
+        "exportAnnotation": "नोट्स निर्यात करें",
+        "format": "प्रारूप",
+        "importAnnotation": "नोट्स आयात करें",
+        "lang": "भाषा",
+        "lastRead": "अंतिम पढ़ा गया",
+        "logout": "लॉग आउट करें",
+        "missing": "अनुपलब्ध फ़ाइलें",
+        "missingUnavailableDescription": "यह प्रकाशन नहीं खोला जा सकता क्योंकि इसकी संग्रहीत फ़ाइलें उपलब्ध नहीं हैं। इसे फिर से आयात करें, या अतिरिक्त स्टोरेज जोड़ने या बदलने के लिए सेटिंग्स और फिर स्टोरेज पर जाएँ।",
+        "moreInfo": "प्रकाशन विवरण",
+        "myBooks": "मेरे प्रकाशन",
+        "noPublicationHelpL1": "यहाँ फ़ाइलें ड्रॉप करें",
+        "noPublicationHelpL2": "या ऊपर दिए गए \"{{- importTitle }}\" बटन का उपयोग करें।",
+        "noPublicationHelpL3": "एलसीपी-संरक्षित प्रकाशन समर्थित हैं।",
+        "noPublicationHelpL4": "समर्थित एक्सटेंशन:",
+        "numberOfPages": "पृष्ठों की संख्या",
+        "opds": {
+            "auth": {
+                "cancel": "रद्द करें",
+                "external": "लॉगिन पृष्ठ आपके वेब ब्राउज़र में खुलेगा, कृपया निर्देशों का पालन करें। लॉग इन होने के बाद वेब ब्राउज़र आपको इस एप्लिकेशन पर वापस ले आएगा।",
+                "fallback": "नोट: डिफ़ॉल्ट वेब ब्राउज़र विधि से लॉगिन में समस्या होने पर, ऐप के अंदर की वैकल्पिक विधि से फिर कोशिश करें।",
+                "login": "लॉगिन",
+                "password": "पासवर्ड",
+                "register": "रजिस्टर",
+                "retry": "फिर कोशिश करें",
+                "unauthorized": "अनधिकृत",
+                "unauthorizedUnsupportedType": "अनधिकृत (असमर्थित WWWAuthenticate प्रकार '{{- type}}')",
+                "username": "उपयोगकर्ता नाम/ईमेल पता"
+            },
+            "info": {
+                "availableSince": "से उपलब्ध",
+                "availableState": {
+                    "available": "उपलब्ध",
+                    "ready": "तैयार",
+                    "reserved": "आरक्षित",
+                    "unavailable": "अनुपलब्ध",
+                    "unknown": "अज्ञात"
+                },
+                "availableUntil": "तक उपलब्ध",
+                "copyAvalaible": "उपलब्ध",
+                "copyTotal": "प्रतियाँ",
+                "holdPosition": "होल्ड स्थिति",
+                "holdTotal": "होल्ड",
+                "numberOfItems": "आइटम की संख्या",
+                "priveValue": "मूल्य",
+                "state": "स्थिति"
+            }
+        },
+        "openFolder": "डायरेक्टरी खोलें",
+        "publisher": "प्रकाशक",
+        "readBook": "पढ़ें",
+        "released": "प्रकाशित",
+        "removeFromFavorites": "पसंदीदा से हटाएँ",
+        "selectTableHeaders": "दिखाने के लिए स्तंभ चुनें",
+        "sort": "इसके अनुसार क्रमबद्ध करें",
+        "tag": "टैग",
+        "tags": "टैग्स",
+        "update": "संपादित करें",
+        "userProfile": {
+            "available": "उपलब्ध: {{count}}",
+            "edit": "प्रोफ़ाइल संपादित करें",
+            "holds": "आरक्षण",
+            "loading": "खाता लोड हो रहा है…",
+            "loans": "उधार",
+            "title": "खाता",
+            "unavailable": "प्रोफ़ाइल जानकारी उपलब्ध नहीं है।"
+        }
+    },
+    "dialog": {
+        "annotations": {
+            "descAuthor": "'{{- author}}' द्वारा",
+            "descCreator": "द्वारा बनाया गया",
+            "descList_one": "{{- count}} नोट {{- creator}} '{{- title}}' {{- author}} प्रकाशन में आयात किया जाएगा",
+            "descList_other": "{{- count}} नोट {{- creator}} '{{- title}}' {{- author}} प्रकाशन में आयात किए जाएंगे",
+            "descNewer_one": "टकराव: {{- count}} अधिक नया नोट",
+            "descNewer_other": "टकराव: {{- count}} अधिक नए नोट",
+            "descOlder_one": "टकराव: {{- count}} अधिक पुराना नोट",
+            "descOlder_other": "टकराव: {{- count}} अधिक पुराने नोट",
+            "descTitle": "नोट्स शीर्षक: ",
+            "importAll": "सभी नोट्स आयात करें",
+            "importWithoutConflict": "केवल संघर्ष-मुक्त नोट्स आयात करें",
+            "origin": "मूल प्रकाशन: '{{- title}}' {{- author}}",
+            "title": "नोट्स आयात करें?"
+        },
+        "cancel": "रद्द करें",
+        "customization": {
+            "splashscreen": {
+                "dontShow": "दोबारा न दिखाएँ",
+                "fallbackWelcomeScreen": "कोई स्वागत-स्क्रीन नहीं दी गई",
+                "state": "स्थिति: {{- state}}",
+                "title": "अनुकूलन प्रोफ़ाइल का प्रावधान और सक्रियण"
+            }
+        },
+        "deleteAnnotations": "नोट्स हटाएँ?",
+        "deleteAnnotationsText_one": "क्या आप वाकई {{- count}} नोट को हटाना चाहते हैं?",
+        "deleteAnnotationsText_other": "क्या आप वाकई {{- count}} नोटों को हटाना चाहते हैं?",
+        "deleteBookmarks": "बुकमार्क्स हटाएँ?",
+        "deleteBookmarksText_one": "क्या आप वाकई {{- count}} बुकमार्क को हटाना चाहते हैं?",
+        "deleteBookmarksText_other": "क्या आप वाकई {{- count}} बुकमार्कों को हटाना चाहते हैं?",
+        "deleteFeed": "कैटलॉग हटाएँ?",
+        "deletePublication": "प्रकाशन हटाएँ?",
+        "deletePublicationWithNotes": "चेतावनी: इस प्रकाशन में नोट्स और/या बुकमार्क्स हैं, वे भी हट जाएंगे! (यदि आप उन्हें रखना चाहते हैं, तो प्रकाशन हटाने से पहले नोट्स निर्यात करना सुनिश्चित करें)",
+        "import": "आयात की पुष्टि करें:",
+        "importError": "एक त्रुटि हुई, फ़ाइल एक्सटेंशन सत्यापित करें ({{acceptedExtension}})",
+        "renew": "ऋण नवीनीकरण/विस्तार करें?",
+        "return": "प्रकाशन वापस करें?",
+        "yes": "हाँ"
+    },
+    "error": {
+        "errorBox": {
+            "error": "त्रुटि संदेश:",
+            "message": "{{- filename}} में त्रुटि",
+            "title": "आंतरिक {{- appName}} त्रुटि"
+        }
+    },
+    "header": {
+        "allBooks": "सभी प्रकाशन",
+        "catalogs": "कैटलॉग",
+        "downloads": "डाउनलोड",
+        "fitlerTagTitle": "टैग द्वारा फ़िल्टर करें",
+        "gridTitle": "ग्रिड",
+        "home": "बुकशेल्फ मेनू",
+        "homeTitle": "होम",
+        "importTitle": "प्रकाशन आयात करें",
+        "listTitle": "टेबल",
+        "myCatalogs": "मेरे कैटलॉग",
+        "refreshTitle": "पुनः लोड करें",
+        "searchPlaceholder": "खोजें",
+        "searchTitle": "खोज",
+        "settings": "सेटिंग्स",
+        "settingsLabel": "एप्लिकेशन सेटिंग्स",
+        "viewMode": "दृश्य मोड"
+    },
+    "library": {
+        "filter": {
+            "addFilters": "फ़िल्टर जोड़ें",
+            "filterBy": "इस आधार पर फ़िल्टर करें",
+            "selectOption": "एक आइटम चुनें"
+        },
+        "lcp": {
+            "hidePassphrase": "पासफ़्रेज़ छिपाएँ",
+            "hint": "संकेत:",
+            "open": "खोलें",
+            "password": "पासफ्रेज",
+            "sentence": "इस प्रकाशन को खोलने के लिए एक एलसीपी पासफ्रेज की आवश्यकता है",
+            "showPassphrase": "पासफ़्रेज़ दिखाएँ",
+            "urlHint": "पासफ्रेज भूल गए? समर्थन प्राप्त करने के लिए यहाँ क्लिक करें।",
+            "whatIsLcp?": "एलसीपी क्या है?",
+            "whatIsLcpInfoDetails": "एलसीपी का मतलब 'लाइसेंस्ड कंटेंट प्रोटेक्शन' है।",
+            "whatIsLcpInfoDetailsLink": "अधिक जानने के लिए, ईडीआरलैब वेबसाइट पर इस लिंक पर क्लिक करें।"
+        },
+        "sorting": {
+            "addSorting": "क्रम जोड़ें",
+            "author": "लेखक",
+            "language": "भाषा",
+            "readingState": "पठन स्थिति",
+            "sortBy": "क्रमबद्ध करें: ",
+            "title": "शीर्षक"
+        }
+    },
+    "message": {
+        "annotations": {
+            "alreadyImported": "सभी नोट्स पहले ही आयात किए जा चुके हैं।",
+            "emptyFile": "फ़ाइल में कोई नोट्स उपलब्ध नहीं हैं।",
+            "nothing": "आयात करने के लिए कोई नोट तैयार नहीं है, आयात रद्द कर रहा है",
+            "success": "आयात सफलतापूर्वक पूर्ण हुआ।"
+        },
+        "diagnostics": {
+            "category": "श्रेणी: {{- category}}",
+            "causedBy": "कारण:",
+            "downloadSource": "डाउनलोड स्रोत: {{- source}}",
+            "error": "त्रुटि",
+            "httpStatus": "HTTP स्थिति: {{- status}}",
+            "invalidUrl": "[अमान्य URL]",
+            "source": "स्रोत: {{- source}}",
+            "url": "URL: {{- url}}"
+        },
+        "download": {
+            "cancelled": "डाउनलोड रद्द किया गया।",
+            "errors": {
+                "failed": "डाउनलोड विफल रहा।",
+                "hashMismatch": "डाउनलोड की गई फ़ाइल की अखंडता जाँच विफल रही: अपेक्षित SHA-256 हैश {{- expected}}, प्राप्त {{- actual}}।",
+                "httpGet": "HTTP डाउनलोड विफल रहा: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "अस्थायी डाउनलोड फ़ाइलनाम अमान्य है।",
+                "invalidLink": "डाउनलोड लिंक अमान्य है।",
+                "invalidTempDirectory": "अस्थायी डाउनलोड डायरेक्टरी अमान्य है।",
+                "lengthMismatch": "डाउनलोड की गई फ़ाइल की अखंडता जाँच विफल रही: अपेक्षित {{- expected}} बाइट, प्राप्त {{- actual}} बाइट।",
+                "pathMissing": "डाउनलोड की गई फ़ाइल का पथ उपलब्ध नहीं है।",
+                "publicationLinkMissing": "लाइसेंस में प्रकाशन का डाउनलोड लिंक नहीं है।",
+                "readStreamMissing": "डाउनलोड स्ट्रीम उपलब्ध नहीं है।",
+                "streamClosed": "डाउनलोड स्ट्रीम पूरा होने से पहले बंद हो गई।",
+                "tooManyFilenameAttempts": "अद्वितीय अस्थायी डाउनलोड फ़ाइलनाम नहीं बनाया जा सका: {{- path}}"
+            },
+            "failed": "“{{- hostname}}” से डाउनलोड नहीं हो सका। कृपया फिर कोशिश करें।",
+            "integrityFailed": "“{{- hostname}}” से डाउनलोड अधूरा या क्षतिग्रस्त है। कृपया फिर कोशिश करें।",
+            "saveFailed": "डाउनलोड सहेजा नहीं जा सका। उपलब्ध स्टोरेज और अनुमतियाँ जाँचें।",
+            "startedWithTitle": "{{- title}} डाउनलोड हो रहा है।"
+        },
+        "import": {
+            "alreadyImport": "[{{- title}}] पहले ही आयात किया जा चुका है।",
+            "errors": {
+                "acquisitionUrlMissing": "प्रकाशन का डाउनलोड URL उपलब्ध नहीं है या अमान्य है।",
+                "cbzNoImages": "CBZ संग्रह में कोई समर्थित छवि नहीं है।",
+                "contextMissing": "अनुपलब्ध",
+                "daisyConversionFailed": "DAISY प्रकाशन रूपांतरित नहीं किया जा सका।",
+                "manifestContext": "{{- url}} पर प्रकाशन मैनिफ़ेस्ट का @context पहचाना नहीं गया: {{- context}}",
+                "manifestImportFailed": "प्रकाशन मैनिफ़ेस्ट आयात करना विफल रहा।",
+                "manifestInvalidJson": "{{- url}} पर प्रकाशन मैनिफ़ेस्ट में अमान्य JSON।",
+                "manifestMissing": "प्रकाशन मैनिफ़ेस्ट उपलब्ध नहीं है।",
+                "manifestNotFound": "{{- url}} पर कोई प्रकाशन मैनिफ़ेस्ट नहीं मिला।",
+                "manifestParsingFailed": "{{- url}} पर प्रकाशन मैनिफ़ेस्ट पार्स नहीं किया जा सका।",
+                "noImportResult": "आयात से कोई प्रकाशन नहीं मिला।",
+                "notImported": "प्रकाशन को पुस्तकालय में जोड़ा नहीं जा सका।",
+                "profileAssetUrl": "अमान्य प्रोफ़ाइल प्रकाशन URL: {{- path}}",
+                "profileEmpty": "कस्टम प्रोफ़ाइल ZIP संग्रह खाली है।",
+                "profileEntryMissing": "कस्टम प्रोफ़ाइल में प्रकाशन नहीं मिला: {{- path}}",
+                "profileMissing": "कस्टम प्रोफ़ाइल नहीं मिली: {{- id}}",
+                "profileNotZip": "कस्टम प्रोफ़ाइल ZIP संग्रह नहीं है।"
+            },
+            "failed": "“{{- name}}” आयात नहीं किया जा सका।",
+            "invalidLicense": "“{{- name}}” आयात नहीं किया जा सका। प्रकाशन का लाइसेंस अमान्य है।",
+            "invalidPublication": "“{{- name}}” आयात नहीं किया जा सका। प्रकाशन मैनिफ़ेस्ट उपलब्ध नहीं है।",
+            "lcpLicenseMalformed": "LCP लाइसेंस विकृत है।",
+            "success": "[{{- title}}] आयात पूर्ण हुआ।",
+            "unsupportedFormat": "“{{- name}}” आयात नहीं किया जा सका। यह फ़ाइल प्रारूप समर्थित नहीं है।"
+        },
+        "notifications": {
+            "annotationImportFailed": "एनोटेशन आयात नहीं किए जा सके। जाँचें कि फ़ाइल एक मान्य एनोटेशन निर्यात है।",
+            "annotationPublicationUnavailable": "प्रकाशन उपलब्ध न होने के कारण एनोटेशन आयात नहीं किए जा सके। प्रकाशन को फिर से आयात करने की कोशिश करें।",
+            "annotationStopPlayback": "एनोटेशन बनाने से पहले ज़ोर से पढ़ना या ऑडियो प्लेबैक बंद करें।",
+            "authenticationFailed": "इस कैटलॉग में साइन इन नहीं किया जा सका। अपना कनेक्शन जाँचें और फिर कोशिश करें।",
+            "catalogLinkFailed": "यह कैटलॉग जोड़ा नहीं जा सका। लिंक और अपना कनेक्शन जाँचें।",
+            "catalogUpdateFailed": "यह कैटलॉग अपडेट नहीं किया जा सका। इसकी सेटिंग्स जाँचें और फिर कोशिश करें।",
+            "copyLimit": "इस प्रकाशन के लिए प्रतिलिपि की अनुमति समाप्त हो चुकी है।",
+            "deleteFailed": "यह प्रकाशन हटाया नहीं जा सका। फिर कोशिश करें।",
+            "exportFailed": "यह प्रकाशन निर्यात नहीं किया जा सका। गंतव्य डायरेक्टरी और उपलब्ध डिस्क स्थान जाँचें।",
+            "openFileFailed": "यह फ़ाइल नहीं खोली जा सकी। जाँचें कि यह उपलब्ध है और समर्थित प्रारूप में है।",
+            "openLinkFailed": "यह प्रकाशन लिंक नहीं खोला जा सका। लिंक जाँचें और फिर कोशिश करें।",
+            "printLimit": "इस प्रकाशन के लिए मुद्रण की अनुमति समाप्त हो चुकी है।",
+            "profileActivationFailed": "यह प्रोफ़ाइल सक्रिय नहीं की जा सकी। प्रोफ़ाइल पैकेज जाँचें या इसके प्रदाता से संपर्क करें।",
+            "profileBusy": "कोई अन्य प्रोफ़ाइल कार्रवाई जारी है। इसके पूरा होने तक प्रतीक्षा करें, फिर कोशिश करें।",
+            "profileProvisionFailed": "यह प्रोफ़ाइल इंस्टॉल नहीं की जा सकी। प्रोफ़ाइल पैकेज जाँचें या इसके प्रदाता से संपर्क करें।",
+            "profileTimeout": "प्रोफ़ाइल इंस्टॉलेशन का समय समाप्त हो गया। अपना कनेक्शन जाँचें और फिर कोशिश करें।",
+            "publicationUnavailable": "यह प्रकाशन उपलब्ध नहीं है। इसे फिर से आयात करने की कोशिश करें।",
+            "readingPositionFailed": "आपकी पठन स्थिति निर्धारित नहीं की जा सकी। फिर कोशिश करें।",
+            "recoveryPartialFailure": "{{- recovered}} प्रकाशन पुनर्प्राप्त हुए; {{- failed}} प्रकाशन पुनर्प्राप्त नहीं हो सके।",
+            "renewFailed": "यह उधार नवीनीकृत नहीं किया जा सका। फिर कोशिश करें या अपने पुस्तकालय से संपर्क करें।",
+            "returnFailed": "यह उधार वापस नहीं किया जा सका। फिर कोशिश करें या अपने पुस्तकालय से संपर्क करें।",
+            "storageRefreshFailed": "स्टोरेज सेटिंग सहेज ली गई, लेकिन पुस्तकालय रीफ़्रेश नहीं किया जा सका। पुस्तकालय रीफ़्रेश करने की कोशिश करें।",
+            "tagsFailed": "प्रकाशन टैग सहेजे नहीं जा सके। फिर कोशिश करें।"
+        },
+        "open": {
+            "failed": "यह प्रकाशन नहीं खोला जा सका।",
+            "folderNotFound": "प्रकाशन डायरेक्टरी नहीं मिल सकी। इसे फिर से आयात करें, या सेटिंग्स > स्टोरेज में अतिरिक्त स्टोरेज कॉन्फ़िगर करें।",
+            "missingLicense": "यह प्रकाशन नहीं खोला जा सका। यह एन्क्रिप्टेड है, लेकिन इसका LCP लाइसेंस उपलब्ध नहीं है।"
+        },
+        "storage": {
+            "recovery": {
+                "failure": "प्रकाशन पुनर्प्राप्ति विफल रही।",
+                "success_one": "{{- count}} प्रकाशन पुनर्प्राप्त किया गया।",
+                "success_other": "{{- count}} प्रकाशन पुनर्प्राप्त किए गए।"
+            },
+            "removed": "प्रकाशन डायरेक्टरी हटा दी गई।",
+            "updateFailed": "प्रकाशन डायरेक्टरी अपडेट करने में विफल: {{- message}}",
+            "updated": "प्रकाशन डायरेक्टरी अपडेट की गई।"
+        },
+        "wipeData": "लॉगिन डेटा साफ़ कर दिया गया (एक्सेस टोकन और कुकीज़)"
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "जोड़ें",
+            "name": "नाम:",
+            "namePlaceholder": "नाम",
+            "url": "लिंक:",
+            "urlPlaceholder": "लिंक"
+        },
+        "addFormApiapp": {
+            "title": "पुस्तकालय खाता जोड़ें"
+        },
+        "addMenu": "ओपीडीएस फीड जोड़ें",
+        "breadcrumbRoot": "कैटलॉग",
+        "browserMenu": {
+            "history": "इतिहास",
+            "options": "विकल्प",
+            "profile": "प्रोफ़ाइल",
+            "wishlist": "इच्छा सूची"
+        },
+        "color": {
+            "blue": "नीला",
+            "gray": "स्लेटी",
+            "green": "हरा",
+            "orange": "नारंगी",
+            "pink": "गुलाबी",
+            "purple": "बैंगनी",
+            "red": "लाल",
+            "title": "कैटलॉग का रंग",
+            "yellow": "पीला"
+        },
+        "documentation": "ओपीडीएस आधिकारिक वेबसाइट",
+        "empty": "कोई प्रकाशन नहीं मिला",
+        "firstPage": "पहला",
+        "informations": "एक ऐसी दुनिया की कल्पना करें जहाँ आप कुछ ही क्लिक में सार्वजनिक पुस्तकालयों और डिजिटल बुकसेलर्स से डिजिटल प्रकाशन खोज और डाउनलोड कर सकते हैं। यही ओपन पब्लिकेशन डिस्ट्रीब्यूशन सिस्टम (ओपीडीएस) कैटलॉग प्रारूप प्रदान करता है। ओपीडीएस के साथ, आप विभिन्न ईबुक प्रदाताओं के कैटलॉग नेविगेट कर सकते हैं, साइन अप कर सकते हैं, प्रकाशन उधार ले सकते हैं, खरीद सकते हैं, या अपने निजी बुकशेल्फ पर जा सकते हैं। आप थोरियम रीडर में ईबुक या ऑडियोबुक सीधे डाउनलोड करके तुरंत पढ़ सकते हैं।\nतो, आप ओपीडीएस कैटलॉग कैसे ढूंढते हैं? यह सरल है। कैटलॉग की ओर ले जाने वाला हाइपरलिंक (यूआरएल) खोजें। इस यूआरएल को ऊपर दिए गए लिंक फ़ील्ड में कॉपी करें। ध्यान रखें कि सभी सक्रिय ओपीडीएस कैटलॉग के लिए कोई एकल स्थान नहीं है। आपको अपने पसंदीदा पुस्तकालय या बुकसेलर से संपर्क करना होगा और उनके ओपीडीएस कैटलॉग यूआरएल के लिए पूछना होगा। यदि आप निश्चित नहीं हैं कि कहाँ से शुरू करें, विकिपीडिया में विभिन्न भाषाओं में ओपीडीएस कैटलॉग की कुछ रजिस्ट्रियाँ हैं जो सहायक हो सकती हैं।\nनाम फ़ील्ड आपके सुविधानुसार छोड़ा गया है; यह थोरियम रीडर में फीड की पहचान करने का एक आसान तरीका प्रदान करता है।",
+        "lastPage": "अंतिम",
+        "menu": {
+            "aboutBook": "प्रकाशन के बारे में",
+            "addExtract": "अंश आयात करें",
+            "cancelHold": "आरक्षण रद्द करें",
+            "cancelHoldError": "यह आरक्षण रद्द नहीं किया जा सका। कृपया फिर कोशिश करें।",
+            "goBuyBook": "प्रकाशन खरीदें",
+            "goLoanBook": "प्रकाशन उधार लें",
+            "goRevokeLoanBook": "ऋण रद्द करें",
+            "goSubBook": "सदस्यता लें",
+            "placeHold": "आरक्षण करें"
+        },
+        "network": {
+            "error": "फीड तक पहुँचने में त्रुटि",
+            "noInternet": "कोई इंटरनेट नहीं",
+            "noInternetMessage": "नेटवर्क केबल, मॉडेम, राउटर या वाईफाई की जाँच करें",
+            "reject": "क्षमा करें, अप्रत्याशित त्रुटि!",
+            "timeout": "नेटवर्क टाइमआउट, कृपया बाद में पुनः प्रयास करें"
+        },
+        "next": "अगला",
+        "previous": "पिछला",
+        "registry": {
+            "empty": "कोई कैटलॉग नहीं मिला।",
+            "error": "रजिस्ट्री में खोज नहीं की जा सकी। कृपया फिर कोशिश करें।",
+            "loading": "कैटलॉग खोजे जा रहे हैं…",
+            "title": "कैटलॉग खोजें"
+        },
+        "resumeBrowsing": "ब्राउज़िंग फिर से शुरू करें",
+        "shelf": "शेल्फ",
+        "updateForm": {
+            "name": "नाम:",
+            "title": "ओपीडीएस फीड संपादित करें",
+            "updateButton": "संपादित करें",
+            "url": "लिंक:"
+        },
+        "whatIsOpds": "ओपीडीएस क्या है?"
+    },
+    "publ-a11y-display-guide": {
+        "accessibility-summary": {
+            "accessibility-summary-title": "पहुँच सारांश"
+        },
+        "additional-accessibility-information": {
+            "additional-accessibility-information-aria": {
+                "compact": "एआरआईए भूमिकाएँ शामिल",
+                "descriptive": "सामग्री को संगठन और नेविगेशन की सुविधा के लिए एआरआईए भूमिकाओं के साथ बढ़ाया गया है"
+            },
+            "additional-accessibility-information-audio-descriptions": {
+                "compact": "ऑडियो विवरण",
+                "descriptive": "ऑडियो विवरण"
+            },
+            "additional-accessibility-information-braille": {
+                "compact": "ब्रेल",
+                "descriptive": "ब्रेल"
+            },
+            "additional-accessibility-information-full-ruby-annotations": {
+                "compact": "पूर्ण रूबी टिप्पणियाँ",
+                "descriptive": "पूर्ण रूबी टिप्पणियाँ"
+            },
+            "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
+                "compact": "अग्रभूमि और पृष्ठभूमि ऑडियो के बीच उच्च कंट्रास्ट",
+                "descriptive": "अग्रभूमि और पृष्ठभूमि ऑडियो के बीच उच्च कंट्रास्ट"
+            },
+            "additional-accessibility-information-high-contrast-between-text-and-background": {
+                "compact": "अग्रभूमि पाठ और पृष्ठभूमि के बीच उच्च कंट्रास्ट",
+                "descriptive": "अग्रभूमि पाठ और पृष्ठभूमि के बीच उच्च कंट्रास्ट"
+            },
+            "additional-accessibility-information-large-print": {
+                "compact": "बड़ा प्रिंट",
+                "descriptive": "बड़ा प्रिंट"
+            },
+            "additional-accessibility-information-page-breaks": {
+                "compact": "पृष्ठ विराम शामिल",
+                "descriptive": "मूल प्रिंट स्रोत से पृष्ठ विराम शामिल"
+            },
+            "additional-accessibility-information-ruby-annotations": {
+                "compact": "कुछ रूबी टिप्पणियाँ",
+                "descriptive": "कुछ रूबी टिप्पणियाँ"
+            },
+            "additional-accessibility-information-sign-language": {
+                "compact": "सांकेतिक भाषा",
+                "descriptive": "सांकेतिक भाषा"
+            },
+            "additional-accessibility-information-tactile-graphics": {
+                "compact": "स्पर्शनीय ग्राफिक्स शामिल",
+                "descriptive": "नेत्रहीन लोगों के लिए दृश्य तत्वों तक पहुँच की सुविधा के लिए स्पर्शनीय ग्राफिक्स एकीकृत किए गए हैं"
+            },
+            "additional-accessibility-information-tactile-objects": {
+                "compact": "स्पर्शनीय 3डी ऑब्जेक्ट",
+                "descriptive": "स्पर्शनीय 3डी ऑब्जेक्ट"
+            },
+            "additional-accessibility-information-text-to-speech-hinting": {
+                "compact": "टेक्स्ट-टू-स्पीच संकेत प्रदान किया गया",
+                "descriptive": "टेक्स्ट-टू-स्पीच संकेत प्रदान किया गया"
+            },
+            "additional-accessibility-information-title": "अतिरिक्त पहुँच जानकारी"
+        },
+        "conformance": {
+            "conformance-a": {
+                "compact": "यह प्रकाशन न्यूनतम पहुँच मानकों को पूरा करता है",
+                "descriptive": "प्रकाशन में एक अनुपालन कथन है कि यह EPUB पहुँच और WCAG 2 लेवल A मानक को पूरा करता है"
+            },
+            "conformance-aa": {
+                "compact": "यह प्रकाशन स्वीकृत पहुँच मानकों को पूरा करता है",
+                "descriptive": "प्रकाशन में एक अनुपालन कथन है कि यह EPUB पहुँच और WCAG 2 लेवल AA मानक को पूरा करता है"
+            },
+            "conformance-aaa": {
+                "compact": "यह प्रकाशन स्वीकृत पहुँच मानकों से अधिक है",
+                "descriptive": "प्रकाशन में एक अनुपालन कथन है कि यह EPUB पहुँच और WCAG 2 लेवल AAA मानक को पूरा करता है"
+            },
+            "conformance-certifier": {
+                "compact": "प्रकाशन को प्रमाणित किया गया"
+            },
+            "conformance-certifier-credentials": {
+                "compact": "प्रमाणक का प्रमाणपत्र है"
+            },
+            "conformance-details-certifier-report": {
+                "compact": "अधिक जानकारी के लिए प्रमाणक की रिपोर्ट देखें"
+            },
+            "conformance-details-claim": {
+                "compact": "यह प्रकाशन दावा करता है कि यह पूरा करता है",
+                "descriptive": "यह प्रकाशन दावा करता है कि यह पूरा करता है"
+            },
+            "conformance-details-epub-accessibility-1-0": {
+                "compact": "EPUB पहुँच 1.0",
+                "descriptive": "EPUB पहुँच 1.0"
+            },
+            "conformance-details-epub-accessibility-1-1": {
+                "compact": "EPUB पहुँच 1.1",
+                "descriptive": "EPUB पहुँच 1.1"
+            },
+            "conformance-details-level-a": {
+                "compact": "लेवल A",
+                "descriptive": "लेवल A"
+            },
+            "conformance-details-level-aa": {
+                "compact": "लेवल AA",
+                "descriptive": "लेवल AA"
+            },
+            "conformance-details-level-aaa": {
+                "compact": "लेवल AAA",
+                "descriptive": "लेवल AAA"
+            },
+            "conformance-details-wcag-2-0": {
+                "compact": "WCAG 2.0"
+            },
+            "conformance-details-wcag-2-1": {
+                "compact": "WCAG 2.1",
+                "descriptive": "वेब सामग्री पहुँच दिशानिर्देश (WCAG) 2.1"
+            },
+            "conformance-details-wcag-2-2": {
+                "compact": "WCAG 2.2",
+                "descriptive": "वेब सामग्री पहुँच दिशानिर्देश (WCAG) 2.2"
+            },
+            "conformance-no": {
+                "compact": "कोई जानकारी उपलब्ध नहीं है",
+                "descriptive": "कोई जानकारी उपलब्ध नहीं है"
+            },
+            "conformance-title": "अनुपालन",
+            "conformance-unknown-standard": {
+                "compact": "इस प्रकाशन की पहुँच के लिए स्वीकृत मानकों का अनुपालन निर्धारित नहीं किया जा सकता",
+                "descriptive": "इस प्रकाशन की पहुँच के लिए स्वीकृत मानकों का अनुपालन निर्धारित नहीं किया जा सकता"
+            }
+        },
+        "hazards": {
+            "hazards-flashing": {
+                "compact": "चमकती सामग्री",
+                "descriptive": "प्रकाशन में चमकती सामग्री है जो फोटोसेंसिटिव दौरे का कारण बन सकती है"
+            },
+            "hazards-flashing-none": {
+                "compact": "कोई चमकती सामग्री नहीं",
+                "descriptive": "प्रकाशन में कोई चमकती सामग्री नहीं है"
+            },
+            "hazards-flashing-unknown": {
+                "compact": "चमकती सामग्री की उपस्थिति अज्ञात है",
+                "descriptive": "चमकती सामग्री की उपस्थिति अज्ञात है"
+            },
+            "hazards-motion": {
+                "compact": "गति सिमुलेशन",
+                "descriptive": "प्रकाशन में गति सिमुलेशन हैं जो मोशन सिकनेस का कारण बन सकते हैं"
+            },
+            "hazards-motion-none": {
+                "compact": "कोई गति सिमुलेशन नहीं",
+                "descriptive": "प्रकाशन में कोई गति सिमुलेशन नहीं है"
+            },
+            "hazards-motion-unknown": {
+                "compact": "गति सिमुलेशन की उपस्थिति अज्ञात है",
+                "descriptive": "गति सिमुलेशन की उपस्थिति अज्ञात है"
+            },
+            "hazards-no-metadata": {
+                "compact": "कोई जानकारी उपलब्ध नहीं है",
+                "descriptive": "कोई जानकारी उपलब्ध नहीं है"
+            },
+            "hazards-none": {
+                "compact": "कोई खतरे नहीं",
+                "descriptive": "प्रकाशन में कोई खतरे नहीं हैं"
+            },
+            "hazards-sound": {
+                "compact": "ध्वनियाँ",
+                "descriptive": "प्रकाशन में ऐसी ध्वनियाँ हैं जो असुविधाजनक हो सकती हैं"
+            },
+            "hazards-sound-none": {
+                "compact": "कोई ध्वनियाँ नहीं",
+                "descriptive": "प्रकाशन में कोई ध्वनियाँ नहीं हैं"
+            },
+            "hazards-sound-unknown": {
+                "compact": "ध्वनियों की उपस्थिति अज्ञात है",
+                "descriptive": "ध्वनियों की उपस्थिति अज्ञात है"
+            },
+            "hazards-title": "खतरे",
+            "hazards-unknown": {
+                "compact": "खतरों की उपस्थिति अज्ञात है",
+                "descriptive": "खतरों की उपस्थिति अज्ञात है"
+            }
+        },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "कुछ क्षेत्राधिकारों में पहुँच-योग्यता छूट का दावा",
+                "descriptive": "प्रकाशक कुछ क्षेत्राधिकारों में पहुँच-योग्यता आवश्यकताओं से छूट का दावा करता है।"
+            },
+            "legal-considerations-title": "कानूनी विचार"
+        },
+        "navigation": {
+            "navigation-index": {
+                "compact": "सूचकांक",
+                "descriptive": "संदर्भित प्रविष्टियों के लिंक के साथ सूचकांक"
+            },
+            "navigation-no-metadata": {
+                "compact": "कोई जानकारी उपलब्ध नहीं है",
+                "descriptive": "कोई जानकारी उपलब्ध नहीं है"
+            },
+            "navigation-page-navigation": {
+                "compact": "पृष्ठ पर जाएँ",
+                "descriptive": "मूल प्रिंट स्रोत संस्करण से पृष्ठों पर जाने के लिए पृष्ठ सूची"
+            },
+            "navigation-structural": {
+                "compact": "शीर्षक",
+                "descriptive": "संरचित नेविगेशन के लिए शीर्षक, तालिकाएँ आदि जैसे तत्व"
+            },
+            "navigation-title": "नेविगेशन",
+            "navigation-toc": {
+                "compact": "सामग्री तालिका",
+                "descriptive": "लिंक के माध्यम से पाठ के सभी अध्यायों की सामग्री तालिका"
+            }
+        },
+        "rich-content": {
+            "rich-content-accessible-chemistry-as-latex": {
+                "compact": "लेटेक्स में रासायनिक सूत्र",
+                "descriptive": "पहुँच योग्य प्रारूप में रासायनिक सूत्र (लेटेक्स)"
+            },
+            "rich-content-accessible-chemistry-as-mathml": {
+                "compact": "मैथएमएल में रासायनिक सूत्र",
+                "descriptive": "पहुँच योग्य प्रारूप में रासायनिक सूत्र (मैथएमएल)"
+            },
+            "rich-content-accessible-math-as-latex": {
+                "compact": "लेटेक्स में गणित",
+                "descriptive": "पहुँच योग्य प्रारूप में गणित सूत्र (लेटेक्स)"
+            },
+            "rich-content-accessible-math-as-mathml": {
+                "compact": "मैथएमएल में गणित",
+                "descriptive": "पहुँच योग्य प्रारूप में गणित सूत्र (मैथएमएल)"
+            },
+            "rich-content-accessible-math-described": {
+                "compact": "गणित के पाठ विवरण प्रदान किए गए",
+                "descriptive": "गणित के पाठ विवरण प्रदान किए गए"
+            },
+            "rich-content-closed-captions": {
+                "compact": "वीडियो में बंद कैप्शन",
+                "descriptive": "प्रकाशनों में शामिल वीडियो में बंद कैप्शन हैं"
+            },
+            "rich-content-extended": {
+                "compact": "जानकारी-समृद्ध छवियाँ विस्तृत विवरणों द्वारा वर्णित",
+                "descriptive": "जानकारी-समृद्ध छवियाँ विस्तृत विवरणों द्वारा वर्णित"
+            },
+            "rich-content-open-captions": {
+                "compact": "वीडियो में खुले कैप्शन",
+                "descriptive": "प्रकाशनों में शामिल वीडियो में खुले कैप्शन हैं"
+            },
+            "rich-content-title": "समृद्ध सामग्री",
+            "rich-content-transcript": {
+                "compact": "प्रतिलेख प्रदान किया गया",
+                "descriptive": "प्रतिलेख प्रदान किया गया"
+            },
+            "rich-content-unknown": {
+                "compact": "कोई जानकारी उपलब्ध नहीं है",
+                "descriptive": "कोई जानकारी उपलब्ध नहीं है"
+            }
+        },
+        "ways-of-reading": {
+            "ways-of-reading-nonvisual-reading-alt-text": {
+                "compact": "वैकल्पिक पाठ है",
+                "descriptive": "छवियों के लिए वैकल्पिक पाठ विवरण हैं"
+            },
+            "ways-of-reading-nonvisual-reading-no-metadata": {
+                "compact": "गैर-दृश्य पढ़ने के बारे में कोई जानकारी उपलब्ध नहीं है",
+                "descriptive": "गैर-दृश्य पढ़ने के बारे में कोई जानकारी उपलब्ध नहीं है"
+            },
+            "ways-of-reading-nonvisual-reading-none": {
+                "compact": "पढ़ने योग्य या गतिशील ब्रेल में पढ़ने योग्य नहीं",
+                "descriptive": "सामग्री पढ़ने योग्य भाषण या गतिशील ब्रेल के रूप में पढ़ने योग्य नहीं है"
+            },
+            "ways-of-reading-nonvisual-reading-not-fully": {
+                "compact": "पढ़ने योग्य या गतिशील ब्रेल में पूरी तरह पढ़ने योग्य नहीं",
+                "descriptive": "सभी सामग्री पढ़ने योग्य भाषण या गतिशील ब्रेल के रूप में पढ़ने योग्य नहीं होगी"
+            },
+            "ways-of-reading-nonvisual-reading-readable": {
+                "compact": "पढ़ने योग्य या गतिशील ब्रेल में पढ़ने योग्य",
+                "descriptive": "सभी सामग्री पढ़ने योग्य भाषण या गतिशील ब्रेल के रूप में पढ़ी जा सकती है"
+            },
+            "ways-of-reading-prerecorded-audio-complementary": {
+                "compact": "पहले से रिकॉर्ड किए गए ऑडियो क्लिप",
+                "descriptive": "पहले से रिकॉर्ड किए गए ऑडियो क्लिप सामग्री में एम्बेडेड हैं"
+            },
+            "ways-of-reading-prerecorded-audio-only": {
+                "compact": "केवल पहले से रिकॉर्ड किया गया ऑडियो",
+                "descriptive": "पाठ विकल्प के बिना ऑडियोबुक"
+            },
+            "ways-of-reading-prerecorded-audio-synchronized": {
+                "compact": "पाठ के साथ समन्वयित पहले से रिकॉर्ड किया गया ऑडियो",
+                "descriptive": "सभी सामग्री पाठ के साथ समन्वयित पहले से रिकॉर्ड किए गए ऑडियो के रूप में उपलब्ध है"
+            },
+            "ways-of-reading-title": "पढ़ने के तरीके",
+            "ways-of-reading-visual-adjustments-modifiable": {
+                "compact": "उपस्थिति को संशोधित किया जा सकता है",
+                "descriptive": "पढ़ने की प्रणाली की क्षमताओं के अनुसार पाठ और पृष्ठ लेआउट की उपस्थिति को संशोधित किया जा सकता है (फ़ॉन्ट परिवार और फ़ॉन्ट आकार, पैराग्राफ, वाक्य, शब्दों और अक्षरों के बीच की दूरी, साथ ही पृष्ठभूमि और पाठ का रंग)"
+            },
+            "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "उपस्थिति संशोधन के बारे में कोई जानकारी उपलब्ध नहीं है",
+                "descriptive": "उपस्थिति संशोधन के बारे में कोई जानकारी उपलब्ध नहीं है"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "दिखावट बदली नहीं जा सकती",
+                "descriptive": "पाठ और पृष्ठ लेआउट नहीं बदले जा सकते क्योंकि पढ़ने का अनुभव मुद्रित संस्करण के करीब है, लेकिन पठन सिस्टम अभी भी ज़ूम के विकल्प दे सकते हैं"
+            }
+        }
+    },
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "सभी सामग्री पढ़ने योग्य भाषण या गतिशील ब्रेल के रूप में पढ़ी जा सकती है"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "छवियों पर वैकल्पिक पाठ है",
+                "displayTransformability": "पाठ और पृष्ठ लेआउट की उपस्थिति को संशोधित किया जा सकता है",
+                "longDescription": "पूर्ण रूप से वर्णित ग्राफिकल संसाधन",
+                "printPageNumbers": "मूल प्रिंट स्रोत संस्करण से पृष्ठों पर जाने के लिए पृष्ठ सूची शामिल है",
+                "readingOrder": "पढ़ने का क्रम शामिल है",
+                "synchronizedAudioText": "पाठ और ऑडियो समन्वयित",
+                "tableOfContents": "सामग्री तालिका शामिल है"
+            },
+            "accessibilityHazard": {
+                "flashing": "चमक",
+                "motionSimulation": "गति सिमुलेशन",
+                "name": "खतरा:",
+                "noFlashing": "कोई चमक नहीं",
+                "noMotionSimulation": "कोई गति सिमुलेशन नहीं",
+                "noSound": "कोई ध्वनि नहीं",
+                "none": "कोई नहीं",
+                "sound": "ध्वनि",
+                "unknown": "अज्ञात"
+            },
+            "certifierReport": "प्रमाणक रिपोर्ट:",
+            "conformsTo": "के अनुरूप:",
+            "moreInformation": "अधिक जानकारी",
+            "name": "पहुँच",
+            "noA11y": "कोई पहुँच जानकारी उपलब्ध नहीं है"
+        },
+        "actions": "क्रियाएँ",
+        "audio": {
+            "tracks": "ट्रैक"
+        },
+        "author": "लेखक",
+        "cancelledLcp": "इस प्रकाशन का एलसीपी लाइसेंस रद्द कर दिया गया है।",
+        "certificateRevoked": "एलसीपी लाइसेंस प्रमाणपत्र रद्द।",
+        "certificateSignatureInvalid": "अमान्य एलसीपी लाइसेंस प्रमाणपत्र हस्ताक्षर।",
+        "cover": {
+            "img": "कवर छवि",
+            "zoom": "कवर छवि बड़ी करें"
+        },
+        "day": "दिन",
+        "days": "दिन",
+        "duration": {
+            "title": "अवधि"
+        },
+        "expired": "ऋण समाप्त",
+        "expiredLcp": "इस प्रकाशन का एलसीपी लाइसेंस समाप्त हो गया है।",
+        "incorrectPassphrase": "कोई संग्रहीत पासफ्रेज प्रकाशन के लिए उपयुक्त नहीं है, या दर्ज किया गया पासफ्रेज गलत है।",
+        "lcpNotSupported": "चेतावनी: यह Thorium Desktop रीडर का प्री-रिलीज़ संस्करण है, जो प्रोडक्शन LCP लाइसेंस का समर्थन नहीं करता और केवल प्रमाणपत्र सत्यापन के बिना LCP 'basic profile' डिक्रिप्शन का समर्थन करता है।",
+        "lcpRightsCopy": "कॉपी किए गए अक्षर",
+        "lcpRightsPrint": "मुद्रित पृष्ठ",
+        "lcpStart": "प्रारंभ",
+        "licenceLCP": "लाइसेंस (एलसीपी)",
+        "licenseCertificateDateInvalid": "एलसीपी प्रदाता प्रमाणपत्र लाइसेंस जारी करने की तारीख ({{- dateTime}}) से पहले समाप्त हो गया।",
+        "licenseOutOfDate": "एलसीपी लाइसेंस पुराना है।",
+        "licenseSignatureInvalid": "अमान्य एलसीपी लाइसेंस हस्ताक्षर।",
+        "licensed": "लाइसेंस प्राप्त",
+        "markAsRead": "पढ़ा हुआ चिह्नित करें",
+        "notStarted": "प्रारंभ नहीं हुआ",
+        "onGoing": "प्रगति में",
+        "progression": {
+            "remoteDescription": "{{- device}} से {{- progression}}% पर एक नई पठन स्थिति उपलब्ध है।",
+            "remoteTitle": "किसी अन्य डिवाइस से जारी रखें?",
+            "title": "प्रगति",
+            "useRemote": "स्थिति पर जाएँ"
+        },
+        "read": "समाप्त",
+        "remainingTime": "ऋण (शेष समय)",
+        "remoteProgression": {
+            "checking": "सक्षम है और सेवा की जाँच हो रही है...",
+            "disabled": "इस प्रकाशन के लिए सक्षम नहीं है।",
+            "empty": "कोई सहेजी गई दूरस्थ प्रगति नहीं है।",
+            "position": "दूरस्थ प्रगति: {{percent}}% ({{device}})।",
+            "ready": "सक्षम और तैयार।",
+            "title": "पठन प्रगति सिंक:",
+            "unavailable": "सक्षम है, लेकिन सेवा उपलब्ध नहीं है।"
+        },
+        "renewButton": "नवीनीकरण",
+        "returnButton": "वापसी",
+        "returnedLcp": "यह एलसीपी-संरक्षित प्रकाशन वापस कर दिया गया है।",
+        "revokedLcp": "इस प्रकाशन का एलसीपी लाइसेंस रद्द कर दिया गया है।",
+        "seeLess": "कम देखें",
+        "seeMore": "अधिक देखें",
+        "timeLeft": "शेष समय",
+        "title": "शीर्षक",
+        "userKeyCheckInvalid": "गलत पासफ्रेज।"
+    },
+    "reader": {
+        "annotations": {
+            "Color": "रंग",
+            "addNote": "टिप्पणी करें",
+            "advancedMode": "तत्काल मोड (चयन के बाद स्वचालित निर्माण)",
+            "annotationsExport": {
+                "description": "निर्यात किए गए नोट्स का नाम दें:",
+                "title": "शीर्षक"
+            },
+            "annotationsOptions": "टिप्पणी विकल्प",
+            "date": "संशोधन तारीख",
+            "error": {
+                "pdf": {
+                    "validationSelection": "इस चयन से PDF एनोटेशन नहीं बनाया जा सका।"
+                }
+            },
+            "export": "नोट्स को इस रूप में सहेजें...",
+            "filter": {
+                "all": "सभी",
+                "filterByColor": "रंग द्वारा फ़िल्टर करें",
+                "filterByCreator": "निर्माता द्वारा फ़िल्टर करें",
+                "filterByDrawtype": "प्रकार द्वारा फ़िल्टर करें",
+                "filterByTag": "टैग द्वारा फ़िल्टर करें",
+                "filterOptions": "फ़िल्टर विकल्प",
+                "none": "कोई नहीं"
+            },
+            "hide": "प्रदर्शित न करें",
+            "highlight": "हाइलाइट",
+            "noSelectionToast": "एनोटेशन बनाने से पहले पाठ चुनें।",
+            "note": "{{- color}} नोट",
+            "quickAnnotations": "त्वरित निर्माण (संपादक को छोड़ें)",
+            "saveNote": "सहेजें",
+            "sorting": {
+                "lastcreated": "अंतिम बनाया गया",
+                "lastmodified": "अंतिम संशोधित",
+                "progression": "प्रगति",
+                "sortingOptions": "छँटाई विकल्प"
+            },
+            "toggleMarginMarks": "मार्जिन में प्रदर्शित करें",
+            "type": {
+                "outline": "रूपरेखा",
+                "solid": "ठोस पृष्ठभूमि",
+                "strikethrough": "काटें",
+                "underline": "रेखांकित करें"
+            }
+        },
+        "bookmarks": {
+            "index": "बुकमार्क {{- index}}"
+        },
+        "divina": {
+            "mute": "ऑडियो म्यूट करें",
+            "unmute": "ऑडियो अनम्यूट करें"
+        },
+        "dock": {
+            "dockDefault": "पैनल को मोडल पॉपअप के रूप में दिखाएँ",
+            "dockLeft": "पैनल को बाईं ओर डॉक करें",
+            "dockRight": "पैनल को दाईं ओर डॉक करें"
+        },
+        "fxl": {
+            "fit": "फिट"
+        },
+        "goToContent": "सामग्री पर जाएँ",
+        "imgViewer": {
+            "title": "छवि दर्शक (ज़ूम)",
+            "zoomIn": "ज़ूम इन",
+            "zoomOut": "ज़ूम आउट",
+            "zoomReset": "ज़ूम रीसेट करें"
+        },
+        "marks": {
+            "annotations": "टिप्पणियाँ",
+            "annotationsReadium": "Readium एनोटेशन",
+            "bookmarks": "बुकमार्क्स",
+            "delete": "हटाएँ",
+            "edit": "संपादित करें",
+            "goTo": "पृष्ठ पर जाएँ",
+            "landmarks": "लैंडमार्क्स",
+            "saveMark": "सहेजें",
+            "search": "खोज",
+            "searchResult": "खोज [{{- searchText}}]",
+            "toc": "सामग्री तालिका"
+        },
+        "media-overlays": {
+            "activate": "रीडअलाउड सक्रिय करें",
+            "captions": "कैप्शन / स्वच्छ दृश्य",
+            "captionsDescription": "न्यूनतम कैप्शन स्टाइलिंग के साथ सरलीकृत पाठ दृश्य।",
+            "disableContinuousPlay": "निरंतर प्ले अक्षम करें",
+            "disableContinuousPlayDescription": "वर्तमान आइटम के समाप्त होने के बाद अगले आइटम को स्वचालित रूप से न चलाएँ, तुरंत रोकें।",
+            "ignoreAndUseTTS": "पहले से रिकॉर्ड किए गए ऑडियो को अनदेखा करें, टीटीएस का उपयोग करें",
+            "ignoreAndUseTTSDescription": "EPUB मीडिया ओवरले को अनदेखा करें, इसके बजाय टेक्स्ट टू स्पीच के साथ पढ़ें",
+            "next": "अगला रीडअलाउड",
+            "pause": "रीडअलाउड रोकें",
+            "play": "रीडअलाउड चलाएँ",
+            "previous": "पिछला रीडअलाउड",
+            "skip": "छोड़ने की क्षमता",
+            "skipDescription": "पृष्ठ विराम, फुटनोट/एंडनोट आदि जैसे सहायक सामग्री को छोड़ें/अनदेखा करें।",
+            "speed": "रीडअलाउड प्लेबैक दर",
+            "stop": "रीडअलाउड रोकें",
+            "title": "रीडअलाउड",
+            "useTTSHighlightsForMO": "कस्टम हाइलाइटिंग",
+            "useTTSHighlightsForMODescription": "लेखक की शैलियाँ अक्षम करें"
+        },
+        "navigation": {
+            "ZenModeExit": "ज़ेन मोड से बाहर निकलें",
+            "ZenModeTitle": "ज़ेन मोड",
+            "annotationTitle": "टिप्पणी",
+            "backHomeTitle": "इस पढ़ने की खिड़की को बंद करें (बुकशेल्फ पर वापस)",
+            "bookmarkTitle": "बुकमार्क",
+            "currentPage": "वर्तमान पृष्ठ: {{- current}}",
+            "currentPageTotal": "वर्तमान पृष्ठ: {{- current}}/{{- total}}",
+            "goTo": "जाएँ",
+            "goToError": "पृष्ठ विराम मौजूद नहीं है",
+            "goToPlaceHolder": "पृष्ठ संख्या दर्ज करें",
+            "goToTitle": "पृष्ठ पर जाएँ",
+            "history": "नेविगेशन इतिहास",
+            "historyNext": "नेविगेशन इतिहास में आगे कूदें",
+            "historyPrevious": "नेविगेशन इतिहास में पीछे कूदें",
+            "infoTitle": "जानकारी",
+            "magnifyingGlassButton": "प्रकाशन खोजें",
+            "openTableOfContentsTitle": "नेविगेशन",
+            "page": "पृष्ठ",
+            "pdfscalemode": "पृष्ठ फिट या चौड़ाई",
+            "print": "प्रिंट",
+            "printDisabled": "प्रिंट निषिद्ध",
+            "screenNext": "आगे जाएँ",
+            "screenPrevious": "पीछे जाएँ",
+            "settingsTitle": "रीडर सेटिंग्स"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "सियान",
+                "darkorange": "गहरा नारंगी",
+                "darkyellow": "गहरा पीला",
+                "green": "हरा",
+                "orange": "नारंगी",
+                "purple": "बैंगनी",
+                "red": "लाल",
+                "yellow": "पीला"
+            }
+        },
+        "picker": {
+            "search": {
+                "founds_one": "{{- count}} मिलान",
+                "founds_other": "{{- count}} मिलान",
+                "input": "मिलान करने के लिए पाठ",
+                "next": "अगला",
+                "notFound": "कोई मिलान नहीं",
+                "previous": "पिछला",
+                "results": "परिणाम",
+                "submit": "ढूंढें"
+            },
+            "searchTitle": "खोज:"
+        },
+        "print": {
+            "descriptionLcpCount": "शेष पृष्ठ सीमा: {{- count}}",
+            "descriptionLcpPrintable": "पहले मुद्रित पृष्ठ: {{- printable}} ({{- count}})",
+            "howTo": "मुद्रित करने के लिए पृष्ठों की श्रेणी कैसे चुनें",
+            "lcpInfo": "इस प्रकाशन में आपके द्वारा मुद्रित किए जा सकने वाले पृष्ठों की संख्या {{- count}} तक सीमित है। यहाँ अपने आवश्यक पृष्ठ चुनें।",
+            "noPagesLcpLimitReached": "आपने एलसीपी सीमा तक पहुँच लिया है",
+            "noPrintablePages": "कोई मुद्रण योग्य पृष्ठ नहीं",
+            "pageHelpInfo": "पृष्ठ चयनकर्ता वाक्यविन्यास:",
+            "pageHelpInfo1": "एक एकल पृष्ठ को संदर्भित करने के लिए पृष्ठ संख्या दर्ज करें (उदाहरण: \"6\")",
+            "pageHelpInfo2": "सन्निहित पृष्ठों की श्रेणी को संदर्भित करने के लिए डैश वर्ण द्वारा अलग किए गए दो पृष्ठ संख्याएँ दर्ज करें (उदाहरण: \"6-13\")",
+            "pageHelpInfo3": "कई पृष्ठों या पृष्ठ श्रेणियों को अलग करने के लिए सेमीकोलन वर्ण का उपयोग करें (उदाहरण: \"5;14-20;37\")",
+            "pageHelpInfo4": "प्रकाशन के पहले या अंतिम पृष्ठ को संदर्भित करने के लिए श्रेणी का पहला या अंतिम पृष्ठ छोड़ दें (उदाहरण: \"-16\" \"1-16\" के बराबर है, और \"34-\" \"34-100\" के बराबर है, यह मानते हुए कि पुस्तक में कुल 100 पृष्ठ हैं)",
+            "pages": "पृष्ठ",
+            "preview": "पूर्वावलोकन",
+            "print": "प्रिंट",
+            "printablePages": "मुद्रण योग्य पृष्ठ (कुल)",
+            "title": "मुद्रण योग्य पृष्ठों का चयन"
+        },
+        "settings": {
+            "column": {
+                "auto": "डिफ़ॉल्ट",
+                "one": "1 कॉलम",
+                "title": "कॉलम",
+                "two": "2 कॉलम"
+            },
+            "customFontSelected": "आपने एक व्यक्तिगत फ़ॉन्ट चुना है",
+            "deactivateTextFormatting": "",
+            "display": "प्रदर्शन",
+            "disposition": {
+                "title": "लेआउट"
+            },
+            "enablePageBreakMarginIndicators": "मार्जिन में पृष्ठ विराम दिखाएँ",
+            "font": "फ़ॉन्ट",
+            "fontSize": "फ़ॉन्ट आकार",
+            "increaseFontSize": "फ़ॉन्ट आकार बढ़ाएँ",
+            "infoCustomFont": "इसके नाम को टाइप करके ऑपरेटिंग सिस्टम से कस्टम फ़ॉन्ट चुनें",
+            "justification": "संरेखण",
+            "justify": "न्यायोचित करें",
+            "letterSpacing": "अक्षर रिक्ति",
+            "lineSpacing": "पंक्ति रिक्ति",
+            "margin": "मार्जिन",
+            "mathjax": "मैथजैक्स सक्षम करें",
+            "noFootnotes": "पॉपअप फुटनोट्स अक्षम करें",
+            "noRTLFlip": "राइट-टू-लेफ्ट यूआई अक्षम करें",
+            "noRuby": "जापानी रूबी छिपाएँ",
+            "noTemporaryNavTargetOutline": "दृश्य नेविगेशन संकेतक अक्षम करें",
+            "paginated": "पृष्ठांकित",
+            "paraSpacing": "पैराग्राफ रिक्ति",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100%",
+                    "150pct": "150%",
+                    "200pct": "200%",
+                    "300pct": "300%",
+                    "500pct": "500%",
+                    "50pct": "50%",
+                    "fit": "पृष्ठ फिट",
+                    "width": "पृष्ठ चौड़ाई"
+                },
+                "title": "ज़ूम"
+            },
+            "preset": {
+                "apply": "लागू करें",
+                "applyDetails": "वर्तमान प्रकाशन पर अपनी पसंदीदा कॉन्फ़िगरेशन लागू करें।",
+                "reset": "रीसेट",
+                "resetDetails": "अपनी पसंदीदा कॉन्फ़िगरेशन रीसेट करें (डिफ़ॉल्ट सेटिंग्स)।",
+                "save": "सहेजें",
+                "saveDetails": "यह क्रिया वर्तमान कॉन्फ़िगरेशन को सहेजती है, अर्थात आपकी पसंदीदा प्रदर्शन और पाठ स्वरूपण विकल्प। सेटिंग्स को फिर अन्य प्रकाशनों पर 'लागू करें' बटन पर क्लिक करके अन्य रीडर विंडो में लागू किया जा सकता है।",
+                "title": "प्राथमिकताएँ"
+            },
+            "preview": "पूर्वावलोकन",
+            "reduceFontSize": "फ़ॉन्ट आकार घटाएँ",
+            "reduceMotion": "गति कम करें",
+            "scrolled": "स्क्रॉल करने योग्य",
+            "spacing": "रिक्ति",
+            "spreadModeEven": "पृष्ठ स्प्रेड 'सम' (डिफ़ॉल्ट 'विषम' है)",
+            "text": "पाठ",
+            "theme": {
+                "name": {
+                    "Contrast1": "कंट्रास्ट 1",
+                    "Contrast2": "कंट्रास्ट 2",
+                    "Contrast3": "कंट्रास्ट 3",
+                    "Contrast4": "कंट्रास्ट 4",
+                    "Neutral": "तटस्थ",
+                    "Night": "रात",
+                    "Paper": "कागज़",
+                    "Sepia": "सेपिया"
+                },
+                "title": "थीम"
+            },
+            "wordSpacing": "शब्द रिक्ति"
+        },
+        "svg": {
+            "left": "बाएँ",
+            "right": "दाएँ"
+        },
+        "toc": {
+            "publicationNoToc": "कोई सामग्री तालिका नहीं"
+        },
+        "tts": {
+            "activate": "टेक्स्ट टू स्पीच (टीटीएस) सक्रिय करें",
+            "language": "टीटीएस भाषा",
+            "next": "अगला टीटीएस",
+            "options": "टीटीएस विकल्प",
+            "pause": "टीटीएस रोकें",
+            "play": "टीटीएस चलाएँ",
+            "previous": "पिछला टीटीएस",
+            "sentenceDetect": "टीटीएस पाठ को विभाजित करें",
+            "sentenceDetectDescription": "लंबे पैराग्राफ को वाक्यों में तोड़ें।",
+            "speed": "टीटीएस प्लेबैक दर",
+            "stop": "टीटीएस रोकें",
+            "voice": "टीटीएस आवाज"
+        }
+    },
+    "settings": {
+        "annotationCreator": {
+            "creator": "टिप्पणी निर्माता (वैकल्पिक)",
+            "help": "यदि निर्दिष्ट किया गया है, तो यह नाम निर्यात किए गए नोट्स के मेटाडेटा में शामिल होगा।",
+            "name": "नाम",
+            "organization": "संगठन",
+            "person": "व्यक्ति",
+            "type": "प्रकार:"
+        },
+        "auth": {
+            "help": "यह क्रिया सभी ओपीडीएस लॉगिन क्रेडेंशियल्स को हटा देती है।",
+            "title": "प्रकाशन कैटलॉग तक पहुँच",
+            "wipeData": "लॉगिन डेटा साफ करें"
+        },
+        "keyboard": {
+            "advancedMenu": "कीबोर्ड शॉर्टकट उन्नत मेनू",
+            "cancel": "रद्द करें",
+            "disableTooltips": "कीबोर्ड शॉर्टकट के टूलटिप बंद करें",
+            "disclaimer": "एप्लिकेशन डिफ़ॉल्ट्स को QWERTY लेआउट पर कुंजियों की भौतिक स्थिति के आधार पर डिज़ाइन किया गया था",
+            "editUserJson": "उपयोगकर्ता फ़ाइल संपादित करें...",
+            "exportToHTML": "HTML में निर्यात करें",
+            "keyboardShortcuts": "कीबोर्ड शॉर्टकट",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "बुकमार्क निर्माण डायलॉग खोलें और पाठ्य लेबल (नोट), रंग और टैग संपादित करें",
+                    "name": "लेबल के साथ बुकमार्क बनाएँ"
+                },
+                "AnnotationsCreate": {
+                    "description": "चयनित दस्तावेज़ पाठ के लिए टिप्पणी निर्माण डायलॉग खोलें, और पाठ्य नोट, हाइलाइट रंग और प्रकार, और टैग संपादित करें",
+                    "name": "टिप्पणी बनाएँ"
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "चयनित पाठ के लिए त्वरित रूप से एक टिप्पणी बनाएँ, अंतिम उपयोग किए गए हाइलाइट रंग और प्रकार के साथ (नोट और टैग खाली होंगे)",
+                    "name": "त्वरित टिप्पणी बनाएँ"
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "टिप्पणी और बुकमार्क दृश्य संकेतकों को वैकल्पिक रूप से दस्तावेज़ मार्जिन या पाठ में बदलें",
+                    "name": "टिप्पणी मार्जिन टॉगल करें"
+                },
+                "AudioNext": {
+                    "description": "कथन में अगले ऑडियो खंड में आगे बढ़ें (EPUB3 मीडिया ओवरले, टेक्स्ट टू स्पीच, या पहले से रिकॉर्ड की गई ऑडियोबुक)",
+                    "name": "अगला ऑडियो खंड"
+                },
+                "AudioNextAlt": {
+                    "description": "कथन में अगले ऑडियो खंड में आगे बढ़ें (EPUB3 मीडिया ओवरले, टेक्स्ट टू स्पीच रीड-अलाउड, या पहले से रिकॉर्ड की गई ऑडियोबुक)। यह वर्तमान में छोड़ी जा सकने वाली संरचना को छोड़ देता है",
+                    "name": "अगला ऑडियो खंड (छोड़ें)"
+                },
+                "AudioPlayPause": {
+                    "description": "वर्तमान कथन के लिए प्ले/पॉज टॉगल करें (EPUB3 मीडिया ओवरले, टेक्स्ट टू स्पीच रीड-अलाउड, या पहले से रिकॉर्ड की गई ऑडियोबुक)",
+                    "name": "ऑडियो चलाएँ/रोकें"
+                },
+                "AudioPrevious": {
+                    "description": "कथन में पिछले ऑडियो खंड में पीछे जाएँ (EPUB3 मीडिया ओवरले, टेक्स्ट टू स्पीच रीड-अलाउड, या पहले से रिकॉर्ड की गई ऑडियोबुक)",
+                    "name": "पिछला ऑडियो खंड"
+                },
+                "AudioPreviousAlt": {
+                    "description": "कथन में पिछले ऑडियो खंड में पीछे जाएँ (EPUB3 मीडिया ओवरले, टेक्स्ट टू स्पीच रीड-अलाउड, या पहले से रिकॉर्ड की गई ऑडियोबुक)। यह वर्तमान में छोड़ी जा सकने वाली संरचना को छोड़ देता है",
+                    "name": "पिछला ऑडियो खंड (छोड़ें)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "EPUB3 Media Overlays ऑडियो प्लेबैक की गति या TTS से ज़ोर से पढ़ने की दर घटाएँ",
+                    "name": "ऑडियो गति घटाएँ"
+                },
+                "AudioSpeedIncrease": {
+                    "description": "EPUB3 Media Overlays ऑडियो प्लेबैक की गति या TTS से ज़ोर से पढ़ने की दर बढ़ाएँ",
+                    "name": "ऑडियो गति बढ़ाएँ"
+                },
+                "AudioSpeedReset": {
+                    "description": "EPUB3 Media Overlays ऑडियो प्लेबैक की गति या TTS से ज़ोर से पढ़ने की दर रीसेट करें",
+                    "name": "ऑडियो गति रीसेट करें"
+                },
+                "AudioStop": {
+                    "description": "वर्तमान ऑडियो रोकें (EPUB3 मीडिया ओवरले, टेक्स्ट टू स्पीच रीड-अलाउड, या पहले से रिकॉर्ड की गई ऑडियोबुक)",
+                    "name": "ऑडियो रोकें"
+                },
+                "CloseReader": {
+                    "description": "रीडर विंडो बंद करें और पुस्तकालय में वापस जाएँ",
+                    "name": "रीडर बंद करें"
+                },
+                "FXLZoomIn": {
+                    "description": "निश्चित लेआउट एकल पृष्ठ या 2-पृष्ठ स्प्रेड में ज़ूम करें।",
+                    "name": "FXL ज़ूम इन"
+                },
+                "FXLZoomOut": {
+                    "description": "निश्चित लेआउट एकल पृष्ठ या 2-पृष्ठ स्प्रेड से ज़ूम आउट करें।",
+                    "name": "FXL ज़ूम आउट"
+                },
+                "FXLZoomReset": {
+                    "description": "निश्चित लेआउट एकल पृष्ठ या 2-पृष्ठ स्प्रेड पर ज़ूम रीसेट करें।",
+                    "name": "FXL ज़ूम रीसेट"
+                },
+                "FocusMain": {
+                    "description": "ग्राफिकल उपयोगकर्ता इंटरफ़ेस में 'मुख्य' लैंडमार्क पर कीबोर्ड फोकस ले जाएँ। रीडर विंडो में, यह प्रकाशन सामग्री में ले जाता है",
+                    "name": "मुख्य सामग्री पर फोकस करें"
+                },
+                "FocusMainDeep": {
+                    "description": "रीडर विंडो में, यह स्क्रीन रीडर्स के लिए अधिक विश्वसनीय तकनीक का उपयोग करके प्रकाशन सामग्री में कीबोर्ड फोकस ले जाता है",
+                    "name": "मुख्य सामग्री पर गहरा फोकस"
+                },
+                "FocusReaderGotoPage": {
+                    "description": "रीडर विंडो के नेविगेशन पैनल के 'पृष्ठ पर जाएँ' अनुभाग पर कीबोर्ड फोकस ले जाएँ",
+                    "name": "'पृष्ठ पर जाएँ' पर फोकस करें"
+                },
+                "FocusReaderNavigation": {
+                    "description": "रीडर विंडो के नेविगेशन पैनल पर कीबोर्ड फोकस ले जाएँ",
+                    "name": "नेविगेशन पैनल पर फोकस करें"
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "रीडर विंडो के नेविगेशन पैनल के 'टिप्पणियाँ' अनुभाग पर कीबोर्ड फोकस ले जाएँ",
+                    "name": "'टिप्पणियाँ' पर फोकस करें"
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "रीडर विंडो के नेविगेशन पैनल के 'बुकमार्क्स' अनुभाग पर कीबोर्ड फोकस ले जाएँ",
+                    "name": "'बुकमार्क्स' पर फोकस करें"
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "रीडर विंडो के नेविगेशन पैनल के 'खोज' अनुभाग पर कीबोर्ड फोकस ले जाएँ",
+                    "name": "'खोज' पर फोकस करें"
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "रीडर विंडो के नेविगेशन पैनल के 'सामग्री तालिका' अनुभाग पर कीबोर्ड फोकस ले जाएँ",
+                    "name": "'सामग्री तालिका' पर फोकस करें"
+                },
+                "FocusReaderSettings": {
+                    "description": "रीडर विंडो के सेटिंग्स पैनल (प्रदर्शन प्राथमिकताएँ आदि) पर कीबोर्ड फोकस ले जाएँ",
+                    "name": "रीडर सेटिंग्स पर फोकस करें"
+                },
+                "FocusSearch": {
+                    "description": "रीडर विंडो के पाठ खोज इनपुट पर कीबोर्ड फोकस ले जाएँ, या पुस्तकालय विंडो में यह बुकशेल्फ या सक्रिय ओपीडीएस फीड खोजता है",
+                    "name": "खोज कमांड"
+                },
+                "FocusToolbar": {
+                    "description": "ग्राफिकल उपयोगकर्ता इंटरफ़ेस के लैंडमार्क क्षेत्र पर कीबोर्ड फोकस ले जाएँ, जो 'स्किप लिंक' से ठीक पहले है (जो स्वयं पुस्तकालय या रीडर विंडो के मुख्य सामग्री क्षेत्र में फोकस ले जाता है)",
+                    "name": "टूलबार पर फोकस करें"
+                },
+                "NavigateNextChapter": {
+                    "description": "रीडर विंडो में, प्रकाशन के पढ़ने के क्रम में अगले दस्तावेज़ पर नेविगेट करें (उदाहरण: पुस्तक की रीढ़ में अध्याय)। ध्यान दें कि इस डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "अगले अध्याय पर जाएँ"
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "रीडर विंडो में, प्रकाशन के पढ़ने के क्रम में अगले दस्तावेज़ पर नेविगेट करें (उदाहरण: पुस्तक की रीढ़ में अध्याय)। यह डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "अगले अध्याय पर जाएँ (वैकल्पिक)"
+                },
+                "NavigateNextHistory": {
+                    "description": "रीडर विंडो में, नेविगेशन इतिहास में एक कदम आगे कूदें",
+                    "name": "अगले इतिहास पर जाएँ"
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "पुस्तकालय विंडो में, प्रकाशनों की पृष्ठांकित सूची का अगला पृष्ठ दिखाएँ। ध्यान दें कि इस डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "अगले पुस्तकालय पृष्ठ पर जाएँ"
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "पुस्तकालय विंडो में, प्रकाशनों की पृष्ठांकित सूची का अगला पृष्ठ दिखाएँ। यह डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "अगले पुस्तकालय पृष्ठ पर जाएँ (वैकल्पिक)"
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "पुस्तकालय विंडो में कैटलॉग/ओपीडीएस फीड के लिए, अगले पृष्ठांकन लिंक का पालन करें। ध्यान दें कि इस डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "अगले ओपीडीएस पृष्ठ पर जाएँ"
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "पुस्तकालय विंडो में कैटलॉग/ओपीडीएस फीड के लिए, अगले पृष्ठांकन लिंक का पालन करें। यह डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "अगले ओपीडीएस पृष्ठ पर जाएँ (वैकल्पिक)"
+                },
+                "NavigateNextPage": {
+                    "description": "रीडर विंडो में, प्रकाशन में अगले 'पृष्ठ' पर जाएँ। ध्यान दें कि इस डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "अगले पृष्ठ पर जाएँ"
+                },
+                "NavigateNextPageAlt": {
+                    "description": "रीडर विंडो में, प्रकाशन में अगले 'पृष्ठ' पर जाएँ। यह डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "अगले पृष्ठ पर जाएँ (वैकल्पिक)"
+                },
+                "NavigatePreviousChapter": {
+                    "description": "रीडर विंडो में, प्रकाशन के पढ़ने के क्रम में पिछले दस्तावेज़ पर नेविगेट करें (उदाहरण: पुस्तक की रीढ़ में अध्याय)। ध्यान दें कि इस डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "पिछले अध्याय पर जाएँ"
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "रीडर विंडो में, प्रकाशन के पढ़ने के क्रम में पिछले दस्तावेज़ पर नेविगेट करें (उदाहरण: पुस्तक की रीढ़ में अध्याय)। यह डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "पिछले अध्याय पर जाएँ (वैकल्पिक)"
+                },
+                "NavigatePreviousHistory": {
+                    "description": "रीडर विंडो में, नेविगेशन इतिहास में एक कदम पीछे कूदें",
+                    "name": "पिछले इतिहास पर जाएँ"
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "पुस्तकालय विंडो में, प्रकाशनों की पृष्ठांकित सूची का पिछला पृष्ठ दिखाएँ। ध्यान दें कि इस डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "पिछले पुस्तकालय पृष्ठ पर जाएँ"
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "पुस्तकालय विंडो में, प्रकाशनों की पृष्ठांकित सूची का पिछला पृष्ठ दिखाएँ। यह डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "पिछले पुस्तकालय पृष्ठ पर जाएँ (वैकल्पिक)"
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "पुस्तकालय विंडो में कैटलॉग/ओपीडीएस फीड के लिए, पिछले पृष्ठांकन लिंक का पालन करें। ध्यान दें कि इस डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "पिछले ओपीडीएस पृष्ठ पर जाएँ"
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "पुस्तकालय विंडो में कैटलॉग/ओपीडीएस फीड के लिए, पिछले पृष्ठांकन लिंक का पालन करें। यह डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "पिछले ओपीडीएस पृष्ठ पर जाएँ (वैकल्पिक)"
+                },
+                "NavigatePreviousPage": {
+                    "description": "रीडर विंडो में, प्रकाशन में पिछले 'पृष्ठ' पर जाएँ। ध्यान दें कि इस डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "पिछले पृष्ठ पर जाएँ"
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "रीडर विंडो में, प्रकाशन में पिछले 'पृष्ठ' पर जाएँ। यह डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "पिछले पृष्ठ पर जाएँ (वैकल्पिक)"
+                },
+                "NavigateToBegin": {
+                    "description": "रीडर विंडो में, प्रकाशन की शुरुआत में जाएँ",
+                    "name": "शुरुआत में जाएँ"
+                },
+                "NavigateToEnd": {
+                    "description": "रीडर विंडो में, प्रकाशन के अंत में जाएँ",
+                    "name": "अंत में जाएँ"
+                },
+                "OpenReaderInfo": {
+                    "description": "रीडर विंडो में, प्रकाशन के लिए जानकारी डायलॉग खोलें",
+                    "name": "प्रकाशन जानकारी प्रदर्शित करें"
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "रीडर विंडो में, प्रकाशन के बारे में जानकारी दिखाने वाला पॉपअप डायलॉग खोलें, और कीबोर्ड को वर्तमान पढ़ने की स्थिति के संदर्भ को दिखाने वाले अनुभाग पर फोकस करें",
+                    "name": "प्रकाशन जानकारी प्रदर्शित करें, पढ़ने की स्थिति दिखाएँ"
+                },
+                "Print": {
+                    "description": "रीडर विंडो में, प्रिंट डायलॉग खोलें",
+                    "name": "प्रिंट"
+                },
+                "SearchNext": {
+                    "description": "रीडर विंडो के खोज टूल में, अगले खोज परिणाम पर जाएँ। ध्यान दें कि इस डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "खोज परिणाम अगला"
+                },
+                "SearchNextAlt": {
+                    "description": "रीडर विंडो के खोज टूल में, अगले खोज परिणाम पर जाएँ। यह डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "खोज परिणाम अगला (वैकल्पिक)"
+                },
+                "SearchPrevious": {
+                    "description": "रीडर विंडो के खोज टूल में, पिछले खोज परिणाम पर जाएँ। ध्यान दें कि इस डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "खोज परिणाम पिछला"
+                },
+                "SearchPreviousAlt": {
+                    "description": "रीडर विंडो के खोज टूल में, पिछले खोज परिणाम पर जाएँ। यह डिफ़ॉल्ट के लिए एक वैकल्पिक कीबोर्ड शॉर्टकट है",
+                    "name": "खोज परिणाम पिछला (वैकल्पिक)"
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "रीडर विंडो में, वर्तमान पढ़ने की स्थिति के संदर्भ का वर्णन करें, स्क्रीन रीडर्स के साथ संगत भाषण पाठ का उपयोग करके",
+                    "name": "पढ़ने की स्थिति का वर्णन करें (भाषण)"
+                },
+                "ToggleBookmark": {
+                    "description": "एक नया बुकमार्क जोड़ें या यदि वर्तमान में चयनित है तो मौजूदा बुकमार्क हटाएँ",
+                    "name": "बुकमार्क टॉगल करें"
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "रीडर विंडो में, सिस्टम फुलस्क्रीन सक्रिय करें या सामान्य विंडो मोड में पुनर्स्थापित करें। ध्यान दें कि यह 'ज़ेन मोड' से अलग है जो उपयोगकर्ता इंटरफ़ेस को सरल करता है",
+                    "name": "फुलस्क्रीन टॉगल करें"
+                },
+                "ToggleReaderZenMode": {
+                    "description": "रीडर विंडो में ज़ेन मोड सक्रिय करें या उससे बाहर निकलें, जो पढ़ते समय उपयोगकर्ता इंटरफ़ेस को सरल बनाता है",
+                    "name": "ज़ेन मोड टॉगल करें"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "पुस्तकालय विंडो में स्क्रीन रीडर के लिए अनुकूलित समर्थन टॉगल करें",
+                    "name": "स्क्रीन रीडर अनुकूलन टॉगल करें"
+                }
+            },
+            "loadUserJson": "उपयोगकर्ता फ़ाइल से लोड करें",
+            "noShortcutFound": "इस लेबल के साथ कोई शॉर्टकट नहीं मिला",
+            "resetDefaults": "रीसेट (डिफ़ॉल्ट लोड करें)",
+            "save": "सहेजें",
+            "searchPlaceholder": "शॉर्टकट खोजने के लिए टाइप करें"
+        },
+        "language": {
+            "languageChoice": "भाषा"
+        },
+        "library": {
+            "enableAPIAPP": "'पीएनबी' पुस्तकालय प्रणाली सक्रिय करें",
+            "title": "फ्रांसीसी पुस्तकालय खातों तक पहुँच"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "डिफ़ॉल्ट टेम्पलेट लोड करें",
+                "enableCheckbox": "एचटीएमएल टेम्पलेट को अनुकूलित करें",
+                "overrideHTMLTemplate": "नोट्स निर्यात (टिप्पणियाँ और बुकमार्क्स)"
+            }
+        },
+        "profiles": {
+            "info": "साथी विक्रेता की ब्रांडिंग और रंगों के साथ ऐप को अनुकूलित करने के लिए प्रोफ़ाइल बदलें। प्रत्येक प्रोफ़ाइल एक अनुकूल अनुभव देती है।",
+            "thorium": {
+                "description": "Thorium Vanilla प्रोफ़ाइल मूल प्रोफ़ाइल है, जिसे EDRLab ने डिज़ाइन किया है।",
+                "title": "Thorium vanilla"
+            },
+            "version": "संस्करण: {{- version}}"
+        },
+        "screenReaderActivate": {
+            "help": "जब एप्लिकेशन सहायक तकनीक की उपस्थिति पहचानता है, तो उपयोगकर्ता इंटरफ़ेस स्क्रीन रीडर के साथ बेहतर काम करता है",
+            "invite": "स्क्रीन रीडर के लिए अनुकूलित करें",
+            "message": "स्क्रीन रीडर के लिए बेहतर समर्थन",
+            "title": "स्क्रीन रीडर अनुभव बेहतर बनाएँ"
+        },
+        "session": {
+            "title": "सत्र सहेजना सक्षम करें"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "समय-सीमा समाप्त प्रकाशन और संबंधित उपयोगकर्ता डेटा स्वचालित रूप से हटाएँ",
+            "lcpAutoDeleteExpiredPublicationsDescription": "यह सुनिश्चित करता है कि समय-सीमा समाप्त उधार स्वचालित रूप से हटा दिए जाएँ (व्यक्तिगत एनोटेशन, पठन बुकमार्क आदि सहित)। यह पुस्तकालय या विश्वविद्यालय कक्ष जैसे 'साझा कंप्यूटर' वातावरण में उपयोगी है।",
+            "title": "साझा कंप्यूटर मोड"
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "एक अतिरिक्त स्टोरेज चुनें",
+                "changeDirectory": "अतिरिक्त स्टोरेज अपडेट करें",
+                "removeStorageDirectory": "अतिरिक्त स्टोरेज हटाएँ"
+            },
+            "beta": {
+                "availability": "यह सुविधा केवल Thorium के हाल के संस्करणों में काम करती है; बाहरी डायरेक्टरी की पुस्तकें Thorium 3.4 या उससे पहले के संस्करण में नहीं दिखेंगी।",
+                "integrity": "आपको यह डायरेक्टरी सुरक्षित और सुलभ रखनी होगी। इसे हटाने, इसकी पहुँच सीमित करने, या नेटवर्क ड्राइव जैसे धीमे या अस्थिर स्टोरेज का उपयोग करने से बचें।",
+                "migration": "Thorium आपकी पुस्तकों को स्वचालित रूप से स्थानांतरित नहीं करता: यदि आप अतिरिक्त स्टोरेज अपडेट करते हैं, तो अपने प्रकाशनों को नए स्थान पर स्वयं ले जाएँ। यदि आप इसे हटाते हैं, तो अपने प्रकाशनों को मूल स्टोरेज पर स्वयं ले जाएँ।",
+                "summary": "इस सुविधा के बारे में और जानें, जो अभी बीटा में है",
+                "warning": "इस डायरेक्टरी की फ़ाइलों को स्वयं न बदलें, क्योंकि इससे आपकी पुस्तकों या रीडर में समस्या हो सकती है। इस डायरेक्टरी को Thorium द्वारा प्रबंधित एक सुरक्षित पुस्तकालय मानें।"
+            },
+            "configuration": {
+                "chooseFolderDescription": "वह डायरेक्टरी चुनें जिसे Thorium अतिरिक्त स्टोरेज के रूप में उपयोग करे।",
+                "configuredDescription": "अतिरिक्त स्टोरेज कॉन्फ़िगर हो चुका है और नए संग्रहीत प्रकाशनों के लिए उपयोग हेतु तैयार है।",
+                "notConfiguredDescription": "Thorium Reader में आयात किए गए प्रकाशन चयनित डायरेक्टरी में संग्रहीत होंगे। पहले आयात किए गए प्रकाशन मूल सिस्टम स्टोरेज में रहेंगे।"
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "जारी रखें",
+                    "description": "यह सुविधा अभी बीटा में है। क्या आप जारी रखकर एक डायरेक्टरी चुनकर अतिरिक्त स्टोरेज कॉन्फ़िगर करना चाहते हैं?",
+                    "title": "एक अतिरिक्त स्टोरेज चुनें"
+                },
+                "edit": {
+                    "confirm": "डायरेक्टरी संपादित करें",
+                    "description": "अतिरिक्त स्टोरेज अपडेट करने में सावधानी रखें। Thorium मौजूदा प्रकाशनों को आपके लिए स्थानांतरित नहीं करेगा; आपको यह स्वयं करना होगा। क्या आप जारी रखना चाहते हैं?",
+                    "title": "अतिरिक्त स्टोरेज अपडेट करें"
+                },
+                "remove": {
+                    "confirm": "डायरेक्टरी हटाएँ",
+                    "description": "अतिरिक्त स्टोरेज हटाने में सावधानी रखें। Thorium मौजूदा प्रकाशनों को आपके लिए स्थानांतरित नहीं करेगा; आपको यह स्वयं करना होगा। क्या आप जारी रखना चाहते हैं?",
+                    "title": "अतिरिक्त स्टोरेज हटाएँ"
+                }
+            },
+            "locations": {
+                "defaultDescription": "एप्लिकेशन द्वारा प्रबंधित प्रकाशन डिफ़ॉल्ट रूप से यहाँ संग्रहीत होते हैं:",
+                "defaultInternal": "सिस्टम स्टोरेज",
+                "externalStorage": "बाहरी स्टोरेज",
+                "title": "स्थान"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "पुनर्प्राप्त किए जा सकने वाले प्रकाशन जाँचें",
+                    "checkAgain": "फिर जाँचें",
+                    "recover": "प्रकाशन पुनर्प्राप्त करें",
+                    "recovering": "पुनर्प्राप्ति हो रही है..."
+                },
+                "available": "डिस्क पर एक या अधिक प्रकाशन मिले, लेकिन वे डेटाबेस में नहीं हैं। पुनर्प्राप्ति संभव है।",
+                "checking": "प्रकाशन स्टोरेज जाँचा जा रहा है...",
+                "description": "सुरक्षित रूप से पुनर्प्राप्त किए जा सकने वाले प्रकाशन खोजने के लिए प्रकाशन स्टोरेज जाँचें।",
+                "dialog": {
+                    "confirm": "पुनर्प्राप्त करें",
+                    "description_one": "Thorium को डिस्क पर {{- count}} ऐसा प्रकाशन मिला जो डेटाबेस में नहीं है। क्या आप इसे Thorium में वापस आयात करना चाहते हैं?",
+                    "description_other": "Thorium को डिस्क पर {{- count}} ऐसे प्रकाशन मिले जो डेटाबेस में नहीं हैं। क्या आप उन्हें Thorium में वापस आयात करना चाहते हैं?",
+                    "title": "प्रकाशन पुनर्प्राप्त करें"
+                },
+                "none": "कोई पुनर्प्राप्त किया जा सकने वाला प्रकाशन नहीं मिला।",
+                "recoverableCount_one": "{{- count}} प्रकाशन मूल स्टोरेज पहचानकर्ता के साथ पुनर्प्राप्त किया जा सकता है।",
+                "recoverableCount_other": "{{- count}} प्रकाशन मूल स्टोरेज पहचानकर्ता के साथ पुनर्प्राप्त किए जा सकते हैं।",
+                "title": "पुनर्प्राप्ति"
+            }
+        },
+        "tabs": {
+            "advanced": "उन्नत",
+            "general": "सामान्य",
+            "keyboardShortcuts": "कीबोर्ड शॉर्टकट",
+            "profiles": "प्रोफ़ाइल",
+            "storage": "स्टोरेज"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "टेलीमेट्री माप अक्षम करें",
+            "disableTelemetryMeasurementsDescription": "सक्षम होने पर Thorium टेलीमेट्री माप नहीं भेजता।",
+            "title": "टेलीमेट्री"
+        },
+        "theme": {
+            "auto": "स्वचालित",
+            "dark": "डार्क",
+            "description": "एप्लिकेशन थीम ऑपरेटिंग सिस्टम से मेल खाती है।",
+            "light": "लाइट",
+            "title": "एप्लिकेशन थीम"
+        },
+        "window": {
+            "keepLibraryWindowInBackgroundOnReaderClose": "रीडर विंडो बंद करने के बाद पुस्तकालय को पृष्ठभूमि में रखें",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "सक्षम होने पर रीडर विंडो बंद करने से पुस्तकालय विंडो वापस नहीं आती और उस पर फ़ोकस नहीं होता।",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "रीडर विंडो खोलने के बाद पुस्तकालय को छोटा करें",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "सक्षम होने पर रीडर विंडो खोलने से पुस्तकालय विंडो छोटी हो जाती है।",
+            "minimizeLibraryToTray": "पुस्तकालय को सिस्टम ट्रे में छोटा करें",
+            "minimizeLibraryToTrayDescription": "सक्षम होने पर पुस्तकालय विंडो को छोटा करने से Thorium Windows सूचना क्षेत्र में चलता रहता है।",
+            "oneReaderWindowPerPublication": "प्रति प्रकाशन एक रीडर विंडो का उपयोग करें",
+            "oneReaderWindowPerPublicationDescription": "सक्षम होने पर, जो प्रकाशन पहले से खुला है उसे फिर खोलने पर नई विंडो नहीं खुलती, बल्कि उसकी रीडर विंडो फ़ोकस हो जाती है।",
+            "title": "विंडो व्यवहार"
+        }
+    },
+    "tts": {
+        "highlight": {
+            "mainColor": "मुख्य रंग",
+            "maskBlockWordOutline": "मास्क ब्लॉक, शब्द रूपरेखा",
+            "maskBlockWordSolidBackground": "मास्क ब्लॉक, शब्द ठोस पृष्ठभूमि",
+            "maskBlockWordUnderline": "मास्क ब्लॉक, शब्द रेखांकन",
+            "maskWordOutline": "मास्क, शब्द रूपरेखा",
+            "maskWordSolidBackground": "मास्क, शब्द ठोस पृष्ठभूमि",
+            "maskWordUnderline": "मास्क, शब्द रेखांकन",
+            "outlineWordOutline": "रूपरेखा, शब्द रूपरेखा",
+            "outlineWordSolidBackground": "रूपरेखा, शब्द ठोस पृष्ठभूमि",
+            "outlineWordUnderline": "रूपरेखा, शब्द रेखांकन",
+            "preview": "टीटीएस हाइलाइट शैली पूर्वावलोकन",
+            "solidBackgroundWordOutline": "ठोस पृष्ठभूमि, शब्द रूपरेखा",
+            "solidBackgroundWordSolidBackground": "ठोस पृष्ठभूमि, शब्द ठोस पृष्ठभूमि",
+            "solidBackgroundWordUnderline": "ठोस पृष्ठभूमि, शब्द रेखांकन",
+            "style": "टीटीएस हाइलाइट शैली",
+            "underlineWordOutline": "रेखांकन, शब्द रूपरेखा",
+            "underlineWordSolidBackground": "रेखांकन, शब्द ठोस पृष्ठभूमि",
+            "underlineWordUnderline": "रेखांकन, शब्द रेखांकन",
+            "wordColor": "शब्द रंग"
+        }
+    }
+}

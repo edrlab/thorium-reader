@@ -1,28 +1,28 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Σημείωση σχολιασμού",
         "bookMenu": "Μενού",
-        "bookmarkNote": "",
-        "cancelDownload": "",
+        "bookmarkNote": "Σημείωση σελιδοδείκτη",
+        "cancelDownload": "Ακύρωση λήψης: {{- title}}",
         "closeDialog": "Κλείσιμο",
-        "closeNotification": "",
-        "copyNotificationInstruction": "",
-        "decreaseSetting": "",
-        "downloadProgress": "",
-        "downloadProgressUnknown": "",
-        "editTag": "",
-        "favoriteCatalog": "",
-        "increaseSetting": "",
+        "closeNotification": "Κλείσιμο ειδοποίησης",
+        "copyNotificationInstruction": "Αντιγραφή ειδοποίησης",
+        "decreaseSetting": "Μείωση {{- setting}}",
+        "downloadProgress": "Πρόοδος λήψης: {{- title}}",
+        "downloadProgressUnknown": "Άγνωστη πρόοδος λήψης.",
+        "editTag": "Επεξεργασία ετικέτας: {{- tag}}",
+        "favoriteCatalog": "Κατάλογος αγαπημένων: {{- title}}",
+        "increaseSetting": "Αύξηση {{- setting}}",
         "leftSlideButton": "Μετακίνηση προς τα αριστερά",
-        "loading": "",
+        "loading": "Φόρτωση…",
         "mainContent": "κυρίως περιεχόμενο",
-        "notificationCopied": "",
-        "notificationCopyFailed": "",
-        "printPage": "",
-        "publicationDetails": "",
-        "resetSetting": "",
+        "notificationCopied": "Αντιγράφηκε στο πρόχειρο:",
+        "notificationCopyFailed": "Αδυναμία αντιγραφής ειδοποίησης",
+        "printPage": "Σελίδα {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Επαναφορά {{- setting}}",
         "rightSlideButton": "Μετακίνηση προς τα δεξιά",
-        "searching": "",
+        "searching": "Αναζήτηση…",
         "skipLink": "Μεταπήδηση στο περιεχόμενο",
         "toolbar": "Γραμμή εργαλείων"
     },
@@ -108,7 +108,6 @@
         "importAnnotation": "Εισαγωγή σημειώσεων",
         "lang": "Γλώσσα",
         "lastRead": "Τελευταία ανάγνωση",
-        "login": "Σύνδεση",
         "logout": "Αποσύνδεση",
         "missing": "Ελλειπόντα αρχεία",
         "missingUnavailableDescription": "Αυτή η δημοσίευση δεν μπορεί να ανοιχτεί, καθώς τα αρχεία που περιέχει δεν είναι διαθέσιμα. Προχώρησε σε εισαγωγή εκ νέου ή πήγαινε στις «Ρυθμίσεις» και στη συνέχεια στην ενότητα «Αποθήκευση» για να προσθέσεις ή να αλλάξεις τον επιπλέον χώρο αποθήκευσης.",
@@ -163,15 +162,12 @@
         "update": "Επεξεργασία",
         "userProfile": {
             "available": "Διαθεσιμα: {{count}}",
-            "bookshelf": "Μετάβαση στη βιβλιοθήκη",
             "edit": "Επεξεργασία προφίλ",
             "holds": "Κρατήσεις",
             "loading": "Σύνδεση στον λογαριασμό…",
             "loans": "Δανεισμοί",
             "title": "Λογαριασμός",
-            "total": "Όριο: {{count}}",
-            "unavailable": "Μη διαθέσιμες πληροφορίες προφίλ.",
-            "used": "Χρησιμοποιούνται {{used}} από {{total}}"
+            "unavailable": "Μη διαθέσιμες πληροφορίες προφίλ."
         }
     },
     "dialog": {
@@ -274,10 +270,10 @@
             "success": "Επιτυχής ολοκλήρωση εισαγωγής."
         },
         "diagnostics": {
-            "category": "",
-            "causedBy": "",
-            "downloadSource": "",
-            "error": "",
+            "category": "Κατηγορία: {{- category}}",
+            "causedBy": "Αιτία:",
+            "downloadSource": "Λήψη πηγής: {{- source}}",
+            "error": "Σφάλμα",
             "httpStatus": "",
             "invalidUrl": "",
             "source": "",
@@ -387,6 +383,12 @@
         },
         "addMenu": "Προσθήκη τροφοδοσίας OPDS",
         "breadcrumbRoot": "Κατάλογοι",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Μπλε",
             "gray": "Γκρι",
@@ -1005,8 +1007,7 @@
                 "two": "2 στήλες"
             },
             "customFontSelected": "Έχεις επιλέξει μια προσωπική γραμματοσειρά",
-            "customizeReader": "Προσαρμογή μορφοποίησης κειμένου",
-            "disabled": "απενεργοποιημένο",
+            "deactivateTextFormatting": "",
             "display": "Εμφάνιση",
             "disposition": {
                 "title": "Διάταξη"
@@ -1111,6 +1112,7 @@
         "keyboard": {
             "advancedMenu": "Προηγμένο μενού συντομεύσεων πληκτρολογίου",
             "cancel": "Ακύρωση",
+            "disableTooltips": "",
             "disclaimer": "Οι προεπιλογές της εφαρμογής σχεδιάστηκαν με βάση τη φυσική θέση των πλήκτρων σε μια διάταξη QWERTY",
             "editUserJson": "Επεξεργασία αρχείου χρήστη...",
             "exportToHTML": "Εξαγωγή σε HTML",

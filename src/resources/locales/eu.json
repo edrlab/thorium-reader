@@ -108,7 +108,6 @@
         "importAnnotation": "",
         "lang": "Hizkuntza",
         "lastRead": "Azken Irakurketa",
-        "login": "",
         "logout": "",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -163,15 +162,12 @@
         "update": "Editatu",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -387,6 +383,12 @@
         },
         "addMenu": "OPDS katalogoa gehitzea",
         "breadcrumbRoot": "Katalogoak",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -1005,8 +1007,7 @@
                 "two": "2 zutabeak"
             },
             "customFontSelected": "",
-            "customizeReader": "Pertsonalizatu testuaren formatua",
-            "disabled": "desgaituta",
+            "deactivateTextFormatting": "",
             "display": "Bistaratzea",
             "disposition": {
                 "title": "Xedapena"
@@ -1111,6 +1112,7 @@
         "keyboard": {
             "advancedMenu": "Menu nagusia",
             "cancel": "Indargabetu ",
+            "disableTooltips": "",
             "disclaimer": "Lasterbideak QWERTY teklatuaren diseinutik definitu ziren.",
             "editUserJson": "Editatu erabiltzaile-fitxategia",
             "exportToHTML": "",

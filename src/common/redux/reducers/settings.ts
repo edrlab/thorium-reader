@@ -7,12 +7,13 @@
 
 import { type Reducer } from "redux";
 
-import { ISettingsState } from "readium-desktop/common/redux/states/settings";
 import { settingsActions } from "readium-desktop/common/redux/actions";
+import { ISettingsState } from "readium-desktop/common/redux/states/settings";
 
 const initialState: ISettingsState = {
     enableAPIAPP: false,
     disableGoogleAnalyticsTelemetry: false,
+    disableKeyboardShortcutsTooltips: false,
     minimizeLibraryToTray: false,
     keepLibraryWindowInBackgroundOnReaderOpen: false,
     keepLibraryWindowInBackgroundOnReaderClose: false,
@@ -26,6 +27,7 @@ function settingsReducer_(
     action:
         settingsActions.enableAPIAPP.TAction |
         settingsActions.disableGoogleAnalyticsTelemetry.TAction |
+        settingsActions.disableKeyboardShortcutsTooltips.TAction |
         settingsActions.keepLibraryWindowInBackgroundOnReaderClose.TAction |
         settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.TAction |
         settingsActions.minimizeLibraryToTray.TAction |
@@ -46,6 +48,12 @@ function settingsReducer_(
                 ...initialState,
                 ...state,
                 disableGoogleAnalyticsTelemetry: action.payload.disableGoogleAnalyticsTelemetry,
+            };
+        case settingsActions.disableKeyboardShortcutsTooltips.ID:
+            return {
+                ...initialState,
+                ...state,
+                disableKeyboardShortcutsTooltips: action.payload.disableKeyboardShortcutsTooltips,
             };
         case settingsActions.minimizeLibraryToTray.ID:
             return {

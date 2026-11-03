@@ -108,7 +108,6 @@
         "importAnnotation": "استيراد الملاحظات",
         "lang": "اللغة",
         "lastRead": "آخر قراءة",
-        "login": "تسجيل الدخول",
         "logout": "تسجيل الخروج",
         "missing": "ملفات مفقودة",
         "missingUnavailableDescription": "لا يمكن فتح الكتاب لأن الملفات المخزنة غير متاحة. أعد جلب الكتاب، أو اذهب إلى صفحة الإعدادات ثم التخزين لإضافة مساحة تخزين جديدة أو تغييرها.",
@@ -163,15 +162,12 @@
         "update": "تحرير",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -411,6 +407,12 @@
         },
         "addMenu": "إضافة مصدر OPDS",
         "breadcrumbRoot": "الفهارس",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -1033,8 +1035,7 @@
                 "two": "2 عمود"
             },
             "customFontSelected": "لقد اخترت خطاً شخصياً",
-            "customizeReader": "تخصيص تنسيق النص",
-            "disabled": "تم تعطيله",
+            "deactivateTextFormatting": "",
             "display": "العرض",
             "disposition": {
                 "title": "التخطيط"
@@ -1139,6 +1140,7 @@
         "keyboard": {
             "advancedMenu": "قائمة متقدمة لاختصارات لوحة المفاتيح",
             "cancel": "إلغاء",
+            "disableTooltips": "",
             "disclaimer": "تم تصميم الإعدادات الافتراضية للتطبيق بناءً على تخطيط لوحة مفاتيح كويرتي (QWERTY)",
             "editUserJson": "تحرير ملف المستخدم...",
             "exportToHTML": "تصدير إلى HTML",

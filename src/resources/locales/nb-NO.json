@@ -108,7 +108,6 @@
         "importAnnotation": "Importer notater",
         "lang": "Språk",
         "lastRead": "Sist lest",
-        "login": "Logg inn",
         "logout": "Logg ut",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -163,15 +162,12 @@
         "update": "Rediger",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -387,6 +383,12 @@
         },
         "addMenu": "Legg til en OPDS-feed",
         "breadcrumbRoot": "Kataloger",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -1005,8 +1007,7 @@
                 "two": "2 kolonner"
             },
             "customFontSelected": "Du har valgt en egen skrifttype",
-            "customizeReader": "Tilpass tekstformatering",
-            "disabled": "deaktivert",
+            "deactivateTextFormatting": "",
             "display": "Visning",
             "disposition": {
                 "title": "Layout"
@@ -1111,6 +1112,7 @@
         "keyboard": {
             "advancedMenu": "Meny",
             "cancel": "Avbryt",
+            "disableTooltips": "",
             "disclaimer": "Programmets standardinnstillinger er utformet med utgangspunkt i den fysiske plasseringen av tastene på et QWERTY-tastatur",
             "editUserJson": "Rediger brukerfil...",
             "exportToHTML": "Eksporter som HTML",

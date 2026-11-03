@@ -46,7 +46,8 @@ export function build(
     // we lose purity !!
     const store = diMainGet("store");
 
-    const disableRTLFlip = store.getState().reader.disableRTLFlip;
+    const disableRTLFlip = store.getState().reader.disableRTLFlip; // hydrated by sagas/win/reader/winOpen??
+    // const disableKeyboardShortcutsTooltips = store.getState().settings.disableKeyboardShortcutsTooltips;
 
     const manifestUrlR2Protocol = manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
         ? manifestUrl : convertHttpUrlToCustomScheme(manifestUrl);
@@ -55,7 +56,7 @@ export function build(
         ...{
             // see issue https://github.com/edrlab/thorium-reader/issues/2532
             config: readerConfigInitialState,
-            disableRTLFlip,
+            disableRTLFlip, // hydrated by sagas/win/reader/winOpen??
             locator: locatorInitialState,
         },
         // ...reduxStateReader,
@@ -70,7 +71,7 @@ export function build(
                 navigator: undefined,
             },
             lock: false,
-        },          
+        },
         note: [], // hydrated by sagas/win/reader/winOpen
     };
 

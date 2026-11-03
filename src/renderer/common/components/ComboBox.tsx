@@ -19,8 +19,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
 import { OVERLAY_Z_INDEX } from "./overlayHelpers";
 import SVG, { ISVGProps } from "./SVG";
-
-import { ToolTippy } from "./Tooltippy";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "./Tooltippy";
 
 type TComboBoxReactAriaProps<T extends object> = Parameters<typeof ComboBoxReactAria<T>>[0];
 export interface MyComboBoxProps_ {
@@ -157,7 +156,7 @@ const ToolTipButton: React.FC<React.PropsWithChildren<TooltipTriggerProps & MyCo
 
     return <TooltipTrigger
         {...otherProps}
-        delay={0}
+        delay={TOOLTIP_HOVER_DELAY}
         closeDelay={0}
         trigger="hover"
         isOpen={isOpen}
@@ -179,6 +178,7 @@ const ToolTipButton: React.FC<React.PropsWithChildren<TooltipTriggerProps & MyCo
             </button>
         </Focusable>
         <ToolTippy
+        immediate={ true /* tooltipkeyboardShortcuts?.length === 1 */}
             placement="bottom"
             label={ label }
             tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}

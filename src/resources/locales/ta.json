@@ -108,7 +108,6 @@
         "importAnnotation": "குறிப்புகளை இறக்குமதி செய்யுங்கள்",
         "lang": "மொழி",
         "lastRead": "கடைசியாக படியுங்கள்",
-        "login": "",
         "logout": "",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -163,15 +162,12 @@
         "update": "தொகு",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -387,6 +383,12 @@
         },
         "addMenu": "OPDS ஊட்டத்தைச் சேர்க்கவும்",
         "breadcrumbRoot": "பட்டியல்கள்",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -1005,8 +1007,7 @@
                 "two": "2 கோல்ச்"
             },
             "customFontSelected": "நீங்கள் ஒரு தனிப்பட்ட எழுத்துருவைத் தேர்ந்தெடுத்துள்ளீர்கள்",
-            "customizeReader": "உரை வடிவமைப்பைத் தனிப்பயனாக்குங்கள்",
-            "disabled": "முடக்கப்பட்டது",
+            "deactivateTextFormatting": "",
             "display": "காட்சி",
             "disposition": {
                 "title": "மனையமைவு"
@@ -1111,6 +1112,7 @@
         "keyboard": {
             "advancedMenu": "விசைப்பலகை குறுக்குவழிகள் மேம்பட்ட பட்டியல்",
             "cancel": "ரத்துசெய்",
+            "disableTooltips": "",
             "disclaimer": "பயன்பாட்டு இயல்புநிலைகள் qwerty தளவமைப்பில் விசைகளின் இயற்பியல் இருப்பிடத்தின் அடிப்படையில் வடிவமைக்கப்பட்டன",
             "editUserJson": "பயனர் கோப்பைத் திருத்து ...",
             "exportToHTML": "",

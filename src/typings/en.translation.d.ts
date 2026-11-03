@@ -198,7 +198,6 @@ declare namespace typed_i18n {
   readonly "importAnnotation": string,
   readonly "lang": string,
   readonly "lastRead": string,
-  readonly "login": string,
   readonly "logout": string,
   readonly "missing": string,
   readonly "missingUnavailableDescription": string,
@@ -253,15 +252,12 @@ declare namespace typed_i18n {
   readonly "update": string,
   readonly "userProfile": {
     readonly "available": string,
-    readonly "bookshelf": string,
     readonly "edit": string,
     readonly "holds": string,
     readonly "loading": string,
     readonly "loans": string,
     readonly "title": string,
-    readonly "total": string,
-    readonly "unavailable": string,
-    readonly "used": string
+    readonly "unavailable": string
   }
 };
   (_: "catalog.AddToFavorites", __?: {}): string;
@@ -313,7 +309,6 @@ declare namespace typed_i18n {
   (_: "catalog.importAnnotation", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
-  (_: "catalog.login", __?: {}): string;
   (_: "catalog.logout", __?: {}): string;
   (_: "catalog.missing", __?: {}): string;
   (_: "catalog.missingUnavailableDescription", __?: {}): string;
@@ -428,26 +423,20 @@ declare namespace typed_i18n {
   (_: "catalog.update", __?: {}): string;
   (_: "catalog.userProfile", __?: {}): {
   readonly "available": string,
-  readonly "bookshelf": string,
   readonly "edit": string,
   readonly "holds": string,
   readonly "loading": string,
   readonly "loans": string,
   readonly "title": string,
-  readonly "total": string,
-  readonly "unavailable": string,
-  readonly "used": string
+  readonly "unavailable": string
 };
   (_: "catalog.userProfile.available", __?: {}): string;
-  (_: "catalog.userProfile.bookshelf", __?: {}): string;
   (_: "catalog.userProfile.edit", __?: {}): string;
   (_: "catalog.userProfile.holds", __?: {}): string;
   (_: "catalog.userProfile.loading", __?: {}): string;
   (_: "catalog.userProfile.loans", __?: {}): string;
   (_: "catalog.userProfile.title", __?: {}): string;
-  (_: "catalog.userProfile.total", __?: {}): string;
   (_: "catalog.userProfile.unavailable", __?: {}): string;
-  (_: "catalog.userProfile.used", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,
@@ -996,6 +985,12 @@ declare namespace typed_i18n {
   readonly "addFormApiapp": { readonly "title": string },
   readonly "addMenu": string,
   readonly "breadcrumbRoot": string,
+  readonly "browserMenu": {
+    readonly "history": string,
+    readonly "options": string,
+    readonly "profile": string,
+    readonly "wishlist": string
+  },
   readonly "color": {
     readonly "blue": string,
     readonly "gray": string,
@@ -1064,6 +1059,16 @@ declare namespace typed_i18n {
   (_: "opds.addFormApiapp.title", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
+  (_: "opds.browserMenu", __?: {}): {
+  readonly "history": string,
+  readonly "options": string,
+  readonly "profile": string,
+  readonly "wishlist": string
+};
+  (_: "opds.browserMenu.history", __?: {}): string;
+  (_: "opds.browserMenu.options", __?: {}): string;
+  (_: "opds.browserMenu.profile", __?: {}): string;
+  (_: "opds.browserMenu.wishlist", __?: {}): string;
   (_: "opds.color", __?: {}): {
   readonly "blue": string,
   readonly "gray": string,
@@ -2981,6 +2986,7 @@ declare namespace typed_i18n {
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
+    readonly "disableTooltips": string,
     readonly "disclaimer": string,
     readonly "editUserJson": string,
     readonly "exportToHTML": string,
@@ -3382,6 +3388,7 @@ declare namespace typed_i18n {
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
   readonly "cancel": string,
+  readonly "disableTooltips": string,
   readonly "disclaimer": string,
   readonly "editUserJson": string,
   readonly "exportToHTML": string,
@@ -3636,6 +3643,7 @@ declare namespace typed_i18n {
 };
   (_: "settings.keyboard.advancedMenu", __?: {}): string;
   (_: "settings.keyboard.cancel", __?: {}): string;
+  (_: "settings.keyboard.disableTooltips", __?: {}): string;
   (_: "settings.keyboard.disclaimer", __?: {}): string;
   (_: "settings.keyboard.editUserJson", __?: {}): string;
   (_: "settings.keyboard.exportToHTML", __?: {}): string;

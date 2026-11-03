@@ -16,7 +16,7 @@
         "leftSlideButton": "Paslinkti į kairę",
         "loading": "Įkeliama…",
         "mainContent": "pagrindinis turinys",
-        "notificationCopied": "Pranešimas nukopijuotas",
+        "notificationCopied": "Nukopijuota į iškarpinę:",
         "notificationCopyFailed": "Nepavyko nukopijuoti pranešimo",
         "printPage": "Puslapis {{page}}",
         "publicationDetails": "{{- field}}: {{- title}}",
@@ -108,7 +108,6 @@
         "importAnnotation": "Importuoti pastabas",
         "lang": "Kalba",
         "lastRead": "Pask. kartą skaityta",
-        "login": "Prisijungti",
         "logout": "Atsijungti",
         "missing": "Trūkstami failai",
         "missingUnavailableDescription": "Šio leidinio negalima atverti, nes jo failai nepasiekiami. Importuokite jį iš naujo arba eikite į „Nuostatos“, tada – į „Saugykla“, kad pridėtumėte arba pakeistumėte papildomą saugyklą.",
@@ -163,15 +162,12 @@
         "update": "Keisti",
         "userProfile": {
             "available": "",
-            "bookshelf": "Atverti knygų lentyną",
             "edit": "Keisti profilį",
             "holds": "Rezervacijos",
             "loading": "Įkeliama paskyra…",
             "loans": "",
             "title": "Paskyra",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -284,13 +280,13 @@
             "success": "Importavimas sėkmingai užbaigtas."
         },
         "diagnostics": {
-            "category": "",
+            "category": "Kategorija: {{- category}}",
             "causedBy": "",
             "downloadSource": "",
-            "error": "",
+            "error": "Klaida",
             "httpStatus": "",
             "invalidUrl": "",
-            "source": "",
+            "source": "Šaltinis: {{- source}}",
             "url": ""
         },
         "download": {
@@ -320,7 +316,7 @@
                 "acquisitionUrlMissing": "",
                 "cbzNoImages": "",
                 "contextMissing": "",
-                "daisyConversionFailed": "",
+                "daisyConversionFailed": "Nepavyko konvertuoti DAISY leidinio.",
                 "manifestContext": "",
                 "manifestImportFailed": "",
                 "manifestInvalidJson": "",
@@ -328,15 +324,15 @@
                 "manifestNotFound": "",
                 "manifestParsingFailed": "",
                 "noImportResult": "",
-                "notImported": "",
+                "notImported": "Nepavyko įtraukti leidinio į biblioteką.",
                 "profileAssetUrl": "",
                 "profileEmpty": "",
                 "profileEntryMissing": "",
                 "profileMissing": "",
                 "profileNotZip": ""
             },
-            "failed": "",
-            "invalidLicense": "",
+            "failed": "Nepavyko importuoti „{{- name}}“.",
+            "invalidLicense": "Nepavyko importuoti „{{- name}}“. Leidinio licencija negalioja.",
             "invalidPublication": "",
             "lcpLicenseMalformed": "",
             "success": "[{{- title}}] importas baigtas.",
@@ -368,7 +364,7 @@
             "tagsFailed": ""
         },
         "open": {
-            "failed": "",
+            "failed": "Nepavyko atverti šio leidinio.",
             "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“.",
             "missingLicense": ""
         },
@@ -399,6 +395,12 @@
         },
         "addMenu": "Pridėti OPDS sklaidos kanalą",
         "breadcrumbRoot": "Katalogai",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Mėlyna",
             "gray": "Pilka",
@@ -1019,8 +1021,7 @@
                 "two": "2 stulpeliai"
             },
             "customFontSelected": "Pasirinkote asmeninį šriftą",
-            "customizeReader": "Tinkinti teksto formatavimą",
-            "disabled": "išjungta",
+            "deactivateTextFormatting": "",
             "display": "Atvaizdavimas",
             "disposition": {
                 "title": "Išdėstymas"
@@ -1125,6 +1126,7 @@
         "keyboard": {
             "advancedMenu": "Išplėstinis sparčiųjų klavišų meniu",
             "cancel": "Nutraukti",
+            "disableTooltips": "Išjungti klaviatūros sparčiųjų klavišų patarimus",
             "disclaimer": "Programos numatytieji nustatymai buvo sukurti atsižvelgiant į fizinę klavišų vietą QWERTY klaviatūroje",
             "editUserJson": "Keisti naudotojo failą...",
             "exportToHTML": "Eksportuoti į HTML",

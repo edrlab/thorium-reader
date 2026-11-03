@@ -5,12 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as disableKeyboardShortcutsTooltips from "./disableKeyboardShortcutsTooltips";
 import * as reloadShortcuts from "./reloadShortcuts";
 import * as setShortcuts from "./setShortcuts";
 import * as showShortcuts from "./showShortcuts";
 
 export {
-    setShortcuts,
+    disableKeyboardShortcutsTooltips, reloadShortcuts, setShortcuts,
     showShortcuts,
-    reloadShortcuts,
 };
+

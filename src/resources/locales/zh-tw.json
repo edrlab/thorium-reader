@@ -108,7 +108,6 @@
         "importAnnotation": "匯入註解",
         "lang": "語言",
         "lastRead": "最後閱讀",
-        "login": "登入",
         "logout": "登出",
         "missing": "遺失檔案",
         "missingUnavailableDescription": "無法開啟此出版物，因為其中儲存的檔案目前無法使用。請重新匯入，或前往「設定」中的「儲存空間」來新增或變更額外儲存空間。",
@@ -163,15 +162,12 @@
         "update": "編輯",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -381,6 +377,12 @@
         },
         "addMenu": "添加 OPDS 訂閱來源",
         "breadcrumbRoot": "出版目錄",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -998,8 +1000,7 @@
                 "two": "2欄"
             },
             "customFontSelected": "您已選擇個人字體",
-            "customizeReader": "自訂文字格式",
-            "disabled": "停用",
+            "deactivateTextFormatting": "",
             "display": "顯示",
             "disposition": {
                 "title": "布局"
@@ -1104,6 +1105,7 @@
         "keyboard": {
             "advancedMenu": "鍵盤快捷鍵進階選單",
             "cancel": "取消",
+            "disableTooltips": "",
             "disclaimer": "快捷鍵是根據 QWERTY 鍵盤佈局定義的。",
             "editUserJson": "編輯使用者文件...",
             "exportToHTML": "",

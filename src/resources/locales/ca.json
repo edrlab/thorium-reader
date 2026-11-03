@@ -108,7 +108,6 @@
         "importAnnotation": "Importar notes",
         "lang": "Idioma",
         "lastRead": "Última lectura",
-        "login": "Iniciar sessió",
         "logout": "Tancar sessió",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -163,15 +162,12 @@
         "update": "Editar",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -393,6 +389,12 @@
         },
         "addMenu": "Afegir catàleg OPDS",
         "breadcrumbRoot": "Catàlegs",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -1012,8 +1014,7 @@
                 "two": "2 cols."
             },
             "customFontSelected": "",
-            "customizeReader": "Personalitza el format del text",
-            "disabled": "desactivat",
+            "deactivateTextFormatting": "",
             "display": "Visualització",
             "disposition": {
                 "title": "Disposició"
@@ -1118,6 +1119,7 @@
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancel·lar",
+            "disableTooltips": "",
             "disclaimer": "Les dreceres es van definir a partir de la disposició de teclat QWERTY.",
             "editUserJson": "Editar arxiu d'usuari",
             "exportToHTML": "",

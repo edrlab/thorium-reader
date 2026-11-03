@@ -108,7 +108,6 @@
         "importAnnotation": "Tuo muistiinpanot",
         "lang": "Kieli",
         "lastRead": "Luettu viimeksi",
-        "login": "Kirjaudu sisään",
         "logout": "Kirjaudu ulos",
         "missing": "Puuttuvat tiedostot",
         "missingUnavailableDescription": "Julkaisua ei voi avata, koska sen tallennettuja tiedostoja ei ole käytettävissä. Tuo julkaisu uudelleen tai siirry kohtaan asetukset, sitten tallennustila, jotta voit lisätä tai muuttaa tallennustilaa.",
@@ -163,15 +162,12 @@
         "update": "Muokkaa",
         "userProfile": {
             "available": "Saatavilla: {{count}}",
-            "bookshelf": "Avaa kirjahylly",
             "edit": "Muokkaa profiilia",
             "holds": "Varaukset",
             "loading": "Ladataan tiliä…",
             "loans": "Lainat",
             "title": "Tili",
-            "total": "Rajoitus: {{count}}",
-            "unavailable": "Profiilitietoja ei ole saatavilla",
-            "used": "{{used}} /{{total}} käytetty"
+            "unavailable": "Profiilitietoja ei ole saatavilla"
         }
     },
     "dialog": {
@@ -274,43 +270,43 @@
             "success": "Tuonti onnistui."
         },
         "diagnostics": {
-            "category": "",
-            "causedBy": "",
-            "downloadSource": "",
-            "error": "",
-            "httpStatus": "",
-            "invalidUrl": "",
-            "source": "",
-            "url": ""
+            "category": "Luokka: {{- category}}",
+            "causedBy": "Syy:",
+            "downloadSource": "Lataa lähde: {{- source}}",
+            "error": "Virhe",
+            "httpStatus": "HTTP-tila: {{- status}}",
+            "invalidUrl": "[virheellinen URL-osoite]",
+            "source": "Lähde: {{- source}}",
+            "url": "URL-osoite: {{- url}}"
         },
         "download": {
             "cancelled": "Lataus peruttu.",
             "errors": {
-                "failed": "",
+                "failed": "Lataus epäonnistui.",
                 "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",
                 "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Väliaikaisen lataustiedoston nimi ei kelpaa.",
                 "invalidLink": "Latauslinkki ei kelpaa.",
                 "invalidTempDirectory": "Väliaikainen lataushakemisto ei kelpaa.",
                 "lengthMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu {{- expected}} tavua, todellinen määrä {{- actual}} tavua.",
-                "pathMissing": "",
-                "publicationLinkMissing": "",
+                "pathMissing": "Ladattu tiedostopolku puuttuu.",
+                "publicationLinkMissing": "Käyttöoikeus ei sisällä julkaisun latauslinkkiä.",
                 "readStreamMissing": "Suoratoiston lataaminen ei onnistu.",
-                "streamClosed": "",
+                "streamClosed": "Lataus keskeytettiin ennen kuin se valmistui.",
                 "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
             },
-            "failed": "",
-            "integrityFailed": "",
-            "saveFailed": "",
+            "failed": "Lataus osoitteesta “{{- hostname}}” ei onnistunut. Yritä uudelleen.",
+            "integrityFailed": "Lataus osoitteesta “{{- hostname}}” on kesken tai vioittunut. Yritä uudelleen.",
+            "saveFailed": "Latausta ei voitu tallentaa. Tarkista käytettävissä oleva tallennustila ja käyttöoikeudet.",
             "startedWithTitle": "Ladataan {{- title}}."
         },
         "import": {
             "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
             "errors": {
-                "acquisitionUrlMissing": "",
-                "cbzNoImages": "",
-                "contextMissing": "",
-                "daisyConversionFailed": "",
+                "acquisitionUrlMissing": "Julkaisun latauslinkki puuttuu tai se on virheellinen.",
+                "cbzNoImages": "CBZ-arkisto ei sisällä tuettuja kuvia.",
+                "contextMissing": "puuttuva",
+                "daisyConversionFailed": "DAISY-julkaisua ei voitu muuntaa.",
                 "manifestContext": "",
                 "manifestImportFailed": "",
                 "manifestInvalidJson": "",
@@ -387,6 +383,12 @@
         },
         "addMenu": "Lisää OPDS-syöte",
         "breadcrumbRoot": "Luettelot",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Sininen",
             "gray": "Harmaa",
@@ -1005,8 +1007,7 @@
                 "two": "2 saraketta"
             },
             "customFontSelected": "Olet valinnut oman fontin",
-            "customizeReader": "Mukauta tekstin ulkoasua",
-            "disabled": "ei käytössä",
+            "deactivateTextFormatting": "",
             "display": "Näyttöasetukset",
             "disposition": {
                 "title": "Asettelu"
@@ -1111,6 +1112,7 @@
         "keyboard": {
             "advancedMenu": "Pikanäppäinten valikko",
             "cancel": "Peruuta",
+            "disableTooltips": "",
             "disclaimer": "Oletuspikanäppäimet perustuvat QWERTY-näppäinasetteluun",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
             "exportToHTML": "Vie html-muotoon",

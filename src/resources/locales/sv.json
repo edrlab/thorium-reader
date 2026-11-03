@@ -108,7 +108,6 @@
         "importAnnotation": "Importera anteckningar",
         "lang": "Språk",
         "lastRead": "Senast läst",
-        "login": "Logga in",
         "logout": "Logga ut",
         "missing": "Filer saknas",
         "missingUnavailableDescription": "Den här boken kan inte öppnas eftersom de lagrade filerna inte går att komma åt. Importera boken igen, eller gå till inställningar och sedan Lagring för att lägga till eller redigera extra lagring.",
@@ -163,15 +162,12 @@
         "update": "Redigera",
         "userProfile": {
             "available": "",
-            "bookshelf": "Öppna bokhylla",
             "edit": "Redigera användarprofil",
             "holds": "",
             "loading": "Läser in konto…",
             "loans": "Lån",
             "title": "Konto",
-            "total": "",
-            "unavailable": "",
-            "used": "{{used}} av {{total}} använda"
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -387,6 +383,12 @@
         },
         "addMenu": "Lägg till ett OPDS-flöde",
         "breadcrumbRoot": "Kataloger",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Blå",
             "gray": "Grå",
@@ -1005,8 +1007,7 @@
                 "two": "2 kolumner"
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
-            "customizeReader": "Anpassa textformatering",
-            "disabled": "inaktiverad",
+            "deactivateTextFormatting": "",
             "display": "Visning",
             "disposition": {
                 "title": "Layout"
@@ -1111,6 +1112,7 @@
         "keyboard": {
             "advancedMenu": "Avancerade kortkommandon",
             "cancel": "Avbryt",
+            "disableTooltips": "",
             "disclaimer": "Kortkommandona baseras på den fysiska positionen för knappar på QWERTY-tangentbord",
             "editUserJson": "Redigera användarfil ...",
             "exportToHTML": "Exportera till HTML",

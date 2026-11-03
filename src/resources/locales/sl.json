@@ -108,7 +108,6 @@
         "importAnnotation": "Uvoz opomb",
         "lang": "Jezik",
         "lastRead": "Nazadnje brano",
-        "login": "Prijava",
         "logout": "Odjava",
         "missing": "Manjkajoče datoteke",
         "missingUnavailableDescription": "Te publikacije ni mogoče odpreti, ker shranjene datoteke niso na voljo. Ponovno jo uvozite ali pa pojdite v Nastavitve in nato v Shramba, da dodate ali spremenite dodatno shrambo.",
@@ -163,15 +162,12 @@
         "update": "Uredi",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -399,6 +395,12 @@
         },
         "addMenu": "Dodaj vir OPDS",
         "breadcrumbRoot": "Katalogi",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -1019,8 +1021,7 @@
                 "two": "2 stolpca"
             },
             "customFontSelected": "Izbrana je pisava po meri",
-            "customizeReader": "Prilagodi oblikovanje besedila",
-            "disabled": "onemogočeno",
+            "deactivateTextFormatting": "",
             "display": "Zaslon",
             "disposition": {
                 "title": "Postavitev"
@@ -1125,6 +1126,7 @@
         "keyboard": {
             "advancedMenu": "Napredni meni bližnjic na tipkovnici",
             "cancel": "Prekliči",
+            "disableTooltips": "",
             "disclaimer": "Privzete nastavitve aplikacije so bile zasnovane na podlagi fizične lokacije tipk na postavitvi QWERTY.",
             "editUserJson": "Uredi datoteko uporabnika ...",
             "exportToHTML": "Izvozi v HTML",

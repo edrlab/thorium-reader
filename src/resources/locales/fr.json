@@ -108,7 +108,6 @@
         "importAnnotation": "Importer les notes",
         "lang": "Langue",
         "lastRead": "Dernière lecture",
-        "login": "Connexion",
         "logout": "Déconnexion",
         "missing": "Fichiers manquants",
         "missingUnavailableDescription": "Cette publication ne peut pas être chargée car ses fichiers ne sont pas disponibles. Il faut la réimporter ou aller dans Préférences > Stockage pour ajouter ou modifier le stockage additionnel.",
@@ -163,15 +162,12 @@
         "update": "Modifier",
         "userProfile": {
             "available": "Disponibles : {{count}}",
-            "bookshelf": "Ouvrir les prêts et réservations",
             "edit": "Modifier le profil",
             "holds": "Réservations",
             "loading": "Chargement du compte…",
             "loans": "Prêts",
             "title": "Compte",
-            "total": "Limite : {{count}}",
-            "unavailable": "Les informations du profil sont indisponibles.",
-            "used": "{{used}} sur {{total}} utilisés"
+            "unavailable": "Les informations du profil sont indisponibles."
         }
     },
     "dialog": {
@@ -393,6 +389,12 @@
         },
         "addMenu": "Ajouter un catalogue OPDS",
         "breadcrumbRoot": "Mes catalogues",
+        "browserMenu": {
+            "history": "Historique",
+            "options": "Options du catalogue",
+            "profile": "Profil utilisateur",
+            "wishlist": "Liste de souhaits"
+        },
         "color": {
             "blue": "Bleu",
             "gray": "Gris",
@@ -1012,8 +1014,7 @@
                 "two": "2 colonnes"
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
-            "customizeReader": "Personnaliser la mise en forme",
-            "disabled": "Désactivé",
+            "deactivateTextFormatting": "",
             "display": "Affichage",
             "disposition": {
                 "title": "Pagination"
@@ -1118,6 +1119,7 @@
         "keyboard": {
             "advancedMenu": "Menu avancé raccourcis clavier",
             "cancel": "Annuler",
+            "disableTooltips": "",
             "disclaimer": "Les paramètres par défaut de l'application ont été conçus en fonction de l'emplacement physique des touches sur une disposition QWERTY",
             "editUserJson": "Modifier le fichier utilisateur…",
             "exportToHTML": "Exporter en HTML",

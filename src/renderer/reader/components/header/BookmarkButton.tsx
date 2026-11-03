@@ -31,7 +31,7 @@ import { EDrawType, INoteState } from "readium-desktop/common/redux/states/rende
 import { IReaderRootState, IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -412,7 +412,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 ref={bookmarkPopoverTriggerRef}
                 {...(numberOfVisibleBookmarks ? { style: { backgroundColor: "var(--color-brand-primary)" } } : {})}
             >
-                <TooltipTrigger delay={0} closeDelay={0} trigger="focus">
+                <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="focus">
                 <Focusable>
                 <input
                     id="bookmarkButton"
@@ -432,14 +432,11 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     aria-label={`${__("reader.navigation.bookmarkTitle")} (${
                         bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
                     })`}
-                    title={`${__("reader.navigation.bookmarkTitle")} (${
-                        bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
-                    })`}
                 />
                 </Focusable>
-                    <ToolTippy
+                <ToolTippy
+                    immediate={false}
                     offset={15}
-                    noReveal={false}
                     placement="bottom"
                     label={`${__("reader.navigation.bookmarkTitle")} (${
                         bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
@@ -453,7 +450,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
                 }
 
-                <TooltipTrigger delay={0} closeDelay={0} trigger="hover">
+                <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
                 <Focusable excludeFromTabOrder>
                 <label
                     htmlFor="bookmarkButton"
@@ -494,7 +491,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 </label>
                 </Focusable>
                 <ToolTippy
-                    noReveal={false}
+                    immediate={false}
                     placement="bottom"
                     label={`${__("reader.navigation.bookmarkTitle")} (${
                         bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")

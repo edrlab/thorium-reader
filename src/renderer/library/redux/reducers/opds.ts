@@ -11,7 +11,7 @@ import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/br
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import {
-    browseRequest, headerLinksUpdate, search, popBreadcrumb,
+    browseRequest, headerLinksUpdate, search, popBreadcrumb, breadcrumbTitleUpdate,
 } from "readium-desktop/renderer/library/redux/actions/opds";
 import {
     IOpdsHeaderState, IOpdsSearchState,
@@ -25,7 +25,7 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 
 function opdsBreadcrumbReducer_(
     state: IBreadCrumbItem[] = [],
-    action: browseRequest.TAction | popBreadcrumb.TAction,
+    action: browseRequest.TAction | popBreadcrumb.TAction | breadcrumbTitleUpdate.TAction,
 ): IBreadCrumbItem[] {
     switch (action.type) {
         case opdsActions.browseRequest.ID:
@@ -48,6 +48,12 @@ function opdsBreadcrumbReducer_(
                 ),
             });
             return stateNew;
+
+        case opdsActions.breadcrumbTitleUpdate.ID: {
+            const title = action.payload.title?.trim();
+            if (!title) return state;
+            return state.map(item => item.path === action.payload.path ? { ...item, name: title } : item);
+        }
 
         case opdsActions.popBreadcrumb.ID: {
             return state.length > 1 ? state.slice(0, -1) : state;

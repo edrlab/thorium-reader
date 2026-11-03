@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as breadcrumbTitleUpdate from "./breadcrumbTitleUpdate";
 import * as browseRequest from "./browseRequest";
 import * as popBreadcrumb from "./popBreadcrumb";
 import * as headerLinksUpdate from "./headerLinksUpdate";
@@ -12,6 +13,7 @@ import * as publicationImported from "./publicationImported";
 import * as search from "./search";
 
 export {
+    breadcrumbTitleUpdate,
     headerLinksUpdate,
     browseRequest,
     popBreadcrumb,
