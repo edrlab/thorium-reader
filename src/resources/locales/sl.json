@@ -120,10 +120,13 @@
         "numberOfPages": "Število strani",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Prekliči",
                 "external": "V vašem spletnem brskalniku se bo odprla prijavna stran, sledite navodilom. Ko se prijavite, vas bo spletni brskalnik vrnil v to aplikacijo.",
+                "externalBrowserInstructions": "",
                 "fallback": "Opomba: v primeru težav s prijavo s privzetim spletnim brskalnikom poskusite znova z alternativnim načinom v aplikaciji.",
                 "login": "Prijava",
+                "openExternalBrowser": "",
                 "password": "Geslo",
                 "register": "Registracija",
                 "retry": "Poskusite ponovno",

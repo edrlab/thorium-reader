@@ -120,10 +120,13 @@
         "numberOfPages": "Numero di pagine",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Annulla",
                 "external": "La pagina di connessione si aprirà nel vostro navigatore web, si prega di seguire le istruzioni. Una volta connesso, il navigatore web vi dirigerà all'applicazione.",
+                "externalBrowserInstructions": "",
                 "fallback": "Nota bene: in caso di problemi di connessione con il vostro navigatore web si prega di riprovare con il metodo alternativo proposto dall'applicazione.",
                 "login": "Accedi",
+                "openExternalBrowser": "",
                 "password": "Password",
                 "register": "Registrati",
                 "retry": "Riprovare",

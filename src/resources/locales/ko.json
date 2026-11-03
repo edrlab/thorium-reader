@@ -120,10 +120,13 @@
         "numberOfPages": "페이지 수",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "취소",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "로그인",
+                "openExternalBrowser": "",
                 "password": "",
                 "register": "",
                 "retry": "",
