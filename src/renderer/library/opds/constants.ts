@@ -6,3 +6,4 @@
 // ==LICENSE-END==
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
+export const OPDS_NAVIGATION_REQUEST_PREFIX = "opds-navigation:";
