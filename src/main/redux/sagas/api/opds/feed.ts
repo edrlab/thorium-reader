@@ -248,7 +248,7 @@ export function* addFeed(
                 );
                 const opdsFeedView = opdsFeedViewConverter.convertOpdsFeedToView(opdsFeed, response.responseUrl || data.url);
                 if (opdsFeedView) {
-                    const candidates = [...(opdsFeedView.links?.authenticate || []), ...(opdsFeedView.links?.bookshelf || [])];
+                    const candidates = [...(opdsFeedView.links?.authenticationDocument || []), ...(opdsFeedView.links?.bookshelf || [])];
                     for (const bookshelf of candidates) {
                         try {
                             const responseBookshelf = yield* callTyped(() => httpGetWithAuth(false)(bookshelf.url));

@@ -38,14 +38,15 @@ export function* triggerCatalogOpdsAuthentication(action: customizationActions.t
         if (yield* showInlineAuthentication(result, catalogHref)) {
             return;
         }
-        const bookshelf = result.links?.authenticate?.[0]?.url || result.links?.bookshelf?.[0]?.url;
-        if (!contentTypeisOpdsAuth(parseContentType(response.contentType)) && bookshelf && bookshelf !== url && isURL(bookshelf)) {
-            const shelfResponse = yield* callTyped(() => httpGet(bookshelf));
-            const shelfResult = yield* callTyped(() => service.opdsRequestTransformer(shelfResponse));
-            if (!shelfResult) {
-                throw new Error("Unable to load the OPDS bookshelf authentication endpoint");
+        const authenticationEndpoint = result.links?.authenticationDocument?.[0]?.url || result.links?.bookshelf?.[0]?.url;
+        if (!contentTypeisOpdsAuth(parseContentType(response.contentType)) && authenticationEndpoint
+            && authenticationEndpoint !== url && isURL(authenticationEndpoint)) {
+            const endpointResponse = yield* callTyped(() => httpGet(authenticationEndpoint));
+            const endpointResult = yield* callTyped(() => service.opdsRequestTransformer(endpointResponse));
+            if (!endpointResult) {
+                throw new Error("Unable to load the OPDS authentication endpoint");
             }
-            if (yield* showInlineAuthentication(shelfResult, catalogHref)) {
+            if (yield* showInlineAuthentication(endpointResult, catalogHref)) {
                 return;
             }
         }

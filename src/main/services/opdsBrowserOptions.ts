@@ -33,9 +33,8 @@ export async function getOpdsBrowserOptions(catalogUrl: string, currentUrl: stri
                 result.links = { ...result.links, ...readOpdsBrowserLinks(doc?.links, base) };
                 const links = doc?.links;
                 if (!contentTypeisOpdsAuth(type) && Array.isArray(links)) {
-                    const findAuthLink = (rel: string) => links.find((link: { rel?: string | string[]; href?: string }) =>
-                        (Array.isArray(link?.rel) ? link.rel : [link?.rel]).includes(rel));
-                    const auth = findAuthLink("http://opds-spec.org/auth/document") || findAuthLink("authenticate");
+                    const auth = links.find((link: { rel?: string | string[]; href?: string }) =>
+                        (Array.isArray(link?.rel) ? link.rel : [link?.rel]).includes("http://opds-spec.org/auth/document"));
                     if (auth?.href && urls.size < 6) urls.add(new URL(auth.href, base).toString());
                 }
             } finally {
