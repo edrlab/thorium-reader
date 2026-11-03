@@ -35,6 +35,7 @@ import { opdsProgressionIsNewer } from "readium-desktop/common/models/opdsProgre
 import { getOpdsProgression } from "readium-desktop/main/services/opdsProgression";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { stripGlobalOnlyReaderConfigKeys } from "readium-desktop/common/readerConfig/updateScopes";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -75,9 +76,16 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const allowCustomConfig = (pubId
         ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig"))
         : undefined) as IAllowCustomConfigState | undefined;
-    const publicationConfig = (pubId
+    const publicationConfigRaw = (pubId
         ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config"))
         : undefined) as Partial<ReaderConfig> | undefined;
+    const publicationConfig = publicationConfigRaw
+        ? stripGlobalOnlyReaderConfigKeys(publicationConfigRaw)
+        : undefined;
+    if (pubId && publicationConfigRaw && Object.keys(publicationConfig).length !== Object.keys(publicationConfigRaw).length) {
+        // Migrate legacy local config shape so global-only keys do not override global defaults.
+        yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", publicationConfig));
+    }
     const config = resolveEffectiveReaderConfig({
         globalConfig: readerDefaultConfig,
         globalConfigByFormat: readerDefaultConfigByFormat,
@@ -87,7 +95,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     if (pubId && !publicationConfig) {
         // Persist first-open local settings snapshot so later global changes do not
         // alter publications that already have a local config.
-        yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", config));
+        yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", stripGlobalOnlyReaderConfigKeys(config)));
     }
     const locator = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "locator"))) as MiniLocatorExtended | undefined; // TODO: type object and not locator
     const locatorModifiedTime = yield* callTyped(() =>

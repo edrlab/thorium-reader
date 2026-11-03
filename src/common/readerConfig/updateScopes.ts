@@ -19,6 +19,10 @@ const LOCAL_ONLY_KEYS = new Set<keyof ReaderConfig>([
     "ttsVoices",
 ]);
 
+function isGlobalOnlyReaderConfigKey(key: keyof ReaderConfig): boolean {
+    return GLOBAL_ONLY_KEYS.has(key);
+}
+
 export interface IReaderConfigScopeUpdates {
     globalUpdate: Partial<ReaderConfig>;
     localUpdate: Partial<ReaderConfig>;
@@ -32,22 +36,34 @@ export function splitReaderConfigUpdateByScope(update: Partial<ReaderConfig>): I
         const value = update[key];
 
         if (LOCAL_ONLY_KEYS.has(key)) {
-            localUpdate[key] = value;
+            (localUpdate as any)[key] = value;
             continue;
         }
 
-        if (GLOBAL_ONLY_KEYS.has(key)) {
-            globalUpdate[key] = value;
+        if (isGlobalOnlyReaderConfigKey(key)) {
+            (globalUpdate as any)[key] = value;
             continue;
         }
 
         // Dual-scope default: keep local publication state and update global-by-format.
-        localUpdate[key] = value;
-        globalUpdate[key] = value;
+        (localUpdate as any)[key] = value;
+        (globalUpdate as any)[key] = value;
     }
 
     return {
         globalUpdate,
         localUpdate,
     };
+}
+
+export function stripGlobalOnlyReaderConfigKeys(update: Partial<ReaderConfig>): Partial<ReaderConfig> {
+    const localUpdate: Partial<ReaderConfig> = {};
+
+    for (const key of Object.keys(update) as Array<keyof ReaderConfig>) {
+        if (!isGlobalOnlyReaderConfigKey(key)) {
+            (localUpdate as any)[key] = update[key];
+        }
+    }
+
+    return localUpdate;
 }

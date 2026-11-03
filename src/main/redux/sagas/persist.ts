@@ -30,7 +30,7 @@ import { extractWindowMaximized } from "./win/session/browserWindowState";
 
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { detectReaderConfigPublicationFormat } from "readium-desktop/common/readerConfig/publicationFormat";
-import { splitReaderConfigUpdateByScope } from "readium-desktop/common/readerConfig/updateScopes";
+import { splitReaderConfigUpdateByScope, stripGlobalOnlyReaderConfigKeys } from "readium-desktop/common/readerConfig/updateScopes";
 import { RootState } from "../states";
 
 // Persist state diffs regularly now that win.registry is disabled.
@@ -468,7 +468,7 @@ export function saga() {
                 const { globalUpdate, localUpdate } = splitReaderConfigUpdateByScope(update);
 
                 const config: Partial<ReaderConfig> = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config"))) || {};
-                const configUnion = { ...config, ...localUpdate };
+                const configUnion = stripGlobalOnlyReaderConfigKeys({ ...config, ...localUpdate });
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", configUnion));
 
                 if (Object.keys(globalUpdate).length) {
