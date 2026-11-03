@@ -387,6 +387,12 @@
         },
         "addMenu": "OPDS წყაროს დამატება",
         "breadcrumbRoot": "კატალოგები",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",

@@ -26,6 +26,7 @@ jest.mock("readium-desktop/renderer/common/hooks/useDispatch", () => ({ useDispa
 jest.mock("readium-desktop/renderer/common/hooks/useTranslator", () => ({ useTranslator: () => [(key: string) => key] }));
 jest.mock("react-router-dom", () => ({ useLocation: () => ({ pathname: mockPath }),
     Link: (props: { to: { pathname: string }; children: React.ReactNode }) => <a href={props.to.pathname}>{props.children}</a> }));
+jest.mock("readium-desktop/renderer/library/components/opds/BrowserOptions", () => ({ BrowserOptions: (): null => null }));
 import { Browser } from "readium-desktop/renderer/library/components/opds/Browser";
 const rootUrl = "https://example.org/catalog";
 const childUrl = "https://example.org/crime";

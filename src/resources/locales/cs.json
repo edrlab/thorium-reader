@@ -399,6 +399,12 @@
         },
         "addMenu": "Přidat OPDS feed",
         "breadcrumbRoot": "Katalogy",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",

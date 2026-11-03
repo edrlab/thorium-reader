@@ -45,6 +45,7 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 interface IBaseProps extends TranslatorProps {
     secondaryHeader?: React.ReactElement;
     catalogHeader?: React.ReactElement;
+    catalogOptions?: React.ReactElement;
     title?: string;
     page?: string;
     mainClassName?: string;
@@ -138,13 +139,13 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                                 {this.props.catalogHeader ?
                                     <div className={stylesCatalogs.opds_header_actions}>
                                         {
-                                            this.home()
+                                            !this.props.catalogOptions && this.home()
                                         }
                                         {
-                                            this.bookshelf()
+                                            this.props.catalogOptions || this.bookshelf()
                                         }
                                         {
-                                            this.refresh()
+                                            this.props.catalogOptions ? <></> : this.refresh()
                                         }
                                     </div>
                                     : <></>

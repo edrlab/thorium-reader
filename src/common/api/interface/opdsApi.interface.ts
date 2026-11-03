@@ -16,11 +16,15 @@ import { SagaGenerator } from "typed-redux-saga";
 import type { IOpdsUserProfile } from "readium-desktop/common/models/opdsUserProfile";
 import { RegistrySearchResult } from "readium-desktop/common/models/registry";
 
+import type { IOpdsBrowserOptions } from "readium-desktop/common/models/opdsBrowserOptions";
+
 // quite useless
 export type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url">>;
 
 export interface IOpdsApi {
-    getUserProfile: (identifier: string) => SagaGenerator<IOpdsUserProfile | undefined>;
+    getBrowserOptions: (identifier: string, currentUrl: string, bookshelfUrl?: string) => SagaGenerator<IOpdsBrowserOptions>;
+    logoutCatalog: (identifier: string, currentUrl: string) => SagaGenerator<void>;
+    getUserProfile: (identifier: string, profileUrl?: string) => SagaGenerator<IOpdsUserProfile | undefined>;
     getBookshelfUrl: (identifier: string) => SagaGenerator<string>;
     searchRegistry: (query: string, page?: number) => SagaGenerator<RegistrySearchResult>;
     getProgressionServiceStatus: (
@@ -54,6 +58,8 @@ export interface IOpdsApi {
 }
 
 export interface IOpdsModuleApi {
+    "opds/getBrowserOptions": IOpdsApi["getBrowserOptions"];
+    "opds/logoutCatalog": IOpdsApi["logoutCatalog"];
     "opds/getUserProfile": IOpdsApi["getUserProfile"];
     "opds/getBookshelfUrl": IOpdsApi["getBookshelfUrl"];
     "opds/searchRegistry": IOpdsApi["searchRegistry"];

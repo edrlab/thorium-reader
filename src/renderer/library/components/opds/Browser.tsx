@@ -16,6 +16,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
+import { BrowserOptions } from "./BrowserOptions";
 import BrowserResult from "./BrowserResult";
 import SearchForm from "./SearchForm";
 import { CatalogHeader } from "./CatalogHeader";
@@ -44,6 +45,7 @@ export const Browser = () => {
             title={catalogTitle}
             catalogHeader={<CatalogHeader currentLocation={currentLocation} rootLocation={rootLocation}
                 previousLocation={breadcrumb[breadcrumb.length - 2]} />}
+            catalogOptions={<BrowserOptions />}
             search={search ? <SearchForm /> : undefined}
         >
             {breadcrumb.length ? <BrowserResult /> : <p className={stylesCatalogs.noPublication}>

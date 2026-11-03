@@ -387,6 +387,12 @@
         },
         "addMenu": "Tilføj OPDS feed",
         "breadcrumbRoot": "Kataloger",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Blå",
             "gray": "Grå",

@@ -387,6 +387,12 @@
         },
         "addMenu": "Voeg OPDS feed toe",
         "breadcrumbRoot": "Catalogi",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Blauw",
             "gray": "Grijs",
