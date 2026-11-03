@@ -45,6 +45,7 @@ import { ContentType } from "readium-desktop/utils/contentType";
 import {
     IOpdsPkceTransaction,
     OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
+    OPDS_AUTHORIZATION_CODE_TYPE,
     createOpdsPkceTransaction,
     exchangeOpdsPkceAuthorizationCode,
 } from "readium-desktop/main/network/opdsPkce";
@@ -91,7 +92,7 @@ const filename_ = "readium-desktop:main:saga:auth";
 const debug = debug_(filename_);
 debug("_");
 
-type TLinkType = "refresh" | "authenticate";
+type TLinkType = "refresh" | "authenticate" | "token";
 type TLabelName = "login" | "password";
 type TDigestInfo = "realm" | "nonce" | "qop" | "algorithm";
 type TAuthName = "id" | "access_token" | "refresh_token" | "token_type"
@@ -150,7 +151,8 @@ const opdsAuthFlow =
                     () => createOpdsPkceTransaction({
                         allowInsecureLoopback: ENABLE_DEV_TOOLS,
                         authorizationUrl: authParsed.links?.authenticate?.url || "",
-                        tokenUrl: authParsed.links?.refresh?.url || "",
+                        tokenUrl: authParsed.links?.token?.url || authParsed.links?.refresh?.url || "",
+                        refreshUrl: authParsed.links?.refresh?.url,
                     }),
                     filename_,
                 );
@@ -171,7 +173,7 @@ const opdsAuthFlow =
                 id: authParsed?.id || undefined,
                 opdsAuthenticationUrl: baseUrl,
                 tokenType: "Bearer",
-                refreshUrl: pkceTransaction?.tokenUrl || authParsed?.links?.refresh?.url || undefined,
+                refreshUrl: authParsed.links?.refresh?.url || pkceTransaction?.tokenUrl,
                 authenticateUrl: pkceTransaction?.authorizationUrl || authParsed?.links?.authenticate?.url || undefined,
                 pkce: !!pkceTransaction,
             };
@@ -314,7 +316,8 @@ async function prepareExternalAuthentication(url: string): Promise<IExternalAuth
         ? createOpdsPkceTransaction({
             allowInsecureLoopback: ENABLE_DEV_TOOLS,
             authorizationUrl: auth.links?.authenticate?.url || "",
-            tokenUrl: auth.links?.refresh?.url || "",
+            tokenUrl: auth.links?.token?.url || auth.links?.refresh?.url || "",
+            refreshUrl: auth.links?.refresh?.url,
         }) : undefined;
     const implicitAuthData = { authenticationDocumentId: "", nonce: "" };
     const authorizationUrl = getHtmlAuthenticationUrl(auth, pkce, implicitAuthData);
@@ -344,7 +347,7 @@ async function prepareExternalAuthentication(url: string): Promise<IExternalAuth
                 id: auth.id || undefined,
                 opdsAuthenticationUrl: baseUrl,
                 tokenType: "Bearer",
-                refreshUrl: pkce?.tokenUrl || auth.links?.refresh?.url,
+                refreshUrl: auth.links?.refresh?.url || pkce?.tokenUrl,
                 authenticateUrl: pkce?.authorizationUrl || auth.links?.authenticate?.url,
                 pkce: !!pkce,
             }, auth.authenticationType, pkce, () => active);
@@ -638,7 +641,7 @@ async function opdsSetAuthCredentials(
                         accessToken: tokenResponse.accessToken,
                         pkce: true,
                         refreshToken: tokenResponse.refreshToken,
-                        refreshUrl: pkceTransaction.tokenUrl,
+                        refreshUrl: authCredentials.refreshUrl || pkceTransaction.tokenUrl,
                         tokenType,
                     });
                     return [, undefined];
@@ -830,16 +833,19 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         return undefined;
     }
 
-    const authentication = doc.Authentication.find((v) => AUTHENTICATION_TYPE.includes(v.Type as any));
+    const authentication = doc.Authentication.find((v) =>
+        v.Type === OPDS_AUTHORIZATION_CODE_TYPE || AUTHENTICATION_TYPE.includes(v.Type as any));
     if (!authentication) {
         debug("OPDS Authentication Document does not contain a supported authentication type.");
         return undefined;
     }
+    debug("Selected OPDS authentication type: %s", authentication.Type);
 
     const links = Array.isArray(authentication.Links)
         ? authentication.Links.reduce((pv, cv) => {
 
-            const rel = (cv.Rel || []).find((rel) => LINK_TYPE.find((v) => v === rel));
+            const rel = (cv.Rel || []).find((rel) => LINK_TYPE.find((v) => v === rel)
+                || (rel === "token" && authentication.Type === OPDS_AUTHORIZATION_CODE_TYPE));
 
             if (
                 rel
@@ -912,7 +918,9 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     return {
         title: doc.Title || "",
         id: doc.Id || "",
-        authenticationType: authentication.Type as TAuthenticationType,
+        authenticationType: authentication.Type === OPDS_AUTHORIZATION_CODE_TYPE
+            ? OPDS_AUTHORIZATION_CODE_PKCE_TYPE
+            : authentication.Type as TAuthenticationType,
         links,
         labels,
         logo,
