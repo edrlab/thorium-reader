@@ -9,22 +9,27 @@ import debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithDestination, ActionWithReaderPublicationIdentifierDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
-    apiActions, authActions, catalogActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
-    publicationActions, themeActions,
-    readerActions, sessionActions, toastActions, versionUpdateActions,
-    creatorActions,
     annotationActions,
-    noteExport,
+    apiActions, authActions, catalogActions,
+    creatorActions,
     customizationActions,
-    screenReaderActions,
+    dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
+    noteExport,
     opdsActions,
+    publicationActions,
+    readerActions,
+    screenReaderActions,
+    sessionActions,
     settingsActions,
+    themeActions,
+    toastActions, versionUpdateActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
-import { UnknownAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
+import { Dispatch, Middleware, MiddlewareAPI, UnknownAction } from "redux";
 
 import { RootState } from "../states";
+import { getToastDestination } from "./toastDestination";
 
 const debug = debug_("readium-desktop:sync");
 
@@ -46,6 +51,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     keyboardActions.setShortcuts.ID,
     keyboardActions.showShortcuts.ID,
     keyboardActions.reloadShortcuts.ID,
+    keyboardActions.disableKeyboardShortcutsTooltips.ID,
 
     toastActions.openRequest.ID,
     toastActions.closeRequest.ID,
@@ -55,6 +61,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     // authActions.done.ID, // not used
     authActions.cancel.ID,
+    authActions.submitted.ID,
+    authActions.externalStatus.ID,
 
     // sessionActions.enable.ID,
 
@@ -81,6 +89,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     creatorActions.set.ID,
 
     settingsActions.disableGoogleAnalyticsTelemetry.ID,
+    settingsActions.disableKeyboardShortcutsTooltips.ID,
     settingsActions.keepLibraryWindowInBackgroundOnReaderClose.ID,
     settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.ID,
     settingsActions.minimizeLibraryToTray.ID,
@@ -168,8 +177,19 @@ export const reduxSyncMiddleware: Middleware
                     }
                 }
 
+                const isToast = (action as ActionWithSender).type === toastActions.openRequest.ID
+                    || (action as ActionWithSender).type === toastActions.closeRequest.ID;
+                const toastDestination = isToast ? getToastDestination(
+                    action as toastActions.openRequest.TAction & Partial<ActionWithSender>,
+                    libId,
+                    Object.values(readers).filter((reader) => browserWin.has(reader.identifier)),
+                ) : undefined;
+
                 browserWin.forEach(
                     (win, id) => {
+                        if (isToast && id !== toastDestination) {
+                            return;
+                        }
 
                         if (
                             !(
@@ -178,7 +198,7 @@ export const reduxSyncMiddleware: Middleware
                             )
                         ) {
 
-                            if ((action as ActionWithDestination)?.destination?.identifier && (action as ActionWithDestination)?.destination?.identifier !== id) {
+                            if (!isToast && (action as ActionWithDestination)?.destination?.identifier && (action as ActionWithDestination)?.destination?.identifier !== id) {
                                 // if the action has a reader destination, do not send to other browserWin Instance
                                 return  ;
                             }

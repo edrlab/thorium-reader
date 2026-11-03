@@ -53,6 +53,11 @@
 .print_dialog_image_container {
     @include mx.scrollbar_styling;
 
+    &:focus-visible {
+        outline: 2px solid var(--color-brand-primary);
+        outline-offset: 2px;
+    }
+
     &::-webkit-scrollbar {
         height: 9px;
 

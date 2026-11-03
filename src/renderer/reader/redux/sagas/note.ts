@@ -343,8 +343,8 @@ function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.T
     ) {
         yield* putTyped(
             toastActions.openRequest.build(
-                ToastType.Error,
-                `${getTranslator().__("reader.tts.stop")} / ${getTranslator().__("reader.media-overlays.stop")}`,
+                ToastType.Info,
+                getTranslator().__("message.notifications.annotationStopPlayback"),
             ),
         );
         return;
@@ -370,7 +370,7 @@ function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.T
         // trigger a Toast notification to user
         yield* putTyped(
             toastActions.openRequest.build(
-                ToastType.Error,
+                ToastType.Info,
                 getTranslator().__("reader.annotations.noSelectionToast"),
             ),
         );

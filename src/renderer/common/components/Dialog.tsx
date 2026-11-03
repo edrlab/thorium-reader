@@ -6,13 +6,12 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import {
-    Button, Dialog, DialogProps, DialogTrigger, DialogTriggerProps, Modal, ModalOverlay,
-    OverlayTriggerStateContext, Pressable,
-} from "react-aria-components";
 import { FocusScope, mergeProps, Overlay } from "react-aria";
-import { OVERLAY_Z_INDEX } from "./overlayHelpers";
+import { Button, Dialog, DialogProps, DialogTrigger, DialogTriggerProps, Focusable, Modal, ModalOverlay, OverlayTriggerStateContext, Pressable, TooltipTrigger } from "react-aria-components";
 import { useOverlayTriggerState } from "react-stately";
+import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
+import { OVERLAY_Z_INDEX } from "./overlayHelpers";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "./Tooltippy";
 
 export interface RootProps extends DialogTriggerProps {
     modal?: boolean;
@@ -43,9 +42,13 @@ export function Root({ modal = true, alert = false, triggerless = false, ...prop
     </Context.Provider>;
 }
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean };
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean } & {
+    label?: string;
+    tooltipkeyboardShortcuts?: TKeyboardShortcut[];
+    tooltipkeyboardShortcutsNames?: string[];
+    tooltipkeyboardShortcutsDescriptions?: string[]; };
 
-function buttonChild({ asChild, children, ...props }: ButtonProps) {
+function buttonChild({ asChild, children, tooltipkeyboardShortcuts: _tooltipkeyboardsShortcuts, tooltipkeyboardShortcutsNames: _tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions: _tooltipkeyboardShortcutsDescriptions, ...props }: ButtonProps) {
     if (asChild) {
         const child = React.Children.only(children) as React.ReactElement<React.ButtonHTMLAttributes<HTMLButtonElement>>;
         return React.cloneElement(child, mergeProps(child.props, props));
@@ -53,24 +56,69 @@ function buttonChild({ asChild, children, ...props }: ButtonProps) {
     return <button type="button" {...props}>{children}</button>;
 }
 
-export function Trigger(props: ButtonProps) {
+/** Use RAC's button semantics for native controls, including inside inert background dialogs. */
+function DialogButton({ onPress, ...props }: ButtonProps & { onPress?: () => void }) {
+    const child = buttonChild(props);
+    if (child.type !== "button") {
+        return <Pressable onPress={onPress}>{child}</Pressable>;
+    }
+    const childRef = (child as React.ReactElement & { ref?: React.Ref<HTMLButtonElement> }).ref;
+    return <Button ref={childRef} type={child.props.type} isDisabled={child.props.disabled} onPress={onPress}
+        render={(buttonProps) => React.cloneElement(child, mergeProps(child.props, buttonProps))}>
+        {child.props.children}
+    </Button>;
+}
+
+export function Trigger({ label, tooltipkeyboardShortcuts, tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions, ...props }: ButtonProps) {
     const { modal, panelId } = React.useContext(Context);
     const state = React.useContext(OverlayTriggerStateContext);
     if (!modal) {
         // Docked panels use native button activation for mouse, Enter and Space.
-        return buttonChild(mergeProps(props, {
+        const c = buttonChild(mergeProps(props, {
             onClick: () => state?.toggle(),
             "aria-expanded": state?.isOpen,
             "aria-controls": state?.isOpen ? panelId : undefined,
         }));
+        if (!tooltipkeyboardShortcuts?.length) {
+            return c;
+        }
+        return (
+        <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
+        <Focusable>
+        {c}
+        </Focusable>
+        <ToolTippy
+            immediate={tooltipkeyboardShortcuts?.length === 1}
+            placement="bottom"
+            label={ label }
+            tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
+            tooltipkeyboardShortcutsNames={tooltipkeyboardShortcutsNames}
+            tooltipkeyboardShortcutsDescriptions={tooltipkeyboardShortcutsDescriptions} />
+        </TooltipTrigger>
+        );
     }
-    return <Pressable>{buttonChild(props)}</Pressable>;
+    const c = <DialogButton {...props} />;
+    if (!tooltipkeyboardShortcuts?.length) {
+        return c;
+    }
+    return (
+    <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
+    {c}
+    <ToolTippy
+        immediate={tooltipkeyboardShortcuts?.length === 1}
+        placement="bottom"
+        label={ label }
+        tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
+        tooltipkeyboardShortcutsNames={tooltipkeyboardShortcutsNames}
+        tooltipkeyboardShortcutsDescriptions={tooltipkeyboardShortcutsDescriptions} />
+    </TooltipTrigger>
+    );
 }
 Trigger.displayName = "DialogTrigger";
 
 export function Close(props: ButtonProps) {
     const state = React.useContext(OverlayTriggerStateContext);
-    return <Pressable onPress={() => state?.close()}>{buttonChild(props)}</Pressable>;
+    return <DialogButton {...props} onPress={() => state?.close()} />;
 }
 
 interface PortalProps extends React.PropsWithChildren {

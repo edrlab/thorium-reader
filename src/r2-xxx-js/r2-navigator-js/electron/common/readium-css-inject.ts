@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { cssFontFamilyName } from "./css-font-family";
 
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { parseDOM, serializeDOM } from "./dom";
@@ -14,14 +15,15 @@ import { IwidthHeight } from "./fxl";
 import { READIUM_CSS_URL_PATH } from "./readium-css-settings";
 import { READIUM2_ELECTRON_HTTP_PROTOCOL, convertCustomSchemeToHttpUrl } from "./sessions";
 import {
+    CLASS_PAGINATED,
     CLASS_VWM,
-    CLASS_PAGINATED, ROOT_CLASS_FIXED_LAYOUT, ROOT_CLASS_INVISIBLE_MASK,
+    DISABLE_TEMPORARY_NAV_TARGET_OUTLINE_CLASS,
+    ENABLE_VISIBILITY_MASK,
+    ROOT_CLASS_FIXED_LAYOUT, ROOT_CLASS_INVISIBLE_MASK,
     ROOT_CLASS_INVISIBLE_MASK_REMOVED, ROOT_CLASS_MATHJAX, ROOT_CLASS_NO_FOOTNOTES, ROOT_CLASS_NO_RUBY,
     ROOT_CLASS_REDUCE_MOTION, WebViewSlotEnum, audioCssStyles, focusCssStyles, footnotesCssStyles,
     mediaOverlaysCssStyles, readPosCssStyles, scrollBarCssStyles, selectionCssStyles,
     targetCssStyles, ttsCssStyles, visibilityMaskCssStyles,
-    ENABLE_VISIBILITY_MASK,
-    DISABLE_TEMPORARY_NAV_TARGET_OUTLINE_CLASS,
 } from "./styles";
 
 export const READIUM2_BASEURL_ID = "r2_BASEURL_ID";
@@ -530,7 +532,7 @@ export function readiumCSSSet(
         } else if (font === "JA-V-SANS" || font === "sans-serif-ja-v") {
             fontValue = "var(--RS__sans-serif-ja-v)";
         } else if (typeof font === "string") {
-            fontValue = font;
+            fontValue = cssFontFamilyName(font);
         }
         if (fontValue) {
             docElement.style.setProperty("--USER__fontFamily", fontValue);
@@ -940,6 +942,7 @@ export function appendCSS(documant: Document, mod: string, urlRoot: string) {
     }
     const linkElement = documant.createElement("link");
     linkElement.setAttribute("id", idz);
+    linkElement.setAttribute("crossorigin", "anonymous");
     linkElement.setAttribute("rel", "stylesheet");
     linkElement.setAttribute("type", "text/css");
     linkElement.setAttribute("href", urlRoot + "ReadiumCSS-" + mod + ".css");

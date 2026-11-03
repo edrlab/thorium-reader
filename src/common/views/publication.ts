@@ -40,6 +40,7 @@ export interface PublicationView extends Identifiable {
     lastReadTimeStamp?: number;
     readingFinished: boolean;
 
+    a11y_exemption?: string[];
     a11y_accessMode?: string[];
     a11y_accessibilityFeature?: string[];
     a11y_accessibilityHazard?: string[];

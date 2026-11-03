@@ -18,6 +18,7 @@ module.exports = {
         "src/renderer/reader/pdf/*",
         ".zed/*",
         ".flox/*",
+        ".pi/*",
     ],
     // ignorePatterns: [ "*.*" ],
     parser: "@typescript-eslint/parser",

@@ -37,32 +37,37 @@ export const OpdsFeedHowDoesItWorksInfoBox = () => {
 
     const [__] = useTranslator();
     const [infoOpen, setInfoOpen] = React.useState(false);
+    const helpId = React.useId();
 
 
     return (<div>
-        <button type="button" className={stylesButtons.button_catalog_infos} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+        <button
+            type="button"
+            aria-expanded={infoOpen}
+            aria-controls={helpId}
+            className={stylesButtons.button_catalog_infos}
+            onClick={() => setInfoOpen(open => !open)}
+        >
             <SVG ariaHidden svg={InfoIcon} />
             {__("opds.whatIsOpds")}
             <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
         </button>
-        {infoOpen ?
-            <div className={stylesCatalogs.catalog_infos_text}>
-                <p>
-                    {__("opds.informations")}
-                </p>
-                <a href=""
-                    onClick={(ev) => {
-                        ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                        const href = "https://opds.io/";
-                        // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                        shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
-                        // }
-                    }}>
-                    {__("opds.documentation")}
-                    <SVG ariaHidden svg={FollowLinkIcon} />
-                </a>
-            </div>
-            : <></>}
+        <div id={helpId} hidden={!infoOpen} className={stylesCatalogs.catalog_infos_text}>
+            <p>
+                {__("opds.informations")}
+            </p>
+            <a href=""
+                onClick={(ev) => {
+                    ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                    const href = "https://opds.io/";
+                    // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                    shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
+                    // }
+                }}>
+                {__("opds.documentation")}
+                <SVG ariaHidden svg={FollowLinkIcon} />
+            </a>
+        </div>
     </div>);
 };
 

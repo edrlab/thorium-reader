@@ -5,16 +5,24 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "Kapat",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "Sola kaydır",
+        "loading": "",
         "mainContent": "ana içerik",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Sağa kaydır",
+        "searching": "",
         "skipLink": "İçeriğe atla",
         "toolbar": "araç çubuğu"
     },
@@ -100,7 +108,6 @@
         "importAnnotation": "Notları içe aktar",
         "lang": "Dil",
         "lastRead": "Son Okunan",
-        "login": "Giriş yap",
         "logout": "Oturumu Kapat",
         "missing": "Eksik dosyalar",
         "missingUnavailableDescription": "Bu eser, depolanan dosyaları kullanılamadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
@@ -155,15 +162,12 @@
         "update": "Düzenle",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -262,32 +266,97 @@
         "annotations": {
             "alreadyImported": "Tüm notlar zaten içe aktarılmış.",
             "emptyFile": "Dosyada not mevcut değil.",
-            "errorParsing": "Dosya işlenirken hata oluştu: ",
             "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarım durduruluyor",
             "success": "İçe aktarma başarıyla tamamlandı."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "İndirme iptal edildi.",
-            "error": "[{{- title}}] İndirmesi başarısız: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "İndirilen dosyanın bütünlük denetimi başarısız: Beklenen SHA-256 değeri {{- expected}}, alınan {{- actual}}.",
                 "httpGet": "HTTP indirme hatası: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Geçici indirme dosya adı geçersiz.",
                 "invalidLink": "İndirme bağlantısı geçersiz.",
                 "invalidTempDirectory": "Geçici indirme dizini geçersiz.",
                 "lengthMismatch": "İndirilen dosya bütünlüğü denetimi başarısız: beklenen {{- expected}} bayt, alınan {{- actual}} bayt.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "İndirme akışı kullanılamıyor.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Benzersiz geçici indirme dosya adı oluşturulamıyor: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "[{{- title}}] zaten içe aktarılmış.",
-            "fail": "[{{- path}}] İçe aktarması başarısız: [{{- err}}]",
-            "success": "[{{- title}}]: İçe aktarımı tamamlandı."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "[{{- title}}]: İçe aktarımı tamamlandı.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "Eser yüklemesi başarısız: [{{- err}}]",
-            "folderNotFound": "Eser dizini bulunamıyor. Yeniden içe aktarın veya Ayarlar > Depolama'dan ilave depolamayı yapılandırın."
+            "failed": "",
+            "folderNotFound": "Eser dizini bulunamıyor. Yeniden içe aktarın veya Ayarlar > Depolama'dan ilave depolamayı yapılandırın.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -314,6 +383,12 @@
         },
         "addMenu": "OPDS Beslemesi ekle",
         "breadcrumbRoot": "Kataloglar",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Mavi",
             "gray": "Gri",
@@ -543,6 +618,13 @@
                 "descriptive": "Tehlike mevcudiyeti bilinmiyor"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Dizin",
@@ -697,18 +779,17 @@
         "certificateRevoked": "LCP lisans sertifikası geçersizleştirildi.",
         "certificateSignatureInvalid": "Geçersiz LCP lisans sertifikası imzası",
         "cover": {
-            "img": "kapak görseli"
+            "img": "kapak görseli",
+            "zoom": ""
         },
         "day": "gün",
         "days": "gün",
         "duration": {
             "title": "Süre"
         },
-        "encryptedNoLicense": "Eser şifrelenmiş ancak bir LCP lisansı bulunmuyor!",
         "expired": "Ödünç alma süresi doldu",
         "expiredLcp": "Bu eserin LCP lisans süresi doldu.",
         "incorrectPassphrase": "Eserle eşleşen kayıtlı bir şifre yok veya girilen şifre hatalı.",
-        "lcpEnd": "Son",
         "lcpNotSupported": "UYARI: Bu, Thorium Desktop okuyucu uygulamasının prodüksiyon LCP lisanslarını desteklemeyen ve yalnızca sertifika doğrulaması olmadan LCP 'temel profil' şifre çözme işlemini destekleyen bir ön sürümüdür.",
         "lcpRightsCopy": "Kopyalanmış karakterler",
         "lcpRightsPrint": "Basılı sayfalar",
@@ -1032,6 +1113,7 @@
         "keyboard": {
             "advancedMenu": "Klavye kısayolları gelişmiş menüsü",
             "cancel": "İptal",
+            "disableTooltips": "",
             "disclaimer": "Uygulama varsayılanları, QWERTY klavye düzenindeki tuşların fiziki konumları esas alınarak tasarlanmıştır",
             "editUserJson": "Kullanıcı dosyasını düzenle...",
             "exportToHTML": "HTML olarak dışa aktar",
@@ -1308,7 +1390,7 @@
         },
         "screenReaderActivate": {
             "help": "Uygulama yardımcı teknolojinin mevcudiyetini saptadığında, kullanıcı arayüzü ekran okuyucularla daha iyi çalışır",
-            "invite": "Ekran okuyucu için iyileştir ({{- status}}) [{{- keyboard}}]",
+            "invite": "Ekran okuyucu için iyileştir",
             "message": "Ekran okuyucular için geliştirilmiş destek",
             "title": "Ekran okuyucu deneyimini iyileştir"
         },

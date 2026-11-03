@@ -79,6 +79,10 @@ const data = {
     // used for dead code removal (see typings.d.ts):
     __TH__IS_DEV__: JSON.stringify(isDev),
     __TH__SEARCH_CATALOGS_ENABLED__: JSON.stringify(isDev),
+    // Opt in at build time with THORIUM_EPUB_ANNOTATION_PACKAGE_EXPORT_ENABLED=1.
+    __TH__EPUB_ANNOTATION_PACKAGE_EXPORT_ENABLED__: JSON.stringify(
+        ["1", "true"].includes((process.env.THORIUM_EPUB_ANNOTATION_PACKAGE_EXPORT_ENABLED || "0").toLowerCase()),
+    ),
     __TH__IS_PACKAGED__: JSON.stringify(isPackaged),
     __TH__SKIP_LCP_LSD__: JSON.stringify(false && isDev),
     __TH__IS_VSCODE_LAUNCH__: JSON.stringify(process.env.VSCODE_LAUNCH === "true"),

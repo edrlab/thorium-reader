@@ -20,7 +20,7 @@ const jestPathAliases = Object.fromEntries(
 const pathMaps = pathsToModuleNameMapper(jestPathAliases, { prefix: "<rootDir>/" });
 // console.log(pathMaps);
 const moduleNameMapper = {
-    "readium-desktop/main/di": "<rootDir>/test/main/di.ts", // see src/common/utils.ts convertMultiLangStringToString()
+    "^readium-desktop/main/di$": "<rootDir>/test/main/di.ts", // see src/common/utils.ts convertMultiLangStringToString()
     ...pathMaps,
     // ...{
     //     "^@r2\\-streamer\\-js/(.*)$": "<rootDir>/scripts/jest_void.ts",
@@ -36,6 +36,7 @@ module.exports = {
     // globals: {
     // },
     transform: {
+        "\\.svg$": "<rootDir>/scripts/jest_svg.js",
         "\\.ts$": "<rootDir>/scripts/jest_preprocessor.js",
         // ...tsjPreset.transform,
         "\\.tsx?$": [

@@ -5,8 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { getTranslator } from "readium-desktop/common/services/translator";
+
 import * as crypto from "node:crypto";
 import debug_ from "debug";
+import { DownloadFailure, checkDownloadResponse } from "readium-desktop/main/tools/downloadFailure";
 import * as path from "node:path";
 import { ok } from "readium-desktop/common/utils/assert";
 import { httpGet } from "readium-desktop/main/network/http";
@@ -28,6 +31,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { downloader } from "../../../downloader";
 import { manifestContext } from "./context";
+import { normalizeAudiobookManifestType } from "./normalizeAudiobookManifestType";
 
 import isURL from "readium-desktop/common/utils/isURL";
 
@@ -215,7 +219,7 @@ function updateManifest(
 
 }
 
-function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: string): SagaGenerator<R2Publication | undefined> {
+function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: string, manifestUrl: string): SagaGenerator<R2Publication | undefined> {
 
     let r2Publication: R2Publication;
 
@@ -229,8 +233,7 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
 
     } catch (e) {
 
-        debug("error to parse manifest", e, r2PublicationBuffer);
-        return undefined;
+        throw new Error(getTranslator().translate("message.import.errors.manifestInvalidJson", { url: manifestUrl }), { cause: e });
     }
 
     const [isR2, isW3] = manifestContext(r2PublicationJson);
@@ -248,6 +251,11 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
         debug("readium manifest found");
 
         r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+    } else {
+        throw new Error(getTranslator().translate("message.import.errors.manifestContext", {
+            url: manifestUrl, context: JSON.stringify(r2PublicationJson?.["@context"])
+                ?? getTranslator().translate("message.import.errors.contextMissing"),
+        }));
     }
 
     return r2Publication;
@@ -256,34 +264,38 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
 export function* packageFromLink(
     href: string,
     isHtml: boolean,
+    isAudiobook = false,
 ): SagaGenerator<string | undefined> {
 
     const [manifest, manifestUrl] = yield* callTyped(packageGetManifestBuffer, href, isHtml);
     if (!manifest) {
-        throw new Error("manifest not found from content link " + href);
+        throw new Error(getTranslator().translate("message.import.errors.manifestNotFound", { url: href }));
     }
 
-    return yield* callTyped(packageFromManifestBuffer, href, manifest, manifestUrl);
+    return yield* callTyped(packageFromManifestBuffer, href, manifest, manifestUrl, isAudiobook);
 }
 
 export function* packageFromManifestBuffer(
     baseUrl: string, // 'file://' for local resources
     manifest: Buffer,
     manifestPath?: string,
+    isAudiobook = false,
 ) {
-    const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, baseUrl);
+    // DEPRECATED API (watch for the inverse function parameter order!):
+    // url.resolve(baseUrl, manifestPath)
+    const manifestUrlAbsolutized = manifestPath ?
+        tryCatchSync(() => new URL(manifestPath, baseUrl).toString(), filename_) ?? baseUrl :
+        baseUrl;
+    const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, baseUrl, manifestUrlAbsolutized);
     if (!r2Publication) {
-        throw new Error("r2Publication parsing failed");
+        throw new Error(getTranslator().translate("message.import.errors.manifestParsingFailed", { url: manifestUrlAbsolutized }));
     }
+
+    normalizeAudiobookManifestType(r2Publication, isAudiobook);
 
     debug("ready to package the r2Publication");
     debug(r2Publication);
 
-    // DEPRECATED API (watch for the inverse function parameter order!):
-    // url.resolve(baseUrl, manifestPath)
-    const manifestUrlAbsolutized = manifestPath ?
-        tryCatchSync(() => new URL(manifestPath, baseUrl).toString(), filename_) :
-        baseUrl;
     debug("manifestUrl", manifestUrlAbsolutized, manifestPath, baseUrl);
 
     const resourcesHrefMap = yield* callTyped(
@@ -322,15 +334,17 @@ export function* packageGetManifestBuffer(
     // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!href || !isURL(href)) {
         debug("isURL() NOK", href);
-        throw new Error("fetch URL error [" + href + "]");
+        throw new Error(getTranslator().translate("message.download.errors.invalidLink"));
     }
     const data = yield* callTyped(httpGet, href);
-    const { response, isFailure } = data;
+    checkDownloadResponse(data, href);
+    const { response } = data;
 
-    const rawData = yield* callTyped(() => response?.text());
-    if (isFailure) {
-        throw new Error("fetch error [" + href + "](" + response?.status + " " + response?.statusText + " " + rawData + "]");
-        // we can add a toast notification here like the downloader
+    let rawData: string;
+    try {
+        rawData = yield* callTyped(() => response?.text());
+    } catch (error) {
+        throw new DownloadFailure("network", href, error);
     }
 
     if (rawData) {

@@ -16,3 +16,4 @@ external-assets/*
 .env
 vendor/
 native-node-addon-windows-registry/build/
+.pi

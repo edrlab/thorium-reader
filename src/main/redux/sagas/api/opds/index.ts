@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { withErrorNotification } from "../withErrorNotification";
 import { IOpdsApi } from "readium-desktop/common/api/interface/opdsApi.interface";
 
 import { getFeed, addFeed, findAllFeeds, deleteFeed, setFeedFavorite, updateFeed } from "./feed";
@@ -12,17 +13,23 @@ import { getUrlWithSearchLinks } from "./getUrlWithSearchLinks";
 
 import { getProgressionServiceStatus } from "./getProgressionServiceStatus";
 import { getUserProfile } from "./getUserProfile";
+import { getBookshelfUrl } from "./getBookshelfUrl";
 import { searchRegistry } from "./searchRegistry";
 
+import { getBrowserOptions, logoutCatalog } from "./browserOptions";
+
 export const opdsApi: IOpdsApi = {
+    getBrowserOptions,
+    logoutCatalog: withErrorNotification(logoutCatalog, "message.notifications.authenticationFailed"),
     getUserProfile,
+    getBookshelfUrl,
     searchRegistry,
     getProgressionServiceStatus,
     getFeed,
-    addFeed,
-    updateFeed,
-    setFeedFavorite,
+    addFeed: withErrorNotification(addFeed, "message.notifications.catalogUpdateFailed"),
+    updateFeed: withErrorNotification(updateFeed, "message.notifications.catalogUpdateFailed"),
+    setFeedFavorite: withErrorNotification(setFeedFavorite, "message.notifications.catalogUpdateFailed"),
     findAllFeeds,
-    deleteFeed,
+    deleteFeed: withErrorNotification(deleteFeed, "message.notifications.catalogUpdateFailed"),
     getUrlWithSearchLinks,
 };

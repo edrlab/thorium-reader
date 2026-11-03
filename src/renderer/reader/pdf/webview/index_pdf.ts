@@ -238,8 +238,33 @@ function main() {
         bus.subscribe("print", (pageRange: number[]) => {
             pdfjsEventBus.dispatch("print", pageRange);
         });
+        let thumbnailQueue = Promise.resolve();
         bus.subscribe("thumbnailRequest", (pageIndexZeroBased) => {
-            pdfjsEventBus.dispatch("__thumbnailPageRequest", pageIndexZeroBased);
+            thumbnailQueue = thumbnailQueue.then(async () => {
+                if ((window as any).PDFViewerApplication?.pdfThumbnailViewer) {
+                    pdfjsEventBus.dispatch("__thumbnailPageRequest", pageIndexZeroBased);
+                    return;
+                }
+                // PDF.js can omit its sidebar thumbnail viewer. The print preview
+                // still needs thumbnails, so render only the requested page here.
+                const pdf = await pdfDocument;
+                if (!Number.isInteger(pageIndexZeroBased) || pageIndexZeroBased < 0 || pageIndexZeroBased >= pdf.numPages) {
+                    return;
+                }
+                const page = await pdf.getPage(pageIndexZeroBased + 1);
+                const original = page.getViewport({ scale: 1 });
+                const viewport = page.getViewport({ scale: Math.min(145 / original.width, 195 / original.height) });
+                const canvas = document.createElement("canvas");
+                canvas.width = Math.ceil(viewport.width);
+                canvas.height = Math.ceil(viewport.height);
+                try {
+                    await page.render({ canvas, viewport }).promise;
+                    bus.dispatch("thumbnailRendered", pageIndexZeroBased + 1, canvas.toDataURL("image/png"));
+                } finally {
+                    canvas.width = 0;
+                    canvas.height = 0;
+                }
+            }).catch((error) => console.error("PDF print thumbnail rendering failed", error));
         });
         pdfjsEventBus.on("thumbnailrendered", async ({pageNumber, source}: any) => {
             const src = source?.image?.src || "";

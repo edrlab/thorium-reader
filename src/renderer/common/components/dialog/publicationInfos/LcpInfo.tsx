@@ -125,7 +125,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
                 </div>
                 <div className={classNames(stylesBookDetailsDialog.allowUserSelect)}>
                     {(lsdStatus &&
-                        (lsdStatus !== StatusEnum.Active && lsdStatus !== StatusEnum.Ready)) && <>
+                        (lsdStatus !== StatusEnum.Active && lsdStatus !== StatusEnum.Ready)) && <div>
                             <span className={stylesGlobal.color_red}>
                                 {
                                     (lsdStatus === StatusEnum.Expired ?
@@ -147,45 +147,36 @@ class LcpInfo extends React.Component<IProps, undefined> {
                                     )
                                 }
                             </span>
-                            <br /><br />
-                        </>
+                        </div>
                     }
                     {
                     futureDays ?
-                        <>
+                        <div>
                             <strong>{__("publication.lcpStart")}: </strong>
                             <span>{futureDays} ({lcpRightsStartDateStr})</span>
-                             <br />
-                        </>
+                        </div>
                         : <></>
                     }
                     {lcpRightsEndDateStr ?
-                    <>
+                    <div>
                         <strong>{__("publication.timeLeft")}: </strong>
                         <span>{remainingDays} ({lcpRightsEndDateStr})</span>
-                        <br />
-                    </>
+                    </div>
                     : <></>
                     }
 
-                    {/*{lcpRightsEndDateStr && <>
-                        <strong>{__("publication.lcpEnd")}: </strong><span>{lcpRightsEndDateStr}</span>
-                        <br />
-                        <br />
-                    </>} */}
-
                     {/* typeof lcpRightsCopy !== "undefined" && lcpRightsCopy !== null && */
-                        typeof lcpRightsCopy === "number" ? <>
+                        typeof lcpRightsCopy === "number" ? <div>
                         <strong>{__("publication.lcpRightsCopy")}: </strong>
-                        <span>{lcpRightsCopy === 0 ? "0" : `${lcpRightsCopiesPubInfo} / ${lcpRightsCopy}`}</span><br />
-                    </> : <></>}
+                        <span>{lcpRightsCopy === 0 ? "0" : `${lcpRightsCopiesPubInfo} / ${lcpRightsCopy}`}</span>
+                    </div> : <></>}
 
                     {/* typeof lcpRightsPrint !== "undefined" && lcpRightsPrint !== null && */
-                        typeof lcpRightsPrint === "number" ? <>
+                        typeof lcpRightsPrint === "number" ? <div>
                         <strong>{__("publication.lcpRightsPrint")}: </strong>
                         <span>{lcpRightsPrint === 0 ? "0" : `${lcpRightsPrintCountPubInfo} / ${lcpRightsPrint}`}  </span>
                         {lcpRightsPrintRangePubInfo.length ? ` [${lcpRightsPrintRangePubInfo}] ` : <></>}
-                    </> : <></>}
+                    </div> : <></>}
                 </div>
             </>
         );

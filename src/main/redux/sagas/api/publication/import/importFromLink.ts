@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { getTranslator } from "readium-desktop/common/services/translator";
+
 import debug_ from "debug";
 
 // TypeScript GO:
@@ -23,7 +25,7 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { diMainGet } from "readium-desktop/main/di";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import { SagaGenerator } from "typed-redux-saga";
-import { delay as delayTyped, call as callTyped, race as raceTyped } from "typed-redux-saga/macro";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 import { downloader } from "../../../downloader";
 import { packageFromLink } from "../packager/packageLink";
@@ -58,17 +60,14 @@ function* importLinkFromPath(
         authors: pub.authorsLangString?.map((author) => author.nameLangString),
     } : undefined;
 
-    const { b: [publicationDocument, alreadyImported] } = yield* raceTyped({
-        a: delayTyped(30000),
-        b: callTyped(
-            importFromFsService,
-            downloadPath,
-            willBeImmediatelyFollowedByOpen,
-            lcpHashedPassphrase,
-            undefined,
-            pdfMetadataFallback,
-        ),
-    });
+    const [publicationDocument, alreadyImported] = yield* callTyped(
+        importFromFsService,
+        downloadPath,
+        willBeImmediatelyFollowedByOpen,
+        lcpHashedPassphrase,
+        undefined,
+        pdfMetadataFallback,
+    );
 
     let publicationDocumentWithCover = publicationDocument;
     const publicationIsEpub = publicationDocument?.files?.some(
@@ -189,7 +188,7 @@ export function* importFromLinkService(
         url = new URL(link?.url);
     } catch (e) {
         debug("bad url", link, e);
-        throw new Error("Unable to get acquisition url from opds publication");
+        throw new Error(getTranslator().translate("message.import.errors.acquisitionUrlMissing"));
     }
 
     if (!link.type) {
@@ -248,7 +247,7 @@ export function* importFromLinkService(
         if (isHtml || isJson) {
             debug("the link need to be packaged");
 
-            return yield* callTyped(packageFromLink, url.toString(), isHtml);
+            return yield* callTyped(packageFromLink, url.toString(), isHtml, contentTypeArray.includes(ContentType.AudioBook));
 
         } else if (isCustomizationProfilePublication) {
             const _contentType = parseContentType(link.type);
@@ -276,7 +275,7 @@ export function* importFromLinkService(
             const customProfileZipAssetsPrefix = `/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/`;
             const isCustomProfileZipAssets = uPathname.startsWith(customProfileZipAssetsPrefix);
             if (!isCustomProfileZipAssets) {
-                throw new Error("ERROR: COPY PUBLICATION IN PROFILE: not a custom-profile-zip url : " + uPathname);
+                throw new Error(getTranslator().translate("message.import.errors.profileAssetUrl", { path: uPathname }));
                 // return ;
             }
 
@@ -291,7 +290,7 @@ export function* importFromLinkService(
             const state = diMainGet("store").getState();
             const profile = state.customization.provision.find((profile) => profile.id === id);
             if (!profile) {
-                throw new Error("ERROR: CUSTOM PROFILE not found: " + id);
+                throw new Error(getTranslator().translate("message.import.errors.profileMissing", { id }));
             }
 
             const packageProfileFilename = profile.fileName;
@@ -301,16 +300,16 @@ export function* importFromLinkService(
 
             const zip = yield* callTyped(() => tryCatch(() => zipLoadPromise(packageAbsolutePath), ""));
             if (!zip) {
-                throw new Error("ERROR: COPY PUBLICATION IN PROFILE: Not a ZIP package");
+                throw new Error(getTranslator().translate("message.import.errors.profileNotZip"));
             }
 
             if (!zip.hasEntries()) {
                 // throw new Error("LPF zip empty");
-                throw new Error("ERROR: COPY PUBLICATION IN PROFILE: Zip has no entries");
+                throw new Error(getTranslator().translate("message.import.errors.profileEmpty"));
             }
 
             if (!zip.hasEntry(pathInZip)) {
-                throw new Error(`ERROR: COPY PUBLICATION IN PROFILE: ${pathInZip} not found`);
+                throw new Error(getTranslator().translate("message.import.errors.profileEntryMissing", { path: pathInZip }));
             }
 
             const manifestStream = yield* callTyped(() => zip.entryStreamPromise(pathInZip));

@@ -7,6 +7,7 @@
 
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as React from "react";
+import { cssFontFamilyName } from "@r2-navigator-js/electron/common/css-font-family";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -41,7 +42,7 @@ export const FontFamily = () => {
         id: fontList.length,
         value: font,
         name: font,
-        fontFamily: `${font}, Consolas, monospace`,
+        fontFamily: `${cssFontFamilyName(font)}, Consolas, monospace`,
     };
 
     const defaultkey = selected.id;

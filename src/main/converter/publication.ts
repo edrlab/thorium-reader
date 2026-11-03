@@ -396,6 +396,7 @@ export class PublicationViewConverter {
 
             // legacy vs. modern a11y metadata structure
             a11y_accessMode: trimStrings(r2Publication.Metadata.Accessibility?.AccessMode || r2Publication.Metadata.AccessMode), // string[]
+            a11y_exemption: r2Publication.Metadata.Accessibility?.Exemption,
             a11y_accessibilityFeature: trimStrings(r2Publication.Metadata.Accessibility?.Feature || r2Publication.Metadata.AccessibilityFeature), // string[]
             a11y_accessibilityHazard: trimStrings(r2Publication.Metadata.Accessibility?.Hazard || r2Publication.Metadata.AccessibilityHazard), // string[]
 

@@ -111,6 +111,15 @@ describe("applyOpdsPublicationViewFallback", () => {
         });
     });
 
+    it("uses catalog exemptions only when local exemptions are missing", () => {
+        const catalog = { ...opdsPublicationView(), a11y_exemption: ["eaa-microenterprise"] };
+        expect(applyOpdsPublicationViewFallback(publicationView(), catalog).a11y_exemption)
+            .toEqual(["eaa-microenterprise"]);
+        expect(applyOpdsPublicationViewFallback(publicationView({
+            a11y_exemption: ["eaa-disproportionate-burden"],
+        }), catalog).a11y_exemption).toEqual(["eaa-disproportionate-burden"]);
+    });
+
     it("returns the original view when there is no persisted OPDS publication", () => {
         const localMetadata = publicationView();
 

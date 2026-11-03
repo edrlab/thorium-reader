@@ -9,10 +9,24 @@ import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "DOWNLOAD_PROGRESS";
 
+/** Transfer progress for one file within a download batch. */
+export interface SubDownloadProgress {
+    /** Stable index within the batch, including when URLs are duplicated. */
+    id: number;
+    url: string;
+    filename?: string;
+    /** Percentage in [0, 100]; absent while the total size is unknown. */
+    progress?: number;
+    downloadedBytes: number;
+    totalBytes?: number;
+    speedKiBPerSecond: number;
+}
+
 export interface Payload {
     downloadLabel: string;
     downloadUrls: string[];
-    progress: number; // integer [0, 100]
+    progress: number | undefined; // integer [0, 100]; undefined means indeterminate
+    subDownloads: SubDownloadProgress[];
     id: number; // unix timestamp
     speed: number; // 44.3 Kb/s
     contentLengthHumanReadable: string; // 1.4 Mb

@@ -1,20 +1,28 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Pastabos užrašai",
         "bookMenu": "Meniu",
-        "bookmarkNote": "",
-        "cancelDownload": "",
+        "bookmarkNote": "Skirtuko pastaba",
+        "cancelDownload": "Nutraukti atsiuntimą: {{- title}}",
         "closeDialog": "Užverti",
-        "decreaseSetting": "",
-        "downloadProgress": "",
-        "editTag": "",
-        "favoriteCatalog": "",
-        "increaseSetting": "",
+        "closeNotification": "Užverti pranešimą",
+        "copyNotificationInstruction": "Kopijuoti pranešimą",
+        "decreaseSetting": "Sumažinti {{- setting}}",
+        "downloadProgress": "Atsiuntimo eiga: {{- title}}",
+        "downloadProgressUnknown": "Atsiuntimo eiga nežinoma.",
+        "editTag": "Keisti žymę: {{- tag}}",
+        "favoriteCatalog": "Pridėti katalogą prie mėgstamiausių: {{- title}}",
+        "increaseSetting": "Padidinti {{- setting}}",
         "leftSlideButton": "Paslinkti į kairę",
+        "loading": "Įkeliama…",
         "mainContent": "pagrindinis turinys",
-        "publicationDetails": "",
-        "resetSetting": "",
+        "notificationCopied": "Nukopijuota į iškarpinę:",
+        "notificationCopyFailed": "Nepavyko nukopijuoti pranešimo",
+        "printPage": "Puslapis {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Nustatyti {{- setting}} iš naujo",
         "rightSlideButton": "Paslinkti į dešinę",
+        "searching": "Ieškoma…",
         "skipLink": "Peršokti į turinį",
         "toolbar": "įrankių juosta"
     },
@@ -100,7 +108,6 @@
         "importAnnotation": "Importuoti pastabas",
         "lang": "Kalba",
         "lastRead": "Pask. kartą skaityta",
-        "login": "Prisijungti",
         "logout": "Atsijungti",
         "missing": "Trūkstami failai",
         "missingUnavailableDescription": "Šio leidinio negalima atverti, nes jo failai nepasiekiami. Importuokite jį iš naujo arba eikite į „Nuostatos“, tada – į „Saugykla“, kad pridėtumėte arba pakeistumėte papildomą saugyklą.",
@@ -113,7 +120,7 @@
         "numberOfPages": "Puslapių skaičius",
         "opds": {
             "auth": {
-                "cancel": "Atšaukti",
+                "cancel": "Nutraukti",
                 "external": "Jūsų interneto naršyklėje atsidarys prisijungimo puslapis, sekite instrukcijas. Kai prisijungsite, interneto naršyklė grąžins jus į šią programą.",
                 "fallback": "Pastaba: jei kyla problemų prisijungiant naudojant numatytąjį žiniatinklio naršyklės metodą, bandykite dar kartą naudodami alternatyvų programos metodą.",
                 "login": "Prisijungim/as",
@@ -155,15 +162,12 @@
         "update": "Keisti",
         "userProfile": {
             "available": "",
-            "bookshelf": "Atverti knygų lentyną",
             "edit": "Keisti profilį",
-            "holds": "",
-            "loading": "",
+            "holds": "Rezervacijos",
+            "loading": "Įkeliama paskyra…",
             "loans": "",
             "title": "Paskyra",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -272,32 +276,97 @@
         "annotations": {
             "alreadyImported": "Visos pastabos jau importuotos.",
             "emptyFile": "Faile nėra jokių pastabų.",
-            "errorParsing": "Klaida analizuojant failą: ",
             "nothing": "Nėra importui paruoštų pastabų, importas nutraukiamas",
             "success": "Importavimas sėkmingai užbaigtas."
         },
+        "diagnostics": {
+            "category": "Kategorija: {{- category}}",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "Klaida",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "Šaltinis: {{- source}}",
+            "url": ""
+        },
         "download": {
-            "cancelled": "Atsiuntimas atšauktas.",
-            "error": "[{{- title}}] atsiuntimas nepavyko: [{{- err}}]",
+            "cancelled": "Atsiuntimas nutrauktas.",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
                 "httpGet": "HTTP atsiuntimas nepavyko: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Laikino atsiuntimo failo pavadinimas netaisyklingas.",
                 "invalidLink": "Atsiuntimo nuoroda netaisyklinga.",
                 "invalidTempDirectory": "Netaisyklingas laikinas atsiuntimo aplankas.",
                 "lengthMismatch": "Atsiųsto failo vientisumo patikra nepavyko: tikėtasi baitų: {{- expected}}, gauta: {{- actual}}.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Neprieinamas atsiuntimo srautas.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Nepavyko sukurti unikalaus laikino atsiuntimo failo pavadinimo: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": "Atsiunčiama „{{- title}}“."
         },
         "import": {
             "alreadyImport": "[{{- title}}] jau importuotas.",
-            "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
-            "success": "[{{- title}}] importas baigtas."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "Nepavyko konvertuoti DAISY leidinio.",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "Nepavyko įtraukti leidinio į biblioteką.",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "Nepavyko importuoti „{{- name}}“.",
+            "invalidLicense": "Nepavyko importuoti „{{- name}}“. Leidinio licencija negalioja.",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "[{{- title}}] importas baigtas.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "Nepavyko pridėti šio katalogo. Patikrinkite nuorodą ir savo ryšį.",
+            "catalogUpdateFailed": "Nepavyko atnaujinti šio katalogo. Patikrinkite jo nuostatas ir bandykite dar kartą.",
+            "copyLimit": "",
+            "deleteFailed": "Nepavyko pašalinti šio leidinio. Bandykite dar kartą.",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "Nepavyko atverti leidinio : [{{- err}}]",
-            "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“."
+            "failed": "Nepavyko atverti šio leidinio.",
+            "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -326,6 +395,12 @@
         },
         "addMenu": "Pridėti OPDS sklaidos kanalą",
         "breadcrumbRoot": "Katalogai",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Mėlyna",
             "gray": "Pilka",
@@ -555,6 +630,13 @@
                 "descriptive": "Pavojų buvimas nežinomas"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Rodyklė",
@@ -709,18 +791,17 @@
         "certificateRevoked": "LCP licencijos sertifikato galiojimas sustabdytas.",
         "certificateSignatureInvalid": "Negaliojantis LCP licencijos sertifikato parašas.",
         "cover": {
-            "img": "viršelio paveikslas"
+            "img": "viršelio paveikslas",
+            "zoom": ""
         },
         "day": "diena",
         "days": "dienos",
         "duration": {
             "title": "Trukmė"
         },
-        "encryptedNoLicense": "Leidinys yra užšifruotas, tačiau stokoja LCP licencijos!",
         "expired": "Skolinimo terminas baigėsi",
         "expiredLcp": "Šio leidinio LCP licencijos galiojimo laikas baigėsi.",
         "incorrectPassphrase": "Jokia išsaugota slaptafrazė neatitinka leidinio arba įvesta neteisinga slaptafrazė.",
-        "lcpEnd": "Pabaiga",
         "lcpNotSupported": "ĮSPĖJIMAS: tai yra išankstinė Thorium Desktop Reader versija, kuri nepalaiko gamybinių LCP licencijų ir palaiko tik LCP „bazinio profilio“ iššifravimą be sertifikato patikros.",
         "lcpRightsCopy": "Ženklų kopijos",
         "lcpRightsPrint": "Spausdintos kopijos",
@@ -788,7 +869,7 @@
             },
             "hide": "Neatvaizduoti",
             "highlight": "Paryškinimas",
-            "noSelectionToast": "Niekas nepasirinkta",
+            "noSelectionToast": "Prieš kurdami pastabą, pažymėkite tekstą.",
             "note": "{{- color}} Pastaba",
             "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
             "saveNote": "Išsaugoti",
@@ -1046,6 +1127,7 @@
         "keyboard": {
             "advancedMenu": "Išplėstinis sparčiųjų klavišų meniu",
             "cancel": "Nutraukti",
+            "disableTooltips": "Išjungti klaviatūros sparčiųjų klavišų patarimus",
             "disclaimer": "Programos numatytieji nustatymai buvo sukurti atsižvelgiant į fizinę klavišų vietą QWERTY klaviatūroje",
             "editUserJson": "Keisti naudotojo failą...",
             "exportToHTML": "Eksportuoti į HTML",
@@ -1322,7 +1404,7 @@
         },
         "screenReaderActivate": {
             "help": "Kai programa aptinka naudojamas pagalbines technologijas, naudotojo sąsaja geriau veikia su ekrano skaitytuvais",
-            "invite": "Optimizuoti ekrano skaitytuvams ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimizuoti ekrano skaitytuvams",
             "message": "Patobulintas ekrano skaitytuvų palaikymas",
             "title": "Pagerinkite ekrano skaitytuvo patirtį"
         },
@@ -1331,7 +1413,7 @@
         },
         "sharedComputer": {
             "lcpAutoDeleteExpiredPublications": "Automatiškai pašalinti pasibaigusio galiojimo leidinius ir susijusius naudotojo duomenis",
-            "lcpAutoDeleteExpiredPublicationsDescription": "Užtikrina, kad pasibaigus leidinio skolinimo terminui jie būtų automatiškai ištrinami (įskaitant asmenines pastabas, skirtukus ir kt.). Tai naudinga bendro naudojimo kompiuterių aplinkoje, pavyzdžiui, bibliotekoje ar universiteto auditorijose.",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Užtikrina, kad pasibaigus leidinio skolinimo terminui jie būtų automatiškai pašalinti (įskaitant asmenines pastabas, skirtukus ir kt.). Tai naudinga bendro naudojimo kompiuterių aplinkoje, pavyzdžiui, bibliotekoje ar universiteto auditorijose.",
             "title": "Bendro naudojimo kompiuterio režimas"
         },
         "storage": {

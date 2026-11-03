@@ -31,5 +31,11 @@ export function* openPublicationFolder(identifier?: string): SagaGenerator<void>
         }
     }
 
-    yield* callTyped(() => shell.openPath(folderPath));
+    const errorMessage = yield* callTyped(() => shell.openPath(folderPath));
+    if (errorMessage) {
+        yield* putTyped(toastActions.openRequest.build(
+            ToastType.Error,
+            getTranslator().translate("message.open.folderNotFound"),
+        ));
+    }
 }

@@ -1,6 +1,6 @@
 import fs from "fs";
-import path from "path";
 import module from "node:module";
+import path from "path";
 
 // set -xv ; container --version ; container system stop ; container system start ; container system status ; container stop test-container ; container rm --force test-container ; container prune ; container list --all ; container run --cpus 4 --memory 2g --platform linux/arm64 --name test-container --volume ${PWD}:/MOUNT -w /MOUNT registry.access.redhat.com/hi/nodejs:latest sh -c 'set -xv ; node --version ; npm --version ; node scripts/checkNodeImportPrefix.mjs' ; container list --all ; container stop test-container ; container rm --force test-container ; container prune ; container system status ; container system stop ; set +xv
 
@@ -21,6 +21,14 @@ async function processDir(folderPath) {
             for (const match of matches) {
                 // console.log("--> ", JSON.stringify(match, null, 4));
                 let captured = match[4];
+                if (captured.startsWith("src/") || captured.startsWith("node_modules/")) {
+                    console.log("------------------------");
+                    console.log(captured);
+                    console.log(filePath);
+                    console.log(match[0]);
+                    console.log("------------------------");
+                    errored = true;
+                }
                 if (_builtinModules.includes(captured)) {
                     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     console.log(captured);

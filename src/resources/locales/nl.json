@@ -5,16 +5,24 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "Sluit",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "Schuif naar links",
+        "loading": "",
         "mainContent": "hoofdinhoud",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Schuif naar rechts",
+        "searching": "",
         "skipLink": "Ga naar inhoud",
         "toolbar": "werkbalk"
     },
@@ -100,7 +108,6 @@
         "importAnnotation": "Importeer aantekeningen",
         "lang": "Taal",
         "lastRead": "Laatst gelezen",
-        "login": "Inloggen",
         "logout": "Uitloggen",
         "missing": "Ontbrekende bestanden",
         "missingUnavailableDescription": "Deze publicatie kan niet worden geopend omdat de opgeslagen bestanden niet beschikbaar zijn. Importeer de publicatie opnieuw of ga naar Instellingen en vervolgens naar Opslag om extra opslagruimte toe te voegen of te wijzigen.",
@@ -155,15 +162,12 @@
         "update": "Wijzig",
         "userProfile": {
             "available": "Beschikbaar: {{count}}",
-            "bookshelf": "Bekijk boekenplank",
             "edit": "Wijzig profiel",
             "holds": "Reserveringen",
             "loading": "Het account wordt geladen…",
             "loans": "Aantal geleend",
             "title": "Account",
-            "total": "Limiet: {{count}}",
-            "unavailable": "Profielinformatie niet beschikbaar.",
-            "used": "{{used}} van {{total}} gebruikt"
+            "unavailable": "Profielinformatie niet beschikbaar."
         }
     },
     "dialog": {
@@ -262,32 +266,97 @@
         "annotations": {
             "alreadyImported": "Alle aantekeningen zijn reeds geïmporteerd.",
             "emptyFile": "Geen aantekeningen beschikbaar in het bestand.",
-            "errorParsing": "Fout tijdens het parsen van het bestand: ",
             "nothing": "Er is geen aantekening om geïmporteerd te worden, de import wordt afgebroken",
             "success": "Import succesvol voltooid."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Download geannuleerd.",
-            "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwachte SHA-256 hash {{- expected}}, ontvangen {{- actual}}.",
                 "httpGet": "HTTP download mislukt: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "De tijdelijke download bestandsnaam is ongeldig.",
                 "invalidLink": "De download link is ongeldig.",
                 "invalidTempDirectory": "De tijdelijke downloadmap is ongeldig.",
                 "lengthMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwacht {{- expected}} bytes, ontvangen {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Downloadstream is niet beschikbaar.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Kan geen unieke tijdelijke downloadbestandsnaam aanmaken: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} is al toegevoegd.",
-            "fail": "Het toevoegen van {{- path}} is mislukt. {{- err}}",
-            "success": "Het toevoegen van {{- title}} is gelukt."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Het toevoegen van {{- title}} is gelukt.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "De publicatie kan niet worden geopend: {{- err}}",
-            "folderNotFound": "De publicatiemap kan niet worden gevonden. Importeer deze opnieuw of configureer de extra opslagruimte in Instellingen > Opslag."
+            "failed": "",
+            "folderNotFound": "De publicatiemap kan niet worden gevonden. Importeer deze opnieuw of configureer de extra opslagruimte in Instellingen > Opslag.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -314,6 +383,12 @@
         },
         "addMenu": "Voeg OPDS feed toe",
         "breadcrumbRoot": "Catalogi",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Blauw",
             "gray": "Grijs",
@@ -543,6 +618,13 @@
                 "descriptive": "De presentatie van gevaren is onbekend"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Index",
@@ -697,18 +779,17 @@
         "certificateRevoked": "LCP licentie certificaat is ingetrokken.",
         "certificateSignatureInvalid": "LCP licentie certificaat handtekening is ongeldig.",
         "cover": {
-            "img": "cover afbeelding"
+            "img": "cover afbeelding",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dagen",
         "duration": {
             "title": "Duur"
         },
-        "encryptedNoLicense": "Publicatie is versleuteld maar heeft geen LCP-licentie!",
         "expired": "Uitlening verlopen",
         "expiredLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie verlopen is.",
         "incorrectPassphrase": "Geen opgeslagen wachtwoordzin past bij de publicatie of de ingevoerde wachtwoordzin is verkeerd.",
-        "lcpEnd": "Einde",
         "lcpNotSupported": "LET OP: dit is een pre-releaseversie van de Thorium Desktop Reader die geen ondersteuning biedt voor LCP-licenties voor productieomgevingen en alleen LCP-ontsleuteling met het 'basisprofiel' ondersteunt zonder certificaatvalidatie.",
         "lcpRightsCopy": "Toegestaan aantal te kopiëren karakters",
         "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
@@ -1032,6 +1113,7 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuleer",
+            "disableTooltips": "",
             "disclaimer": "Snelkoppelingen zijn gedefinieerd op basis van de QWERTY-toetsenbordindeling",
             "editUserJson": "Wijzig gebruikersbestand...",
             "exportToHTML": "Exporteer naar HTML",
@@ -1308,7 +1390,7 @@
         },
         "screenReaderActivate": {
             "help": "Wanneer de app de aanwezigheid van hulpsoftware waarneemt, zal het gebruikersinterface beter werken voor schermlezers",
-            "invite": "Optimaliseer voor schermlezer ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimaliseer voor schermlezer",
             "message": "Verbeterde ondersteuning voor schermlezers",
             "title": "Verbeter de schermlezerervaring"
         },

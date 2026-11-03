@@ -11,8 +11,15 @@ import { getAuthenticationToken, httpGet } from "readium-desktop/main/network/ht
 import { ContentType, contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
 
 // Fetch on demand: personal information is never written to the catalog repository.
-export const getOpdsUserProfile = async (catalogUrl: string, authenticationUrl?: string): Promise<IOpdsUserProfile | undefined> => {
+export const getOpdsUserProfile = async (catalogUrl: string, authenticationUrl?: string, directProfileUrl?: string): Promise<IOpdsUserProfile | undefined> => {
     try {
+        if (directProfileUrl) {
+            const url = resolveOpdsProfileUrl(directProfileUrl, catalogUrl);
+            if (!url) return undefined;
+            const response = await httpGet(url, { headers: { Accept: ContentType.OpdsProfile } });
+            if (!response.isSuccess || parseContentType(response.contentType) !== ContentType.OpdsProfile) return undefined;
+            return parseOpdsUserProfile(await response.response.json(), response.responseUrl || url);
+        }
         const catalog = resolveOpdsProfileUrl(catalogUrl, catalogUrl);
         if (!catalog) return undefined;
         const token = await getAuthenticationToken(new URL(catalog));

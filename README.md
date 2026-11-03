@@ -8,7 +8,7 @@ This project is in constant evolution, corrections and new features will be adde
 
 More information can be found in the [Landing page](https://www.thoriumreader.com/).
 
-It is currently localized in following 28 languages:
+It is currently localized in following 30 languages:
 
 * (en) English
 * (fr) Français (French)
@@ -16,6 +16,7 @@ It is currently localized in following 28 languages:
 * (de) Deutsch (German)
 * (es) Español (Spanish)
 * (nl) Nederlands (Dutch)
+* (nb-NO) Bokmål (Norwegian)
 * (ja) 日本語 (Japanese)
 * (ka) ქართული (Georgian)
 * (lt) Lietuvių (Lithuanian)
@@ -37,6 +38,8 @@ It is currently localized in following 28 languages:
 * (sl) Slovenščina (Slovene)
 * (cs) čeština (Czech)
 * (ar) عَرَبِيّ (Arabic)
+* (hi) हिन्दी (Hindī)
+* (sa) संस्कृतम् (Saṃskṛtam)
 
 Since february 2025 we use Weblate project Thorium as the main tool for localisation. The following bar chart shows the translation status that is available from weblate.
 

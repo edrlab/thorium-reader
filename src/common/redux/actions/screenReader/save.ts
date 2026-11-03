@@ -11,14 +11,16 @@ export const ID = "SCREENREADER_ACTIVATE_SAVE";
 
 export interface Payload {
     value: boolean;
+    denied: boolean,
 }
 
-export function build(value: boolean): Action<typeof ID, Payload> {
+export function build(value: boolean, denied?: boolean): Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             value,
+            denied: !!denied,
         },
     };
 }

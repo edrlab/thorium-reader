@@ -6,16 +6,24 @@ declare namespace typed_i18n {
   readonly "bookmarkNote": string,
   readonly "cancelDownload": string,
   readonly "closeDialog": string,
+  readonly "closeNotification": string,
+  readonly "copyNotificationInstruction": string,
   readonly "decreaseSetting": string,
   readonly "downloadProgress": string,
+  readonly "downloadProgressUnknown": string,
   readonly "editTag": string,
   readonly "favoriteCatalog": string,
   readonly "increaseSetting": string,
   readonly "leftSlideButton": string,
+  readonly "loading": string,
   readonly "mainContent": string,
+  readonly "notificationCopied": string,
+  readonly "notificationCopyFailed": string,
+  readonly "printPage": string,
   readonly "publicationDetails": string,
   readonly "resetSetting": string,
   readonly "rightSlideButton": string,
+  readonly "searching": string,
   readonly "skipLink": string,
   readonly "toolbar": string
 };
@@ -24,16 +32,24 @@ declare namespace typed_i18n {
   (_: "accessibility.bookmarkNote", __?: {}): string;
   (_: "accessibility.cancelDownload", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
+  (_: "accessibility.closeNotification", __?: {}): string;
+  (_: "accessibility.copyNotificationInstruction", __?: {}): string;
   (_: "accessibility.decreaseSetting", __?: {}): string;
   (_: "accessibility.downloadProgress", __?: {}): string;
+  (_: "accessibility.downloadProgressUnknown", __?: {}): string;
   (_: "accessibility.editTag", __?: {}): string;
   (_: "accessibility.favoriteCatalog", __?: {}): string;
   (_: "accessibility.increaseSetting", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.loading", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
+  (_: "accessibility.notificationCopied", __?: {}): string;
+  (_: "accessibility.notificationCopyFailed", __?: {}): string;
+  (_: "accessibility.printPage", __?: {}): string;
   (_: "accessibility.publicationDetails", __?: {}): string;
   (_: "accessibility.resetSetting", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
+  (_: "accessibility.searching", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.toolbar", __?: {}): string;
   (_: "apiapp", __?: {}): {
@@ -182,7 +198,6 @@ declare namespace typed_i18n {
   readonly "importAnnotation": string,
   readonly "lang": string,
   readonly "lastRead": string,
-  readonly "login": string,
   readonly "logout": string,
   readonly "missing": string,
   readonly "missingUnavailableDescription": string,
@@ -237,15 +252,12 @@ declare namespace typed_i18n {
   readonly "update": string,
   readonly "userProfile": {
     readonly "available": string,
-    readonly "bookshelf": string,
     readonly "edit": string,
     readonly "holds": string,
     readonly "loading": string,
     readonly "loans": string,
     readonly "title": string,
-    readonly "total": string,
-    readonly "unavailable": string,
-    readonly "used": string
+    readonly "unavailable": string
   }
 };
   (_: "catalog.AddToFavorites", __?: {}): string;
@@ -297,7 +309,6 @@ declare namespace typed_i18n {
   (_: "catalog.importAnnotation", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
-  (_: "catalog.login", __?: {}): string;
   (_: "catalog.logout", __?: {}): string;
   (_: "catalog.missing", __?: {}): string;
   (_: "catalog.missingUnavailableDescription", __?: {}): string;
@@ -412,26 +423,20 @@ declare namespace typed_i18n {
   (_: "catalog.update", __?: {}): string;
   (_: "catalog.userProfile", __?: {}): {
   readonly "available": string,
-  readonly "bookshelf": string,
   readonly "edit": string,
   readonly "holds": string,
   readonly "loading": string,
   readonly "loans": string,
   readonly "title": string,
-  readonly "total": string,
-  readonly "unavailable": string,
-  readonly "used": string
+  readonly "unavailable": string
 };
   (_: "catalog.userProfile.available", __?: {}): string;
-  (_: "catalog.userProfile.bookshelf", __?: {}): string;
   (_: "catalog.userProfile.edit", __?: {}): string;
   (_: "catalog.userProfile.holds", __?: {}): string;
   (_: "catalog.userProfile.loading", __?: {}): string;
   (_: "catalog.userProfile.loans", __?: {}): string;
   (_: "catalog.userProfile.title", __?: {}): string;
-  (_: "catalog.userProfile.total", __?: {}): string;
   (_: "catalog.userProfile.unavailable", __?: {}): string;
-  (_: "catalog.userProfile.used", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,
@@ -643,32 +648,97 @@ declare namespace typed_i18n {
   readonly "annotations": {
     readonly "alreadyImported": string,
     readonly "emptyFile": string,
-    readonly "errorParsing": string,
     readonly "nothing": string,
     readonly "success": string
   },
+  readonly "diagnostics": {
+    readonly "category": string,
+    readonly "causedBy": string,
+    readonly "downloadSource": string,
+    readonly "error": string,
+    readonly "httpStatus": string,
+    readonly "invalidUrl": string,
+    readonly "source": string,
+    readonly "url": string
+  },
   readonly "download": {
     readonly "cancelled": string,
-    readonly "error": string,
     readonly "errors": {
+      readonly "failed": string,
       readonly "hashMismatch": string,
       readonly "httpGet": string,
       readonly "invalidFilename": string,
       readonly "invalidLink": string,
       readonly "invalidTempDirectory": string,
       readonly "lengthMismatch": string,
+      readonly "pathMissing": string,
+      readonly "publicationLinkMissing": string,
       readonly "readStreamMissing": string,
+      readonly "streamClosed": string,
       readonly "tooManyFilenameAttempts": string
-    }
+    },
+    readonly "failed": string,
+    readonly "integrityFailed": string,
+    readonly "saveFailed": string,
+    readonly "startedWithTitle": string
   },
   readonly "import": {
     readonly "alreadyImport": string,
-    readonly "fail": string,
-    readonly "success": string
+    readonly "errors": {
+      readonly "acquisitionUrlMissing": string,
+      readonly "cbzNoImages": string,
+      readonly "contextMissing": string,
+      readonly "daisyConversionFailed": string,
+      readonly "manifestContext": string,
+      readonly "manifestImportFailed": string,
+      readonly "manifestInvalidJson": string,
+      readonly "manifestMissing": string,
+      readonly "manifestNotFound": string,
+      readonly "manifestParsingFailed": string,
+      readonly "noImportResult": string,
+      readonly "notImported": string,
+      readonly "profileAssetUrl": string,
+      readonly "profileEmpty": string,
+      readonly "profileEntryMissing": string,
+      readonly "profileMissing": string,
+      readonly "profileNotZip": string
+    },
+    readonly "failed": string,
+    readonly "invalidLicense": string,
+    readonly "invalidPublication": string,
+    readonly "lcpLicenseMalformed": string,
+    readonly "success": string,
+    readonly "unsupportedFormat": string
+  },
+  readonly "notifications": {
+    readonly "annotationImportFailed": string,
+    readonly "annotationPublicationUnavailable": string,
+    readonly "annotationStopPlayback": string,
+    readonly "authenticationFailed": string,
+    readonly "catalogLinkFailed": string,
+    readonly "catalogUpdateFailed": string,
+    readonly "copyLimit": string,
+    readonly "deleteFailed": string,
+    readonly "exportFailed": string,
+    readonly "openFileFailed": string,
+    readonly "openLinkFailed": string,
+    readonly "printLimit": string,
+    readonly "profileActivationFailed": string,
+    readonly "profileBusy": string,
+    readonly "profileProvisionFailed": string,
+    readonly "profileTimeout": string,
+    readonly "publicationUnavailable": string,
+    readonly "readingPositionFailed": string,
+    readonly "recoveryPartialFailure": string,
+    readonly "renewFailed": string,
+    readonly "returnFailed": string,
+    readonly "storageRefreshFailed": string,
+    readonly "tagsFailed": string
   },
   readonly "open": {
-    readonly "error": string,
-    readonly "folderNotFound": string
+    readonly "failed": string,
+    readonly "folderNotFound": string,
+    readonly "missingLicense": string
   },
   readonly "storage": {
     readonly "recovery": {
@@ -684,60 +754,210 @@ declare namespace typed_i18n {
   (_: "message.annotations", __?: {}): {
   readonly "alreadyImported": string,
   readonly "emptyFile": string,
-  readonly "errorParsing": string,
   readonly "nothing": string,
   readonly "success": string
 };
   (_: "message.annotations.alreadyImported", __?: {}): string;
   (_: "message.annotations.emptyFile", __?: {}): string;
-  (_: "message.annotations.errorParsing", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
+  (_: "message.diagnostics", __?: {}): {
+  readonly "category": string,
+  readonly "causedBy": string,
+  readonly "downloadSource": string,
+  readonly "error": string,
+  readonly "httpStatus": string,
+  readonly "invalidUrl": string,
+  readonly "source": string,
+  readonly "url": string
+};
+  (_: "message.diagnostics.category", __?: {}): string;
+  (_: "message.diagnostics.causedBy", __?: {}): string;
+  (_: "message.diagnostics.downloadSource", __?: {}): string;
+  (_: "message.diagnostics.error", __?: {}): string;
+  (_: "message.diagnostics.httpStatus", __?: {}): string;
+  (_: "message.diagnostics.invalidUrl", __?: {}): string;
+  (_: "message.diagnostics.source", __?: {}): string;
+  (_: "message.diagnostics.url", __?: {}): string;
   (_: "message.download", __?: {}): {
   readonly "cancelled": string,
-  readonly "error": string,
   readonly "errors": {
+    readonly "failed": string,
     readonly "hashMismatch": string,
     readonly "httpGet": string,
     readonly "invalidFilename": string,
     readonly "invalidLink": string,
     readonly "invalidTempDirectory": string,
     readonly "lengthMismatch": string,
+    readonly "pathMissing": string,
+    readonly "publicationLinkMissing": string,
     readonly "readStreamMissing": string,
+    readonly "streamClosed": string,
     readonly "tooManyFilenameAttempts": string
-  }
+  },
+  readonly "failed": string,
+  readonly "integrityFailed": string,
+  readonly "saveFailed": string,
+  readonly "startedWithTitle": string
 };
   (_: "message.download.cancelled", __?: {}): string;
-  (_: "message.download.error", __?: {}): string;
   (_: "message.download.errors", __?: {}): {
+  readonly "failed": string,
   readonly "hashMismatch": string,
   readonly "httpGet": string,
   readonly "invalidFilename": string,
   readonly "invalidLink": string,
   readonly "invalidTempDirectory": string,
   readonly "lengthMismatch": string,
+  readonly "pathMissing": string,
+  readonly "publicationLinkMissing": string,
   readonly "readStreamMissing": string,
+  readonly "streamClosed": string,
   readonly "tooManyFilenameAttempts": string
 };
+  (_: "message.download.errors.failed", __?: {}): string;
   (_: "message.download.errors.hashMismatch", __?: {}): string;
   (_: "message.download.errors.httpGet", __?: {}): string;
   (_: "message.download.errors.invalidFilename", __?: {}): string;
   (_: "message.download.errors.invalidLink", __?: {}): string;
   (_: "message.download.errors.invalidTempDirectory", __?: {}): string;
   (_: "message.download.errors.lengthMismatch", __?: {}): string;
+  (_: "message.download.errors.pathMissing", __?: {}): string;
+  (_: "message.download.errors.publicationLinkMissing", __?: {}): string;
   (_: "message.download.errors.readStreamMissing", __?: {}): string;
+  (_: "message.download.errors.streamClosed", __?: {}): string;
   (_: "message.download.errors.tooManyFilenameAttempts", __?: {}): string;
+  (_: "message.download.failed", __?: {}): string;
+  (_: "message.download.integrityFailed", __?: {}): string;
+  (_: "message.download.saveFailed", __?: {}): string;
+  (_: "message.download.startedWithTitle", __?: {}): string;
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
-  readonly "fail": string,
-  readonly "success": string
+  readonly "errors": {
+    readonly "acquisitionUrlMissing": string,
+    readonly "cbzNoImages": string,
+    readonly "contextMissing": string,
+    readonly "daisyConversionFailed": string,
+    readonly "manifestContext": string,
+    readonly "manifestImportFailed": string,
+    readonly "manifestInvalidJson": string,
+    readonly "manifestMissing": string,
+    readonly "manifestNotFound": string,
+    readonly "manifestParsingFailed": string,
+    readonly "noImportResult": string,
+    readonly "notImported": string,
+    readonly "profileAssetUrl": string,
+    readonly "profileEmpty": string,
+    readonly "profileEntryMissing": string,
+    readonly "profileMissing": string,
+    readonly "profileNotZip": string
+  },
+  readonly "failed": string,
+  readonly "invalidLicense": string,
+  readonly "invalidPublication": string,
+  readonly "lcpLicenseMalformed": string,
+  readonly "success": string,
+  readonly "unsupportedFormat": string
 };
   (_: "message.import.alreadyImport", __?: {}): string;
-  (_: "message.import.fail", __?: {}): string;
+  (_: "message.import.errors", __?: {}): {
+  readonly "acquisitionUrlMissing": string,
+  readonly "cbzNoImages": string,
+  readonly "contextMissing": string,
+  readonly "daisyConversionFailed": string,
+  readonly "manifestContext": string,
+  readonly "manifestImportFailed": string,
+  readonly "manifestInvalidJson": string,
+  readonly "manifestMissing": string,
+  readonly "manifestNotFound": string,
+  readonly "manifestParsingFailed": string,
+  readonly "noImportResult": string,
+  readonly "notImported": string,
+  readonly "profileAssetUrl": string,
+  readonly "profileEmpty": string,
+  readonly "profileEntryMissing": string,
+  readonly "profileMissing": string,
+  readonly "profileNotZip": string
+};
+  (_: "message.import.errors.acquisitionUrlMissing", __?: {}): string;
+  (_: "message.import.errors.cbzNoImages", __?: {}): string;
+  (_: "message.import.errors.contextMissing", __?: {}): string;
+  (_: "message.import.errors.daisyConversionFailed", __?: {}): string;
+  (_: "message.import.errors.manifestContext", __?: {}): string;
+  (_: "message.import.errors.manifestImportFailed", __?: {}): string;
+  (_: "message.import.errors.manifestInvalidJson", __?: {}): string;
+  (_: "message.import.errors.manifestMissing", __?: {}): string;
+  (_: "message.import.errors.manifestNotFound", __?: {}): string;
+  (_: "message.import.errors.manifestParsingFailed", __?: {}): string;
+  (_: "message.import.errors.noImportResult", __?: {}): string;
+  (_: "message.import.errors.notImported", __?: {}): string;
+  (_: "message.import.errors.profileAssetUrl", __?: {}): string;
+  (_: "message.import.errors.profileEmpty", __?: {}): string;
+  (_: "message.import.errors.profileEntryMissing", __?: {}): string;
+  (_: "message.import.errors.profileMissing", __?: {}): string;
+  (_: "message.import.errors.profileNotZip", __?: {}): string;
+  (_: "message.import.failed", __?: {}): string;
+  (_: "message.import.invalidLicense", __?: {}): string;
+  (_: "message.import.invalidPublication", __?: {}): string;
+  (_: "message.import.lcpLicenseMalformed", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
-  (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
-  (_: "message.open.error", __?: {}): string;
+  (_: "message.import.unsupportedFormat", __?: {}): string;
+  (_: "message.notifications", __?: {}): {
+  readonly "annotationImportFailed": string,
+  readonly "annotationPublicationUnavailable": string,
+  readonly "annotationStopPlayback": string,
+  readonly "authenticationFailed": string,
+  readonly "catalogLinkFailed": string,
+  readonly "catalogUpdateFailed": string,
+  readonly "copyLimit": string,
+  readonly "deleteFailed": string,
+  readonly "exportFailed": string,
+  readonly "openFileFailed": string,
+  readonly "openLinkFailed": string,
+  readonly "printLimit": string,
+  readonly "profileActivationFailed": string,
+  readonly "profileBusy": string,
+  readonly "profileProvisionFailed": string,
+  readonly "profileTimeout": string,
+  readonly "publicationUnavailable": string,
+  readonly "readingPositionFailed": string,
+  readonly "recoveryPartialFailure": string,
+  readonly "renewFailed": string,
+  readonly "returnFailed": string,
+  readonly "storageRefreshFailed": string,
+  readonly "tagsFailed": string
+};
+  (_: "message.notifications.annotationImportFailed", __?: {}): string;
+  (_: "message.notifications.annotationPublicationUnavailable", __?: {}): string;
+  (_: "message.notifications.annotationStopPlayback", __?: {}): string;
+  (_: "message.notifications.authenticationFailed", __?: {}): string;
+  (_: "message.notifications.catalogLinkFailed", __?: {}): string;
+  (_: "message.notifications.catalogUpdateFailed", __?: {}): string;
+  (_: "message.notifications.copyLimit", __?: {}): string;
+  (_: "message.notifications.deleteFailed", __?: {}): string;
+  (_: "message.notifications.exportFailed", __?: {}): string;
+  (_: "message.notifications.openFileFailed", __?: {}): string;
+  (_: "message.notifications.openLinkFailed", __?: {}): string;
+  (_: "message.notifications.printLimit", __?: {}): string;
+  (_: "message.notifications.profileActivationFailed", __?: {}): string;
+  (_: "message.notifications.profileBusy", __?: {}): string;
+  (_: "message.notifications.profileProvisionFailed", __?: {}): string;
+  (_: "message.notifications.profileTimeout", __?: {}): string;
+  (_: "message.notifications.publicationUnavailable", __?: {}): string;
+  (_: "message.notifications.readingPositionFailed", __?: {}): string;
+  (_: "message.notifications.recoveryPartialFailure", __?: {}): string;
+  (_: "message.notifications.renewFailed", __?: {}): string;
+  (_: "message.notifications.returnFailed", __?: {}): string;
+  (_: "message.notifications.storageRefreshFailed", __?: {}): string;
+  (_: "message.notifications.tagsFailed", __?: {}): string;
+  (_: "message.open", __?: {}): {
+  readonly "failed": string,
+  readonly "folderNotFound": string,
+  readonly "missingLicense": string
+};
+  (_: "message.open.failed", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;
+  (_: "message.open.missingLicense", __?: {}): string;
   (_: "message.storage", __?: {}): {
   readonly "recovery": {
     readonly "failure": string,
@@ -765,6 +985,12 @@ declare namespace typed_i18n {
   readonly "addFormApiapp": { readonly "title": string },
   readonly "addMenu": string,
   readonly "breadcrumbRoot": string,
+  readonly "browserMenu": {
+    readonly "history": string,
+    readonly "options": string,
+    readonly "profile": string,
+    readonly "wishlist": string
+  },
   readonly "color": {
     readonly "blue": string,
     readonly "gray": string,
@@ -833,6 +1059,16 @@ declare namespace typed_i18n {
   (_: "opds.addFormApiapp.title", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
+  (_: "opds.browserMenu", __?: {}): {
+  readonly "history": string,
+  readonly "options": string,
+  readonly "profile": string,
+  readonly "wishlist": string
+};
+  (_: "opds.browserMenu.history", __?: {}): string;
+  (_: "opds.browserMenu.options", __?: {}): string;
+  (_: "opds.browserMenu.profile", __?: {}): string;
+  (_: "opds.browserMenu.wishlist", __?: {}): string;
   (_: "opds.color", __?: {}): {
   readonly "blue": string,
   readonly "gray": string,
@@ -1085,6 +1321,13 @@ declare namespace typed_i18n {
       readonly "compact": string,
       readonly "descriptive": string
     }
+  },
+  readonly "legal-considerations": {
+    readonly "legal-considerations-exempt": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "legal-considerations-title": string
   },
   readonly "navigation": {
     readonly "navigation-index": {
@@ -1496,6 +1739,17 @@ declare namespace typed_i18n {
   (_: "publ-a11y-display-guide.hazards.hazards-unknown", __?: {}): { readonly "compact": string, readonly "descriptive": string };
   (_: "publ-a11y-display-guide.hazards.hazards-unknown.compact", __?: {}): string;
   (_: "publ-a11y-display-guide.hazards.hazards-unknown.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.legal-considerations", __?: {}): {
+  readonly "legal-considerations-exempt": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "legal-considerations-title": string
+};
+  (_: "publ-a11y-display-guide.legal-considerations.legal-considerations-exempt", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.legal-considerations.legal-considerations-exempt.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.legal-considerations.legal-considerations-exempt.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.legal-considerations.legal-considerations-title", __?: {}): string;
   (_: "publ-a11y-display-guide.navigation", __?: {}): {
   readonly "navigation-index": {
     readonly "compact": string,
@@ -1725,15 +1979,13 @@ declare namespace typed_i18n {
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,
   readonly "certificateSignatureInvalid": string,
-  readonly "cover": { readonly "img": string },
+  readonly "cover": { readonly "img": string, readonly "zoom": string },
   readonly "day": string,
   readonly "days": string,
   readonly "duration": { readonly "title": string },
-  readonly "encryptedNoLicense": string,
   readonly "expired": string,
   readonly "expiredLcp": string,
   readonly "incorrectPassphrase": string,
-  readonly "lcpEnd": string,
   readonly "lcpNotSupported": string,
   readonly "lcpRightsCopy": string,
   readonly "lcpRightsPrint": string,
@@ -1851,17 +2103,16 @@ declare namespace typed_i18n {
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
   (_: "publication.certificateSignatureInvalid", __?: {}): string;
-  (_: "publication.cover", __?: {}): { readonly "img": string };
+  (_: "publication.cover", __?: {}): { readonly "img": string, readonly "zoom": string };
   (_: "publication.cover.img", __?: {}): string;
+  (_: "publication.cover.zoom", __?: {}): string;
   (_: "publication.day", __?: {}): string;
   (_: "publication.days", __?: {}): string;
   (_: "publication.duration", __?: {}): { readonly "title": string };
   (_: "publication.duration.title", __?: {}): string;
-  (_: "publication.encryptedNoLicense", __?: {}): string;
   (_: "publication.expired", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.incorrectPassphrase", __?: {}): string;
-  (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpNotSupported", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;
   (_: "publication.lcpRightsPrint", __?: {}): string;
@@ -2732,6 +2983,7 @@ declare namespace typed_i18n {
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
+    readonly "disableTooltips": string,
     readonly "disclaimer": string,
     readonly "editUserJson": string,
     readonly "exportToHTML": string,
@@ -3133,6 +3385,7 @@ declare namespace typed_i18n {
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
   readonly "cancel": string,
+  readonly "disableTooltips": string,
   readonly "disclaimer": string,
   readonly "editUserJson": string,
   readonly "exportToHTML": string,
@@ -3387,6 +3640,7 @@ declare namespace typed_i18n {
 };
   (_: "settings.keyboard.advancedMenu", __?: {}): string;
   (_: "settings.keyboard.cancel", __?: {}): string;
+  (_: "settings.keyboard.disableTooltips", __?: {}): string;
   (_: "settings.keyboard.disclaimer", __?: {}): string;
   (_: "settings.keyboard.editUserJson", __?: {}): string;
   (_: "settings.keyboard.exportToHTML", __?: {}): string;

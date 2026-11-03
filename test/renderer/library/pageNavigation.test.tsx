@@ -17,6 +17,7 @@ jest.mock("readium-desktop/renderer/common/keyboard", () => ({
     unregisterKeyboardListener: jest.fn(),
 }));
 jest.mock("readium-desktop/renderer/library/opds/route", () => ({
+    parseOpdsBrowserRoute: (pathname: string) => ({ url: pathname }),
     buildOpdsBrowserRouteWithLink: () => (link: { url: string }) => `/browse/${link.url}`,
 }));
 jest.mock("readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss", () => ({}));
@@ -66,6 +67,29 @@ test("pagination uses standalone native buttons, preserves route state, and disa
             ["first", "next", "last"].map((destination) => ({ ...location, pathname: `/browse/${destination}` })),
         );
         expect(historyPush).toHaveBeenLastCalledWith({ ...location, pathname: "/browse/last" }, location.state);
+        for (const [page, expectedPrevious] of [[2, 1], [25, 24]]) {
+            const pageLocation = { ...location, pathname: `https://example.com/feed?sort=new&page=${page}` };
+            act(() => root.render(
+                <Component
+                    location={pageLocation}
+                    keyboardShortcuts={{}}
+                    historyPush={historyPush}
+                    __={(key: string) => key}
+                    pageLinks={{ last: [{ url: "https://example.com/feed?sort=new&page=25" }] }}
+                />,
+            ));
+            expect(buttons[0].disabled).toBe(false);
+            expect(buttons[1].disabled).toBe(false);
+            expect(buttons[2].disabled).toBe(true);
+            act(() => buttons[0].click());
+            expect(historyPush).toHaveBeenLastCalledWith({
+                ...pageLocation, pathname: "/browse/https://example.com/feed?sort=new&page=1",
+            }, location.state);
+            act(() => buttons[1].click());
+            expect(historyPush).toHaveBeenLastCalledWith({
+                ...pageLocation, pathname: `/browse/https://example.com/feed?sort=new&page=${expectedPrevious}`,
+            }, location.state);
+        }
     } finally {
         act(() => root.unmount());
         dom.window.close();

@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { getTranslator } from "readium-desktop/common/services/translator";
 import { triggerCatalogOpdsAuthentication } from "./opdsAuthentication";
 import { customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
@@ -475,7 +476,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                         const message = (profileNotProvisioned as ICustomizationProfileError).error ? (profileNotProvisioned as ICustomizationProfileError).message : "not the latest version";
 
                         debug(`ERROR: profile (${fileName}) [${message}]`);
-                        yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${message}]`));
+                        yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileProvisionFailed")));
                         yield* putTyped(customizationActions.lock.build("IDLE"));
                     }
 
@@ -518,10 +519,10 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
         if (timeoutResult) {
             debug(`ERROR: fileName (${fileName}) not provisioned TIMEOUT`);
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: fileName (${fileName}) not provisioned TIMEOUT`));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileTimeout")));
         } else {
             debug(`ERROR: cannot provisioning this profile (${fileName})`);
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: cannot provisioning this profile (${fileName})`));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileProvisionFailed")));
         }
         yield* putTyped(customizationActions.lock.build("IDLE"));
         return;

@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals
 
 jest.mock("electron", () => ({
     dialog: {
-        showMessageBox: async (): Promise<void> => undefined,
+        showMessageBox: jest.fn(async (): Promise<void> => undefined),
     },
 }));
 
@@ -37,6 +37,8 @@ jest.mock("@r2-shared-js/parser/publication-parser", () => ({
     }),
 }));
 
+import { dialog } from "electron";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 const identifier = "11111111-1111-1111-1111-111111111111";
@@ -185,5 +187,21 @@ describe("PublicationStorage.replacePublicationFiles", () => {
         expect(await readUtf8(mockPath.join(publicationPath, "license.lcpl"))).toBe("old license");
         expect(await readUtf8(mockPath.join(publicationPath, "notes.json"))).toBe("unmanaged notes");
         expect(await listReplacementScratchFiles(publicationPath)).toEqual([]);
+    });
+});
+
+
+describe("PublicationStorage export failures", () => {
+    afterEach(() => { jest.restoreAllMocks(); });
+
+    it("propagates copy failures to the API notification owner without showing a modal", async () => {
+        const storage = Object.create(PublicationStorage.prototype) as PublicationStorage;
+        const failure = new Error("Destination is not writable");
+        jest.spyOn(storage, "getPublicationEpubPath").mockResolvedValue("book.epub");
+        jest.spyOn(fs.promises, "copyFile").mockRejectedValue(failure);
+        jest.mocked(dialog.showMessageBox).mockClear();
+
+        await expect(storage.copyPublicationToPath({ identifier } as PublicationView, "export.epub")).rejects.toBe(failure);
+        expect(dialog.showMessageBox).not.toHaveBeenCalled();
     });
 });

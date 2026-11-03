@@ -76,6 +76,7 @@ export const applyOpdsPublicationViewFallback = (
             publicationView.a11y_accessibilityHazard,
             opdsPublicationView.a11y_accessibilityHazard,
         ),
+        a11y_exemption: metadataFallback(publicationView.a11y_exemption, opdsPublicationView.a11y_exemption),
         a11y_certifiedBy: metadataFallback(publicationView.a11y_certifiedBy, opdsPublicationView.a11y_certifiedBy),
         a11y_certifierCredential: metadataFallback(
             publicationView.a11y_certifierCredential,

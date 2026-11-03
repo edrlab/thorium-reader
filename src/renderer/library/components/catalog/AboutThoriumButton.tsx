@@ -5,13 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesFooter from "readium-desktop/renderer/assets/styles/components/aboutFooter.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { I18nFunction } from "readium-desktop/common/services/translator";
+import * as stylesFooter from "readium-desktop/renderer/assets/styles/components/aboutFooter.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
-import { ipcRenderer } from "electron";
-import { shell } from "electron";
+import { ipcRenderer, shell } from "electron";
 // import * as path from "node:path";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -31,15 +30,16 @@ import { TDispatch } from "readium-desktop/typings/redux";
 // import { Link } from "@r2-shared-js/models/publication-link";
 
 // import { apiAction } from "../../apiAction";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import * as EdrlabLogo from "readium-desktop/renderer/assets/icons/logo_edrlab.svg";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
-import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as EdrlabLogo from "readium-desktop/renderer/assets/icons/logo_edrlab.svg";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
 // import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { whatsNewActions } from "readium-desktop/common/redux/actions";
+import { textualizeKeyboardShortcut } from "readium-desktop/renderer/common/keyboard";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -74,14 +74,14 @@ interface IState {
 class AboutThoriumButton extends React.Component<IProps, IState> {
 
     // private manifestView: PublicationView;
-    private screenReaderLinkRef: React.RefObject<HTMLAnchorElement>;
+    // private screenReaderLinkRef: React.RefObject<HTMLAnchorElement>;
 
     constructor(props: IProps) {
         super(props);
 
         this.accessibilitySupportChanged = this.accessibilitySupportChanged.bind(this);
 
-        this.screenReaderLinkRef = React.createRef<HTMLAnchorElement>();
+        // this.screenReaderLinkRef = React.createRef<HTMLAnchorElement>();
 
         this.state = {
             versionInfo: true,
@@ -131,14 +131,14 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
         const { __ } = this.props;
         const displayVersionToast =  this.state.versionInfo && !!this.props.newVersionURL && !!this.props.newVersion;
         const displayWhatsNew = !this.props.displayWhatsNew && !_APP_VERSION.includes("-"); // exclude "-alpha", "-beta", "-rc", etc. (official website changelog only available for production releases like "3.5.0", not "3.5.0-rc.1" for example)
-        const displayScreenReaderInvite = !this.props.screenReaderActivate && this.state.accessibilitySupportEnabled;
+        const displayScreenReaderInvite = !this.props.screenReaderActivate && this.state.accessibilitySupportEnabled && !this.props.screenReaderDenied;
 
         // const locale = encodeURIComponent_RFC3986(this.props.locale);
         // const app_version = encodeURIComponent_RFC3986(_APP_VERSION);
         // const source = encodeURIComponent_RFC3986("thorium-desktop");
 
         // const customizationProfileProvisionedAndActivated = this.props.customizationProvision.find(({id}) => this.props.customizationProfileId === id);
-        const keyboardShortcutScreenReader = `${(this.props.keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + this.props.keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
+        const keyboardShortcutScreenReader = textualizeKeyboardShortcut(this.props.keyboardShortcuts.ToggleScreenReaderOptimize);
 
         return (
             <section
@@ -207,18 +207,24 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                 }
                 {
                     displayScreenReaderInvite ?
-                    <div className={stylesGlobal.new_version}
-                    aria-live="assertive"
-                    role="alert">
-                        <div>
-                            <SVG ariaHidden svg={CheckIcon} />
-                            <p><a href=""
-                            ref={this.screenReaderLinkRef}
+                        <div className={stylesGlobal.new_version}
+                            style={{ textDecoration: "none", color: "revert" }}
+                            aria-live="assertive"
+                            role="alert">
+                            <div><SVG ariaHidden svg={CheckIcon} />
+                                <p><span>{`${this.props.__("settings.screenReaderActivate.invite")}`}</span> &#x21e2; <a href=""
+                            // ref={this.screenReaderLinkRef}
                             onClick={(ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
 
                                 this.props.toggleScreenReader(this.props.screenReaderActivate, keyboardShortcutScreenReader, this.props.__);
-                            }}>{`${this.props.__("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader, status: this.props.screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })}`}</a></p>
+                            }}>{ __("app.session.exit.askBox.button.yes") }</a> - <a href=""
+                            // ref={this.screenReaderLinkRef}
+                            onClick={(ev) => {
+                                ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+
+                                this.props.toggleScreenReader(!this.props.screenReaderActivate, keyboardShortcutScreenReader, this.props.__);
+                            }}>{ __("app.session.exit.askBox.button.no") }</a></p>
                         </div>
                     </div>
                     : <></>
@@ -365,6 +371,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
         customizationProfileId: state.customization.activate.id,
 
         screenReaderActivate: state.screenReader.activate,
+        screenReaderDenied: state.screenReader.denied,
 
         keyboardShortcuts: state.keyboard.shortcuts,
     };
@@ -378,9 +385,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         whatsNewOpened: () => {
             dispatch(whatsNewActions.setWhatsNew.build(true));
         },
-        toggleScreenReader: (screenReaderActivate: boolean, keyboard: string, __: I18nFunction) => {
-            dispatch(screenReaderActions.save.build(!screenReaderActivate));
-            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));
+        toggleScreenReader: (screenReaderActivate: boolean, _keyboard: string, __: I18nFunction) => {
+            dispatch(screenReaderActions.save.build(!screenReaderActivate, screenReaderActivate ? true : false));
+            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite") + ` (${!screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no")})`));
         },
     };
 };

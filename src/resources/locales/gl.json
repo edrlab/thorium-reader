@@ -5,16 +5,24 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "Pechar",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "Desprazar lista á esquerda",
+        "loading": "",
         "mainContent": "Contido principal",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Desprazar lista á dereita",
+        "searching": "",
         "skipLink": "Pasar ao contido",
         "toolbar": "Barra de ferramentas"
     },
@@ -100,7 +108,6 @@
         "importAnnotation": "",
         "lang": "Idioma",
         "lastRead": "Último Lido",
-        "login": "",
         "logout": "",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -155,15 +162,12 @@
         "update": "Edita",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -262,32 +266,97 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
-            "error": "A descarga de {{-  title}} fallou: [{{-  err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{-  title}} xa estaba importado",
-            "fail": "A importación de {{-  path}} fallou. {{-  err}}",
-            "success": "A importación de {{-  title}} finalizou."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "A importación de {{-  title}} finalizou.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "Non se pode abrir a publicación: {{-  err}}",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -314,6 +383,12 @@
         },
         "addMenu": "Engadir catálogo OPDS",
         "breadcrumbRoot": "Catálogos",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -543,6 +618,13 @@
                 "descriptive": ""
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "",
@@ -697,18 +779,17 @@
         "certificateRevoked": "O certificado está cancelado",
         "certificateSignatureInvalid": "A firma do certificado non é válida",
         "cover": {
-            "img": "Imaxe de portada"
+            "img": "Imaxe de portada",
+            "zoom": ""
         },
         "day": "día",
         "days": "días",
         "duration": {
             "title": "Duración"
         },
-        "encryptedNoLicense": "",
         "expired": "Préstamo expirado",
         "expiredLcp": "Este libro non se pode ler porque a licenza  LCP expirou.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Fin",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Copia de personaxes",
         "lcpRightsPrint": "Copia de impresora",
@@ -1032,6 +1113,7 @@
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancelar",
+            "disableTooltips": "",
             "disclaimer": "Os atallos definíronse a partir da distribución do teclado QWERTY.",
             "editUserJson": "Editar arquivo de usuario",
             "exportToHTML": "",

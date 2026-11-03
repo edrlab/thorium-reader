@@ -6,6 +6,7 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
+import { forwardOpdsAuthenticationRedirect } from "readium-desktop/main/opdsAuthenticationRedirect";
 import { getCatalogUrls } from "readium-desktop/main/catalogUrls";
 import {
     OPDS_FEED_DEFAULT_COLOR,
@@ -38,7 +39,7 @@ import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./get
 // import { ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { URL_HOST_CUSTOMPROFILE, URL_HOST_OPDS_AUTH, URL_DOMAIN_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
-import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet } from "readium-desktop/main/di";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
 import * as path from "node:path";
@@ -47,7 +48,7 @@ import { customizationWellKnownFolder } from "readium-desktop/main/customization
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
-import { TCatalogAddAnalyticsOrigin } from "src/common/analytics/catalog";
+import { TCatalogAddAnalyticsOrigin } from "readium-desktop/common/analytics/catalog";
 
 import { getLcpHashedPassphrase } from "readium-desktop/utils/lcp";
 
@@ -129,7 +130,7 @@ export function saga() {
 
                     debug("ERROR to importFromFs and to open the publication");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `CLI open file ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.openFileFailed")));
                 }
             }
 
@@ -249,7 +250,7 @@ export function saga() {
 
                     debug("ERROR to importFromLink and to open the publication");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `THORIUM Deep link ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.openLinkFailed")));
                 }
             }
 
@@ -272,30 +273,10 @@ export function saga() {
                     if (url.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
                         debug("OPDS AUTH: ", `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
                         dump += "This is an authentication flow\n";
-                        // ===> opdsAuthFlow
-                        const libWin = getLibraryWindowFromDi();
-                        const children = libWin.getChildWindows(); // TODO: make sure this is the OPDS AUTH BrowserWindow!!
-                        if (children?.length) {
-                            debug("OPDS AUTH: sub win?");
-                            const win = children[0];
-                            dump += "child win from libwin\n";
-                            if (win.title === getTranslator().translate("catalog.opds.auth.login")) {
-                                debug("OPDS AUTH: sub win OK, load...", url);
-                                dump += "OPDS AUTH: sub win OK, load...\n";
-                                try {
-                                    yield* callTyped(() => win.loadURL(url));
-                                } catch (e) {
-                                    dump += `error to load '${url}' in auth child window => e=${JSON.stringify(e, null, 4)}\n`;
-                                    debug(`error to load '${url}' in auth child window => e=${JSON.stringify(e, null, 4)}`);
-                                }
-                            } else {
-                                debug("This is not an auth login window");
-                                dump += "This is not an auth login window\n";
-                            }
-                        } else {
-                            debug("No child window on library window");
-                            dump += "No child window on library window\n";
-                        }
+                        // Inline authentication has no child window. Deliver the callback directly.
+                        const forwarded = forwardOpdsAuthenticationRedirect(url);
+                        dump += forwarded ? "Authentication callback forwarded\n" : "No authentication callback receiver\n";
+                        yield* callTyped(appActivate);
                     } else {
                         let theUrl = url;
                         let title = url;
@@ -360,7 +341,7 @@ export function saga() {
                 } catch (e) {
                     debug("OPDS Deep link error");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `OPDS Deep link ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.catalogLinkFailed")));
                 } finally {
                     try { appendFileSyncWithRotation(appLogs, dump); } catch { }
                 }

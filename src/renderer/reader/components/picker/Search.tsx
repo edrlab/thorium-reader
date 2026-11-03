@@ -9,6 +9,7 @@ import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/comp
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as React from "react";
+import { VisuallyHidden } from "react-aria-components";
 import { connect } from "react-redux";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -109,6 +110,11 @@ class SearchPicker extends React.Component<IProps, IState> {
         return (
             <div
                 className={stylesReaderHeader.searchHeader_container}>
+                <VisuallyHidden>
+                    <span role="status" aria-atomic="true">
+                        {load ? __("accessibility.searching") : this.loadSeq > 2 ? found : ""}
+                    </span>
+                </VisuallyHidden>
                 <SearchFormPicker
                     isPdf={this.props.isPdf}
                     reset={() => this.setState({ foundNumber: 0, notFound: true })}
@@ -145,7 +151,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                                  }}
                                 className={stylesButtons.button_nav_primary}
                             >
-                                <span aria-live="polite">
+                                <span>
                                     {found}
                                 </span>
                             </button>

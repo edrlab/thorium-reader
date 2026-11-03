@@ -5,16 +5,24 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "Zapri",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "Podrsaj v levo",
+        "loading": "",
         "mainContent": "glavna vsebina",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Podrsaj v desno",
+        "searching": "",
         "skipLink": "Skoči na vsebino",
         "toolbar": "orodna vrstica"
     },
@@ -100,7 +108,6 @@
         "importAnnotation": "Uvoz opomb",
         "lang": "Jezik",
         "lastRead": "Nazadnje brano",
-        "login": "Prijava",
         "logout": "Odjava",
         "missing": "Manjkajoče datoteke",
         "missingUnavailableDescription": "Te publikacije ni mogoče odpreti, ker shranjene datoteke niso na voljo. Ponovno jo uvozite ali pa pojdite v Nastavitve in nato v Shramba, da dodate ali spremenite dodatno shrambo.",
@@ -155,15 +162,12 @@
         "update": "Uredi",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -272,32 +276,97 @@
         "annotations": {
             "alreadyImported": "Vse opombe so že uvožene.",
             "emptyFile": "V datoteki ni na voljo nobenih opomb.",
-            "errorParsing": "Napaka med razčlenjevanjem datoteke: ",
             "nothing": "Ni opombe, pripravljene za uvoz, zato se uvoz prekine",
             "success": "Uvoz uspešno zaključen."
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Prenos preklican.",
-            "error": "Prenos {{- title}} ni uspel: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Preverjanje celovitosti prenesene datoteke ni uspelo: pričakovani izvleček SHA-256 je {{- expected}}, pridobljeni {{- actual}}.",
                 "httpGet": "Prenos HTTP ni uspel: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Ime začasne datoteke za prenos ni veljavno.",
                 "invalidLink": "Povezava za prenos ni veljavna.",
                 "invalidTempDirectory": "Začasni direktorij za prenose ni veljaven.",
                 "lengthMismatch": "Preverjanje celovitosti prenesene datoteke ni uspelo: pričakovanih {{- expected}} bajtov, prejetih {{- actual}} bajtov.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Pretok prenosa ni na voljo.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Ni mogoče ustvariti edinstvenega imena začasne datoteke za prenos: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} je že uvožen.",
-            "fail": "Uvoz {{- path}} ni uspel: {{- err}}",
-            "success": "Uvoz {{- title}} je končan."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Uvoz {{- title}} je končan.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "Publikacije ni mogoče odpreti: {{- err}}",
-            "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba."
+            "failed": "",
+            "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -326,6 +395,12 @@
         },
         "addMenu": "Dodaj vir OPDS",
         "breadcrumbRoot": "Katalogi",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -555,6 +630,13 @@
                 "descriptive": "Prisotnost nevarnosti ni znana"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Stvarno kazalo",
@@ -709,18 +791,17 @@
         "certificateRevoked": "Preklicano potrdilo o licenci LCP.",
         "certificateSignatureInvalid": "Neveljaven podpis potrdila o licenci LCP.",
         "cover": {
-            "img": "naslovnica"
+            "img": "naslovnica",
+            "zoom": ""
         },
         "day": "dan",
         "days": "dni",
         "duration": {
             "title": "Trajanje"
         },
-        "encryptedNoLicense": "Publikacija je šifrirana, vendar nima licence LCP!",
         "expired": "Rok izposoje je potekel",
         "expiredLcp": "Licenca LCP za to publikacijo je potekla.",
         "incorrectPassphrase": "Nobeno shranjeno geslo ne ustreza publikaciji ali pa je vneseno geslo napačno.",
-        "lcpEnd": "Konec",
         "lcpNotSupported": "OPOZORILO: to je predizdaja bralnika Thorium Desktop, ki ne podpira produkcijskih licenc LCP in podpira le dešifriranje »osnovnega profila« LCP brez preverjanja potrdila.",
         "lcpRightsCopy": "Kopirani znaki",
         "lcpRightsPrint": "Tiskane strani",
@@ -1046,6 +1127,7 @@
         "keyboard": {
             "advancedMenu": "Napredni meni bližnjic na tipkovnici",
             "cancel": "Prekliči",
+            "disableTooltips": "",
             "disclaimer": "Privzete nastavitve aplikacije so bile zasnovane na podlagi fizične lokacije tipk na postavitvi QWERTY.",
             "editUserJson": "Uredi datoteko uporabnika ...",
             "exportToHTML": "Izvozi v HTML",
@@ -1322,7 +1404,7 @@
         },
         "screenReaderActivate": {
             "help": "Ko aplikacija zazna prisotnost podporne tehnologije, uporabniški vmesnik deluje bolje z bralniki zaslona",
-            "invite": "Optimiziraj za bralnik zaslona ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimiziraj za bralnik zaslona",
             "message": "Izboljšana podpora za bralnike zaslona",
             "title": "Izboljšajte izkušnjo bralnika zaslona"
         },

@@ -14,6 +14,7 @@ const createDownloadState = (...downloadUrls: string[]): TDownloadState => downl
     contentLengthHumanReadable: "",
     downloadLabel: url,
     downloadUrls: [url],
+    subDownloads: [{ id: 0, url, downloadedBytes: 0, speedKiBPerSecond: 0 }],
     id: index + 1,
     progress: 50,
     speed: 0,

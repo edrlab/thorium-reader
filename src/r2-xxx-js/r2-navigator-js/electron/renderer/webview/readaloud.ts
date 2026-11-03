@@ -736,19 +736,39 @@ function wrapHighlightWord(
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const isRUBY = (txtNode as any).__RUBY;
+        // combineTextNodes() fences sup/sub text with SUBSUP_SEPARATOR on both sides, so
+        // such a node contributes two characters that have no DOM counterpart. Converting
+        // an utterance offset back to a DOM offset subtracts the leading one and clamps
+        // into the node.
+        // No need to exclude isRUBY here: a node can carry both flags (<sup><ruby>...),
+        // but isRUBY is tested first in every cascade below, and combineTextNodes() skips
+        // __RUBY nodes outright, so such a node contributes 0 either way.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const isSUBSUP = (txtNode as any).__SUBSUP && !isOnlyWhiteSpace(txtNode.nodeValue);
+        const nodeLen = txtNode.nodeValue.length;
 
-        const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : txtNode.nodeValue.length;
+        const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : isSUBSUP ? (nodeLen + 2) : nodeLen;
         acc += l;
         if (!rangeStartNode) {
             if (isRUBY && charIndexAdjusted <= acc
                 || charIndexAdjusted < acc) {
                 rangeStartNode = txtNode;
-                rangeStartOffset = isRUBY ? 0 : l - (acc - charIndexAdjusted);
+                rangeStartOffset =
+                    isRUBY ?
+                    0 :
+                    isSUBSUP ?
+                    Math.min(Math.max(l - (acc - charIndexAdjusted) - 1, 0), nodeLen) :
+                    (l - (acc - charIndexAdjusted));
             }
         }
         if (rangeStartNode && charIndexEnd <= acc) {
             rangeEndNode = txtNode;
-            rangeEndOffset = isRUBY ? (txtNode.nodeValue.length - 1) : l - (acc - charIndexEnd);
+            rangeEndOffset =
+                isRUBY ?
+                (nodeLen - 1) :
+                isSUBSUP ?
+                Math.min(Math.max(l - (acc - charIndexEnd) - 1, 0), nodeLen) :
+                (l - (acc - charIndexEnd));
             break;
         }
     }
@@ -912,19 +932,33 @@ function wrapHighlight(
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const isRUBY = (txtNode as any).__RUBY;
+                // see the equivalent adjustment in updateTTSInfo() above
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const isSUBSUP = (txtNode as any).__SUBSUP && !isOnlyWhiteSpace(txtNode.nodeValue);
+                const nodeLen = txtNode.nodeValue.length;
 
-                const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : txtNode.nodeValue.length;
+                const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : isSUBSUP ? (nodeLen + 2) : nodeLen;
                 acc += l;
                 if (!rangeStartNode) {
                     if (isRUBY && sentBegin <= acc
                         || sentBegin < acc) {
                         rangeStartNode = txtNode;
-                        rangeStartOffset = isRUBY ? 0 : l - (acc - sentBegin);
+                        rangeStartOffset =
+                            isRUBY ?
+                            0 :
+                            isSUBSUP ?
+                            Math.min(Math.max(l - (acc - sentBegin) - 1, 0), nodeLen) :
+                            (l - (acc - sentBegin));
                     }
                 }
                 if (rangeStartNode && sentEnd <= acc) {
                     rangeEndNode = txtNode;
-                    rangeEndOffset = isRUBY ? (txtNode.nodeValue.length - 1) : l - (acc - sentEnd);
+                    rangeEndOffset =
+                        isRUBY ?
+                        (nodeLen - 1) :
+                        isSUBSUP ?
+                        Math.min(Math.max(l - (acc - sentEnd) - 1, 0), nodeLen) :
+                        (l - (acc - sentEnd));
                     break;
                 }
             }

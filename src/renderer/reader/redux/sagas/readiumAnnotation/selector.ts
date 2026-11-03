@@ -7,13 +7,13 @@
 
 import debug_ from "debug";
 
-import { ICssSelector, IEPUBCFISelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
-import {  describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
 import { convertRangeInfo } from "@r2-navigator-js/electron/renderer/webview/selection";
-import { call as callTyped } from "typed-redux-saga/macro";
+import { ICssSelector, IEPUBCFISelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
 import { SagaGenerator } from "typed-redux-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 import { EpubCfiUtils } from "@r2-navigator-js/electron/common/colibrio-cfi/EpubCfiUtils";
 import { EpubCfiBuilderHelper } from "@r2-navigator-js/electron/common/colibrio-cfi/builder/EpubCfiBuilderHelper";
@@ -106,7 +106,7 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
     const range = convertRangeInfo(xmlDom, rangeInfo);
     debug("Dump range memory found:", range);
 
-    if (range.collapsed) {
+    if (!range || range.collapsed) {
         debug("RANGE COLLAPSED??! skipping...");
         addProgressionSelector();
         addBookmarkElementSelector();

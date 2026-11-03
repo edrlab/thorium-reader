@@ -7,4 +7,5 @@
 
 export interface IScreenReaderState {
     activate: boolean,
+    denied: boolean,
 }

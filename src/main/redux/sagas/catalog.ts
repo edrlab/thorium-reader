@@ -348,6 +348,7 @@ export function saga() {
                     debug("sender is not renderer !!!");
                     return;
                 }
+                let directoryUpdated = false;
                 try {
                     let nextUserDirectory = userDirectory;
 
@@ -378,24 +379,26 @@ export function saga() {
                     }
 
                     yield* callTyped(() => publicationStorage.setUserDirectory(nextUserDirectory));
+                    directoryUpdated = true;
 
                     // Open the previous user directory so the user can find and move existing files if needed.
                     if (currentUserDirectory && nextUserDirectory !== currentUserDirectory) {
                         yield* callTyped(() => shell.openPath(currentUserDirectory));
                         // yield* callTyped(() => shell.openPath(nextUserDirectory));
                     }
+                    yield* callTyped(getCatalogAndDispatchIt);
                     yield* putTyped(toastActions.openRequest.build(
                         ToastType.Success,
                         nextUserDirectory
                             ? getTranslator().translate("message.storage.updated")
                             : getTranslator().translate("message.storage.removed"),
                     ));
-                    yield* callTyped(getCatalogAndDispatchIt);
                 } catch (e) {
                     const message = e instanceof Error ? e.message : `${e}`;
                     yield* putTyped(toastActions.openRequest.build(
-                        ToastType.Error,
-                        getTranslator().translate("message.storage.updateFailed", { message }),
+                        directoryUpdated ? ToastType.Info : ToastType.Error,
+                        directoryUpdated ? getTranslator().translate("message.notifications.storageRefreshFailed")
+                            : getTranslator().translate("message.storage.updateFailed", { message }),
                     ));
                 }
             },

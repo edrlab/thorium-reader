@@ -527,7 +527,7 @@ export function getUniqueResourcesFromR2Publication(publication: R2Publication):
     const uniqueResources = [
         ...(
             Array.isArray(publication.Links)
-                ? publication.Links
+                ? publication.Links.filter((link) => link.Rel?.includes("self") || link.Rel?.includes("icon") || link.Rel?.includes("manifest"))
                 : []),
         ...(
             Array.isArray(publication.Spine)

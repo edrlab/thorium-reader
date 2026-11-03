@@ -108,6 +108,9 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
     const [__] = useTranslator();
     const dispatch = useDispatch();
     const [infoOpen, setInfoOpen] = React.useState(false);
+    const helpId = React.useId();
+    const previewTitleId = React.useId();
+    const rangeId = React.useId();
     const pdfThumbnailRequestedSetRef = React.useRef<Set<number>>(new Set());
 
     const publicationIdentifier = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
@@ -199,12 +202,12 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
             }
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px" }}>
                 <div className={stylesInput.form_group} style={{ minWidth: "360px", marginLeft: "5px" }}>
-                    <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={__("reader.print.pages")} value={getV} onChange={(e) => {
+                    <input id={rangeId} type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={__("reader.print.pages")} value={getV} onChange={(e) => {
                         const v = e.target.value;
                         setV(v);
                     }}
                     />
-                    <label htmlFor="print-range">{__("reader.print.pages")}</label>
+                    <label htmlFor={rangeId}>{__("reader.print.pages")}</label>
                 </div>
                 <div>
                     <label htmlFor="pages-to-print">{__("reader.print.printablePages")}</label>
@@ -212,9 +215,22 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                 </div>
             </div>
 
-            <h3>{__("reader.print.preview")}</h3>
+            <h3 id={previewTitleId}>{__("reader.print.preview")}</h3>
             <div style={{ padding: "10px 15px 5px", backgroundColor: "var(--color-gray-50" }}>
-                <div id="print-dialog-image-container" className={stylesPrint.print_dialog_image_container}>
+                <div id="print-dialog-image-container" className={stylesPrint.print_dialog_image_container} role="region" aria-labelledby={previewTitleId} tabIndex={0}
+                    onKeyDown={(event) => {
+                        if (event.target !== event.currentTarget || event.altKey || event.ctrlKey || event.metaKey) {
+                            return;
+                        }
+                        const scroller = event.currentTarget;
+                        if (event.key === "Home" || event.key === "End") {
+                            event.preventDefault();
+                            scroller.scrollLeft = event.key === "Home" ? 0 : scroller.scrollWidth;
+                        } else if (event.key === "PageUp" || event.key === "PageDown") {
+                            event.preventDefault();
+                            scroller.scrollLeft += (event.key === "PageDown" ? 1 : -1) * scroller.clientWidth;
+                        }
+                    }}>
 
                     {
                         pagesToPrint.length ?
@@ -248,7 +264,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                                         >
                                             {
                                                 src
-                                                    ? <img key={pageNumber} src={src} title={(pageNumber).toString()} />
+                                                    ? <img key={pageNumber} src={src} alt={__("accessibility.printPage", { page: pageNumber })} />
                                                     : (<div key={pageNumber} style={{ position: "relative", backgroundColor: "inherit" }} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
                                             }
                                             <div className={stylesPrint.print_dialog_thumbnail_pagination_bubble}>{`${pageNumber}`}</div>
@@ -264,22 +280,26 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
                 </div>
             </div>
-            <button type="button" className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+            <button
+                type="button"
+                aria-expanded={infoOpen}
+                aria-controls={helpId}
+                className={classNames("button_catalog_infos")}
+                onClick={() => setInfoOpen(open => !open)}
+            >
                 <SVG ariaHidden svg={InfoIcon} />
                 {__("reader.print.howTo")}
                 <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
             </button>
-            {infoOpen ?
-                <div className={stylesPrint.print_dialog_help_container}>
-                    <p>{__("reader.print.pageHelpInfo")}</p>
-                    <ul>
-                        <li>{__("reader.print.pageHelpInfo1")}</li>
-                        <li>{__("reader.print.pageHelpInfo2")}</li>
-                        <li>{__("reader.print.pageHelpInfo3")}</li>
-                        <li>{__("reader.print.pageHelpInfo4")}</li>
-                    </ul>
-                </div>
-                : <></>}
+            <div id={helpId} hidden={!infoOpen} className={stylesPrint.print_dialog_help_container}>
+                <p>{__("reader.print.pageHelpInfo")}</p>
+                <ul>
+                    <li>{__("reader.print.pageHelpInfo1")}</li>
+                    <li>{__("reader.print.pageHelpInfo2")}</li>
+                    <li>{__("reader.print.pageHelpInfo3")}</li>
+                    <li>{__("reader.print.pageHelpInfo4")}</li>
+                </ul>
+            </div>
 
             <div className={stylesPrint.print_dialog_actions_buttons}>
                 <Dialog.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")}>{__("dialog.cancel")}</Dialog.Close>

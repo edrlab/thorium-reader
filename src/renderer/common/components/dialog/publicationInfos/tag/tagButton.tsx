@@ -83,7 +83,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                 </Link>
                 <DialogTrigger>
                     <Pressable>
-                        <button aria-label={__("accessibility.editTag", { tag: tagString })}>
+                        <button type="button" aria-label={__("accessibility.editTag", { tag: tagString })}>
                             <SVG ariaHidden={true} svg={EditIcon} />
                         </button>
                     </Pressable>

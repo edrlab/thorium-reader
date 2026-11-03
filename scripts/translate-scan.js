@@ -22,6 +22,7 @@ var path = require("path");
 var glob = require("glob");
 
 var jsonUtils = require("./json-utils");
+const { extractTranslationKeys } = require("./translation-keys");
 
 const pluralSuffixOrder = ["zero", "one", "two", "few", "many", "other"];
 const referenceLocaleLanguage = "en";
@@ -92,37 +93,20 @@ if (require.main === module) {
     for (const file of files) {
         const fileTxt = fs.readFileSync(path.join(process.cwd(), file), { encoding: "utf8" });
 
-        // (\.translate|__)\s*\(\s*['"]\s*([^'"]+)['"]
-        const regex = new RegExp(`([\\.| |\\(]translate|__)\\s*\\(\\s*['"]([^'"]+)['"]`, "g");
-
-        let regexMatch = regex.exec(fileTxt);
-        while (regexMatch) {
+        // Keep the existing direct-call extraction, including keys in retained
+        // source snippets, and supplement it with syntax-aware indirect calls.
+        const directCallRegex = new RegExp(`([\\.| |\\(]translate|__)\\s*\\(\\s*['"]([^'"]+)['"]`, "g");
+        const directKeys = [...fileTxt.matchAll(directCallRegex)].map((match) => match[2]);
+        const extractedKeys = extractTranslationKeys(fileTxt, file, referenceLocale);
+        for (const key of new Set([...directKeys, ...extractedKeys])) {
             totalMatch++;
-            const key = regexMatch[2];
             if (!keys.includes(key)) {
                 keys.push(key);
                 console.log(key);
             } else {
                 console.log(`-- duplicate: ${key}`);
             }
-            regexMatch = regex.exec(fileTxt);
         }
-
-        // // dispatchToastRequest\s*\(\s*ToastType\.[^"']+['"]([^'"]+)['"]
-        // const regex2 = new RegExp(`dispatchToastRequest\\s*\\(\\s*ToastType\\.[^"']+['"]([^'"]+)['"]`, "g");
-
-        // regexMatch = regex2.exec(fileTxt);
-        // while (regexMatch) {
-        //     totalMatch++;
-        //     const key = regexMatch[1];
-        //     if (!keys.includes(key)) {
-        //         keys.push(key);
-        //         console.log(key);
-        //     } else {
-        //         console.log(`-- duplicate: ${key}`);
-        //     }
-        //     regexMatch = regex2.exec(fileTxt);
-        // }
     }
 
     console.log(`${keys.length} (${totalMatch})`);

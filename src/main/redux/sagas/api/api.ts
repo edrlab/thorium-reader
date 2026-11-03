@@ -6,16 +6,16 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { CodeError } from "readium-desktop/common/codeError.class";
-import { apiActions, toastActions } from "readium-desktop/common/redux/actions";
+import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { error } from "readium-desktop/main/tools/error";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { call, cancelled, put } from "redux-saga/effects";
-import { ToastType } from "readium-desktop/common/models/toast";
+import { call, cancelled, put, setContext } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 
 // Logger
@@ -31,23 +31,29 @@ const getSymbolName = (apiName: string) => {
     throw new Error("Wrong API name called " + apiName);
 };
 
-function* processRequest(requestAction: apiActions.request.TAction): SagaGenerator<void> {
+export function* processRequest(requestAction: apiActions.request.TAction): SagaGenerator<void> {
     const { api } = requestAction.meta;
 
     try {
         debug(api.moduleId, api.methodId, requestAction.payload);
 
         const apiModule = yield call(() => diMainGet(getSymbolName(api.moduleId)));
+        yield setContext({
+            toastWindowIdentifier: (requestAction as unknown as Partial<ActionWithSender>).sender?.identifier,
+            apiNotificationOwner: (apiModule as any)[api.methodId],
+        });
 
         const result = yield call(
             () => (apiModule as any)[api.methodId](...(requestAction.payload || [])),
         );
 
         yield put(apiActions.result.build(api, result));
-    } catch (error: any) {
+    } catch (error: unknown) {
         debug("API-ERROR", error, "requestAction: ", requestAction);
-        yield put(apiActions.result.build(api, new CodeError("API-ERROR", error.message)));
-        yield put(toastActions.openRequest.build(ToastType.Error, `API: ${requestAction.meta?.api?.moduleId}/${requestAction.meta?.api?.methodId} ${error}`));
+        // Return the failure to the operation owner; background API requests must not
+        // create global notifications alongside the caller's inline error or toast.
+        const message = error instanceof Error ? error.message : String(error);
+        yield put(apiActions.result.build(api, new CodeError("API-ERROR", message)));
     } finally {
         if (yield cancelled()) {
             debug("API-CANCELLED", requestAction);

@@ -6,12 +6,20 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { Focusable, TooltipTrigger } from "react-aria-components";
+import { connect } from "react-redux";
+import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "./Tooltippy";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     anchorId: string;
     label: string;
     className?: string;
+    tooltipkeyboardShortcuts?: TKeyboardShortcut[];
+    tooltipkeyboardShortcutsNames?: string[];
+    tooltipkeyboardShortcutsDescriptions?: string[];
     onClick?: () => void;
 }
 
@@ -23,23 +31,48 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class SkipLink extends React.Component<IProps, undefined> {
+class SkipLink extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);
     }
 
+    //
     public render(): React.ReactElement<{}>  {
-        const { onClick, label, className } = this.props;
-        return (
-            <button
-                onClick={onClick || (() => this.onClick())}
-                aria-hidden={false}
-                className={className}
-            >
-                { label }
-            </button>
-        );
+        const { onClick, label, className, tooltipkeyboardShortcuts, tooltipkeyboardShortcutsNames, tooltipkeyboardShortcutsDescriptions } = this.props;
+        if (tooltipkeyboardShortcuts?.length) {
+            return (
+                <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
+                <Focusable>
+                <button
+                    onClick={onClick || (() => this.onClick())}
+                    className={className}
+
+                    // aria-label={`${label}`}
+                    /* aria-label={`${label} [${textualizeKeyboardShortcut(tooltipkeyboardShortcut)}]` + (tooltipkeyboardShortcutName ? ` (${tooltipkeyboardShortcutName})` : "") + (tooltipkeyboardShortcutDescription ? ` <${tooltipkeyboardShortcutDescription}>` : "")} */
+                >
+                    { label }
+                </button>
+                </Focusable>
+                <ToolTippy
+                    immediate={tooltipkeyboardShortcuts?.length === 1}
+                    placement="bottom"
+                    // label={label}
+                    tooltipkeyboardShortcuts={tooltipkeyboardShortcuts}
+                    tooltipkeyboardShortcutsNames={tooltipkeyboardShortcutsNames}
+                    tooltipkeyboardShortcutsDescriptions={tooltipkeyboardShortcutsDescriptions} />
+                </TooltipTrigger>
+            );
+        } else {
+            return (
+                <button
+                    onClick={onClick || (() => this.onClick())}
+                    className={className}
+                >
+                    { label }
+                </button>
+            );
+        }
     }
 
     private onClick() {
@@ -49,3 +82,18 @@ export default class SkipLink extends React.Component<IProps, undefined> {
         }
     }
 }
+
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
+
+    return {
+        keyboardShortcuts: state.keyboard.shortcuts,
+    };
+};
+
+// const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+//     return {
+//
+//     };
+// };
+
+export default connect(mapStateToProps /*, mapDispatchToProps */)(SkipLink);

@@ -9,4 +9,5 @@ import { TKeyboardShortcutsMap } from "readium-desktop/common/keyboard";
 
 export interface IKeyboardState {
     shortcuts: TKeyboardShortcutsMap;
+    disableKeyboardShortcutsTooltips: boolean;
 }

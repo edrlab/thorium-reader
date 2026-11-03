@@ -7,36 +7,37 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
-import { FocusScope } from "react-aria";
+import { Focusable, FocusScope } from "react-aria";
+import { OverlayTriggerStateContext, Popover, Dialog as PopoverDialog, TooltipTrigger } from "react-aria-components";
 import { useOverlayTriggerState } from "react-stately";
-import { OverlayTriggerStateContext, Popover, Dialog as PopoverDialog } from "react-aria-components";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 
-import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-icon.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
+import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-icon.svg";
 
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { IReaderRootState, IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { isLocatorVisible, keyboardFocusRequest, MediaOverlaysStateEnum, TTSStateEnum } from "@r2-navigator-js/electron/renderer";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
-import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { registerKeyboardListener, unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
-import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
-import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
+import { clone } from "ramda";
+import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
+import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
+import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
+import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { IReaderRootState, IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { TOOLTIP_HOVER_DELAY, ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { registerKeyboardListener, unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
 import { readerLocalActionHighlights } from "../../redux/actions";
 import { BookmarkEdit } from "../BookmarkEdit";
-import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
-import { clone } from "ramda";
-import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 export interface IProps {
     shortcutEnable: boolean;
@@ -191,15 +192,14 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         if (ttsState !== TTSStateEnum.STOPPED ||
             mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED
         ) {
-            // ToastType.Error
-            toasty(`${__("reader.tts.stop")} / ${__("reader.media-overlays.stop")}`);
+            dispatch(toastActions.openRequest.build(ToastType.Info, `${__("reader.tts.stop")} / ${__("reader.media-overlays.stop")}`));
             return false;
         }
 
         dispatch(readerActions.note.addUpdate.build(pubId, bookmark));
         dispatch(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
         return true;
-    }, [dispatch, ttsState, mediaOverlaysState, __, toasty, noteTotalCount, pubId]);
+    }, [dispatch, ttsState, mediaOverlaysState, __, noteTotalCount, pubId]);
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
     const colorDefault = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
@@ -220,7 +220,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
             if (!bookmarkSelected) {
                 const msg = `${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${noteTotalCount + 1}]`}`;
-                toasty(msg);
 
                 if (locatorExtended.locator.locations && !locatorExtended.locator.locations.caretInfo?.rangeInfo && locatorExtended.selectionInfo?.rangeInfo) {
                     locatorExtended.locator.locations.caretInfo = {
@@ -239,6 +238,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     group: "bookmark",
                     drawType: EDrawType.bookmark,
                 })) {
+                    toasty(msg);
                     logEvent(readerAnalyticsEvents.bookmarkToggle);
                 }
             }
@@ -254,7 +254,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     deleteBookmark(bookmarkSelected);
                     logEvent(readerAnalyticsEvents.bookmarkToggle);
                 } else {
-                    toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${noteTotalCount + 1}]`}`);
                     if (addBookmark({
                         textualValue: name,
                         created: (new Date()).getTime(),
@@ -266,6 +265,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                         group: "bookmark",
                         drawType: EDrawType.bookmark,
                     })) {
+                        toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${noteTotalCount + 1}]`}`);
                         logEvent(readerAnalyticsEvents.bookmarkToggle);
                     }
                 }
@@ -412,6 +412,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 ref={bookmarkPopoverTriggerRef}
                 {...(numberOfVisibleBookmarks ? { style: { backgroundColor: "var(--color-brand-primary)" } } : {})}
             >
+                <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="focus">
+                <Focusable>
                 <input
                     id="bookmarkButton"
                     className={stylesReader.bookmarkButton}
@@ -430,13 +432,26 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     aria-label={`${__("reader.navigation.bookmarkTitle")} (${
                         bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
                     })`}
-                    title={`${__("reader.navigation.bookmarkTitle")} (${
-                        bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
-                    })`}
                 />
+                </Focusable>
+                <ToolTippy
+                    immediate={false}
+                    offset={15}
+                    placement="bottom"
+                    label={`${__("reader.navigation.bookmarkTitle")} (${
+                        bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
+                    })`}
+                    tooltipkeyboardShortcuts={[keyboardShortcuts.ToggleBookmark, keyboardShortcuts.AddBookmarkWithLabel, keyboardShortcuts.FocusReaderNavigationBookmarks]}
+                    tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.ToggleBookmark.name"), __("settings.keyboard.list.AddBookmarkWithLabel.name"), __("settings.keyboard.list.FocusReaderNavigationBookmarks.name")]}
+                    tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.ToggleBookmark.description"), __("settings.keyboard.list.AddBookmarkWithLabel.description"), __("settings.keyboard.list.FocusReaderNavigationBookmarks.description")]}
+                    />
+                </TooltipTrigger>
                 {
                     // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
                 }
+
+                <TooltipTrigger delay={TOOLTIP_HOVER_DELAY} closeDelay={0} trigger="hover">
+                <Focusable excludeFromTabOrder>
                 <label
                     htmlFor="bookmarkButton"
                     aria-hidden="true"
@@ -445,9 +460,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
                     aria-label={`${__("reader.navigation.bookmarkTitle")} (${
                         bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
-                    })`}
-                    title={`${__("reader.navigation.bookmarkTitle")} (${
-                        bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
                     })`}
                 >
                     <SVG
@@ -477,6 +489,18 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                         )}
                     />
                 </label>
+                </Focusable>
+                <ToolTippy
+                    immediate={false}
+                    placement="bottom"
+                    label={`${__("reader.navigation.bookmarkTitle")} (${
+                        bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
+                    })`}
+                    tooltipkeyboardShortcuts={[keyboardShortcuts.ToggleBookmark, keyboardShortcuts.AddBookmarkWithLabel, keyboardShortcuts.FocusReaderNavigationBookmarks]}
+                    tooltipkeyboardShortcutsNames={[__("settings.keyboard.list.ToggleBookmark.name"), __("settings.keyboard.list.AddBookmarkWithLabel.name"), __("settings.keyboard.list.FocusReaderNavigationBookmarks.name")]}
+                    tooltipkeyboardShortcutsDescriptions={[__("settings.keyboard.list.ToggleBookmark.description"), __("settings.keyboard.list.AddBookmarkWithLabel.description"), __("settings.keyboard.list.FocusReaderNavigationBookmarks.description")]}
+                    />
+                </TooltipTrigger>
             </li>
             <Popover
                 triggerRef={bookmarkPopoverTriggerRef}

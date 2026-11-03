@@ -102,3 +102,10 @@ describe("OPDS user profile", () => {
         }, "https://example.com")).toEqual({ loans: {} });
     });
 });
+
+it("opens a feed-advertised profile directly, only on explicit request", async () => {
+    get.mockResolvedValueOnce(result("application/opds-profile+json", { name: "Jane" }, "https://example.com/profile"));
+    expect(await getOpdsUserProfile("https://example.com/catalog", undefined, "/profile")).toEqual({ name: "Jane" });
+    expect(get).toHaveBeenCalledTimes(1);
+    expect(get).toHaveBeenCalledWith("https://example.com/profile", { headers: { Accept: "application/opds-profile+json" } });
+});

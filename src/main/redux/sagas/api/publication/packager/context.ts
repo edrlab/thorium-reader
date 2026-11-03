@@ -14,7 +14,11 @@ export function manifestContext(manifest: JsonMap): [r2: boolean, w3c: boolean] 
         const contextArray = Array.isArray(context) ? context : [context];
         if (contextArray.includes("https://www.w3.org/ns/pub-context")) {
             return [false, true];
-        } else if (contextArray.includes("https://readium.org/webpub-manifest/context.jsonld") || contextArray.includes("http://readium.org/webpub-manifest/context.jsonld")) {
+        } else if (
+            contextArray.includes("https://readium.org/webpub-manifest/context.jsonld") ||
+            contextArray.includes("http://readium.org/webpub-manifest/context.jsonld") ||
+            contextArray.includes("http://readium.org/webpub/default.jsonld")
+        ) {
             return [true, false];
         }
     }

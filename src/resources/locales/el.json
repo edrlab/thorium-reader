@@ -1,20 +1,28 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Σημείωση σχολιασμού",
         "bookMenu": "Μενού",
-        "bookmarkNote": "",
-        "cancelDownload": "",
+        "bookmarkNote": "Σημείωση σελιδοδείκτη",
+        "cancelDownload": "Ακύρωση λήψης: {{- title}}",
         "closeDialog": "Κλείσιμο",
-        "decreaseSetting": "",
-        "downloadProgress": "",
-        "editTag": "",
-        "favoriteCatalog": "",
-        "increaseSetting": "",
+        "closeNotification": "Κλείσιμο ειδοποίησης",
+        "copyNotificationInstruction": "Αντιγραφή ειδοποίησης",
+        "decreaseSetting": "Μείωση {{- setting}}",
+        "downloadProgress": "Πρόοδος λήψης: {{- title}}",
+        "downloadProgressUnknown": "Άγνωστη πρόοδος λήψης.",
+        "editTag": "Επεξεργασία ετικέτας: {{- tag}}",
+        "favoriteCatalog": "Κατάλογος αγαπημένων: {{- title}}",
+        "increaseSetting": "Αύξηση {{- setting}}",
         "leftSlideButton": "Μετακίνηση προς τα αριστερά",
+        "loading": "Φόρτωση…",
         "mainContent": "κυρίως περιεχόμενο",
-        "publicationDetails": "",
-        "resetSetting": "",
+        "notificationCopied": "Αντιγράφηκε στο πρόχειρο:",
+        "notificationCopyFailed": "Αδυναμία αντιγραφής ειδοποίησης",
+        "printPage": "Σελίδα {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Επαναφορά {{- setting}}",
         "rightSlideButton": "Μετακίνηση προς τα δεξιά",
+        "searching": "Αναζήτηση…",
         "skipLink": "Μεταπήδηση στο περιεχόμενο",
         "toolbar": "Γραμμή εργαλείων"
     },
@@ -100,7 +108,6 @@
         "importAnnotation": "Εισαγωγή σημειώσεων",
         "lang": "Γλώσσα",
         "lastRead": "Τελευταία ανάγνωση",
-        "login": "Σύνδεση",
         "logout": "Αποσύνδεση",
         "missing": "Ελλειπόντα αρχεία",
         "missingUnavailableDescription": "Αυτή η δημοσίευση δεν μπορεί να ανοιχτεί, καθώς τα αρχεία που περιέχει δεν είναι διαθέσιμα. Προχώρησε σε εισαγωγή εκ νέου ή πήγαινε στις «Ρυθμίσεις» και στη συνέχεια στην ενότητα «Αποθήκευση» για να προσθέσεις ή να αλλάξεις τον επιπλέον χώρο αποθήκευσης.",
@@ -155,15 +162,12 @@
         "update": "Επεξεργασία",
         "userProfile": {
             "available": "Διαθεσιμα: {{count}}",
-            "bookshelf": "Μετάβαση στη βιβλιοθήκη",
             "edit": "Επεξεργασία προφίλ",
             "holds": "Κρατήσεις",
             "loading": "Σύνδεση στον λογαριασμό…",
             "loans": "Δανεισμοί",
             "title": "Λογαριασμός",
-            "total": "Όριο: {{count}}",
-            "unavailable": "Μη διαθέσιμες πληροφορίες προφίλ.",
-            "used": "Χρησιμοποιούνται {{used}} από {{total}}"
+            "unavailable": "Μη διαθέσιμες πληροφορίες προφίλ."
         }
     },
     "dialog": {
@@ -262,32 +266,97 @@
         "annotations": {
             "alreadyImported": "Όλες οι σημειώσεις έχουν ήδη εισαχθεί.",
             "emptyFile": "Δεν διατίθενται σημειώσεις μέσα στο αρχείο.",
-            "errorParsing": "Σφάλμα κατά την ανάλυση αρχείου: ",
             "nothing": "Δεν υπάρχει καμία σημείωση για εισαγωγή· παράκαμψη εισαγωγής",
             "success": "Επιτυχής ολοκλήρωση εισαγωγής."
         },
+        "diagnostics": {
+            "category": "Κατηγορία: {{- category}}",
+            "causedBy": "Αιτία:",
+            "downloadSource": "Λήψη πηγής: {{- source}}",
+            "error": "Σφάλμα",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "Ακύρωση λήψης.",
-            "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενος κωδικός SHA-256 {{- expected}}, βρέθηκε {{- actual}}.",
                 "httpGet": "Αποτυχία λήψης μέσω HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Το προσωρινό όνομα του αρχείου λήψης δεν είναι έγκυρο.",
                 "invalidLink": "Ο σύνδεσμος λήψης δεν είναι έγκυρος.",
                 "invalidTempDirectory": "Ο προσωρινός φάκελος λήψης δεν είναι έγκυρος.",
                 "lengthMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενα {{- expected}} bytes, ληφθήκαν {{- actual}} bytes.",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "Η ροή λήψης δεν είναι διαθέσιμη.",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": "Αδυναμία δημιουργίας ενός μοναδικού προσωρινού ονόματος αρχείου λήψης: {{- path}}"
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} έχει ήδη εισαχθεί.",
-            "fail": "Η εισαγωγή του {{- path}} απέτυχε. {{- err}}",
-            "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "Η δημοσίευση δεν μπορεί να ανοίξει: {{- err}}",
-            "folderNotFound": "Δεν εντοπίστηκε ο φάκελος δημοσιεύσεων. Εισάγετέ τον ξανά ή ρυθμίστε τον επιπλέον χώρο αποθήκευσης από τις Ρυθμίσεις > Αποθήκευση."
+            "failed": "",
+            "folderNotFound": "Δεν εντοπίστηκε ο φάκελος δημοσιεύσεων. Εισάγετέ τον ξανά ή ρυθμίστε τον επιπλέον χώρο αποθήκευσης από τις Ρυθμίσεις > Αποθήκευση.",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -314,6 +383,12 @@
         },
         "addMenu": "Προσθήκη τροφοδοσίας OPDS",
         "breadcrumbRoot": "Κατάλογοι",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "Μπλε",
             "gray": "Γκρι",
@@ -543,6 +618,13 @@
                 "descriptive": "Δεν είναι γνωστό αν υπάρχουν κίνδυνοι"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Ευρετήριο",
@@ -697,18 +779,17 @@
         "certificateRevoked": "Το πιστοποιητικό LCP ανακλήθηκε.",
         "certificateSignatureInvalid": "Η υπογραφή του πιστοποιητικού LCP είναι άκυρη.",
         "cover": {
-            "img": "εικόνα εξωφύλλου"
+            "img": "εικόνα εξωφύλλου",
+            "zoom": ""
         },
         "day": "ημέρα",
         "days": "ημέρες",
         "duration": {
             "title": "Διάρκεια"
         },
-        "encryptedNoLicense": "Η δημοσίευση είναι κρυπτογραφημένη, αλλά δεν έχει άδεια LCP!",
         "expired": "Ο δανεισμός έχει λήξει",
         "expiredLcp": "Αυτό το βιβλίο δεν μπορεί να διαβαστεί επειδή η άδεια χρήσης LCP έχει λήξει.",
         "incorrectPassphrase": "Καμία αποθηκευμένη συνθηματική φράση δεν ταιριάζει με το βιβλίο ή η εισαχθείσα συνθηματική φράση είναι λανθασμένη.",
-        "lcpEnd": "Τέλος",
         "lcpNotSupported": "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Αυτή είναι μια pre-release έκδοση του προγράμματος ανάγνωσης Thorium Desktop, η οποία δεν υποστηρίζει άδειες χρήσης LCP παραγωγής και υποστηρίζει μόνο την αποκρυπτογράφηση LCP «βασικού προφίλ» χωρίς επικύρωση πιστοποιητικού.",
         "lcpRightsCopy": "Αντιγραμμένοι χαρακτήρες",
         "lcpRightsPrint": "Εκτυπώσιμες σελίδες",
@@ -1032,6 +1113,7 @@
         "keyboard": {
             "advancedMenu": "Προηγμένο μενού συντομεύσεων πληκτρολογίου",
             "cancel": "Ακύρωση",
+            "disableTooltips": "",
             "disclaimer": "Οι προεπιλογές της εφαρμογής σχεδιάστηκαν με βάση τη φυσική θέση των πλήκτρων σε μια διάταξη QWERTY",
             "editUserJson": "Επεξεργασία αρχείου χρήστη...",
             "exportToHTML": "Εξαγωγή σε HTML",
@@ -1308,7 +1390,7 @@
         },
         "screenReaderActivate": {
             "help": "Όταν η εφαρμογή ανιχνεύει την παρουσία βοηθητικής τεχνολογίας, η διεπαφή χρήστη λειτουργεί καλύτερα με προγράμματα ανάγνωσης οθόνης",
-            "invite": "Βελτιστοποίηση αναγνώστη οθόνης ({{- status}}) [{{- keyboard}}]",
+            "invite": "Βελτιστοποίηση αναγνώστη οθόνης",
             "message": "Βελτιωμένη υποστήριξη για προγράμματα ανάγνωσης οθόνης",
             "title": "Βελτίωση της εμπειρίας χρήσης του προγράμματος ανάγνωσης οθόνης"
         },

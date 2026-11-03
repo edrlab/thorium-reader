@@ -42,10 +42,10 @@ jobs:
           persist-credentials: false
 ###########################
       - name: Run zizmor
-# https://github.com/zizmorcore/zizmor-action/commits/v0.6.4
-# https://github.com/zizmorcore/zizmor-action/commits/cc914d7f3750a2d13d75c7f184a1060aa0e9d482
-# https://github.com/zizmorcore/zizmor-action/compare/v0.6.4...cc914d7f3750a2d13d75c7f184a1060aa0e9d482
-        uses: zizmorcore/zizmor-action@cc914d7f3750a2d13d75c7f184a1060aa0e9d482
+# https://github.com/zizmorcore/zizmor-action/commits/v0.8.0
+# https://github.com/zizmorcore/zizmor-action/commits/53290badfa369cb0bf7ad16342cb62c2fa47ac7b
+# https://github.com/zizmorcore/zizmor-action/compare/v0.8.0...53290badfa369cb0bf7ad16342cb62c2fa47ac7b
+        uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b
         with:
           advanced-security: true
           token: ${{ github.token }} # default

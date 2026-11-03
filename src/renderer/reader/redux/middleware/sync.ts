@@ -6,8 +6,10 @@
 // ==LICENSE-END==
 
 import {
-    annotationActions, winCommonActions,
-    apiActions, creatorActions, customizationActions, i18nActions, keyboardActions, lcpActions, noteExport, publicationActions, readerActions, themeActions,
+    annotationActions,
+    apiActions, creatorActions, customizationActions, i18nActions, keyboardActions, lcpActions, noteExport, publicationActions, readerActions,
+    themeActions,
+    winCommonActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -28,6 +30,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     keyboardActions.setShortcuts.ID,
     keyboardActions.showShortcuts.ID,
     keyboardActions.reloadShortcuts.ID,
+    keyboardActions.disableKeyboardShortcutsTooltips.ID,
 
     // sessionActions.enable.ID,
 

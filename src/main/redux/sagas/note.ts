@@ -32,7 +32,7 @@ import { publicationActions as publicationActionsFromMainAction } from "../actio
 import { EXT_ANNOTATIONS, EXT_ANNOTATIONS_LEGACY } from "readium-desktop/common/extension";
 import { resolveReadiumAnnotationSourceHref } from "readium-desktop/common/readium/annotation/sourceHref";
 import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
-import { TAnalyticsEventParams } from "src/common/api/interface/analyticsApi.interface";
+import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/analyticsApi.interface";
 import { readAnnotationSetFile } from "readium-desktop/main/w3c/annotations/read";
 
 // Logger
@@ -127,7 +127,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         }
     } catch (e) {
         debug("Error!!! to open a file, exit", e);
-        yield* putTyped(toastActions.openRequest.build(ToastType.Error, "" + e, readerPublicationIdentifier));
+        yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.notifications.annotationImportFailed"), readerPublicationIdentifier, winId));
         return;
     }
 
@@ -145,7 +145,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         if (!isIReadiumAnnotationSet(readiumAnnotationFormat)) {
 
             debug("Error: ", __READIUM_ANNOTATION_AJV_ERRORS);
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.errorParsing") + __READIUM_ANNOTATION_AJV_ERRORS, readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.notifications.annotationImportFailed"), readerPublicationIdentifier, winId));
             return;
         }
 
@@ -156,7 +156,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
         if (!annotationsIncommingArray.length) {
             debug("there are no annotations in the file, exit");
-            yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.emptyFile"), readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Info, __("message.annotations.emptyFile"), readerPublicationIdentifier, winId));
             return;
         }
 
@@ -199,7 +199,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             });
         } else {
             debug("ERROR: the publication doesn't have an r2PublicationJson value !!");
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, "The publication is corrupted", readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.notifications.annotationPublicationUnavailable"), readerPublicationIdentifier, winId));
             return;
         }
 
@@ -321,7 +321,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         if (!annotationsParsedAllArray.length) {
 
             debug("there are no annotations ready to be imported, exit");
-            yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.nothing"), readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Info, __("message.annotations.nothing"), readerPublicationIdentifier, winId));
             return;
 
         }
@@ -329,7 +329,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         if (!(annotationsParsedConflictNewerArray.length || annotationsParsedConflictOlderArray.length || annotationsParsedNoConflictArray.length)) {
 
             debug("all annotations are already imported, exit");
-            yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.alreadyImported"), readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Info, __("message.annotations.alreadyImported"), readerPublicationIdentifier, winId));
             return;
         }
 
@@ -375,14 +375,14 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     } catch (e: any) {
         debug("Error to read the file: ", e);
         if (e?.path !== "") {
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, "" + e, readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.notifications.annotationImportFailed"), readerPublicationIdentifier, winId));
         }
         return;
     }
 
     debug("Annotations importer success and exit");
     yield* spawnPublicationAnalyticsEvent(publicationAnalyticsEvents.importAnnotations, analyticsParams);
-    yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.success"), readerPublicationIdentifier));
+    yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.success"), readerPublicationIdentifier, winId));
     return;
 }
 

@@ -58,20 +58,58 @@ export function DOMRectListToArray(domRects: DOMRectList): IRect[] {
     return rects;
 }
 
-export function getTextClientRects(range: Range, elementNamesToSkip?: string[]): IRect[] {
+export function getTextClientRects(range: Range, elementNamesToSkip?: string[]): [IRect[], boolean] {
     // return range.getClientRects();
 
     const doc = range.commonAncestorContainer.ownerDocument;
     if (!doc) {
-        return [];
+        return [[], false];
     }
 
+    let atLeastOneIsInsideClosedDetails = false;
     const iter = doc.createNodeIterator(
         range.commonAncestorContainer,
         NodeFilter.SHOW_TEXT,
         {
             acceptNode: (node: Node) => { // Text -- node.nodeType === Node.TEXT_NODE
                 if (node.nodeType === Node.TEXT_NODE && range.intersectsNode(node)) {
+
+                    let isInsideMathJax = false;
+                    let isInsideSummary = false;
+                    let isInsideDetails = false;
+                    let closedDetails = false;
+                    let curEl = node as Element;
+                    do {
+                        if (curEl.nodeType === Node.ELEMENT_NODE) {
+                            if (curEl.tagName?.toLowerCase() === "mjx-container") {
+                                isInsideMathJax = true;
+                                // console.log("TTS getTextClientRects -- isInsideMathJax");
+                                break;
+                            } else if (curEl.tagName?.toLowerCase() === "summary") {
+                                isInsideSummary = true;
+                                // console.log("TTS getTextClientRects -- isInsideSummary");
+                            } else if (curEl.tagName?.toLowerCase() === "details") {
+                                isInsideDetails = true;
+                                // console.log("TTS getTextClientRects -- isInsideDetails");
+
+                                // curEl.getAttribute("open")
+                                //  === "open" or  === "true" ... it's in fact a "boolean attr"
+                                // (much like 'hidden' below),
+                                // so only its non-existence means "not open"
+                                if (!(curEl as HTMLDetailsElement).open) {
+                                    atLeastOneIsInsideClosedDetails = true;
+                                    closedDetails = true;
+                                    // console.log("TTS getTextClientRects -- closedDetails");
+                                }
+                                break;
+                            }
+                        }
+                    } while (curEl.parentNode && curEl.parentNode.nodeType === Node.ELEMENT_NODE &&
+                        (curEl = curEl.parentNode as Element));
+                    if (isInsideMathJax || !isInsideSummary && isInsideDetails && closedDetails) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+
                     if (!elementNamesToSkip) {
                         return NodeFilter.FILTER_ACCEPT;
                     }
@@ -128,7 +166,7 @@ export function getTextClientRects(range: Range, elementNamesToSkip?: string[]):
     //     return [];
     // }
 
-    return rects;
+    return [rects, atLeastOneIsInsideClosedDetails];
 }
 
 export function getClientRectsNoOverlap(

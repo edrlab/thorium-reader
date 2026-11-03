@@ -5,16 +5,24 @@
         "bookmarkNote": "",
         "cancelDownload": "",
         "closeDialog": "Zatvori",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
         "leftSlideButton": "Povuci popis ulijevo",
+        "loading": "",
         "mainContent": "glavni sadržaj",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
         "publicationDetails": "",
         "resetSetting": "",
         "rightSlideButton": "Povuci popis udesno",
+        "searching": "",
         "skipLink": "Preskoči do sadržaja",
         "toolbar": "alatna traka"
     },
@@ -100,7 +108,6 @@
         "importAnnotation": "",
         "lang": "Jezik",
         "lastRead": "Zadnje čitano",
-        "login": "",
         "logout": "",
         "missing": "",
         "missingUnavailableDescription": "",
@@ -155,15 +162,12 @@
         "update": "Uredi",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
             "edit": "",
             "holds": "",
             "loading": "",
             "loans": "",
             "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "unavailable": ""
         }
     },
     "dialog": {
@@ -229,7 +233,7 @@
         "importTitle": "Uvezi građu",
         "listTitle": "Prikaži kao popis",
         "myCatalogs": "",
-        "refreshTitle": "osviježi",
+        "refreshTitle": "osvježi",
         "searchPlaceholder": "Pretraži",
         "searchTitle": "Započni pretraživanje",
         "settings": "Postavke",
@@ -267,32 +271,97 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },
+        "diagnostics": {
+            "category": "",
+            "causedBy": "",
+            "downloadSource": "",
+            "error": "",
+            "httpStatus": "",
+            "invalidUrl": "",
+            "source": "",
+            "url": ""
+        },
         "download": {
             "cancelled": "",
-            "error": "Preuzimanje {{- title}} nije uspjelo: [{{- err}}]",
             "errors": {
+                "failed": "",
                 "hashMismatch": "",
                 "httpGet": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
                 "lengthMismatch": "",
+                "pathMissing": "",
+                "publicationLinkMissing": "",
                 "readStreamMissing": "",
+                "streamClosed": "",
                 "tooManyFilenameAttempts": ""
-            }
+            },
+            "failed": "",
+            "integrityFailed": "",
+            "saveFailed": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} je već uvezen",
-            "fail": "Neuspjeli uvoz {{- path}}. {{- err}}",
-            "success": "Uvoz {{- title}} je završen."
+            "errors": {
+                "acquisitionUrlMissing": "",
+                "cbzNoImages": "",
+                "contextMissing": "",
+                "daisyConversionFailed": "",
+                "manifestContext": "",
+                "manifestImportFailed": "",
+                "manifestInvalidJson": "",
+                "manifestMissing": "",
+                "manifestNotFound": "",
+                "manifestParsingFailed": "",
+                "noImportResult": "",
+                "notImported": "",
+                "profileAssetUrl": "",
+                "profileEmpty": "",
+                "profileEntryMissing": "",
+                "profileMissing": "",
+                "profileNotZip": ""
+            },
+            "failed": "",
+            "invalidLicense": "",
+            "invalidPublication": "",
+            "lcpLicenseMalformed": "",
+            "success": "Uvoz {{- title}} je završen.",
+            "unsupportedFormat": ""
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
-            "error": "Građa se ne može otvoriti: {{- err}}",
-            "folderNotFound": ""
+            "failed": "",
+            "folderNotFound": "",
+            "missingLicense": ""
         },
         "storage": {
             "recovery": {
@@ -320,6 +389,12 @@
         },
         "addMenu": "Dodaj OPDS katalog",
         "breadcrumbRoot": "Katalozi",
+        "browserMenu": {
+            "history": "",
+            "options": "",
+            "profile": "",
+            "wishlist": ""
+        },
         "color": {
             "blue": "",
             "gray": "",
@@ -549,6 +624,13 @@
                 "descriptive": ""
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "",
@@ -703,18 +785,17 @@
         "certificateRevoked": "Certifikat je poništen",
         "certificateSignatureInvalid": "Potpis certifikata je netočan",
         "cover": {
-            "img": "slika naslovnice"
+            "img": "slika naslovnice",
+            "zoom": ""
         },
         "day": "",
         "days": "",
         "duration": {
             "title": "Trajanje"
         },
-        "encryptedNoLicense": "",
         "expired": "",
         "expiredLcp": "Ova knjiga se ne može čitati jer je LCP licenca istekla.",
         "incorrectPassphrase": "",
-        "lcpEnd": "Kraj",
         "lcpNotSupported": "",
         "lcpRightsCopy": "Kopirano znakova",
         "lcpRightsPrint": "Ispisano stranica",
@@ -1039,6 +1120,7 @@
         "keyboard": {
             "advancedMenu": "Izbornik",
             "cancel": "Poništi",
+            "disableTooltips": "",
             "disclaimer": "",
             "editUserJson": "Uredi dokument korisnika...",
             "exportToHTML": "",

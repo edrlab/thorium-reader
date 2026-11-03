@@ -18,12 +18,16 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import { DEBUG_AUDIO } from "../common/audiobook";
 import {
     IEventPayload_R2_EVENT_MEDIA_OVERLAY_CLICK, IEventPayload_R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT,
-    IEventPayload_R2_EVENT_MEDIA_OVERLAY_STATE, R2_EVENT_MEDIA_OVERLAY_STATE, MediaOverlaysStateEnum as MediaOverlaysStateEnum_,
-    IEventPayload_R2_EVENT_MEDIA_OVERLAY_STARTSTOP, R2_EVENT_MEDIA_OVERLAY_CLICK,
-    R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT, R2_EVENT_MEDIA_OVERLAY_STARTSTOP, IEventPayload_R2_EVENT_READING_LOCATION,
+    IEventPayload_R2_EVENT_MEDIA_OVERLAY_STARTSTOP,
+    IEventPayload_R2_EVENT_MEDIA_OVERLAY_STATE,
+    IEventPayload_R2_EVENT_READING_LOCATION,
+    MediaOverlaysStateEnum as MediaOverlaysStateEnum_,
+    R2_EVENT_MEDIA_OVERLAY_CLICK,
+    R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT, R2_EVENT_MEDIA_OVERLAY_STARTSTOP,
+    R2_EVENT_MEDIA_OVERLAY_STATE,
 } from "../common/events";
 import { handleLinkUrl, navPreviousOrNext } from "./location";
-import { ReadiumElectronBrowserWindow, IReadiumElectronWebview } from "./webview/state";
+import { IReadiumElectronWebview, ReadiumElectronBrowserWindow } from "./webview/state";
 
 // export enum MediaOverlaysStateEnum {
 //     PAUSED = "PAUSED",
@@ -214,20 +218,13 @@ async function playMediaOverlays(
     }
 }
 
-const ontimeupdate = (ev: Event) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (_currentAudioElement && (_currentAudioElement as any).__draggable && (_currentAudioElement as any).__hidden) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (_currentAudioElement as any).__hidden = false;
-        _currentAudioElement.style.display = "block";
-    }
-    const currentAudioElement = ev.currentTarget as HTMLAudioElement; // _currentAudioElement
+const ontimeupdate_ = (currentAudioElement: HTMLAudioElement, ended: boolean) => {
 
     // debug("ontimeupdate - _currentAudioEnd", _currentAudioEnd);
     // debug("ontimeupdate - currentAudioElement.currentTime", currentAudioElement.currentTime);
-    if (_currentAudioEnd && currentAudioElement.currentTime >= (_currentAudioEnd - 0.05)
+    if (_currentAudioEnd && currentAudioElement.currentTime >= (_currentAudioEnd - 0.02)
         ||
-        !_currentAudioEnd && ev.type === "ended"
+        !_currentAudioEnd && ended
         // ev.type === "timeupdate"
         // currentAudioElement.currentTime >= currentAudioElement.duration
     ) {
@@ -251,7 +248,47 @@ const ontimeupdate = (ev: Event) => {
         }
     }
 };
+const ontimeupdate = (ev: Event) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (_currentAudioElement && (_currentAudioElement as any).__draggable && (_currentAudioElement as any).__hidden) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (_currentAudioElement as any).__hidden = false;
+        _currentAudioElement.style.display = "block";
+    }
+    const currentAudioElement = ev.currentTarget as HTMLAudioElement; // _currentAudioElement
+
+    ontimeupdate_(currentAudioElement, ev.type === "ended");
+};
+
+let _animationFrame: number | undefined;
+const onAnimationFrame = () => {
+    _animationFrame = undefined;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (!_currentAudioElement || !(_currentAudioElement as any).__ontimeupdate) {
+        return;
+    }
+
+    _animationFrame = win.requestAnimationFrame(onAnimationFrame);
+
+    if (!_currentAudioElement.paused && !_currentAudioElement.ended) {
+        ontimeupdate_(_currentAudioElement, false);
+    }
+};
+
 const ensureOnTimeUpdate = (remove: boolean) => {
+
+    if (remove) {
+        if (_animationFrame) {
+            win.cancelAnimationFrame(_animationFrame);
+            _animationFrame = undefined;
+        }
+    } else {
+        if (!_animationFrame) {
+            _animationFrame = win.requestAnimationFrame(onAnimationFrame);
+        }
+    }
+
     if (_currentAudioElement) {
         if (remove) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
