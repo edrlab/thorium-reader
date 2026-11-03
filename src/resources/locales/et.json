@@ -1007,8 +1007,7 @@
                 "two": "2 veergu"
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
-            "customizeReader": "Kohenda teksti vormindust",
-            "disabled": "pole kasutusel",
+            "deactivateTextFormatting": "",
             "display": "Ekraanivaade",
             "disposition": {
                 "title": "Paigutus"

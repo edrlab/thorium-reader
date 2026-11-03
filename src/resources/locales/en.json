@@ -1007,8 +1007,7 @@
                 "two": "2 cols"
             },
             "customFontSelected": "You have chosen a personal font",
-            "customizeReader": "Customize text formatting",
-            "disabled": "disabled",
+            "deactivateTextFormatting": "Deactivate text formatting",
             "display": "Display",
             "disposition": {
                 "title": "Layout"

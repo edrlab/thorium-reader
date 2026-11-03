@@ -1000,8 +1000,7 @@
                 "two": "見開き"
             },
             "customFontSelected": "利用するフォントを選択しました",
-            "customizeReader": "本文のスタイル",
-            "disabled": "無効",
+            "deactivateTextFormatting": "",
             "display": "画面表示",
             "disposition": {
                 "title": "割り付け"

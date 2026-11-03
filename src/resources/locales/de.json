@@ -1007,8 +1007,7 @@
                 "two": "2 Spalten"
             },
             "customFontSelected": "Sie haben eine persönliche Schriftart gewählt",
-            "customizeReader": "Anpassen der Textformatierung",
-            "disabled": "deaktiviert",
+            "deactivateTextFormatting": "",
             "display": "Lesefluss",
             "disposition": {
                 "title": "Layout"

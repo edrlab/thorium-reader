@@ -1014,8 +1014,7 @@
                 "two": "2 colunas"
             },
             "customFontSelected": "Você escolheu uma fonte personalizada",
-            "customizeReader": "Personalize a formatação do texto",
-            "disabled": "desabilitado",
+            "deactivateTextFormatting": "",
             "display": "Exibição",
             "disposition": {
                 "title": "Layout"

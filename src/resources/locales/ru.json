@@ -1021,8 +1021,7 @@
                 "two": "2 столбца"
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
-            "customizeReader": "Настройка форматирования текста",
-            "disabled": "отключено",
+            "deactivateTextFormatting": "",
             "display": "Отображение",
             "disposition": {
                 "title": "Макет"

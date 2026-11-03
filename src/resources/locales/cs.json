@@ -1021,8 +1021,7 @@
                 "two": "2 sloupce"
             },
             "customFontSelected": "Zvolili jste osobní písmo",
-            "customizeReader": "Přizpůsobit formátování textu",
-            "disabled": "vypnuto",
+            "deactivateTextFormatting": "",
             "display": "Zobrazení",
             "disposition": {
                 "title": "Rozložení"

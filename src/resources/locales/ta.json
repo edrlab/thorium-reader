@@ -1007,8 +1007,7 @@
                 "two": "2 கோல்ச்"
             },
             "customFontSelected": "நீங்கள் ஒரு தனிப்பட்ட எழுத்துருவைத் தேர்ந்தெடுத்துள்ளீர்கள்",
-            "customizeReader": "உரை வடிவமைப்பைத் தனிப்பயனாக்குங்கள்",
-            "disabled": "முடக்கப்பட்டது",
+            "deactivateTextFormatting": "",
             "display": "காட்சி",
             "disposition": {
                 "title": "மனையமைவு"

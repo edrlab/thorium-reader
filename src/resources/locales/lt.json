@@ -1021,8 +1021,7 @@
                 "two": "2 stulpeliai"
             },
             "customFontSelected": "Pasirinkote asmeninį šriftą",
-            "customizeReader": "Tinkinti teksto formatavimą",
-            "disabled": "išjungta",
+            "deactivateTextFormatting": "",
             "display": "Atvaizdavimas",
             "disposition": {
                 "title": "Išdėstymas"

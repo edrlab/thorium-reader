@@ -1007,8 +1007,7 @@
                 "two": "2 kol"
             },
             "customFontSelected": "Je hebt een eigen lettertype gekozen",
-            "customizeReader": "Pas de tekstopmaak aan",
-            "disabled": "uitgeschakeld",
+            "deactivateTextFormatting": "",
             "display": "Weergave",
             "disposition": {
                 "title": "Indeling"

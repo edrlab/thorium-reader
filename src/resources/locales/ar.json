@@ -1035,8 +1035,7 @@
                 "two": "2 عمود"
             },
             "customFontSelected": "لقد اخترت خطاً شخصياً",
-            "customizeReader": "تخصيص تنسيق النص",
-            "disabled": "تم تعطيله",
+            "deactivateTextFormatting": "",
             "display": "العرض",
             "disposition": {
                 "title": "التخطيط"

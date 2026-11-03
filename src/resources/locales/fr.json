@@ -1014,8 +1014,7 @@
                 "two": "2 colonnes"
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
-            "customizeReader": "Personnaliser la mise en forme",
-            "disabled": "Désactivé",
+            "deactivateTextFormatting": "",
             "display": "Affichage",
             "disposition": {
                 "title": "Pagination"

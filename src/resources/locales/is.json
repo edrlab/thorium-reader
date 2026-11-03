@@ -1007,8 +1007,7 @@
                 "two": "2 dálkar"
             },
             "customFontSelected": "Þú hefur valið eigin leturgerð",
-            "customizeReader": "Sérsníða textasnið",
-            "disabled": "óvirkt",
+            "deactivateTextFormatting": "",
             "display": "Birting",
             "disposition": {
                 "title": "Uppsetning"

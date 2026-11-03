@@ -1007,8 +1007,7 @@
                 "two": "2 kolonner"
             },
             "customFontSelected": "Du har valgt en personlig skrifttype",
-            "customizeReader": "Tilpas tekstformatering",
-            "disabled": "slået fra",
+            "deactivateTextFormatting": "",
             "display": "Visning",
             "disposition": {
                 "title": "Layout"

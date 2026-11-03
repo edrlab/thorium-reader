@@ -1000,8 +1000,7 @@
                 "two": "2단"
             },
             "customFontSelected": "",
-            "customizeReader": "",
-            "disabled": "",
+            "deactivateTextFormatting": "",
             "display": "디스플레이",
             "disposition": {
                 "title": "레이아웃"

@@ -1000,8 +1000,7 @@
                 "two": "2栏"
             },
             "customFontSelected": "您已选择自定义字体",
-            "customizeReader": "自定义文本格式",
-            "disabled": "已禁用",
+            "deactivateTextFormatting": "",
             "display": "显示",
             "disposition": {
                 "title": "布局"

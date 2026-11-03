@@ -8,13 +8,14 @@
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as React from "react";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as ResetIcon from "readium-desktop/renderer/assets/icons/clock-reverse-icon.svg";
+// import * as ResetIcon from "readium-desktop/renderer/assets/icons/clock-reverse-icon.svg";
+import * as ReturnIcon from "readium-desktop/renderer/assets/icons/return-icon.svg";
 import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { usePublisherReaderConfig, useSavePublisherReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 
-export const FontSize = () => {
+export const FontSize = ({ overridePublisherDefault }: { overridePublisherDefault: boolean }) => {
     const [__] = useTranslator();
     const labelId = React.useId();
 
@@ -43,45 +44,38 @@ export const FontSize = () => {
     };
 
     return (
-        <section>
-            <h3><span id={labelId}>{__("reader.settings.fontSize")}</span> ({fontSize})</h3>
-            <div className={stylesSettings.size_range}>
-                <button 
-                onClick={() => {
-                    const newValue = "100%";
-                    setCurrentSliderValue(newValue.replace(/%/g, ""));
-                    set({ fontSize: newValue });
-                }
-                } className={stylesSettings.reset_button} title={__("accessibility.resetSetting", { setting: __("reader.settings.fontSize") })}>
-                    <SVG ariaHidden svg={ResetIcon} />
-                </button>
-                <button 
-                onClick={() => click("out")} 
-                className={stylesSettings.scale_button}
-                aria-label={__("reader.settings.reduceFontSize")}
-                ><SVG ariaHidden svg={MinusIcon} /></button>
-                <input
-                    type="range"
-                    aria-labelledby={labelId}
-                    min={75}
-                    max={400}
-                    step={12.5}
-                    aria-valuetext={`${currentSliderValue}%`}
-                    value={currentSliderValue}
-                    onChange={(e) => {
-                        const newValue = e.target?.value || "100";
-                        setCurrentSliderValue(newValue);
-                        set({ fontSize: newValue + "%" });
-                    }
-                    }
-                    className={currentSliderValue === "100" ? stylesSettings.range_inactive : ""}
-                />
-                <button 
-                onClick={() => click("in")} 
-                className={stylesSettings.scale_button}
-                aria-label={__("reader.settings.increaseFontSize")}
-                ><SVG ariaHidden svg={PlusIcon} /></button>
+            <div className={stylesSettings.range_size_container}>
+                {/* <label htmlFor={labelId}>{__("reader.settings.fontSize")}</label> */}
+                <label htmlFor={labelId}>Size</label>
+                <div className={stylesSettings.size_range}>
+                    {fontSize !== "100.0%" && overridePublisherDefault ?
+                        <button
+                            onClick={() => {
+                                const newValue = "100.0%";
+                                setCurrentSliderValue(newValue.replace(/%/g, ""));
+                                set({ fontSize: newValue });
+                            }
+                            } className={stylesSettings.reset_button} title={__("accessibility.resetSetting", { setting: __("reader.settings.fontSize") })}>
+                            <SVG ariaHidden svg={ReturnIcon} />
+                        </button>
+                        : <></>}
+                    <span>{fontSize}</span>
+                    <div className={stylesSettings.size_range_buttons}>
+                    <button
+                        onClick={() => click("out")}
+                        className={stylesSettings.scale_button_left}
+                        aria-label={__("reader.settings.reduceFontSize")}
+                        disabled={!overridePublisherDefault}
+                    ><SVG ariaHidden svg={MinusIcon} /></button>
+                    <button
+                        onClick={() => click("in")}
+                        className={stylesSettings.scale_button_right}
+                        aria-label={__("reader.settings.increaseFontSize")}
+                        disabled={!overridePublisherDefault}
+                    ><SVG ariaHidden svg={PlusIcon} /></button>
+                </div>
+                </div>
             </div>
-        </section>
     );
 };
+
