@@ -79,7 +79,7 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
                         state={{ displayType: resolveDisplayType(location.state, savedDisplayType) }}>
                         {truncateBreadcrumbLabel(rootLocation.name)}
                     </Link>
-                    <span aria-hidden="true">›</span>
+                    <span aria-hidden="true">/</span>
                 </>}
                 <span style={labelStyle} aria-current="page">{currentLocation?.name}</span>
             </div>
