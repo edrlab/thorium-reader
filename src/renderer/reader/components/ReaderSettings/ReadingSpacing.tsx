@@ -209,7 +209,7 @@ export const ReaderSpacingAdvanced = ({ overridePublisherDefault }: { overridePu
 
     return (
         <div>
-            {spacingOptions.map((option: ITable, index) => {
+            {spacingOptions.map((option: ITable) => {
                 const currentValue = config[option.parameter];
                 const isDefaultValue = currentValue === option.altParameter;
                 const optionValues = optionsValues[option.parameter] || [];
@@ -253,7 +253,6 @@ export const ReaderSpacingAdvanced = ({ overridePublisherDefault }: { overridePu
                                 </div>
                             </div>
                         </div>
-                        {index < spacingOptions.length - 1 ? <span className={stylesSettings.section_separator}></span> : <></>}
                     </div>
                 );
             })}
