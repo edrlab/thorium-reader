@@ -38,6 +38,22 @@ const colorsList = [
     "pink",
 ] as const;
 
+const urlToNumber = (url: string): number => {
+    const FNV_PRIME = 0x01000193;
+    let hash = 0x811c9dc5;
+
+    for (let i = 0; i < url.length; i++) {
+        hash ^= url.charCodeAt(i);
+        hash = Math.imul(hash, FNV_PRIME);
+    }
+
+    const positiveHash = hash >>> 0;
+    return (positiveHash % 8) + 1;
+};
+
+const colorFromUrl = (url: string): (typeof colorsList)[number] =>
+    colorsList[urlToNumber(url) - 1];
+
 const EntryList = ({ entries, variant = "facet" }: IProps) => {
 
     return (
@@ -46,7 +62,7 @@ const EntryList = ({ entries, variant = "facet" }: IProps) => {
                 {entries.map((entry, index) =>
                     <li key={index} className={variant === "list"
                         ? stylesCatalogs.entryList_item_list
-                        : stylesCatalogs.entryList_item} data-color={colorsList[index % colorsList.length]}>
+                        : stylesCatalogs.entryList_item} data-color={colorFromUrl(entry.url)}>
                         <Entry entry={entry} level={1} variant={variant} />
                     </li>,
                 )}

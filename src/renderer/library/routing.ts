@@ -40,6 +40,7 @@ export enum DisplayType {
 
 export interface IRouterLocationState {
     displayType: DisplayType;
+    feedColor?: string;
 }
 
 export const normalizeDisplayType = (displayType: unknown): DisplayType =>
@@ -53,6 +54,17 @@ export const resolveDisplayType = (locationState: unknown, savedDisplayType?: un
     }
 
     return normalizeDisplayType(savedDisplayType);
+};
+
+export const resolveRouterLocationState = (
+    locationState: unknown,
+    savedDisplayType?: unknown,
+): IRouterLocationState => {
+    const currentState = (locationState as Partial<IRouterLocationState> | undefined);
+    return {
+        displayType: resolveDisplayType(locationState, savedDisplayType),
+        feedColor: typeof currentState?.feedColor === "string" ? currentState.feedColor : undefined,
+    };
 };
 
 const _routes = {

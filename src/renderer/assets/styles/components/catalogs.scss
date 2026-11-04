@@ -214,7 +214,9 @@ $entry-card-colors-dark: (
             }
 
             svg {
-                color: var(--entry-card-foreground);
+                color: color-mix(in srgb, var(--entry-card-background-end) 80%, black);
+
+
             }
 
             .catalog_icon_image {
@@ -227,7 +229,9 @@ $entry-card-colors-dark: (
                 padding-right: 10px;
                 top: 35px;
                 left: -10px;
-                color: var(--entry-card-foreground);
+                color: color-mix(in srgb, var(--entry-card-background-end) 80%, black);
+                font-size: 14px;
+                font-weight: 600;
                 overflow-wrap: anywhere;
                 overflow: hidden;
                 display: -webkit-box;
@@ -313,7 +317,7 @@ $entry-card-colors-dark: (
     justify-content: center;
     border-radius: 5px;
     cursor: pointer;
-    color: var(--entry-card-foreground);
+    color: var(--entry-card-background-end);
     background: linear-gradient(135deg, var(--entry-card-background-start), var(--entry-card-background-end));
 
     @include entry-card-color-variables(map.get($entry-card-colors-light, "gray"));
@@ -338,7 +342,7 @@ $entry-card-colors-dark: (
     svg {
         width: 16px;
         height: 16px;
-        color: var(--entry-card-foreground);
+        color: var(--entry-card-background-end);
     }
 }
 
@@ -396,13 +400,14 @@ $entry-card-colors-dark: (
         text-align: left;
 
         // Pastille avec l'initiale
-        .entryInitial {
+        .entryNumber {
             display: flex;
             flex: none;
             align-items: center;
             justify-content: center;
-            width: 34px;
+            max-width: 34px;
             height: 34px;
+            padding: 0 5px;
             border-radius: 9px;
             font-size: 14px;
             font-weight: 500;
@@ -559,19 +564,35 @@ $entry-card-colors-dark: (
 }
 
 .catalog_breadcrumbSearch_Wrapper {
+    @include entry-card-color-variables(map.get($entry-card-colors-light, "gray"));
+    @include entry-card-color($entry-card-colors-light);
+
+    [data-theme="dark"] & {
+        @include entry-card-color-variables(map.get($entry-card-colors-dark, "gray"));
+        @include entry-card-color($entry-card-colors-dark);
+    }
+
+    [data-theme="system"] & {
+        @media (prefers-color-scheme: dark) {
+            @include entry-card-color-variables(map.get($entry-card-colors-dark, "gray"));
+            @include entry-card-color($entry-card-colors-dark);
+        }
+    }
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--color-gray-50);
+    background: linear-gradient(135deg, var(--entry-card-background-start), var(--entry-card-background-end));
     padding: 15px;
     min-height: 40px;
     margin-bottom: 40px;
     flex-wrap: wrap;
     z-index: 1000;
     position: relative;
+    border-radius: 5px;
 
     label {
-        background-color: var(--color-gray-50) !important;
+        background-color: transparent!important;
         // top: -18px!important;
     }
 
