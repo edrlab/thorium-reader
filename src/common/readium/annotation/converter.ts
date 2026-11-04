@@ -353,7 +353,7 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState, cont
             value: textualValue || "",
             format: "text/plain",
             color: noteColorCodeToColorSet[rgbToHex(color)] || NOTE_DEFAULT_COLOR,
-            ...(context === LEGACY_ANNOTATION_CONTEXT ? { tag: tags?.[0] || "" } : tags?.length ? { tags: [...tags] } : {}),
+            ...(tags?.length ? { tags: [...tags] } : {}),
             highlight,
             //   textDirection: "ltr",
             //   language: "fr",
