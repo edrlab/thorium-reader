@@ -202,6 +202,7 @@ export interface IOpdsNavigationLink {
     history?: IOpdsLinkView[];
     profile?: IOpdsLinkView[];
     authenticate?: IOpdsLinkView[];
+    authenticationDocument?: IOpdsLinkView[];
     next: IOpdsLinkView[];
     previous: IOpdsLinkView[];
     first: IOpdsLinkView[];

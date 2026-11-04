@@ -63,11 +63,15 @@ test("discovers global links from root and authentication without fetching perso
     expect(authenticated).not.toHaveBeenCalled();
 });
 
-test("follows an authenticate relation and verifies a cookie-authenticated shelf", async () => {
-    get.mockResolvedValueOnce(response({ links: [{ rel: "authenticate", href: "/auth" }] }));
+test("follows the authentication document relation and verifies a cookie-authenticated shelf", async () => {
+    get.mockResolvedValueOnce(response({ links: [
+        { rel: "authenticate", href: "/sign-in" },
+        { rel: "http://opds-spec.org/auth/document", href: "/auth" },
+    ] }));
     get.mockResolvedValueOnce(response({ links: [{ rel: "shelf", href: "/loans" }] }, ContentType.Opds2Auth));
     authenticated.mockResolvedValue(true);
     expect((await getOpdsBrowserOptions(catalog, current)).authenticated).toBe(true);
+    expect(get.mock.calls.map(call => call[0])).toEqual([catalog, "https://example.org/auth"]);
     expect(authenticated).toHaveBeenCalledWith(new URL(current), "https://example.org/loans");
 });
 
