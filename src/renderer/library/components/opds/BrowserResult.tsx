@@ -101,7 +101,9 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     || opds.groups?.some(group => group.navigation?.length || group.publications?.length));
                 status = hasEntries ? "" : __("opds.empty");
 
-                if (opds.navigation &&
+                if (!hasEntries) {
+                    content = message(__("opds.empty"));
+                } else if (opds.navigation &&
                     !opds.publications &&
                     !opds.groups) {
 
@@ -142,9 +144,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                             </div>
                         </>
                     );
-                } else if (opds.groups ||
-                    opds.publications ||
-                    opds.navigation) {
+                } else {
                     content = (
                         <>
                             {
@@ -196,10 +196,6 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                 )
                             }
                         </>
-                    );
-                } else {
-                    content = (
-                        message(__("opds.empty"))
                     );
                 }
             } else if (browserResult.isTimeout) {
