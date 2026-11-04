@@ -45,7 +45,7 @@ import { ContentType } from "readium-desktop/utils/contentType";
 import {
     IOpdsPkceTransaction,
     OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
-    OPDS_AUTHORIZATION_CODE_TYPE,
+    OPDS_PKCE_CANONICAL_TYPE,
     createOpdsPkceTransaction,
     exchangeOpdsPkceAuthorizationCode,
 } from "readium-desktop/main/network/opdsPkce";
@@ -97,7 +97,7 @@ type TLabelName = "login" | "password";
 type TDigestInfo = "realm" | "nonce" | "qop" | "algorithm";
 type TAuthName = "id" | "access_token" | "refresh_token" | "token_type"
     | "code" | "state" | "error" | "error_description";
-type TAuthenticationType = typeof OPDS_AUTHORIZATION_CODE_PKCE_TYPE
+type TAuthenticationType = typeof OPDS_PKCE_CANONICAL_TYPE
     | "http://opds-spec.org/auth/oauth/password"
     | "http://opds-spec.org/auth/oauth/password/apiapp"
     | "http://opds-spec.org/auth/oauth/implicit"
@@ -106,8 +106,8 @@ type TAuthenticationType = typeof OPDS_AUTHORIZATION_CODE_PKCE_TYPE
     | "http://opds-spec.org/auth/local"
     | "http://librarysimplified.org/authtype/SAML-2.0";
 
-const AUTHENTICATION_TYPE: TAuthenticationType[] = [
-    OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
+const AUTHENTICATION_TYPE: readonly string[] = [
+    ...OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
     "http://opds-spec.org/auth/oauth/password",
     "http://opds-spec.org/auth/oauth/password/apiapp",
     "http://opds-spec.org/auth/oauth/implicit",
@@ -146,7 +146,7 @@ const opdsAuthFlow =
             debug("authentication doc parsed", authParsed);
 
             let pkceTransaction: IOpdsPkceTransaction | undefined;
-            if (authParsed.authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+            if (authParsed.authenticationType === OPDS_PKCE_CANONICAL_TYPE) {
                 pkceTransaction = tryCatchSync(
                     () => createOpdsPkceTransaction({
                         allowInsecureLoopback: ENABLE_DEV_TOOLS,
@@ -277,7 +277,7 @@ const opdsAuthFlow =
                         if (err instanceof Error) {
                             debug("OPDS auth err", err.message);
 
-                            if (authParsed.authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+                            if (authParsed.authenticationType === OPDS_PKCE_CANONICAL_TYPE) {
                                 yield put(authActions.cancel.build());
                             }
 
@@ -308,11 +308,11 @@ async function prepareExternalAuthentication(url: string): Promise<IExternalAuth
     const baseUrl = response.responseUrl || url;
     const doc = TaJsonDeserialize(await response.response.json(), OPDSAuthenticationDoc);
     const auth = opdsAuthDocConverter(doc, baseUrl);
-    if (!auth || (auth.authenticationType !== OPDS_AUTHORIZATION_CODE_PKCE_TYPE
+    if (!auth || (auth.authenticationType !== OPDS_PKCE_CANONICAL_TYPE
         && auth.authenticationType !== "http://opds-spec.org/auth/oauth/implicit")) {
         throw new Error("Unsupported external authentication method");
     }
-    const pkce = auth.authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE
+    const pkce = auth.authenticationType === OPDS_PKCE_CANONICAL_TYPE
         ? createOpdsPkceTransaction({
             allowInsecureLoopback: ENABLE_DEV_TOOLS,
             authorizationUrl: auth.links?.authenticate?.url || "",
@@ -609,7 +609,7 @@ async function opdsSetAuthCredentials(
 
         if (method === "GET") {
 
-            if (authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+            if (authenticationType === OPDS_PKCE_CANONICAL_TYPE) {
                 if (!pkceTransaction) {
                     return [, new Error("missing PKCE authentication transaction")];
                 }
@@ -686,7 +686,7 @@ const getImplicitAuthData = () => _implicitAuthData;
 function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed, pkceTransaction?: IOpdsPkceTransaction, implicitAuthData = getImplicitAuthData()) {
     let browserUrl: string;
     switch (auth.authenticationType) {
-        case OPDS_AUTHORIZATION_CODE_PKCE_TYPE: {
+        case OPDS_PKCE_CANONICAL_TYPE: {
             browserUrl = pkceTransaction?.authorizationRequestUrl || "";
             break;
         }
@@ -833,19 +833,19 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         return undefined;
     }
 
-    const authentication = doc.Authentication.find((v) =>
-        v.Type === OPDS_AUTHORIZATION_CODE_TYPE || AUTHENTICATION_TYPE.includes(v.Type as any));
+    const authentication = doc.Authentication.find((v) => AUTHENTICATION_TYPE.includes(v.Type));
     if (!authentication) {
         debug("OPDS Authentication Document does not contain a supported authentication type.");
         return undefined;
     }
     debug("Selected OPDS authentication type: %s", authentication.Type);
 
+    const pkce = OPDS_AUTHORIZATION_CODE_PKCE_TYPE.some(type => type === authentication.Type);
     const links = Array.isArray(authentication.Links)
         ? authentication.Links.reduce((pv, cv) => {
 
             const rel = (cv.Rel || []).find((rel) => LINK_TYPE.find((v) => v === rel)
-                || (rel === "token" && authentication.Type === OPDS_AUTHORIZATION_CODE_TYPE));
+                || (rel === "token" && pkce));
 
             if (
                 rel
@@ -918,8 +918,8 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     return {
         title: doc.Title || "",
         id: doc.Id || "",
-        authenticationType: authentication.Type === OPDS_AUTHORIZATION_CODE_TYPE
-            ? OPDS_AUTHORIZATION_CODE_PKCE_TYPE
+        authenticationType: pkce
+            ? OPDS_PKCE_CANONICAL_TYPE
             : authentication.Type as TAuthenticationType,
         links,
         labels,
@@ -1271,7 +1271,7 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest, authentic
                 //     query component of the Redirection URI, unless a different Response Mode was specified.
                 if (data.error) {
                     debug("OAuth Error Response", "error:", { error: data.error, error_description: data.error_description });
-                    if (authenticationType !== OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+                    if (authenticationType !== OPDS_PKCE_CANONICAL_TYPE) {
                         return undefined;
                     }
                 }

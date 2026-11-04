@@ -7,9 +7,12 @@
 
 import { createHash, randomBytes } from "node:crypto";
 
-export const OPDS_AUTHORIZATION_CODE_PKCE_TYPE =
-    "http://opds-spec.org/auth/oauth/authorization-code-pkce";
-export const OPDS_AUTHORIZATION_CODE_TYPE = "http://opds-spec.org/auth/oauth/code";
+// https://github.com/opds-community/drafts/issues/100
+export const OPDS_AUTHORIZATION_CODE_PKCE_TYPE = [
+    "http://opds-spec.org/auth/oauth/authorization-code-pkce",
+    "http://opds-spec.org/auth/oauth/code", // https://readino.com/api/v2/opds2
+] as const;
+export const [OPDS_PKCE_CANONICAL_TYPE] = OPDS_AUTHORIZATION_CODE_PKCE_TYPE;
 export const OPDS_OAUTH_CLIENT_ID = "http://opds-spec.org/auth/client";
 export const OPDS_OAUTH_REDIRECT_URI = "opds://authorize/";
 

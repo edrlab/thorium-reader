@@ -16,7 +16,7 @@ import {
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getOpdsFeedColor, getOpdsFeedIcon } from "readium-desktop/common/models/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
-import { OPDS_AUTHORIZATION_CODE_PKCE_TYPE, OPDS_AUTHORIZATION_CODE_TYPE } from "readium-desktop/main/network/opdsPkce";
+import { OPDS_AUTHORIZATION_CODE_PKCE_TYPE, OPDS_PKCE_CANONICAL_TYPE } from "readium-desktop/main/network/opdsPkce";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import { OPDS_PROGRESSION_MEDIA_TYPE, OPDS_PROGRESSION_REL } from "readium-desktop/common/models/opdsProgression";
 import { normalizeLcpHashedPassphrase } from "readium-desktop/utils/lcp";
@@ -564,9 +564,10 @@ export class OpdsFeedViewConverter {
             a.Type === "http://opds-spec.org/auth/basic" || a.Type === "http://opds-spec.org/auth/local"
             || a.Type === "http://opds-spec.org/auth/oauth/password"
             || a.Type === "http://opds-spec.org/auth/oauth/implicit"
-            || a.Type === OPDS_AUTHORIZATION_CODE_PKCE_TYPE || a.Type === OPDS_AUTHORIZATION_CODE_TYPE);
-        const authenticationType = method?.Type === OPDS_AUTHORIZATION_CODE_TYPE
-            ? OPDS_AUTHORIZATION_CODE_PKCE_TYPE
+            || OPDS_AUTHORIZATION_CODE_PKCE_TYPE.some(type => type === a.Type));
+        const pkce = OPDS_AUTHORIZATION_CODE_PKCE_TYPE.some(type => type === method?.Type);
+        const authenticationType = pkce
+            ? OPDS_PKCE_CANONICAL_TYPE
             : method?.Type;
         const oauth = method;
 
@@ -600,7 +601,7 @@ export class OpdsFeedViewConverter {
         const auth: IOpdsAuthView = {
             credentialsUrl: method ? baseUrl : undefined,
             external: authenticationType === "http://opds-spec.org/auth/oauth/implicit"
-                || authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
+                || pkce,
             authenticationType: authenticationType as IOpdsAuthView["authenticationType"],
             authenticationId: r2OpdsAuth.Id,
             registerUrl: register ? urlPathResolve(baseUrl, register.Href) : undefined,
