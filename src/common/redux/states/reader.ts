@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IAnnotationReaderConfigState, IReaderConfigSettingsMenuState, ReaderConfig, ReaderTTSMediaOverlay } from "readium-desktop/common/models/reader";
+import { IAnnotationReaderConfigState, IReaderConfigSettingsMenuState, ReaderConfig, ReaderSpacingPreset, ReaderTTSMediaOverlay } from "readium-desktop/common/models/reader";
 import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
 import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 import { NOTE_DEFAULT_COLOR_OBJ } from "./renderer/note";
@@ -25,6 +25,14 @@ export const readerConfigInitialStateDefaultPublisher = {
     letterSpacing: "0",
     paraSpacing: "0",
     lineHeight: "0",
+};
+
+export const readerConfigInitialStateCustomSpacingPreset: ReaderSpacingPreset = {
+    pageMargins: readerConfigInitialStateDefaultPublisher.pageMargins,
+    wordSpacing: readerConfigInitialStateDefaultPublisher.wordSpacing,
+    letterSpacing: readerConfigInitialStateDefaultPublisher.letterSpacing,
+    paraSpacing: readerConfigInitialStateDefaultPublisher.paraSpacing,
+    lineHeight: readerConfigInitialStateDefaultPublisher.lineHeight,
 };
 
 export const readerConfigInitialStateAnnotation: IAnnotationReaderConfigState = {
@@ -88,6 +96,9 @@ export const readerConfigInitialState: ReaderConfig = {
     ttsEnableSentenceDetection: true,
     mediaOverlaysEnableCaptionsMode: false,
     ttsEnableOverlayMode: false,
+    customSpacingPreset: {
+        ...readerConfigInitialStateCustomSpacingPreset,
+    },
     ...readerConfigInitialStateDefaultPublisher,
     ...readerConfigInitialStateAnnotation,
     ...readerConfigInitialStateReaderDockingMode,

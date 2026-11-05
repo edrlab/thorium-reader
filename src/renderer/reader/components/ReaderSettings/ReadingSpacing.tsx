@@ -12,11 +12,11 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
-import { useSavePublisherReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
-import optionsValues, { AdjustableSettingsStrings } from "readium-desktop/renderer/reader/components/options-values";
+import { useSavePublisherReaderConfigDebounced, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
+import optionsValues from "readium-desktop/renderer/reader/components/options-values";
 import { RadioGroupItem } from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
 import { RadioGroup } from "readium-desktop/renderer/common/components/RadioGroupComponent";
-import { ReaderConfigPublisher } from "readium-desktop/common/models/reader";
+import { ReaderConfigPublisher, ReaderSpacingPreset } from "readium-desktop/common/models/reader";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 // import * as ResetIcon from "readium-desktop/renderer/assets/icons/clock-reverse-icon.svg";
 import * as ReturnIcon from "readium-desktop/renderer/assets/icons/return-icon.svg";
@@ -32,7 +32,7 @@ import * as CustomIcon from "readium-desktop/renderer/assets/icons/advanced-icon
 interface ITable {
     title: string,
     defaultValue: string,
-    parameter: keyof AdjustableSettingsStrings;
+    parameter: keyof TSpacingValues;
     altParameter: string,
     rem: boolean,
 }
@@ -50,9 +50,9 @@ const spacingPresets: Record<Exclude<TSpacingPreset, "custom">, TSpacingValues> 
     },
     accessible: {
         pageMargins: "1.25",
-        wordSpacing: "0.25rem",
-        letterSpacing: "0.125rem",
-        paraSpacing: "1.25rem",
+        wordSpacing: "0.25",
+        letterSpacing: "0.125",
+        paraSpacing: "1.25",
         lineHeight: "1.65",
     },
     tight: {
@@ -64,16 +64,16 @@ const spacingPresets: Record<Exclude<TSpacingPreset, "custom">, TSpacingValues> 
     },
     balanced: {
         pageMargins: "1",
-        wordSpacing: "0.125rem",
-        letterSpacing: "0.0675rem",
-        paraSpacing: "0.5rem",
+        wordSpacing: "0.125",
+        letterSpacing: "0.0675",
+        paraSpacing: "0.5",
         lineHeight: "1.35",
     },
     loose: {
         pageMargins: "1.5",
-        wordSpacing: "0.5rem",
-        letterSpacing: "0.25rem",
-        paraSpacing: "1.5rem",
+        wordSpacing: "0.5",
+        letterSpacing: "0.25",
+        paraSpacing: "1.5",
         lineHeight: "1.75",
     },
 };
@@ -98,7 +98,7 @@ const ReaderSpacingPresets = ({ overridePublisherDefault }: { overridePublisherD
     const [__] = useTranslator();
     const set = useSavePublisherReaderConfigDebounced();
     const config = useSelector((state: IReaderRootState) => state.reader.config);
-    const { pageMargins, wordSpacing, letterSpacing, paraSpacing, lineHeight } = config;
+    const { pageMargins, wordSpacing, letterSpacing, paraSpacing, lineHeight, customSpacingPreset } = config;
 
     const currentPreset = React.useMemo(
         () => getSpacingPresetValue({ pageMargins, wordSpacing, letterSpacing, paraSpacing, lineHeight }),
@@ -107,6 +107,7 @@ const ReaderSpacingPresets = ({ overridePublisherDefault }: { overridePublisherD
 
     const onPresetChange = (value: string) => {
         if (value === "custom") {
+            set(customSpacingPreset);
             return;
         }
 
@@ -143,7 +144,8 @@ export const ReaderSpacingAdvanced = ({ overridePublisherDefault }: { overridePu
 
     const [__] = useTranslator();
 
-    const set = useSavePublisherReaderConfigDebounced();
+    const setPublisherConfig = useSavePublisherReaderConfigDebounced();
+    const setReaderConfig = useSaveReaderConfigDebounced();
     const config = useSelector((state: IReaderRootState) => state.reader.config);
     const { pageMargins, wordSpacing, letterSpacing, paraSpacing, lineHeight } = config;
     const spacingOptions: ITable[] = [
@@ -159,28 +161,28 @@ export const ReaderSpacingAdvanced = ({ overridePublisherDefault }: { overridePu
             defaultValue: wordSpacing,
             parameter: "wordSpacing",
             altParameter: `${readerConfigInitialState.wordSpacing}`,
-            rem: true,
+            rem: false,
         },
         {
             title: `${__("reader.settings.letterSpacing")}`,
             defaultValue: letterSpacing,
             parameter: "letterSpacing",
             altParameter: `${readerConfigInitialState.letterSpacing}`,
-            rem: true,
+            rem: false,
         },
         {
             title: `${__("reader.settings.paraSpacing")}`,
             defaultValue: paraSpacing,
             parameter: "paraSpacing",
             altParameter: `${readerConfigInitialState.paraSpacing}`,
-            rem: true,
+            rem: false,
         },
         {
             title: `${__("reader.settings.lineSpacing")}`,
             defaultValue: lineHeight,
             parameter: "lineHeight",
             altParameter: `${readerConfigInitialState.lineHeight}`,
-            rem: true,
+            rem: false,
         },
     ];
 
@@ -192,11 +194,21 @@ export const ReaderSpacingAdvanced = ({ overridePublisherDefault }: { overridePu
         return value;
     };
 
-    const updateSpacingValue = (parameter: keyof AdjustableSettingsStrings, nextValue: string) => {
-        set({ [parameter]: nextValue } as Pick<ReaderConfigPublisher, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">);
+    const updateSpacingValue = (parameter: keyof TSpacingValues, nextValue: string) => {
+        setPublisherConfig({ [parameter]: nextValue } as Pick<ReaderConfigPublisher, keyof TSpacingValues>);
+
+        const nextCustomSpacingPreset: ReaderSpacingPreset = {
+            pageMargins: parameter === "pageMargins" ? nextValue : pageMargins,
+            wordSpacing: parameter === "wordSpacing" ? nextValue : wordSpacing,
+            letterSpacing: parameter === "letterSpacing" ? nextValue : letterSpacing,
+            paraSpacing: parameter === "paraSpacing" ? nextValue : paraSpacing,
+            lineHeight: parameter === "lineHeight" ? nextValue : lineHeight,
+        };
+
+        setReaderConfig({ customSpacingPreset: nextCustomSpacingPreset });
     };
 
-    const stepSpacingValue = (parameter: keyof AdjustableSettingsStrings, direction: "out" | "in") => {
+    const stepSpacingValue = (parameter: keyof TSpacingValues, direction: "out" | "in") => {
         const values = optionsValues[parameter] || [];
         const currentValue = config[parameter];
         const currentIndex = Math.max(0, values.indexOf(currentValue));
@@ -222,17 +234,15 @@ export const ReaderSpacingAdvanced = ({ overridePublisherDefault }: { overridePu
                         <div className={stylesSettings.range_size_container}>
                             <label>{option.title}</label>
                             <div className={stylesSettings.size_range}>
-                                {!isDefaultValue ?
-                                    <button
-                                        onClick={() => updateSpacingValue(option.parameter, option.altParameter)}
-                                        className={stylesSettings.reset_button}
-                                        title={__("accessibility.resetSetting", { setting: option.title })}
-                                        disabled={!overridePublisherDefault}
-                                    >
-                                        <SVG ariaHidden svg={ReturnIcon} />
-                                    </button>
-                                    : <></>}
-                                <span>{displayValue(currentValue)}</span>
+                                <span>{displayValue(currentValue).split("rem")[0]}</span>
+                                <button
+                                    onClick={() => updateSpacingValue(option.parameter, option.altParameter)}
+                                    className={stylesSettings.reset_button}
+                                    title={__("accessibility.resetSetting", { setting: option.title })}
+                                    disabled={isDefaultValue || !overridePublisherDefault}
+                                >
+                                    <SVG ariaHidden svg={ReturnIcon} />
+                                </button>
                                 <div className={stylesSettings.size_range_buttons}>
                                     <button
                                         onClick={() => stepSpacingValue(option.parameter, "out")}

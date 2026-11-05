@@ -44,23 +44,22 @@ export const FontSize = ({ overridePublisherDefault }: { overridePublisherDefaul
     };
 
     return (
-            <div className={stylesSettings.range_size_container}>
-                {/* <label htmlFor={labelId}>{__("reader.settings.fontSize")}</label> */}
-                <label htmlFor={labelId}>Size</label>
-                <div className={stylesSettings.size_range}>
-                    {fontSize !== "100.0%" && overridePublisherDefault ?
-                        <button
-                            onClick={() => {
-                                const newValue = "100.0%";
-                                setCurrentSliderValue(newValue.replace(/%/g, ""));
-                                set({ fontSize: newValue });
-                            }
-                            } className={stylesSettings.reset_button} title={__("accessibility.resetSetting", { setting: __("reader.settings.fontSize") })}>
-                            <SVG ariaHidden svg={ReturnIcon} />
-                        </button>
-                        : <></>}
-                    <span>{fontSize}</span>
-                    <div className={stylesSettings.size_range_buttons}>
+        <div className={stylesSettings.range_size_container}>
+            {/* <label htmlFor={labelId}>{__("reader.settings.fontSize")}</label> */}
+            <label htmlFor={labelId}>Size</label>
+            <div className={stylesSettings.size_range}>
+                <span>{fontSize}</span>
+                <button
+                    disabled={fontSize === "100.0%" || !overridePublisherDefault}
+                    onClick={() => {
+                        const newValue = "100.0%";
+                        setCurrentSliderValue(newValue.replace(/%/g, ""));
+                        set({ fontSize: newValue });
+                    }
+                    } className={stylesSettings.reset_button} title={__("accessibility.resetSetting", { setting: __("reader.settings.fontSize") })}>
+                    <SVG ariaHidden svg={ReturnIcon} />
+                </button>
+                <div className={stylesSettings.size_range_buttons}>
                     <button
                         onClick={() => click("out")}
                         className={stylesSettings.scale_button_left}
@@ -74,8 +73,8 @@ export const FontSize = ({ overridePublisherDefault }: { overridePublisherDefaul
                         disabled={!overridePublisherDefault}
                     ><SVG ariaHidden svg={PlusIcon} /></button>
                 </div>
-                </div>
             </div>
+        </div>
     );
 };
 
