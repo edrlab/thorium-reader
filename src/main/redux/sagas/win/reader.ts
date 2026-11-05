@@ -5,33 +5,36 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
+
 import debug_ from "debug";
+import { dialog } from "electron";
 import { readerIpc } from "readium-desktop/common/ipc";
-import { ReaderInfo } from "readium-desktop/common/models/reader";
+import { opdsProgressionIsNewer } from "readium-desktop/common/models/opdsProgression";
+import { ReaderConfig, ReaderInfo } from "readium-desktop/common/models/reader";
+import { SenderType, type WithSender } from "readium-desktop/common/models/sync";
+import { resolveEffectiveReaderConfig } from "readium-desktop/common/readerConfig/resolveEffectiveReaderConfig";
+import { stripGlobalOnlyReaderConfigKeys } from "readium-desktop/common/readerConfig/updateScopes";
+import { readerActions, winCommonActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { IAllowCustomConfigState } from "readium-desktop/common/redux/states/renderer/allowCustom";
+import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled } from "readium-desktop/common/redux/states/settings";
+import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { deleteReaderWindowInDi, diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
+import { debounceOpdsProgression } from "readium-desktop/main/redux/sagas/opdsProgression";
 import { RootState } from "readium-desktop/main/redux/states";
+import { getOpdsProgression } from "readium-desktop/main/services/opdsProgression";
 import { error } from "readium-desktop/main/tools/error";
+import { sameReadingLocator } from "readium-desktop/main/tools/readingLocator";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
-
-import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
-import { settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled } from "readium-desktop/common/redux/states/settings";
-// import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
-import { dialog } from "electron";
-import { opdsProgressionIsNewer } from "readium-desktop/common/models/opdsProgression";
-import { SenderType, type WithSender } from "readium-desktop/common/models/sync";
-import { readerActions, winCommonActions } from "readium-desktop/common/redux/actions";
-import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
-import { debounceOpdsProgression } from "readium-desktop/main/redux/sagas/opdsProgression";
-import { getOpdsProgression } from "readium-desktop/main/services/opdsProgression";
-import { sameReadingLocator } from "readium-desktop/main/tools/readingLocator";
-import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -69,7 +72,28 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     // const readerRegistry = yield* selectTyped((_state: RootState) => _state.win.registry.reader[winId])
 
     const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
-    const config = { ...readerDefaultConfig, ...(pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config")) : {}) };
+    const readerDefaultConfigByFormat = yield* selectTyped((_state: RootState) => _state.reader.defaultConfigByFormat);
+    const publicationConfigRaw = (pubId
+        ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config"))
+        : undefined) as Partial<ReaderConfig> | undefined;
+    const publicationConfig = publicationConfigRaw
+        ? stripGlobalOnlyReaderConfigKeys(publicationConfigRaw)
+        : undefined;
+    if (pubId && publicationConfigRaw && Object.keys(publicationConfig).length !== Object.keys(publicationConfigRaw).length) {
+        // Migrate legacy local config shape so global-only keys do not override global defaults.
+        yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", publicationConfig));
+    }
+    const config = resolveEffectiveReaderConfig({
+        globalConfig: readerDefaultConfig,
+        globalConfigByFormat: readerDefaultConfigByFormat,
+        publicationConfig,
+        publicationView: readerSession.reduxState.info.publicationView,
+    });
+    if (pubId && !publicationConfig) {
+        // Persist first-open local settings snapshot so later global changes do not
+        // alter publications that already have a local config.
+        yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", stripGlobalOnlyReaderConfigKeys(config)));
+    }
     const locator = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "locator"))) as MiniLocatorExtended | undefined; // TODO: type object and not locator
     const locatorModifiedTime = yield* callTyped(() =>
         diMainGet("publication-data").getFileLastModifiedTime(pubId, "locator"));
@@ -88,7 +112,9 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const pdfConfig = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "pdfConfig"))) || undefined; // TODO: type object
 
     // not used by default, no need to persist
-    const allowCustomConfig = pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig")) : undefined; // TODO: type object
+    const allowCustomConfig = (pubId
+        ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig"))
+        : undefined) as IAllowCustomConfigState | undefined;
 
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const theme = yield* selectTyped((state: RootState) => state.theme);
@@ -151,6 +177,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                     ttsVoices: [], // disable ttsVoice global preference for readium/speech lib
                     ttsVoice: null, // old key, need to migrate to ttsVoices 25/02/2025
                 },
+                defaultConfigByFormat: readerDefaultConfigByFormat,
                 transientConfig: {
                     font: transientConfigMerge.font,
                     fontSize: transientConfigMerge.fontSize,

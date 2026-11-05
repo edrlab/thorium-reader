@@ -119,6 +119,11 @@ export interface IAnnotationReaderConfigState {
 }
 
 export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderConfigSettingsMenuState, ReaderTTSMediaOverlay {
+    // Local-only publication language preference.
+    lang?: string;
+    // Local-only publication reading direction preference.
+    readingDirection?: "auto" | "rtl" | "ltr" | "ttb" | "btt";
+
     ttsHighlightStyle: number;
     ttsHighlightStyle_WORD: number;
 

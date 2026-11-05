@@ -40,6 +40,8 @@ export function build(config: ReaderConfig = readerConfigInitialState):
     }
     delete configCopy.readerSettingsSection;
     delete configCopy.readerMenuSection;
+    delete configCopy.lang;
+    delete configCopy.readingDirection;
 
     return {
         type: ID,

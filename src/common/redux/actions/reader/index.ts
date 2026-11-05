@@ -11,6 +11,7 @@ import * as closeError from "./closeError";
 import * as closeRequest from "./closeRequest";
 import * as closeSuccess from "./closeSuccess";
 import * as configSetDefault from "./configSetDefault";
+import * as configSetDefaultByFormat from "./configSetDefaultByFormat";
 import * as fullScreenRequest from "./fullScreenRequest";
 import * as openError from "./openError";
 import * as openRequest from "./openRequest";
@@ -33,6 +34,7 @@ export {
     closeSuccess,
     closeError,
     configSetDefault,
+    configSetDefaultByFormat,
     fullScreenRequest,
     clipboardCopy,
     disableRTLFlip,
