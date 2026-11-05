@@ -5,11 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as React from "react";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { Switch } from "readium-desktop/renderer/common/components/Switch";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
@@ -18,79 +18,20 @@ export const AllowCustom = () => {
     const overridePublisherDefault = useSelector((state: IReaderRootState) => state.reader.allowCustomConfig.state);
     const deactivateTextFormatting = !overridePublisherDefault;
     const dispatch = useDispatch();
-    const allowCustomInputRef = React.useRef<HTMLInputElement>(null);
-    const shouldRefocusInputRef = React.useRef(false);
 
-    React.useEffect(() => {
-        if (shouldRefocusInputRef.current) {
-            shouldRefocusInputRef.current = false;
-            allowCustomInputRef.current?.focus();
-        }
-    }, [deactivateTextFormatting]);
-
-    const toggleDeactivateTextFormatting = React.useCallback(() => {
-        dispatch(readerActions.allowCustom.build(!overridePublisherDefault));
-    }, [dispatch, overridePublisherDefault]);
-
-    const onAllowCustomChange = React.useCallback(() => {
-        shouldRefocusInputRef.current = true;
-        toggleDeactivateTextFormatting();
-    }, [toggleDeactivateTextFormatting]);
-
-    const onAllowCustomLabelKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLLabelElement>) => {
-        if (event.key === " " || event.key === "Enter") {
-            event.preventDefault();
-            shouldRefocusInputRef.current = true;
-            allowCustomInputRef.current?.click();
-        }
-    }, []);
+    const onAllowCustomChange = React.useCallback((isSelected: boolean) => {
+        dispatch(readerActions.allowCustom.build(!isSelected));
+    }, [dispatch]);
 
     return (
-        <>
-            <label
-                htmlFor="allow-custom"
-                className={stylesGlobal.checkbox_custom_label}
-                style={{flexGrow: "unset"}}
-                tabIndex={0}
-                onKeyDown={onAllowCustomLabelKeyDown}>
-                <input
-                    id="allow-custom"
-                    ref={allowCustomInputRef}
-                    className={stylesGlobal.checkbox_custom_input}
-                    type="checkbox"
-                    role="switch"
-                    checked={deactivateTextFormatting}
-                    aria-label={__("reader.settings.deactivateTextFormatting")}
-                    onChange={onAllowCustomChange}
-                />
-                <span
-                    aria-hidden
-                    style={{
-                        position: "relative",
-                        width: "34px",
-                        height: "20px",
-                        borderRadius: "999px",
-                        border: "1px solid transparent",
-                        backgroundColor: deactivateTextFormatting ? "var(--color-brand-primary)" : "#61646B",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        transition: "background-color 140ms ease",
-                    }}>
-                    <span
-                        style={{
-                            width: "14px",
-                            height: "14px",
-                            borderRadius: "50%",
-                            backgroundColor: "white",
-                            transform: deactivateTextFormatting ? "translateX(16px)" : "translateX(4px)",
-                            transition: "transform 140ms ease",
-                        }}
-                    />
-                </span>
-                <span aria-hidden>
-                    {__("reader.settings.deactivateTextFormatting")}
-                </span>
-            </label>
-        </>
+        <Switch
+            id="allow-custom"
+            style={{ flexGrow: "unset" }}
+            aria-label={__("reader.settings.deactivateTextFormatting")}
+            isSelected={deactivateTextFormatting}
+            onChange={onAllowCustomChange}
+        >
+            <span>{__("reader.settings.deactivateTextFormatting")}</span>
+        </Switch>
     );
 };
