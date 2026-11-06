@@ -14,8 +14,10 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 
 import Entry from "./Entry";
 
+
 interface IBaseProps {
     entries: IOpdsNavigationLinkView[];
+    variant?: "facet" | "list";
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -25,26 +27,49 @@ interface IBaseProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class EntryList extends React.Component<IProps, undefined> {
+const colorsList = [
+    "gray",
+    "red",
+    "yellow",
+    "blue",
+    "green",
+    "purple",
+    "orange",
+    "pink",
+] as const;
 
-    constructor(props: IProps) {
-        super(props);
+const titleToNumber = (title: string): number => {
+    const FNV_PRIME = 0x01000193;
+    let hash = 0x811c9dc5;
+
+    for (let i = 0; i < title.length; i++) {
+        hash ^= title.charCodeAt(i);
+        hash = Math.imul(hash, FNV_PRIME);
     }
 
-    public render(): React.ReactElement<{}> {
-        return (
-            <section>
-                <ul className={stylesCatalogs.entryList_ul}>
-                    {this.props.entries.map((entry, index) =>
-                        <li key={index} className={stylesCatalogs.entryList_item}>
-                            <Entry entry={entry} level={this.props.level} />
-                        </li>,
-                    )}
-                </ul>
-            </section>
-        );
-    }
-}
+    const positiveHash = hash >>> 0;
+    return (positiveHash % 8) + 1;
+};
+
+const colorFromTitle = (title: string): (typeof colorsList)[number] =>
+    colorsList[titleToNumber(title) - 1];
+
+const EntryList = ({ entries, variant = "facet" }: IProps) => {
+
+    return (
+        <section>
+            <ul className={stylesCatalogs.entryList_ul}>
+                {entries.map((entry, index) =>
+                    <li key={index} className={variant === "list"
+                        ? stylesCatalogs.entryList_item_list
+                        : stylesCatalogs.entryList_item} data-color={colorFromTitle(entry.title)}>
+                        <Entry entry={entry} level={1} variant={variant} />
+                    </li>,
+                )}
+            </ul>
+        </section>
+    );
+};
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     level: state.opds.browser.breadcrumb.length + 1,

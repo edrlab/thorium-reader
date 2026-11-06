@@ -21,6 +21,7 @@ import { IOpdsBrowse, resolveDisplayType, routes } from "readium-desktop/rendere
 interface IBaseProps {
     level?: number;
     entry: IOpdsNavigationLinkView;
+    variant?: "facet" | "list";
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -36,10 +37,10 @@ class Entry extends React.Component<IProps, undefined> {
         super(props);
     }
 
-    public render(): React.ReactElement<{}>  {
+    public render(): React.ReactElement<{}> {
         const { entry } = this.props;
 
-        const { level } = this.props;
+        const { level, variant } = this.props;
 
         const rootFeedIdentifier = matchPath<keyof IOpdsBrowse, string>(
             routes["/opds/browse"].path,
@@ -52,6 +53,11 @@ class Entry extends React.Component<IProps, undefined> {
             entry.url,
             level,
         );
+
+        // const getInitial = (title: string): string => {
+        //     const match = title?.match(/[\p{L}\p{N}]/u);
+        //     return match ? match[0].toLocaleUpperCase() : "•";
+        // };
 
         return (
             <Link
@@ -85,25 +91,29 @@ class Entry extends React.Component<IProps, undefined> {
                     }
                 }}
             >
-                <span>
-                    <span title={entry.subtitle ? entry.subtitle : entry.title}>{entry.title}</span>
-                    {
-                        (entry.subtitle && entry.subtitle !== entry.title) ?
-                        (<span title={entry.subtitle} aria-label={entry.subtitle}>
-                            <br/>{entry.subtitle.substr(0, 40) + (entry.subtitle.length > 40 ? "..." : "")}
-                        </span>) :
-                        (<></>)
-                    }
-                </span>
-                {
+                {variant === "list" ?
+                    <span className={stylesCatalogs.entryNumber} aria-hidden="true" style={{width: entry.numberOfItems ? "24px" : ""}}>
+                        {
                     (entry.numberOfItems) ?
                         (
-                            <span className={stylesCatalogs.numberOfItems}>
-                                ({entry.numberOfItems})
+                            <span className={stylesCatalogs.numberOfItems} style={{marginLeft: 0}}>
+                                {entry.numberOfItems}
                             </span>
                         ) :
                         (<></>)
                 }
+                    </span>
+                    : <></>}
+                <span>
+                    <span title={entry.subtitle ? entry.subtitle : entry.title}>{entry.title}</span>
+                    {
+                        (entry.subtitle && entry.subtitle !== entry.title) ?
+                            (<span title={entry.subtitle} aria-label={entry.subtitle}>
+                                <br />{entry.subtitle.substr(0, 40) + (entry.subtitle.length > 40 ? "..." : "")}
+                            </span>) :
+                            (<></>)
+                    }
+                </span>
             </Link>
         );
     }

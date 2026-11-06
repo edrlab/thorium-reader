@@ -37,7 +37,7 @@ import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.s
 import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { dispatchHistoryPush, IOpdsBrowse, resolveDisplayType, routes } from "readium-desktop/renderer/library/routing";
+import { dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, resolveRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -46,6 +46,7 @@ interface IBaseProps extends TranslatorProps {
     secondaryHeader?: React.ReactElement;
     catalogHeader?: React.ReactElement;
     catalogOptions?: React.ReactElement;
+    feedColor?: string;
     title?: string;
     page?: string;
     mainClassName?: string;
@@ -134,7 +135,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     >
                         {this.props.secondaryHeader}
                         {(page === __("opds.breadcrumbRoot")) ?
-                            <div className={stylesCatalogs.opds_header}>
+                            <div className={stylesCatalogs.opds_header} data-color={this.props.feedColor}>
                                 <h1 className={stylesAllBooks.allBooks_header} style={{ overflowWrap: "anywhere", minWidth: 0 }}>{this.props.title || "-"}</h1>
                                 {this.props.catalogHeader ?
                                     <div className={stylesCatalogs.opds_header_actions}>
@@ -155,7 +156,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                             : <></>
                         }
                         {this.props.catalogHeader ?
-                        <div className={stylesCatalogs.catalog_breadcrumbSearch_Wrapper}>
+                        <div className={stylesCatalogs.catalog_breadcrumbSearch_Wrapper} data-color={this.props.feedColor}>
                             { this.props.catalogHeader }
                             { this.props.search? this.props.search : <></> }
                         </div>
@@ -217,9 +218,8 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         this.props.toggleScreenReader(this.props.screenReaderActivate, keyboardShortcutScreenReader, this.props.__);
     };
 
-    private linkState = () => ({
-        displayType: resolveDisplayType(this.props.location.state, this.props.libraryView?.displayType),
-    });
+    private linkState = (): IRouterLocationState =>
+        resolveRouterLocationState(this.props.location.state, this.props.libraryView?.displayType);
 
     private bookshelf = () => {
         const { bookshelf } = this.props.headerLinks;
