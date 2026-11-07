@@ -99,7 +99,7 @@ test("unwraps a valid protocol 1 capability response and caches it for the clien
     await expect(client.capabilities()).resolves.toStrictEqual(generousCapabilities);
 
     expect(harness.calls).toHaveLength(1);
-    expect(harness.calls[0].input).toBe(`${ORIGIN}/capabilities`);
+    expect(harness.calls[0].input).toBe(`${ORIGIN}/v1/capabilities`);
     expect(harness.calls[0].init).toStrictEqual({
         credentials: "omit",
         method: "GET",
@@ -124,7 +124,7 @@ test("shares one in-flight capability GET across simultaneous capability callers
 
     await expect(Promise.all([first, second])).resolves.toStrictEqual([generousCapabilities, generousCapabilities]);
     expect(calls).toHaveLength(1);
-    expect(calls[0].input).toBe(`${ORIGIN}/capabilities`);
+    expect(calls[0].input).toBe(`${ORIGIN}/v1/capabilities`);
 });
 
 test("shares one in-flight capability GET across concurrent snapshot publications", async () => {
@@ -223,7 +223,7 @@ test("uses exact PUT and DELETE requests without credentials or redirects", asyn
     await expect(client.deleteStream(STREAM_ID)).resolves.toBeUndefined();
 
     expect(harness.calls[1]).toStrictEqual({
-        input: `${ORIGIN}/tts/lookahead/${STREAM_ID}`,
+        input: `${ORIGIN}/v1/tts/lookahead/${STREAM_ID}`,
         init: {
             body: JSON.stringify(source),
             credentials: "omit",
@@ -234,7 +234,7 @@ test("uses exact PUT and DELETE requests without credentials or redirects", asyn
         },
     });
     expect(harness.calls[2]).toStrictEqual({
-        input: `${ORIGIN}/tts/lookahead/${STREAM_ID}`,
+        input: `${ORIGIN}/v1/tts/lookahead/${STREAM_ID}`,
         init: {
             credentials: "omit",
             method: "DELETE",

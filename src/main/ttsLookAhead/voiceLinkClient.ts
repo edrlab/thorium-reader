@@ -179,7 +179,7 @@ export class VoiceLinkClient {
 
         const response = await this.request(
             "put",
-            `${this.origin}/tts/lookahead/${streamId}`,
+            `${this.origin}/v1/tts/lookahead/${streamId}`,
             {
                 body,
                 headers: { "Content-Type": "application/json" },
@@ -214,7 +214,7 @@ export class VoiceLinkClient {
 
         const response = await this.request(
             "delete",
-            `${this.origin}/tts/lookahead/${streamId}`,
+            `${this.origin}/v1/tts/lookahead/${streamId}`,
             { method: "DELETE" },
             (value) => value,
         );
@@ -241,7 +241,7 @@ export class VoiceLinkClient {
     private async probeCapabilities(): Promise<IVoiceLinkCapabilities | undefined> {
         const result = await this.request(
             "capabilities",
-            `${this.origin}/capabilities`,
+            `${this.origin}/v1/capabilities`,
             { method: "GET" },
             async (response): Promise<ICapabilityRequestResult> => {
                 if (!response.ok) {
