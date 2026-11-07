@@ -26,6 +26,14 @@ function response(status: number, body: string | null = null): Response {
     return new Response(body, { status });
 }
 
+function deferred<T>(): { promise: Promise<T>; resolve: (value: T) => void } {
+    let resolvePromise!: (value: T) => void;
+    const promise = new Promise<T>((resolve) => {
+        resolvePromise = resolve;
+    });
+    return { promise, resolve: resolvePromise };
+}
+
 function snapshot(texts: string[] = ["Current unit", "Future unit"]): IVoiceLinkSnapshot {
     return {
         currentSequence: 20,
@@ -98,6 +106,97 @@ test("unwraps a valid protocol 1 capability response and caches it for the clien
         redirect: "error",
         signal: expect.any(AbortSignal),
     });
+});
+
+test("shares one in-flight capability GET across simultaneous capability callers", async () => {
+    const gate = deferred<void>();
+    const calls: Array<{ input: RequestInfo | URL; init?: RequestInit }> = [];
+    const controlledFetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+        calls.push({ input, init });
+        await gate.promise;
+        return capabilityResponse();
+    }) as typeof fetch;
+    const client = new VoiceLinkClient({ fetch: controlledFetch });
+
+    const first = client.capabilities();
+    const second = client.capabilities();
+    gate.resolve(undefined);
+
+    await expect(Promise.all([first, second])).resolves.toStrictEqual([generousCapabilities, generousCapabilities]);
+    expect(calls).toHaveLength(1);
+    expect(calls[0].input).toBe(`${ORIGIN}/capabilities`);
+});
+
+test("shares one in-flight capability GET across concurrent snapshot publications", async () => {
+    const gate = deferred<void>();
+    const calls: Array<{ input: RequestInfo | URL; init?: RequestInit }> = [];
+    const controlledFetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+        calls.push({ input, init });
+        if (init?.method === "GET") {
+            await gate.promise;
+            return capabilityResponse();
+        }
+        return response(204);
+    }) as typeof fetch;
+    const client = new VoiceLinkClient({ fetch: controlledFetch });
+
+    const first = client.putSnapshot(STREAM_ID, snapshot());
+    const second = client.putSnapshot("223e4567-e89b-12d3-a456-426614174000", snapshot());
+    gate.resolve(undefined);
+
+    await expect(Promise.all([first, second])).resolves.toStrictEqual(["accepted", "accepted"]);
+    expect(calls.filter(({ init }) => init?.method === "GET")).toHaveLength(1);
+    expect(calls.filter(({ init }) => init?.method === "PUT")).toHaveLength(2);
+});
+
+test("settles one failed in-flight probe without allowing a concurrent valid result to overwrite it", async () => {
+    const gate = deferred<void>();
+    let capabilityCalls = 0;
+    const controlledFetch = (async () => {
+        capabilityCalls += 1;
+        if (capabilityCalls === 1) {
+            await gate.promise;
+            return Response.json({ lookahead: null });
+        }
+        return capabilityResponse();
+    }) as typeof fetch;
+    const client = new VoiceLinkClient({ fetch: controlledFetch });
+
+    const first = client.capabilities();
+    const second = client.capabilities();
+    gate.resolve(undefined);
+
+    await expect(Promise.all([first, second])).resolves.toStrictEqual([undefined, undefined]);
+    await expect(client.capabilities()).resolves.toBeUndefined();
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("disabled");
+    expect(capabilityCalls).toBe(1);
+});
+
+test("returns defensive capability copies and keeps mutation from changing PUT trimming", async () => {
+    const advertised: IVoiceLinkCapabilities = {
+        maxBodyBytes: 65_536,
+        maxCharacters: 100,
+        maxUnitCharacters: 100,
+        maxUnits: 1,
+        protocols: [1],
+    };
+    const harness = fetchStub(capabilityResponse(advertised), response(204));
+    const client = new VoiceLinkClient({ fetch: harness.fetch });
+
+    const first = await client.capabilities();
+    expect(first).toStrictEqual(advertised);
+    first!.maxBodyBytes = 1_000_000;
+    first!.maxCharacters = 1_000_000;
+    first!.maxUnitCharacters = 1_000_000;
+    first!.maxUnits = 100;
+    first!.protocols.splice(0, first!.protocols.length, 99);
+
+    const second = await client.capabilities();
+    expect(second).toStrictEqual(advertised);
+    expect(second).not.toBe(first);
+    expect(second!.protocols).not.toBe(first!.protocols);
+    await expect(client.putSnapshot(STREAM_ID, snapshot(["first", "second"]))).resolves.toBe("accepted");
+    expect(putBodies(harness.calls)[0].units.map(({ text }) => text)).toEqual(["first"]);
 });
 
 test.each([

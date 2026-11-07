@@ -76,6 +76,20 @@ function parseCapabilities(value: unknown): IVoiceLinkCapabilities | undefined {
     };
 }
 
+function freezeCapabilities(capabilities: IVoiceLinkCapabilities): IVoiceLinkCapabilities {
+    return Object.freeze({
+        ...capabilities,
+        protocols: Object.freeze([...capabilities.protocols]) as number[],
+    });
+}
+
+function cloneCapabilities(capabilities: IVoiceLinkCapabilities): IVoiceLinkCapabilities {
+    return {
+        ...capabilities,
+        protocols: [...capabilities.protocols],
+    };
+}
+
 function createBody(
     snapshot: IVoiceLinkSnapshot,
     capabilities: IVoiceLinkCapabilities,
@@ -120,6 +134,7 @@ export class VoiceLinkClient {
     private readonly origin: typeof VOICE_LINK_ORIGIN;
     private readonly timeoutMs: number;
     private cachedCapabilities?: IVoiceLinkCapabilities;
+    private capabilityProbe?: Promise<IVoiceLinkCapabilities | undefined>;
     private disabled = false;
 
     public constructor(options: VoiceLinkClientOptions = {}) {
@@ -135,57 +150,8 @@ export class VoiceLinkClient {
     }
 
     public async capabilities(): Promise<IVoiceLinkCapabilities | undefined> {
-        if (this.cachedCapabilities) {
-            return this.cachedCapabilities;
-        }
-        if (this.disabled) {
-            return undefined;
-        }
-
-        const result = await this.request(
-            "capabilities",
-            `${this.origin}/capabilities`,
-            { method: "GET" },
-            async (response): Promise<ICapabilityRequestResult> => {
-                if (!response.ok) {
-                    return { response };
-                }
-                try {
-                    return { body: await response.json(), response };
-                } catch (_error) {
-                    return { malformed: true, response };
-                }
-            },
-        );
-
-        if (!result) {
-            this.disabled = true;
-            return undefined;
-        }
-        if (!result.response.ok) {
-            this.emit({
-                operation: "capabilities",
-                reason: "http-error",
-                status: result.response.status,
-            });
-            this.disabled = true;
-            return undefined;
-        }
-        if (result.malformed) {
-            this.emit({ operation: "capabilities", reason: "malformed-response" });
-            this.disabled = true;
-            return undefined;
-        }
-
-        const capabilities = parseCapabilities(result.body);
-        if (!capabilities) {
-            this.emit({ operation: "capabilities", reason: "unsupported-response" });
-            this.disabled = true;
-            return undefined;
-        }
-
-        this.cachedCapabilities = capabilities;
-        return capabilities;
+        const capabilities = await this.getCapabilities();
+        return capabilities ? cloneCapabilities(capabilities) : undefined;
     }
 
     public async putSnapshot(streamId: string, snapshot: IVoiceLinkSnapshot): Promise<PutResult> {
@@ -194,7 +160,7 @@ export class VoiceLinkClient {
             return "disabled";
         }
 
-        const capabilities = await this.capabilities();
+        const capabilities = await this.getCapabilities();
         if (!capabilities) {
             return "disabled";
         }
@@ -255,6 +221,68 @@ export class VoiceLinkClient {
         if (response && !response.ok) {
             this.emit({ operation: "delete", reason: "http-error", status: response.status });
         }
+    }
+
+    private getCapabilities(): Promise<IVoiceLinkCapabilities | undefined> {
+        if (this.disabled) {
+            return Promise.resolve(undefined);
+        }
+        if (this.cachedCapabilities) {
+            return Promise.resolve(this.cachedCapabilities);
+        }
+        if (this.capabilityProbe === undefined) {
+            this.capabilityProbe = this.probeCapabilities().finally(() => {
+                this.capabilityProbe = undefined;
+            });
+        }
+        return this.capabilityProbe;
+    }
+
+    private async probeCapabilities(): Promise<IVoiceLinkCapabilities | undefined> {
+        const result = await this.request(
+            "capabilities",
+            `${this.origin}/capabilities`,
+            { method: "GET" },
+            async (response): Promise<ICapabilityRequestResult> => {
+                if (!response.ok) {
+                    return { response };
+                }
+                try {
+                    return { body: await response.json(), response };
+                } catch (_error) {
+                    return { malformed: true, response };
+                }
+            },
+        );
+
+        if (!result) {
+            this.disabled = true;
+            return undefined;
+        }
+        if (!result.response.ok) {
+            this.emit({
+                operation: "capabilities",
+                reason: "http-error",
+                status: result.response.status,
+            });
+            this.disabled = true;
+            return undefined;
+        }
+        if (result.malformed) {
+            this.emit({ operation: "capabilities", reason: "malformed-response" });
+            this.disabled = true;
+            return undefined;
+        }
+
+        const capabilities = parseCapabilities(result.body);
+        if (!capabilities) {
+            this.emit({ operation: "capabilities", reason: "unsupported-response" });
+            this.disabled = true;
+            return undefined;
+        }
+
+        this.cachedCapabilities = freezeCapabilities(capabilities);
+        return this.cachedCapabilities;
     }
 
     private async request<T>(
