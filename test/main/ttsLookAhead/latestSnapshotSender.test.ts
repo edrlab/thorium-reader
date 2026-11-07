@@ -282,6 +282,31 @@ test("dispose stops every known stream once and ignores all future enqueues", as
     expect(client.deletes.map(({ streamId }) => streamId).sort()).toStrictEqual([STREAM_A, STREAM_B].sort());
 });
 
+test("dispose awaits an unseen stream cleanup and prevents new stops after disposal", async () => {
+    const client = new ControlledClient();
+    client.autoResolveDeletes = false;
+    const sender = new LatestSnapshotSender(client);
+
+    const stopped = sender.stop(STREAM_A);
+    await nextTurn();
+    expect(client.deletes.map(({ streamId }) => streamId)).toStrictEqual([STREAM_A]);
+
+    let disposed = false;
+    const disposal = sender.dispose().then(() => {
+        disposed = true;
+    });
+    const postDisposalStop = sender.stop(STREAM_B);
+    await nextTurn();
+
+    expect(disposed).toBe(false);
+    expect(client.deletes.map(({ streamId }) => streamId)).toStrictEqual([STREAM_A]);
+
+    client.deletes[0].gate.resolve();
+    await Promise.all([stopped, disposal, postDisposalStop]);
+    expect(disposed).toBe(true);
+    expect(client.deletes.map(({ streamId }) => streamId)).toStrictEqual([STREAM_A]);
+});
+
 test("different streams progress independently", async () => {
     const client = new ControlledClient();
     const sender = new LatestSnapshotSender(client);

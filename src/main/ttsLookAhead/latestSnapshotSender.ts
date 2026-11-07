@@ -61,6 +61,30 @@ export class LatestSnapshotSender {
     }
 
     public stop(streamId: string): Promise<void> {
+        if (this.disposed) {
+            return this.disposePromise ?? Promise.resolve();
+        }
+
+        return this.stopStream(streamId);
+    }
+
+    public dispose(): Promise<void> {
+        if (this.disposePromise !== undefined) {
+            return this.disposePromise;
+        }
+
+        this.disposed = true;
+        const cleanups = Array.from(this.stops.values());
+        for (const streamId of this.streams.keys()) {
+            if (!this.stops.has(streamId)) {
+                cleanups.push(this.stopStream(streamId));
+            }
+        }
+        this.disposePromise = Promise.all(cleanups).then((): void => undefined);
+        return this.disposePromise;
+    }
+
+    private stopStream(streamId: string): Promise<void> {
         const existing = this.stops.get(streamId);
         if (existing !== undefined) {
             return existing;
@@ -75,18 +99,6 @@ export class LatestSnapshotSender {
         const cleanup = this.cleanup(streamId, state);
         this.stops.set(streamId, cleanup);
         return cleanup;
-    }
-
-    public dispose(): Promise<void> {
-        if (this.disposePromise !== undefined) {
-            return this.disposePromise;
-        }
-
-        this.disposed = true;
-        const streamIds = Array.from(this.streams.keys());
-        this.disposePromise = Promise.all(streamIds.map((streamId) => this.stop(streamId)))
-            .then((): void => undefined);
-        return this.disposePromise;
     }
 
     private async cleanup(streamId: string, state: IStreamState | undefined): Promise<void> {
