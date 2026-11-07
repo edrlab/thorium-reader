@@ -6,10 +6,11 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { ipcRenderer } from "electron";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, take } from "redux-saga/effects";
+import { all, call, fork, take } from "redux-saga/effects";
 
 import * as readerConfig from "./readerConfig";
 import * as highlightHandler from "./highlight/handler";
@@ -23,7 +24,14 @@ import * as settingsOrMenuDialogOrDock from "./settingsOrMenu";
 import * as customization from "./customization";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
-import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
+import {
+    type ITtsLookAheadSnapshot,
+    MediaOverlaysStateEnum,
+    TTSStateEnum,
+    mediaOverlaysListen,
+    ttsListen,
+    ttsLookAheadListen,
+} from "@r2-navigator-js/electron/renderer";
 import { eventChannel, buffers } from "redux-saga";
 import { put as putTyped, take as takeTyped, select as selectTyped, call as callTyped, delay as delayTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { readerLocalActionReader } from "../actions";
@@ -35,6 +43,8 @@ import { createOrGetPdfEventBus } from "../../pdf/driver";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { buildPublicationAnalyticsParams } from "readium-desktop/common/analytics/publication";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { TtsLookAheadSession } from "readium-desktop/renderer/reader/ttsLookAhead";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -89,6 +99,46 @@ export function getTTSStateChannel() {
     return channel;
 }
 
+function getTTSLookAheadChannel(session: TtsLookAheadSession) {
+    const channel = eventChannel<ITtsLookAheadSnapshot>(
+        (emit) => {
+            const close = () => channel.close();
+            ttsLookAheadListen(emit);
+            window.addEventListener("beforeunload", close, { once: true });
+
+            return () => {
+                window.removeEventListener("beforeunload", close);
+                ttsLookAheadListen(undefined);
+                try {
+                    session.dispose();
+                } catch {
+                    // Look-ahead cleanup must not affect ordinary speech synthesis.
+                }
+            };
+        },
+        buffers.sliding(1),
+    );
+    return channel;
+}
+
+function* watchTTSLookAheadChannel(
+    channel: ReturnType<typeof getTTSLookAheadChannel>,
+    session: TtsLookAheadSession,
+) {
+    try {
+        while (true) {
+            const snapshot: ITtsLookAheadSnapshot = yield take(channel);
+            try {
+                session.onSnapshot(snapshot);
+            } catch {
+                // Look-ahead must remain isolated from ordinary speech synthesis.
+            }
+        }
+    } finally {
+        channel.close();
+    }
+}
+
 
 export function* rootSaga() {
 
@@ -130,6 +180,11 @@ export function* rootSaga() {
 
     const MOChannel = getMediaOverlayStateChannel();
     const TTSChannel = getTTSStateChannel();
+    const ttsLookAheadSession = new TtsLookAheadSession({
+        createStreamId: uuidv4,
+        send: (channel, message) => ipcRenderer.send(channel, message),
+    });
+    const TTSLookAheadChannel = getTTSLookAheadChannel(ttsLookAheadSession);
     let listenEventLogged = false;
     function* logPublicationListenIfNeeded() {
         if (listenEventLogged) {
@@ -160,12 +215,14 @@ export function* rootSaga() {
         takeSpawnEveryChannel(
             TTSChannel,
             function* (state: TTSStateEnum) {
+                ttsLookAheadSession.onState(state);
                 yield* putTyped(readerLocalActionReader.setTTSState.build(state));
                 if (isTTSListeningState(state)) {
                     yield* logPublicationListenIfNeeded();
                 }
             },
         ),
+        fork(watchTTSLookAheadChannel, TTSLookAheadChannel, ttsLookAheadSession),
         spawnTyped(function*() {
 
             let gotTheLock = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
