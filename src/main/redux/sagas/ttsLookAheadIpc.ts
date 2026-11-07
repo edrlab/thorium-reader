@@ -18,7 +18,7 @@ import {
 } from "readium-desktop/common/ipc/ttsLookAhead";
 import { LatestSnapshotSender } from "readium-desktop/main/ttsLookAhead/latestSnapshotSender";
 import { VoiceLinkClient } from "readium-desktop/main/ttsLookAhead/voiceLinkClient";
-import { buffers, eventChannel } from "redux-saga";
+import { type Buffer, eventChannel } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, fork, take } from "redux-saga/effects";
 
@@ -27,6 +27,7 @@ const MAX_UNITS = 12;
 const MAX_UNIT_CHARACTERS = 4_000;
 const MAX_CHARACTERS = 12_000;
 const MAX_SHORT_STRING = 1_024;
+export const MAX_TTS_LOOK_AHEAD_PENDING_STREAMS = 20;
 
 const BOUNDARIES = new Set([
     "none",
@@ -226,11 +227,82 @@ export function isTtsLookAheadMessage(value: unknown): value is ITtsLookAheadMes
         isSnapshot(value.snapshot);
 }
 
+class TtsLookAheadMessageBuffer implements Buffer<ITtsLookAheadMessage> {
+    private readonly knownStreams = new Set<string>();
+    private readonly messages: ITtsLookAheadMessage[] = [];
+
+    public flush(): ITtsLookAheadMessage[] {
+        const messages = this.messages.splice(0);
+        this.knownStreams.clear();
+        return messages;
+    }
+
+    public isEmpty(): boolean {
+        return this.messages.length === 0;
+    }
+
+    public accept(message: ITtsLookAheadMessage): boolean {
+        if (message.type === "snapshot") {
+            if (this.knownStreams.has(message.streamId)) {
+                return true;
+            }
+            if (this.knownStreams.size >= MAX_TTS_LOOK_AHEAD_PENDING_STREAMS ||
+                this.messages.length >= MAX_TTS_LOOK_AHEAD_PENDING_STREAMS) {
+                return false;
+            }
+            this.knownStreams.add(message.streamId);
+            return true;
+        }
+
+        if (!this.knownStreams.has(message.streamId)) {
+            return false;
+        }
+        this.knownStreams.delete(message.streamId);
+        return true;
+    }
+
+    public put(message: ITtsLookAheadMessage): void {
+        const pendingIndex = this.messages.findIndex(({ streamId }) => streamId === message.streamId);
+        if (message.type === "snapshot") {
+            if (pendingIndex >= 0) {
+                if (this.messages[pendingIndex].type === "snapshot") {
+                    this.messages[pendingIndex] = message;
+                }
+                return;
+            }
+
+            if (this.messages.length < MAX_TTS_LOOK_AHEAD_PENDING_STREAMS) {
+                this.messages.push(message);
+            }
+            return;
+        }
+
+        if (pendingIndex >= 0) {
+            this.messages[pendingIndex] = message;
+            return;
+        }
+        if (this.messages.length < MAX_TTS_LOOK_AHEAD_PENDING_STREAMS) {
+            this.messages.push(message);
+            return;
+        }
+
+        const snapshotIndex = this.messages.findIndex(({ type }) => type === "snapshot");
+        if (snapshotIndex >= 0) {
+            this.messages[snapshotIndex] = message;
+        }
+    }
+
+    public take(): ITtsLookAheadMessage | undefined {
+        return this.messages.shift();
+    }
+}
+
 function createIpcChannel(ipcMain: ITtsLookAheadIpcMain) {
+    const buffer = new TtsLookAheadMessageBuffer();
     return eventChannel<ITtsLookAheadMessage>(
         (emit) => {
             const listener: TtsLookAheadIpcListener = (_event, data) => {
-                if (isTtsLookAheadMessage(data)) {
+                if (isTtsLookAheadMessage(data) && buffer.accept(data)) {
                     emit(data);
                 }
             };
@@ -239,7 +311,7 @@ function createIpcChannel(ipcMain: ITtsLookAheadIpcMain) {
                 ipcMain.removeListener(TTS_LOOK_AHEAD_CHANNEL, listener);
             };
         },
-        buffers.expanding(20),
+        buffer,
     );
 }
 

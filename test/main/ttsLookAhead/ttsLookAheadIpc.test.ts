@@ -7,6 +7,7 @@ import {
     type IVoiceLinkSnapshot,
 } from "readium-desktop/common/ipc/ttsLookAhead";
 import {
+    MAX_TTS_LOOK_AHEAD_PENDING_STREAMS,
     type ITtsLookAheadIpcMain,
     type ITtsLookAheadSender,
     type TtsLookAheadIpcListener,
@@ -359,4 +360,71 @@ test("stop during an active PUT clears pending work before DELETE", async () => 
     task.cancel();
     await task.toPromise();
     expect(deleteIds).toStrictEqual([STREAM_ID]);
+});
+
+test("coalesces a bounded snapshot flood while a stop is blocked and preserves cleanup", async () => {
+    const ipcMain = new FakeIpcMain();
+    const stopGate = deferred<void>();
+    const sender = new RecordingSender();
+    sender.stop = async (streamId: string) => {
+        sender.stops.push(streamId);
+        if (streamId === STREAM_ID) {
+            await stopGate.promise;
+        }
+    };
+    const task = runSaga({}, watchTtsLookAheadIpc, {
+        createSender: () => sender,
+        ipcMain,
+        platform: "win32",
+    });
+
+    ipcMain.emit(TTS_LOOK_AHEAD_CHANNEL, snapshotMessage(1));
+    await nextTurn();
+    ipcMain.emit(TTS_LOOK_AHEAD_CHANNEL, { streamId: STREAM_ID, type: "stop" });
+    await nextTurn();
+
+    const coalescedStream = "223e4567-e89b-42d3-a456-426614174000";
+    for (let revision = 1; revision <= 100; revision++) {
+        ipcMain.emit(TTS_LOOK_AHEAD_CHANNEL, {
+            snapshot: snapshot(revision),
+            streamId: coalescedStream,
+            type: "snapshot",
+        });
+    }
+    const stoppedWhileQueued = "323e4567-e89b-42d3-a456-426614174000";
+    ipcMain.emit(TTS_LOOK_AHEAD_CHANNEL, {
+        snapshot: snapshot(1),
+        streamId: stoppedWhileQueued,
+        type: "snapshot",
+    });
+    ipcMain.emit(TTS_LOOK_AHEAD_CHANNEL, { streamId: stoppedWhileQueued, type: "stop" });
+    for (let index = 0; index < 100; index++) {
+        const streamId = `423e4567-e89b-42d3-a456-${index.toString().padStart(12, "0")}`;
+        ipcMain.emit(TTS_LOOK_AHEAD_CHANNEL, {
+            snapshot: snapshot(index + 1),
+            streamId,
+            type: "snapshot",
+        });
+    }
+    await nextTurn();
+
+    expect(sender.enqueues).toHaveLength(1);
+    expect(sender.stops).toStrictEqual([STREAM_ID]);
+
+    stopGate.resolve(undefined);
+    await nextTurn();
+    await nextTurn();
+
+    const postStopEnqueues = sender.enqueues.slice(1);
+    expect(postStopEnqueues.length).toBeLessThanOrEqual(MAX_TTS_LOOK_AHEAD_PENDING_STREAMS);
+    expect(
+        postStopEnqueues
+            .filter(({ streamId }) => streamId === coalescedStream)
+            .map(({ snapshot: value }) => value.revision),
+    ).toStrictEqual([100]);
+    expect(postStopEnqueues.some(({ streamId }) => streamId === stoppedWhileQueued)).toBe(false);
+    expect(sender.stops).toStrictEqual([STREAM_ID, stoppedWhileQueued]);
+
+    task.cancel();
+    await task.toPromise();
 });
