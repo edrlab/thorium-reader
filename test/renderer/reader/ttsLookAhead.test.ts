@@ -206,6 +206,35 @@ test("activates from the case-sensitive VoiceLink token URI independently of its
     ).toBe(false);
 });
 
+test.each([
+    "Heart (Kokoro)",
+    "Bella (Kokoro)",
+    "Nicole (Kokoro)",
+    "Sarah (Kokoro)",
+    "Sky (Kokoro)",
+    "Adam (Kokoro)",
+    "Michael (Kokoro)",
+    "Emma (Kokoro)",
+    "Isabella (Kokoro)",
+    "George (Kokoro)",
+    "Lewis (Kokoro)",
+])("activates when Windows mirrors the registered VoiceLink display name as %s", (displayName) => {
+    expect(
+        isVoiceLinkVoice({
+            voiceName: displayName,
+            voiceURI: displayName,
+        }),
+    ).toBe(true);
+});
+
+test.each([
+    ["Alice (Kokoro)", "Alice (Kokoro)"],
+    ["Adam (Kokoro)", "HKEY_LOCAL_MACHINE/Voices/Tokens/Microsoft_Adam"],
+    ["VoiceLink Adam", "VoiceLink Adam"],
+])("rejects a plausible non-VoiceLink display-name shape", (voiceName, voiceURI) => {
+    expect(isVoiceLinkVoice({ voiceName, voiceURI })).toBe(false);
+});
+
 test("starts lazily from an eligible snapshot before PLAYING and retains its stream while paused", () => {
     const { messages, session } = createHarness();
     const first = richSnapshot();

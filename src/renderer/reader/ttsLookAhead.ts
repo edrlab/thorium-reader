@@ -27,10 +27,28 @@ export interface ITtsLookAheadSessionDependencies {
     send: (channel: string, message: ITtsLookAheadMessage) => void;
 }
 
+const VOICELINK_DISPLAY_NAMES = new Set([
+    "Heart (Kokoro)",
+    "Bella (Kokoro)",
+    "Nicole (Kokoro)",
+    "Sarah (Kokoro)",
+    "Sky (Kokoro)",
+    "Adam (Kokoro)",
+    "Michael (Kokoro)",
+    "Emma (Kokoro)",
+    "Isabella (Kokoro)",
+    "George (Kokoro)",
+    "Lewis (Kokoro)",
+]);
+
 export function isVoiceLinkVoice(
     source: Pick<ITtsLookAheadSource, "voiceName" | "voiceURI"> | undefined,
 ): boolean {
-    return /(?:^|[^A-Za-z0-9])VoiceLink_[A-Za-z0-9][A-Za-z0-9._-]*/.test(source?.voiceURI || "");
+    const voiceURI = source?.voiceURI || "";
+    return (
+        /(?:^|[^A-Za-z0-9])VoiceLink_[A-Za-z0-9][A-Za-z0-9._-]*/.test(voiceURI) ||
+        (source?.voiceName === voiceURI && VOICELINK_DISPLAY_NAMES.has(voiceURI))
+    );
 }
 
 function toVoiceLinkSource(source: ITtsLookAheadSource): IVoiceLinkSource {
