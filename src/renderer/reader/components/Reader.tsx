@@ -99,6 +99,7 @@ import {
     ttsAndMediaOverlaysManualPlayNext,
     ttsClickEnable,
     ttsHighlightStyle,
+    ttsLookAheadEnable,
     ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume,
     ttsSentenceDetectionEnable,
@@ -3560,6 +3561,7 @@ class Reader extends React.Component<IProps, IState> {
 
         // console.log("HANDLE_TTS_VOICE", "PUSH_DEFAULT_TTS_VOICES_TO_NAVIGATOR", v);
         navigatorTTSVoicesSetter(v);
+        ttsLookAheadEnable(shouldEnableVoiceLinkLookAhead(process.platform, v));
         this.props.setConfig({ ttsVoices: v });
     }
 
