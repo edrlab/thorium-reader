@@ -40,7 +40,8 @@ import {
     IEventPayload_R2_EVENT_TTS_DO_NEXT_OR_PREVIOUS, IEventPayload_R2_EVENT_TTS_DO_PLAY,
     IEventPayload_R2_EVENT_TTS_HIGHLIGHT_STYLE,
     IEventPayload_R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
-    IEventPayload_R2_EVENT_TTS_OVERLAY_ENABLE, IEventPayload_R2_EVENT_TTS_PLAYBACK_RATE,
+    IEventPayload_R2_EVENT_TTS_LOOKAHEAD_ENABLE, IEventPayload_R2_EVENT_TTS_OVERLAY_ENABLE,
+    IEventPayload_R2_EVENT_TTS_PLAYBACK_RATE,
     IEventPayload_R2_EVENT_TTS_SENTENCE_DETECT_ENABLE,
     IEventPayload_R2_EVENT_TTS_SKIP_ENABLE,
     IEventPayload_R2_EVENT_TTS_VOICE,
@@ -61,7 +62,7 @@ import {
     R2_EVENT_SHOW, R2_EVENT_TTS_CLICK_ENABLE, R2_EVENT_TTS_DO_NEXT, R2_EVENT_TTS_DO_PAUSE,
     R2_EVENT_TTS_DO_PLAY, R2_EVENT_TTS_DO_PREVIOUS, R2_EVENT_TTS_DO_RESUME, R2_EVENT_TTS_DO_STOP,
     R2_EVENT_TTS_HIGHLIGHT_STYLE,
-    R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
+    R2_EVENT_TTS_LOOKAHEAD_ENABLE, R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
     R2_EVENT_TTS_OVERLAY_ENABLE, R2_EVENT_TTS_PLAYBACK_RATE, R2_EVENT_TTS_SENTENCE_DETECT_ENABLE,
     R2_EVENT_TTS_SKIP_ENABLE,
     R2_EVENT_TTS_VOICE, R2_EVENT_WEBVIEW_KEYDOWN, R2_EVENT_WEBVIEW_KEYUP,
@@ -122,7 +123,7 @@ import { closePopupDialogs, isPopupDialogOpen } from "./popup-dialog";
 import { popupFootNote } from "./popupFootNotes";
 import {
     assignUtteranceVoice,
-    ttsNext, ttsPause, ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsStop, ttsVoices,
+    ttsLookAheadEnable, ttsNext, ttsPause, ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsStop, ttsVoices,
 } from "./readaloud";
 import {
     calculateColumnDimension, calculateMaxScrollShift, calculateTotalColumns,
@@ -5646,6 +5647,11 @@ if (!win.READIUM2.isAudio) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ipcRenderer.on(R2_EVENT_TTS_OVERLAY_ENABLE, (_event: any, payload: IEventPayload_R2_EVENT_TTS_OVERLAY_ENABLE) => {
         win.READIUM2.ttsOverlayEnabled = payload.doEnable;
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ipcRenderer.on(R2_EVENT_TTS_LOOKAHEAD_ENABLE,
+        (_event: any, payload: IEventPayload_R2_EVENT_TTS_LOOKAHEAD_ENABLE) => {
+        ttsLookAheadEnable(payload.doEnable);
     });
 
     ipcRenderer.on(R2_EVENT_MEDIA_OVERLAY_STATE,

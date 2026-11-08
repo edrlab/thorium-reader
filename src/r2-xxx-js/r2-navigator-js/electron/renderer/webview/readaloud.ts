@@ -75,6 +75,10 @@ interface IHTMLDialogElementWithTTSState extends IHTMLDialogElementWithPopup {
 let _dialogState: IHTMLDialogElementWithTTSState | undefined;
 const _ttsLookAheadLifecycle = new TtsLookAheadLifecycle();
 
+export function ttsLookAheadEnable(doEnable: boolean): void {
+    _ttsLookAheadLifecycle.setEnabled(doEnable);
+}
+
 function resetState(stop: boolean) {
     if (stop) {
         _resumableState = undefined;
@@ -1573,7 +1577,7 @@ export function assignUtteranceVoice(utterance: SpeechSynthesisUtterance) {
 }
 
 function emitTtsLookAheadSnapshot(utterance: SpeechSynthesisUtterance) {
-    if (!_dialogState || !_dialogState.ttsQueue || !_dialogState.ttsQueueItem) {
+    if (!_ttsLookAheadLifecycle.enabled || !_dialogState || !_dialogState.ttsQueue || !_dialogState.ttsQueueItem) {
         return;
     }
 

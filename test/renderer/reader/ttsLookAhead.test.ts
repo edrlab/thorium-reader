@@ -6,6 +6,7 @@ import { TTS_LOOK_AHEAD_CHANNEL, type ITtsLookAheadMessage } from "readium-deskt
 import {
     TtsLookAheadSession,
     isVoiceLinkVoice,
+    shouldEnableVoiceLinkLookAhead,
     toVoiceLinkSnapshot,
 } from "readium-desktop/renderer/reader/ttsLookAhead";
 
@@ -233,6 +234,15 @@ test.each([
     ["VoiceLink Adam", "VoiceLink Adam"],
 ])("rejects a plausible non-VoiceLink display-name shape", (voiceName, voiceURI) => {
     expect(isVoiceLinkVoice({ voiceName, voiceURI })).toBe(false);
+});
+
+test.each([
+    ["win32", [{ name: "Adam (Kokoro)", voiceURI: "Adam (Kokoro)" }], true],
+    ["win32", [{ name: "Microsoft Adam", voiceURI: "Microsoft_Adam" }], false],
+    ["linux", [{ name: "Adam (Kokoro)", voiceURI: "Adam (Kokoro)" }], false],
+    ["win32", null, false],
+] as const)("enables VoiceLink look-ahead only for an eligible Windows voice", (platform, voices, expected) => {
+    expect(shouldEnableVoiceLinkLookAhead(platform, voices)).toBe(expected);
 });
 
 test("starts lazily from an eligible snapshot before PLAYING and retains its stream while paused", () => {

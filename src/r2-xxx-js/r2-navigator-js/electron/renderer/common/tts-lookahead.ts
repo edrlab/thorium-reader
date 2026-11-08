@@ -69,6 +69,7 @@ export function resumeTtsWithLookAhead<T>(
 }
 
 export class TtsLookAheadLifecycle {
+    private _enabled = false;
     private _generation = -1;
     private _indexedGeneration = -1;
     private _indexedQueue: ITtsQueueItem[] | undefined;
@@ -83,9 +84,20 @@ export class TtsLookAheadLifecycle {
         };
     }
 
+    public get enabled(): boolean {
+        return this._enabled;
+    }
+
+    public setEnabled(enabled: boolean): void {
+        this._enabled = enabled;
+        if (!enabled) {
+            this.clearIndex();
+        }
+    }
+
     public rebuildQueue(queue?: ITtsQueueItem[]): ITtsLookAheadBuildState {
         const state = this.invalidate();
-        if (queue) {
+        if (queue && this._enabled) {
             this.indexQueue(queue, state.generation);
         }
         return state;
@@ -93,9 +105,7 @@ export class TtsLookAheadLifecycle {
 
     public invalidate(): ITtsLookAheadBuildState {
         this._generation++;
-        this._indexedGeneration = -1;
-        this._indexedQueue = undefined;
-        this._mappedReferences = [];
+        this.clearIndex();
         this._revision = 0;
         return this.state;
     }
@@ -107,6 +117,9 @@ export class TtsLookAheadLifecycle {
         source: ITtsLookAheadSource,
         maxUnits = 12,
     ): ITtsLookAheadSnapshot | undefined {
+        if (!this._enabled) {
+            return undefined;
+        }
         if (this._indexedGeneration !== state.generation || this._indexedQueue !== queue) {
             this.indexQueue(queue, state.generation);
         }
@@ -139,6 +152,12 @@ export class TtsLookAheadLifecycle {
         this._mappedReferences = mapSpokenQueue(queue);
         this._indexedGeneration = generation;
         this._indexedQueue = queue;
+    }
+
+    private clearIndex(): void {
+        this._indexedGeneration = -1;
+        this._indexedQueue = undefined;
+        this._mappedReferences = [];
     }
 }
 

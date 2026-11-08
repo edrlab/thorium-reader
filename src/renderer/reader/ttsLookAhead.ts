@@ -51,6 +51,19 @@ export function isVoiceLinkVoice(
     );
 }
 
+type TtsLookAheadVoice = Pick<SpeechSynthesisVoice, "name" | "voiceURI">;
+
+export function shouldEnableVoiceLinkLookAhead(
+    platform: NodeJS.Platform,
+    voices: ReadonlyArray<TtsLookAheadVoice> | TtsLookAheadVoice | null | undefined,
+): boolean {
+    if (platform !== "win32" || !voices) {
+        return false;
+    }
+    const candidates = Array.isArray(voices) ? voices : [voices];
+    return candidates.some((voice) => isVoiceLinkVoice({ voiceName: voice.name, voiceURI: voice.voiceURI }));
+}
+
 function toVoiceLinkSource(source: ITtsLookAheadSource): IVoiceLinkSource {
     return {
         rate: source.rate,

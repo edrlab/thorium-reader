@@ -61,6 +61,7 @@ import { NavigationAnnouncement, NavigationAnnouncementHandle } from "readium-de
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import { normalizeLocatorProgressionForPublication } from "readium-desktop/renderer/reader/locatorProgression";
+import { shouldEnableVoiceLinkLookAhead } from "readium-desktop/renderer/reader/ttsLookAhead";
 import {
     TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
@@ -3491,7 +3492,11 @@ class Reader extends React.Component<IProps, IState> {
         this.hideAnnotationsForTTSorMOPlay();
 
         setTimeout(() => {
-            ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoices);
+            ttsPlay(
+                parseFloat(this.props.ttsPlaybackRate),
+                this.props.ttsVoices,
+                shouldEnableVoiceLinkLookAhead(process.platform, this.props.ttsVoices),
+            );
         }, delay);
     }
     private handleTTSPause() {

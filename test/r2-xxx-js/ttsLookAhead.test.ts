@@ -164,6 +164,7 @@ test("builds a bounded semantic queue with exact prioritized symmetric boundarie
         ];
 
         const lifecycle = new TtsLookAheadLifecycle();
+        lifecycle.setEnabled(true);
         lifecycle.rebuildQueue(queue);
         const source = { rate: 1 };
         const snapshot = lifecycle.buildSnapshot(queue, 0, { generation: 7, revision: 3 }, source);
@@ -205,6 +206,7 @@ test("assigns dense stable sequences when sentence fragments are empty", () => {
         const paragraph = dom.window.document.querySelector("p") as Element;
         const queue = [queueItem(paragraph, "Spoken one. Spoken two.", ["", "Spoken one.", "", "Spoken two."])];
         const lifecycle = new TtsLookAheadLifecycle();
+        lifecycle.setEnabled(true);
         lifecycle.rebuildQueue(queue);
         const snapshot = lifecycle.buildSnapshot(queue, 0, { generation: 4, revision: 1 }, { rate: 1 });
 
@@ -245,6 +247,7 @@ test("indexes the spoken queue once per generation", () => {
             },
         });
         const lifecycle = new TtsLookAheadLifecycle();
+        lifecycle.setEnabled(true);
         const source = { rate: 1 };
 
         lifecycle.rebuildQueue(queue);
@@ -260,6 +263,39 @@ test("indexes the spoken queue once per generation", () => {
         lifecycle.buildSnapshot(queue, 1, second, source);
 
         expect(queueItemReads).toBe(2);
+    } finally {
+        dom.window.close();
+    }
+});
+
+test("does not index or build snapshots while look-ahead is disabled", () => {
+    const dom = new JSDOM("<!doctype html><html><body><p>Queued sentence.</p></body></html>");
+    try {
+        const item = queueItem(dom.window.document.querySelector("p") as Element, "Queued sentence.");
+        let queueItemReads = 0;
+        const queue = new Proxy([item], {
+            get: (target, property, receiver) => {
+                if (property === "0") {
+                    queueItemReads++;
+                }
+                return Reflect.get(target, property, receiver);
+            },
+        });
+        const lifecycle = new TtsLookAheadLifecycle();
+        const source = { rate: 1 };
+
+        lifecycle.rebuildQueue(queue);
+        const token = lifecycle.createEmissionToken(source);
+        expect(lifecycle.buildSnapshot(queue, 0, token, source)).toBeUndefined();
+        expect(queueItemReads).toBe(0);
+
+        lifecycle.setEnabled(true);
+        expect(lifecycle.buildSnapshot(queue, 0, token, source)).toBeDefined();
+        expect(queueItemReads).toBe(1);
+
+        lifecycle.setEnabled(false);
+        expect(lifecycle.buildSnapshot(queue, 0, token, source)).toBeUndefined();
+        expect(queueItemReads).toBe(1);
     } finally {
         dom.window.close();
     }
