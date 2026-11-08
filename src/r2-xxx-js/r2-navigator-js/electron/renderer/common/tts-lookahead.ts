@@ -64,8 +64,11 @@ export function resumeTtsWithLookAhead<T>(
     emitSnapshot: (utterance: T) => void,
     speak: (utterance: T) => void,
 ) {
-    emitSnapshot(utterance);
-    speak(utterance);
+    try {
+        emitSnapshot(utterance);
+    } finally {
+        speak(utterance);
+    }
 }
 
 export class TtsLookAheadLifecycle {
@@ -105,6 +108,10 @@ export class TtsLookAheadLifecycle {
         this.clearIndex();
         this._revision = 0;
         return this.state;
+    }
+
+    public endSession(): void {
+        this.invalidate();
     }
 
     public buildSnapshot(

@@ -107,6 +107,49 @@ test("serializes a queued snapshot before STOPPED without reopening a stale stre
     expect(lookAheadRegistrations).toStrictEqual([expect.any(Function), undefined]);
 });
 
+test("ends the active look-ahead stream when opt-in is disabled without stopping TTS", async () => {
+    let stateListener: ((state: TTSStateEnum) => void) | undefined;
+    let lookAheadListener: ((value: ITtsLookAheadSnapshot) => void) | undefined;
+    let lookAheadStopListener: (() => void) | undefined;
+    const messages: Array<{ channel: string; message: ITtsLookAheadMessage }> = [];
+    const session = new TtsLookAheadSession({
+        createStreamId: () => STREAM_ID,
+        send: (channel, message) => messages.push({ channel, message }),
+    });
+    const lifecycle = createTTSLookAheadLifecycle({
+        addBeforeUnload: () => undefined,
+        createSession: () => session,
+        listenLookAhead: (listener, stopListener) => {
+            lookAheadListener = listener;
+            lookAheadStopListener = stopListener;
+        },
+        listenState: (listener) => {
+            stateListener = listener;
+        },
+        platform: "win32",
+        removeBeforeUnload: () => undefined,
+    });
+    const handledStates: TTSStateEnum[] = [];
+    const task = runSaga({}, watchTTSLookAheadLifecycle, lifecycle, (state) => {
+        handledStates.push(state);
+    });
+
+    stateListener?.(PLAYING);
+    lookAheadListener?.(snapshot());
+    lookAheadStopListener?.();
+    await nextTurn();
+    await nextTurn();
+
+    expect(messages.map(({ message }) => ({ streamId: message.streamId, type: message.type }))).toStrictEqual([
+        { streamId: STREAM_ID, type: "snapshot" },
+        { streamId: STREAM_ID, type: "stop" },
+    ]);
+    expect(handledStates).toStrictEqual([PLAYING]);
+
+    task.cancel();
+    await task.toPromise();
+});
+
 test("keeps ordinary TTS state handling but creates no adapter outside Windows", async () => {
     let stateListener: ((state: TTSStateEnum) => void) | undefined;
     let createSessionCalls = 0;

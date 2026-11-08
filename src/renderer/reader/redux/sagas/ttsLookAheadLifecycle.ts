@@ -14,12 +14,16 @@ import { call, take } from "redux-saga/effects";
 
 type TTSLookAheadLifecycleEvent =
     | { state: TTSStateEnum; type: "state" }
-    | { snapshot: ITtsLookAheadSnapshot; type: "snapshot" };
+    | { snapshot: ITtsLookAheadSnapshot; type: "snapshot" }
+    | { type: "stop" };
 
 export interface ITTSLookAheadLifecycleDependencies {
     addBeforeUnload: (listener: () => void) => void;
     createSession: () => TtsLookAheadSession;
-    listenLookAhead: (listener: ((snapshot: ITtsLookAheadSnapshot) => void) | undefined) => void;
+    listenLookAhead: (
+        listener: ((snapshot: ITtsLookAheadSnapshot) => void) | undefined,
+        stopListener?: () => void,
+    ) => void;
     listenState: (listener: (state: TTSStateEnum) => void) => void;
     platform: NodeJS.Platform;
     removeBeforeUnload: (listener: () => void) => void;
@@ -43,7 +47,10 @@ export function createTTSLookAheadLifecycle(
             }
 
             const close = () => closeChannel();
-            dependencies.listenLookAhead((snapshot) => emit({ snapshot, type: "snapshot" }));
+            dependencies.listenLookAhead(
+                (snapshot) => emit({ snapshot, type: "snapshot" }),
+                () => emit({ type: "stop" }),
+            );
             dependencies.addBeforeUnload(close);
             return () => {
                 dependencies.removeBeforeUnload(close);
@@ -73,6 +80,14 @@ export function* watchTTSLookAheadLifecycle(
                     lifecycle.session?.onSnapshot(event.snapshot);
                 } catch {
                     // Look-ahead must remain isolated from ordinary speech synthesis.
+                }
+                continue;
+            }
+            if (event.type === "stop") {
+                try {
+                    lifecycle.session?.stop();
+                } catch {
+                    // Look-ahead cleanup must not affect ordinary speech synthesis.
                 }
                 continue;
             }

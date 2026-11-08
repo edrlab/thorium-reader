@@ -8,6 +8,7 @@
 import type { ITtsLookAheadSnapshot, ITtsLookAheadUnit } from "../../common/tts-lookahead";
 
 export type TtsLookAheadListener = (snapshot: ITtsLookAheadSnapshot) => void;
+export type TtsLookAheadStopListener = () => void;
 
 const boundaries = new Set([
     "none",
@@ -121,10 +122,16 @@ export function isTtsLookAheadSnapshot(value: unknown): value is ITtsLookAheadSn
 }
 
 export class TtsLookAheadListenerRegistry {
+    private _enabled = false;
     private _listener: TtsLookAheadListener | undefined;
+    private _stopListener: TtsLookAheadStopListener | undefined;
 
-    public listen(listener: TtsLookAheadListener | undefined): void {
+    public listen(
+        listener: TtsLookAheadListener | undefined,
+        stopListener?: TtsLookAheadStopListener,
+    ): void {
         this._listener = listener;
+        this._stopListener = stopListener;
     }
 
     public handle(payload: unknown): void {
@@ -136,6 +143,22 @@ export class TtsLookAheadListenerRegistry {
             this._listener(payload);
         } catch (_error) {
             // A consumer error must not interrupt renderer IPC handling.
+        }
+    }
+
+    public setEnabled(enabled: boolean): void {
+        const wasEnabled = this._enabled;
+        this._enabled = enabled;
+        if (wasEnabled && !enabled) {
+            this.stop();
+        }
+    }
+
+    public stop(): void {
+        try {
+            this._stopListener?.();
+        } catch (_error) {
+            // A consumer error must not interrupt renderer opt-in handling.
         }
     }
 }

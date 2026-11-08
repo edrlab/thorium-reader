@@ -15,6 +15,7 @@ import {
 } from "@r2-navigator-js/electron/renderer/common/tts-lookahead-listener";
 import {
     TtsLookAheadLifecycle,
+    resumeTtsWithLookAhead,
     scheduleTtsLookAheadNavigation,
     startTtsWithLookAhead,
     type ITtsLookAheadNavigationOptions,
@@ -74,6 +75,22 @@ test("schedules speech when publishing look-ahead throws", () => {
         ),
     ).toThrow("snapshot failed");
     expect(scheduled).toBe(true);
+});
+
+test("resumes speech after publishing look-ahead throws", () => {
+    const events: string[] = [];
+
+    expect(() =>
+        resumeTtsWithLookAhead(
+            "utterance",
+            () => {
+                events.push("lookahead");
+                throw new Error("snapshot failed");
+            },
+            () => events.push("speak"),
+        ),
+    ).toThrow("snapshot failed");
+    expect(events).toEqual(["lookahead", "speak"]);
 });
 
 function queueItem(element: Element, text: string, sentences?: string[]): ITtsQueueItem {
@@ -305,6 +322,39 @@ test("does not index or build snapshots while look-ahead is disabled", () => {
     }
 });
 
+test("clears the indexed DOM queue only when the TTS session ends", () => {
+    const dom = new JSDOM("<!doctype html><html><body><p>Queued sentence.</p></body></html>");
+    try {
+        const item = queueItem(dom.window.document.querySelector("p") as Element, "Queued sentence.");
+        let queueItemReads = 0;
+        const queue = new Proxy([item], {
+            get: (target, property, receiver) => {
+                if (property === "0") {
+                    queueItemReads++;
+                }
+                return Reflect.get(target, property, receiver);
+            },
+        });
+        const lifecycle = new TtsLookAheadLifecycle();
+        lifecycle.setEnabled(true);
+        const source = { rate: 1 };
+        const token = lifecycle.rebuildQueue(queue);
+
+        expect(lifecycle.buildSnapshot(queue, 0, token, source)).toBeDefined();
+        lifecycle.setEnabled(false);
+        lifecycle.setEnabled(true);
+        expect(lifecycle.buildSnapshot(queue, 0, token, source)).toBeDefined();
+        expect(queueItemReads).toBe(1);
+
+        lifecycle.endSession();
+        const nextToken = lifecycle.state;
+        expect(lifecycle.buildSnapshot(queue, 0, nextToken, source)).toBeDefined();
+        expect(queueItemReads).toBe(2);
+    } finally {
+        dom.window.close();
+    }
+});
+
 test.each<[string, TtsLookAheadNavigationKind, ITtsLookAheadNavigationOptions, number]>([
     ["automatic advancement", "automatic", {}, 0],
     ["ordinary next", "next", {}, 0],
@@ -335,6 +385,20 @@ test("delivers a canonical snapshot to a registered listener", () => {
     registry.handle(snapshot);
 
     expect(received).toEqual([snapshot]);
+});
+
+test("notifies stream cleanup only on an enabled-to-disabled transition", () => {
+    const registry = new TtsLookAheadListenerRegistry();
+    let stops = 0;
+    registry.listen(undefined, () => stops++);
+
+    registry.setEnabled(false);
+    registry.setEnabled(true);
+    registry.setEnabled(true);
+    registry.setEnabled(false);
+    registry.setEnabled(false);
+
+    expect(stops).toBe(1);
 });
 
 test.each([

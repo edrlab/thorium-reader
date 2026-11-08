@@ -153,7 +153,7 @@ export class TtsLookAheadSession {
         this.disposed = true;
     }
 
-    private stop(): void {
+    public stop(): void {
         if (this.streamId === undefined) {
             return;
         }

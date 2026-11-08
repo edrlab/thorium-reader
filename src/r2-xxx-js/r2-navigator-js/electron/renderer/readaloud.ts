@@ -224,14 +224,18 @@ export function ttsListen(ttsListener: (ttsState: TTSStateEnum) => void) {
 const _ttsLookAheadListenerRegistry = new TtsLookAheadListenerRegistry();
 const _ttsLookAheadRendererCoordinator =
     new TtsLookAheadRendererCoordinator<IReadiumElectronWebview>(_ttsLookAheadListenerRegistry);
-export function ttsLookAheadListen(listener: ((snapshot: ITtsLookAheadSnapshot) => void) | undefined): void {
-    _ttsLookAheadListenerRegistry.listen(listener);
+export function ttsLookAheadListen(
+    listener: ((snapshot: ITtsLookAheadSnapshot) => void) | undefined,
+    stopListener?: () => void,
+): void {
+    _ttsLookAheadListenerRegistry.listen(listener, stopListener);
 }
 
 let _ttsLookAheadEnabled = false;
 
 export function ttsLookAheadEnable(doEnable: boolean) {
     _ttsLookAheadEnabled = doEnable;
+    _ttsLookAheadListenerRegistry.setEnabled(doEnable);
     if (!win.READIUM2) {
         return;
     }

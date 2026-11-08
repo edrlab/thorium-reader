@@ -83,6 +83,10 @@ function resetState(stop: boolean) {
     if (stop) {
         _resumableState = undefined;
     }
+    const sessionEnded = stop || !_resumableState;
+    if (sessionEnded) {
+        _ttsLookAheadLifecycle.endSession();
+    }
 
     if (_dialogState) {
         if (_dialogState.hasAttribute("open") || _dialogState.open) {
@@ -114,7 +118,7 @@ function resetState(stop: boolean) {
     _dialogState = undefined;
 
     win.document.documentElement.classList.remove(TTS_CLASS_IS_ACTIVE);
-    if (stop || !_resumableState) {
+    if (sessionEnded) {
         ipcRenderer.sendToHost(R2_EVENT_TTS_IS_STOPPED);
         win.READIUM2.ttsClickEnabled = false;
         win.document.documentElement.classList.remove(TTS_CLASS_PLAYING, TTS_CLASS_PAUSED);
