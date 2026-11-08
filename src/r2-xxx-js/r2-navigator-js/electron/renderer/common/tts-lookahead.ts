@@ -39,6 +39,19 @@ export interface ITtsLookAheadNavigationOptions {
     skipSentences?: boolean;
 }
 
+export function startTtsWithLookAhead(
+    markPlaying: () => void,
+    emitSnapshot: () => void,
+    scheduleSpeech: () => void,
+): void {
+    try {
+        markPlaying();
+        emitSnapshot();
+    } finally {
+        scheduleSpeech();
+    }
+}
+
 export function resumeTtsWithLookAhead<T>(
     utterance: T,
     emitSnapshot: (utterance: T) => void,

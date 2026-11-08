@@ -17,9 +17,65 @@ import {
     TtsLookAheadLifecycle,
     buildTtsLookAheadSnapshot,
     scheduleTtsLookAheadNavigation,
+    startTtsWithLookAhead,
     type ITtsLookAheadNavigationOptions,
     type TtsLookAheadNavigationKind,
 } from "@r2-navigator-js/electron/renderer/common/tts-lookahead";
+
+test("establishes playback before publishing look-ahead and scheduling speech", () => {
+    const events: string[] = [];
+    let scheduledSpeech: (() => void) | undefined;
+
+    startTtsWithLookAhead(
+        () => events.push("playing"),
+        () => events.push("lookahead"),
+        () => {
+            events.push("scheduled");
+            scheduledSpeech = () => events.push("speak");
+        },
+    );
+
+    expect(events).toEqual(["playing", "lookahead", "scheduled"]);
+    expect(scheduledSpeech).toBeDefined();
+
+    scheduledSpeech?.();
+
+    expect(events).toEqual(["playing", "lookahead", "scheduled", "speak"]);
+});
+
+test("schedules speech when marking playback throws", () => {
+    let scheduled = false;
+
+    expect(() =>
+        startTtsWithLookAhead(
+            () => {
+                throw new Error("mark failed");
+            },
+            () => undefined,
+            () => {
+                scheduled = true;
+            },
+        ),
+    ).toThrow("mark failed");
+    expect(scheduled).toBe(true);
+});
+
+test("schedules speech when publishing look-ahead throws", () => {
+    let scheduled = false;
+
+    expect(() =>
+        startTtsWithLookAhead(
+            () => undefined,
+            () => {
+                throw new Error("snapshot failed");
+            },
+            () => {
+                scheduled = true;
+            },
+        ),
+    ).toThrow("snapshot failed");
+    expect(scheduled).toBe(true);
+});
 
 function queueItem(element: Element, text: string, sentences?: string[]): ITtsQueueItem {
     return {

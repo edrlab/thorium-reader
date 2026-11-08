@@ -34,6 +34,7 @@ import { easings } from "../common/easings";
 import { IHTMLDialogElementWithPopup, PopupDialog, isPopupDialogOpen } from "./popup-dialog";
 import {
     TtsLookAheadLifecycle, buildTtsLookAheadSnapshot, resumeTtsWithLookAhead, scheduleTtsLookAheadNavigation,
+    startTtsWithLookAhead,
     type ITtsLookAheadSource,
 } from "../common/tts-lookahead";
 import { createHighlights, destroyHighlight, ENABLE_CSS_HIGHLIGHTS, HIGHLIGHT_GROUP_TTS } from "./highlight";
@@ -1775,23 +1776,26 @@ export function ttsPlayQueueIndex(ttsQueueIndex: number, ttsAndMediaOverlaysManu
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (utterance as any).r2_cancel = false;
-    emitTtsLookAheadSnapshot(utterance);
-    setTimeout(() => {
-        // note that isSkippable===true never reaches into a ttsQueueItem because we eject at compilation time instead of runtime / playback:
-        // if (win.READIUM2.ttsSkippabilityEnabled && ttsQueueItem.item.isSkippable) {
-        //     onEnd();
-        // } else {
-        //     win.speechSynthesis.speak(utterance);
-        // }
-        win.speechSynthesis.speak(utterance);
-    }, 0);
-
-    win.document.documentElement.classList.remove(TTS_CLASS_PAUSED, TTS_CLASS_STOPPED);
-    win.document.documentElement.classList.add(TTS_CLASS_PLAYING);
-    if (_dialogState && _dialogState.ttsOverlayEnabled) {
-        win.document.documentElement.classList.add(TTS_CLASS_IS_ACTIVE);
-    }
-    ipcRenderer.sendToHost(R2_EVENT_TTS_IS_PLAYING);
+    startTtsWithLookAhead(
+        () => {
+            win.document.documentElement.classList.remove(TTS_CLASS_PAUSED, TTS_CLASS_STOPPED);
+            win.document.documentElement.classList.add(TTS_CLASS_PLAYING);
+            if (_dialogState && _dialogState.ttsOverlayEnabled) {
+                win.document.documentElement.classList.add(TTS_CLASS_IS_ACTIVE);
+            }
+            ipcRenderer.sendToHost(R2_EVENT_TTS_IS_PLAYING);
+        },
+        () => emitTtsLookAheadSnapshot(utterance),
+        () => setTimeout(() => {
+            // note that isSkippable===true never reaches into a ttsQueueItem because we eject at compilation time instead of runtime / playback:
+            // if (win.READIUM2.ttsSkippabilityEnabled && ttsQueueItem.item.isSkippable) {
+            //     onEnd();
+            // } else {
+            //     win.speechSynthesis.speak(utterance);
+            // }
+            win.speechSynthesis.speak(utterance);
+        }, 0),
+    );
     win.READIUM2.ttsClickEnabled = true;
     clearImageZoomOutlineDebounced();
 }
