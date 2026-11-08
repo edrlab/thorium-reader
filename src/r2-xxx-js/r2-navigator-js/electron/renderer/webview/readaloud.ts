@@ -33,7 +33,7 @@ import {
 import { easings } from "../common/easings";
 import { IHTMLDialogElementWithPopup, PopupDialog, isPopupDialogOpen } from "./popup-dialog";
 import {
-    TtsLookAheadLifecycle, buildTtsLookAheadSnapshot, resumeTtsWithLookAhead, scheduleTtsLookAheadNavigation,
+    TtsLookAheadLifecycle, resumeTtsWithLookAhead, scheduleTtsLookAheadNavigation,
     startTtsWithLookAhead,
     type ITtsLookAheadSource,
 } from "../common/tts-lookahead";
@@ -1588,7 +1588,7 @@ function emitTtsLookAheadSnapshot(utterance: SpeechSynthesisUtterance) {
         source.lang = utterance.lang;
     }
     const token = _ttsLookAheadLifecycle.createEmissionToken(source);
-    const snapshot = buildTtsLookAheadSnapshot(
+    const snapshot = _ttsLookAheadLifecycle.buildSnapshot(
         _dialogState.ttsQueue,
         _dialogState.ttsQueueItem.iGlobal,
         token,
@@ -1972,7 +1972,7 @@ ${win.READIUM2.ttsOverlayEnabled ?
 
     _dialogState.ttsQueue = ttsQueue;
     _dialogState.ttsQueueLength = ttsQueueLength;
-    _ttsLookAheadLifecycle.rebuildQueue();
+    _ttsLookAheadLifecycle.rebuildQueue(ttsQueue);
 
     if (_dialogState.domSlider) {
         _dialogState.domSlider.addEventListener("input", (_ev: Event) => {

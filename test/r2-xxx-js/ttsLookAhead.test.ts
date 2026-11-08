@@ -15,7 +15,6 @@ import {
 } from "@r2-navigator-js/electron/renderer/common/tts-lookahead-listener";
 import {
     TtsLookAheadLifecycle,
-    buildTtsLookAheadSnapshot,
     scheduleTtsLookAheadNavigation,
     startTtsWithLookAhead,
     type ITtsLookAheadNavigationOptions,
@@ -164,7 +163,10 @@ test("builds a bounded semantic queue with exact prioritized symmetric boundarie
             }),
         ];
 
-        const snapshot = buildTtsLookAheadSnapshot(queue, 0, { generation: 7, revision: 3 }, { rate: 1 });
+        const lifecycle = new TtsLookAheadLifecycle();
+        lifecycle.rebuildQueue(queue);
+        const source = { rate: 1 };
+        const snapshot = lifecycle.buildSnapshot(queue, 0, { generation: 7, revision: 3 }, source);
 
         expect(snapshot).toBeDefined();
         expect(snapshot?.units).toHaveLength(12);
@@ -201,12 +203,10 @@ test("assigns dense stable sequences when sentence fragments are empty", () => {
     const dom = new JSDOM("<!doctype html><html><body><p></p></body></html>");
     try {
         const paragraph = dom.window.document.querySelector("p") as Element;
-        const snapshot = buildTtsLookAheadSnapshot(
-            [queueItem(paragraph, "Spoken one. Spoken two.", ["", "Spoken one.", "", "Spoken two."])],
-            0,
-            { generation: 4, revision: 1 },
-            { rate: 1 },
-        );
+        const queue = [queueItem(paragraph, "Spoken one. Spoken two.", ["", "Spoken one.", "", "Spoken two."])];
+        const lifecycle = new TtsLookAheadLifecycle();
+        lifecycle.rebuildQueue(queue);
+        const snapshot = lifecycle.buildSnapshot(queue, 0, { generation: 4, revision: 1 }, { rate: 1 });
 
         expect(
             snapshot?.units.map((unit) => ({
@@ -226,6 +226,40 @@ test("assigns dense stable sequences when sentence fragments are empty", () => {
                 text: "Spoken two.",
             },
         ]);
+    } finally {
+        dom.window.close();
+    }
+});
+
+test("indexes the spoken queue once per generation", () => {
+    const dom = new JSDOM("<!doctype html><html><body><p>One. Two.</p></body></html>");
+    try {
+        const item = queueItem(dom.window.document.querySelector("p") as Element, "One. Two.", ["One.", "Two."]);
+        let queueItemReads = 0;
+        const queue = new Proxy([item], {
+            get: (target, property, receiver) => {
+                if (property === "0") {
+                    queueItemReads++;
+                }
+                return Reflect.get(target, property, receiver);
+            },
+        });
+        const lifecycle = new TtsLookAheadLifecycle();
+        const source = { rate: 1 };
+
+        lifecycle.rebuildQueue(queue);
+        const first = lifecycle.createEmissionToken(source);
+        lifecycle.buildSnapshot(queue, 0, first, source);
+        lifecycle.buildSnapshot(queue, 1, first, source);
+
+        expect(queueItemReads).toBe(1);
+
+        lifecycle.invalidate();
+        const second = lifecycle.createEmissionToken(source);
+        lifecycle.buildSnapshot(queue, 0, second, source);
+        lifecycle.buildSnapshot(queue, 1, second, source);
+
+        expect(queueItemReads).toBe(2);
     } finally {
         dom.window.close();
     }

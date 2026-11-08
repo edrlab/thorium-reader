@@ -1,3 +1,10 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 import type {
     ITtsLookAheadBlock,
     ITtsLookAheadPosition,
@@ -63,6 +70,9 @@ export function resumeTtsWithLookAhead<T>(
 
 export class TtsLookAheadLifecycle {
     private _generation = -1;
+    private _indexedGeneration = -1;
+    private _indexedQueue: ITtsQueueItem[] | undefined;
+    private _mappedReferences: ITtsLookAheadMappedReference[] = [];
     private _revision = 0;
     private _sourceFingerprint: string | undefined;
 
@@ -73,14 +83,34 @@ export class TtsLookAheadLifecycle {
         };
     }
 
-    public rebuildQueue(): ITtsLookAheadBuildState {
-        return this.invalidate();
+    public rebuildQueue(queue?: ITtsQueueItem[]): ITtsLookAheadBuildState {
+        const state = this.invalidate();
+        if (queue) {
+            this.indexQueue(queue, state.generation);
+        }
+        return state;
     }
 
     public invalidate(): ITtsLookAheadBuildState {
         this._generation++;
+        this._indexedGeneration = -1;
+        this._indexedQueue = undefined;
+        this._mappedReferences = [];
         this._revision = 0;
         return this.state;
+    }
+
+    public buildSnapshot(
+        queue: ITtsQueueItem[],
+        currentIndex: number,
+        state: ITtsLookAheadBuildState,
+        source: ITtsLookAheadSource,
+        maxUnits = 12,
+    ): ITtsLookAheadSnapshot | undefined {
+        if (this._indexedGeneration !== state.generation || this._indexedQueue !== queue) {
+            this.indexQueue(queue, state.generation);
+        }
+        return buildTtsLookAheadSnapshot(this._mappedReferences, currentIndex, state, source, maxUnits);
     }
 
     public createEmissionToken(source: ITtsLookAheadSource): ITtsLookAheadEmissionToken {
@@ -103,6 +133,12 @@ export class TtsLookAheadLifecycle {
         }
         this._revision++;
         return true;
+    }
+
+    private indexQueue(queue: ITtsQueueItem[], generation: number): void {
+        this._mappedReferences = mapSpokenQueue(queue);
+        this._indexedGeneration = generation;
+        this._indexedQueue = queue;
     }
 }
 
@@ -300,13 +336,14 @@ function mapSpokenQueue(queue: ITtsQueueItem[]): ITtsLookAheadMappedReference[] 
     let globalIndex = 0;
 
     queue.forEach((item, iArray) => {
-        const texts = item.combinedTextSentences || [item.combinedText];
+        const sentences = item.combinedTextSentences;
+        const texts = sentences || [item.combinedText];
         const spokenReferences: ITtsQueueItemReference[] = [];
         texts.forEach((text, iSentence) => {
             const reference: ITtsQueueItemReference = {
                 iArray,
                 iGlobal: globalIndex,
-                iSentence: item.combinedTextSentences ? iSentence : -1,
+                iSentence: sentences ? iSentence : -1,
                 item,
             };
             globalIndex++;
@@ -331,8 +368,25 @@ function mapSpokenQueue(queue: ITtsQueueItem[]): ITtsLookAheadMappedReference[] 
     return mappedReferences;
 }
 
-export function buildTtsLookAheadSnapshot(
-    queue: ITtsQueueItem[],
+function findMappedReferenceIndex(
+    mappedReferences: ITtsLookAheadMappedReference[],
+    currentIndex: number,
+): number {
+    let lower = 0;
+    let upper = mappedReferences.length;
+    while (lower < upper) {
+        const middle = lower + Math.floor((upper - lower) / 2);
+        if (mappedReferences[middle].reference.iGlobal < currentIndex) {
+            lower = middle + 1;
+        } else {
+            upper = middle;
+        }
+    }
+    return lower < mappedReferences.length ? lower : -1;
+}
+
+function buildTtsLookAheadSnapshot(
+    mappedReferences: ITtsLookAheadMappedReference[],
     currentIndex: number,
     state: ITtsLookAheadBuildState,
     source: ITtsLookAheadSource,
@@ -343,8 +397,7 @@ export function buildTtsLookAheadSnapshot(
     }
 
     const unitLimit = Math.max(0, Math.min(maxUnits, 12));
-    const mappedReferences = mapSpokenQueue(queue);
-    const currentMappedIndex = mappedReferences.findIndex(({ reference }) => reference.iGlobal >= currentIndex);
+    const currentMappedIndex = findMappedReferenceIndex(mappedReferences, currentIndex);
     if (unitLimit === 0 || currentMappedIndex < 0) {
         return undefined;
     }
