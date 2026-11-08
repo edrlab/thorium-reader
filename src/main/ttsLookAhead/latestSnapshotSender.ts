@@ -1,5 +1,14 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 import type { IVoiceLinkSnapshot } from "readium-desktop/common/ipc/ttsLookAhead";
 import type { VoiceLinkClient } from "readium-desktop/main/ttsLookAhead/voiceLinkClient";
+
+const DEFAULT_MAX_STOPPED_STREAMS = 256;
 
 type SnapshotResult = Awaited<ReturnType<VoiceLinkClient["putSnapshot"]>>;
 
@@ -26,18 +35,22 @@ function isNewer(
 }
 
 export class LatestSnapshotSender {
+    private readonly activeStops = new Map<string, Promise<void>>();
     private disposePromise?: Promise<void>;
     private disposed = false;
-    private readonly stops = new Map<string, Promise<void>>();
+    private readonly maxStoppedStreams: number;
+    private readonly stoppedStreams = new Map<string, true>();
     private readonly streams = new Map<string, IStreamState>();
 
     public constructor(
         private readonly client: Pick<VoiceLinkClient, "putSnapshot" | "deleteStream">,
+        maxStoppedStreams = DEFAULT_MAX_STOPPED_STREAMS,
     ) {
+        this.maxStoppedStreams = Math.max(1, Math.floor(maxStoppedStreams));
     }
 
     public enqueue(streamId: string, snapshot: IVoiceLinkSnapshot): void {
-        if (this.disposed || this.stops.has(streamId)) {
+        if (this.disposed || this.activeStops.has(streamId) || this.stoppedStreams.has(streamId)) {
             return;
         }
 
@@ -74,9 +87,9 @@ export class LatestSnapshotSender {
         }
 
         this.disposed = true;
-        const cleanups = Array.from(this.stops.values());
+        const cleanups = Array.from(this.activeStops.values());
         for (const streamId of this.streams.keys()) {
-            if (!this.stops.has(streamId)) {
+            if (!this.activeStops.has(streamId)) {
                 cleanups.push(this.stopStream(streamId));
             }
         }
@@ -85,9 +98,13 @@ export class LatestSnapshotSender {
     }
 
     private stopStream(streamId: string): Promise<void> {
-        const existing = this.stops.get(streamId);
+        const existing = this.activeStops.get(streamId);
         if (existing !== undefined) {
             return existing;
+        }
+        if (this.stoppedStreams.has(streamId)) {
+            this.rememberStopped(streamId);
+            return Promise.resolve();
         }
 
         const state = this.streams.get(streamId);
@@ -96,9 +113,24 @@ export class LatestSnapshotSender {
             state.pending = undefined;
         }
 
-        const cleanup = this.cleanup(streamId, state);
-        this.stops.set(streamId, cleanup);
+        this.rememberStopped(streamId);
+        const cleanup = this.cleanup(streamId, state).finally(() => {
+            this.activeStops.delete(streamId);
+        });
+        this.activeStops.set(streamId, cleanup);
         return cleanup;
+    }
+
+    private rememberStopped(streamId: string): void {
+        this.stoppedStreams.delete(streamId);
+        this.stoppedStreams.set(streamId, true);
+        while (this.stoppedStreams.size > this.maxStoppedStreams) {
+            const oldest = this.stoppedStreams.keys().next().value;
+            if (oldest === undefined) {
+                break;
+            }
+            this.stoppedStreams.delete(oldest);
+        }
     }
 
     private async cleanup(streamId: string, state: IStreamState | undefined): Promise<void> {

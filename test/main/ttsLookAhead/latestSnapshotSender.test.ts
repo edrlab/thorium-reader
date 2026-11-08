@@ -25,6 +25,7 @@ interface IDeleteCall {
 
 const STREAM_A = "123e4567-e89b-12d3-a456-426614174000";
 const STREAM_B = "223e4567-e89b-12d3-a456-426614174000";
+const STREAM_C = "323e4567-e89b-12d3-a456-426614174000";
 
 function deferred<T>(): IDeferred<T> {
     let rejectPromise!: (reason?: unknown) => void;
@@ -259,6 +260,24 @@ test("concurrent and repeated stop calls share one DELETE", async () => {
     await sender.stop(STREAM_A);
 
     expect(client.deletes).toHaveLength(1);
+});
+
+test("bounds stopped-stream tombstones and keeps the most recently used stream IDs", async () => {
+    const client = new ControlledClient();
+    const sender = new LatestSnapshotSender(client, 2);
+
+    await sender.stop(STREAM_A);
+    await sender.stop(STREAM_B);
+    await sender.stop(STREAM_A);
+    await sender.stop(STREAM_C);
+
+    sender.enqueue(STREAM_A, snapshot(1, 1));
+    sender.enqueue(STREAM_B, snapshot(1, 1));
+    sender.enqueue(STREAM_C, snapshot(1, 1));
+
+    expect(client.puts.map(({ streamId }) => streamId)).toStrictEqual([STREAM_B]);
+    client.puts[0].gate.resolve("accepted");
+    await nextTurn();
 });
 
 test("dispose stops every known stream once and ignores all future enqueues", async () => {
