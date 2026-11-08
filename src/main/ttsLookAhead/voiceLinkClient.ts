@@ -12,6 +12,8 @@ import type {
 
 const VOICE_LINK_ORIGIN = "http://127.0.0.1:7860" as const;
 const DEFAULT_TIMEOUT_MS = 750;
+const CAPABILITY_RETRY_BASE_MS = 1_000;
+const CAPABILITY_RETRY_MAX_MS = 30_000;
 const HARD_MAX_UNITS = 12;
 const HARD_MAX_CHARACTERS = 12_000;
 const HARD_MAX_UNIT_CHARACTERS = 4_000;
@@ -43,6 +45,10 @@ interface ICapabilityRequestResult {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isTransientCapabilityStatus(status: number): boolean {
+    return status === 408 || status === 425 || status === 429 || status < 400 || status >= 500;
 }
 
 function isPositiveSafeInteger(value: unknown): value is number {
@@ -134,7 +140,9 @@ export class VoiceLinkClient {
     private readonly origin: typeof VOICE_LINK_ORIGIN;
     private readonly timeoutMs: number;
     private cachedCapabilities?: IVoiceLinkCapabilities;
+    private capabilityFailureCount = 0;
     private capabilityProbe?: Promise<IVoiceLinkCapabilities | undefined>;
+    private capabilityRetryAt = 0;
     private disabled = false;
 
     public constructor(options: VoiceLinkClientOptions = {}) {
@@ -162,7 +170,7 @@ export class VoiceLinkClient {
 
         const capabilities = await this.getCapabilities();
         if (!capabilities) {
-            return "disabled";
+            return this.disabled ? "disabled" : "transient-error";
         }
 
         let body: string | undefined;
@@ -230,6 +238,9 @@ export class VoiceLinkClient {
         if (this.cachedCapabilities) {
             return Promise.resolve(this.cachedCapabilities);
         }
+        if (Date.now() < this.capabilityRetryAt) {
+            return Promise.resolve(undefined);
+        }
         if (this.capabilityProbe === undefined) {
             this.capabilityProbe = this.probeCapabilities().finally(() => {
                 this.capabilityProbe = undefined;
@@ -256,7 +267,7 @@ export class VoiceLinkClient {
         );
 
         if (!result) {
-            this.disabled = true;
+            this.deferCapabilityRetry();
             return undefined;
         }
         if (!result.response.ok) {
@@ -265,7 +276,11 @@ export class VoiceLinkClient {
                 reason: "http-error",
                 status: result.response.status,
             });
-            this.disabled = true;
+            if (isTransientCapabilityStatus(result.response.status)) {
+                this.deferCapabilityRetry();
+            } else {
+                this.disabled = true;
+            }
             return undefined;
         }
         if (result.malformed) {
@@ -282,7 +297,16 @@ export class VoiceLinkClient {
         }
 
         this.cachedCapabilities = freezeCapabilities(capabilities);
+        this.capabilityFailureCount = 0;
+        this.capabilityRetryAt = 0;
         return this.cachedCapabilities;
+    }
+
+    private deferCapabilityRetry(): void {
+        const exponent = Math.min(this.capabilityFailureCount, 5);
+        const delay = Math.min(CAPABILITY_RETRY_BASE_MS * (2 ** exponent), CAPABILITY_RETRY_MAX_MS);
+        this.capabilityFailureCount += 1;
+        this.capabilityRetryAt = Date.now() + delay;
     }
 
     private async request<T>(

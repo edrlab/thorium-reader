@@ -285,14 +285,112 @@ test("aborts every timed-out operation and resolves without throwing", async () 
     expect(signals.every((signal) => signal.aborted)).toBe(true);
 });
 
-test("treats connection refusal and malformed capability JSON as disabled without unhandled errors", async () => {
-    const refused = new VoiceLinkClient({ fetch: fetchStub(new Error("ECONNREFUSED")).fetch });
-    const malformed = new VoiceLinkClient({ fetch: fetchStub(response(200, "{")).fetch });
+test("recovers from capability connection refusal after a retry cooldown", async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(0);
+    const harness = fetchStub(new Error("ECONNREFUSED"), capabilityResponse(), response(204));
+    const client = new VoiceLinkClient({ fetch: harness.fetch });
 
-    await expect(refused.capabilities()).resolves.toBeUndefined();
-    await expect(refused.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("disabled");
-    await expect(malformed.capabilities()).resolves.toBeUndefined();
-    await expect(malformed.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("disabled");
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("transient-error");
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("transient-error");
+    expect(harness.calls).toHaveLength(1);
+
+    await jest.advanceTimersByTimeAsync(999);
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("transient-error");
+    expect(harness.calls).toHaveLength(1);
+
+    await jest.advanceTimersByTimeAsync(1);
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("accepted");
+    expect(harness.calls).toHaveLength(3);
+});
+
+test("backs off repeated transient capability failures without hammering VoiceLink", async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(0);
+    const harness = fetchStub(
+        new Error("first refusal"),
+        new Error("second refusal"),
+        capabilityResponse(),
+        response(204),
+    );
+    const client = new VoiceLinkClient({ fetch: harness.fetch });
+
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("transient-error");
+    await jest.advanceTimersByTimeAsync(1_000);
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("transient-error");
+    expect(harness.calls).toHaveLength(2);
+
+    await jest.advanceTimersByTimeAsync(1_999);
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("transient-error");
+    expect(harness.calls).toHaveLength(2);
+
+    await jest.advanceTimersByTimeAsync(1);
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("accepted");
+    expect(harness.calls).toHaveLength(4);
+});
+
+test("recovers after a timed-out capability request instead of disabling the client", async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(0);
+    let callCount = 0;
+    const controlledFetch = ((_input: RequestInfo | URL, init?: RequestInit) => {
+        callCount += 1;
+        if (callCount === 1) {
+            const signal = init?.signal as AbortSignal;
+            return new Promise<Response>((_resolve, reject) => {
+                signal.addEventListener("abort", () => reject(new Error("aborted")), { once: true });
+            });
+        }
+        return Promise.resolve(callCount === 2 ? capabilityResponse() : response(204));
+    }) as typeof fetch;
+    const client = new VoiceLinkClient({ fetch: controlledFetch, timeoutMs: 25 });
+
+    const first = client.putSnapshot(STREAM_ID, snapshot());
+    await jest.advanceTimersByTimeAsync(25);
+    await expect(first).resolves.toBe("transient-error");
+
+    await jest.advanceTimersByTimeAsync(1_000);
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("accepted");
+    expect(callCount).toBe(3);
+});
+
+test.each([408, 425, 429, 500, 503])(
+    "retries transient capability HTTP status %i after the cooldown",
+    async (status) => {
+        jest.useFakeTimers();
+        jest.setSystemTime(0);
+        const harness = fetchStub(response(status), capabilityResponse(), response(204));
+        const client = new VoiceLinkClient({ fetch: harness.fetch });
+
+        await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("transient-error");
+        await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("transient-error");
+        expect(harness.calls).toHaveLength(1);
+
+        await jest.advanceTimersByTimeAsync(1_000);
+        await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("accepted");
+        expect(harness.calls).toHaveLength(3);
+    },
+);
+
+test.each([400, 404, 405, 426])("permanently disables capabilities for definitive HTTP status %i", async (status) => {
+    jest.useFakeTimers();
+    jest.setSystemTime(0);
+    const harness = fetchStub(response(status), capabilityResponse());
+    const client = new VoiceLinkClient({ fetch: harness.fetch });
+
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("disabled");
+    await jest.advanceTimersByTimeAsync(60_000);
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("disabled");
+    expect(harness.calls).toHaveLength(1);
+});
+
+test("permanently disables malformed successful capability JSON without unhandled errors", async () => {
+    const harness = fetchStub(response(200, "{"), capabilityResponse());
+    const client = new VoiceLinkClient({ fetch: harness.fetch });
+
+    await expect(client.capabilities()).resolves.toBeUndefined();
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("disabled");
+    expect(harness.calls).toHaveLength(1);
 });
 
 test.each([
