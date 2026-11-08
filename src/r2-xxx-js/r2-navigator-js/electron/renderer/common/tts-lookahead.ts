@@ -90,9 +90,6 @@ export class TtsLookAheadLifecycle {
 
     public setEnabled(enabled: boolean): void {
         this._enabled = enabled;
-        if (!enabled) {
-            this.clearIndex();
-        }
     }
 
     public rebuildQueue(queue?: ITtsQueueItem[]): ITtsLookAheadBuildState {

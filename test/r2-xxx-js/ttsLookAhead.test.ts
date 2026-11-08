@@ -296,6 +296,10 @@ test("does not index or build snapshots while look-ahead is disabled", () => {
         lifecycle.setEnabled(false);
         expect(lifecycle.buildSnapshot(queue, 0, token, source)).toBeUndefined();
         expect(queueItemReads).toBe(1);
+
+        lifecycle.setEnabled(true);
+        expect(lifecycle.buildSnapshot(queue, 0, token, source)).toBeDefined();
+        expect(queueItemReads).toBe(1);
     } finally {
         dom.window.close();
     }
