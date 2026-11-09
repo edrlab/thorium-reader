@@ -86,3 +86,14 @@ test("ignores late titles from another route and updates a refreshed feed title"
     mockBreadcrumb = opdsBreadcrumbReducer(mockBreadcrumb, breadcrumbTitleUpdate.build(rootPath, " Updated catalog "));
     expect(mockBreadcrumb[1]).toEqual({ name: "Updated catalog", path: rootPath });
 });
+
+test("does not show or retain another catalog's breadcrumb during a direct feed switch", () => {
+    mockBreadcrumb = opdsBreadcrumbReducer(mockBreadcrumb, breadcrumbTitleUpdate.build(rootPath, "Online catalog"));
+    mockPath = buildOpdsBrowserRoute("b", "New feed", childUrl, 3);
+    expect(render()).toContain('aria-current="page">New feed</span>');
+    expect(render()).not.toContain("Online catalog");
+
+    mockBreadcrumb = opdsBreadcrumbReducer(mockBreadcrumb, browseRequest.build("b", 3, "New feed", childUrl));
+    mockBreadcrumb = opdsBreadcrumbReducer(mockBreadcrumb, breadcrumbTitleUpdate.build(rootPath, "Late old title"));
+    expect(mockBreadcrumb.map(item => item.path)).toEqual(["/opds", mockPath]);
+});

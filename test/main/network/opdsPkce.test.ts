@@ -165,7 +165,7 @@ describe("OPDS Authorization Code with PKCE", () => {
                 }>;
             };
             const parsedDocument = TaJsonDeserialize(authenticationDocument, OPDSAuthenticationDoc);
-            expect(parsedDocument.Authentication[0].Type).toBe(OPDS_AUTHORIZATION_CODE_PKCE_TYPE);
+            expect(OPDS_AUTHORIZATION_CODE_PKCE_TYPE).toContain(parsedDocument.Authentication[0].Type);
             expect(Object.keys(authenticationDocument.authentication[0]).sort()).toEqual(["links", "type"]);
 
             const authentication = authenticationDocument.authentication[0];

@@ -8,7 +8,7 @@
 import { type Reducer } from "redux";
 
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { buildOpdsBrowserRoute, parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import {
     browseRequest, headerLinksUpdate, search, popBreadcrumb, breadcrumbTitleUpdate,
@@ -30,7 +30,8 @@ function opdsBreadcrumbReducer_(
     switch (action.type) {
         case opdsActions.browseRequest.ID:
             const { level, title, url, rootFeedIdentifier } = action.payload;
-            const stateNew = state.slice(0, level - 1);
+            const sameCatalog = state[1] && parseOpdsBrowserRoute(state[1].path)?.rootFeedIdentifier === rootFeedIdentifier;
+            const stateNew = sameCatalog ? state.slice(0, level - 1) : [];
             if (stateNew.length === 0) {
                 stateNew.push({
                     name: getTranslator().__("opds.breadcrumbRoot"),

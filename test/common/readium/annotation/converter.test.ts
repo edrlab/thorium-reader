@@ -130,20 +130,30 @@ test.each([
     { isDivina: true },
     { isDaisy: true },
     {},
-])("non-EPUB annotation sets retain the legacy JSON model: %j", (format) => {
-    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet("en", [createNote()], {
+])("non-EPUB annotation sets use the legacy context and preserve all tags: %j", (format) => {
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet("en", [createNote({ tags: ["review", "important"] })], {
         ...publicationView,
         isEPUB: false,
         ...format,
     });
     expect(annotationSet["@context"]).toBe(LEGACY_ANNOTATION_CONTEXT);
     expect(annotationSet.items[0]["@context"]).toBe(LEGACY_ANNOTATION_CONTEXT);
-    expect(annotationSet.items[0].body.tag).toBe("tag");
-    expect(annotationSet.items[0].body).not.toHaveProperty("tags");
+    expect(annotationSet.items[0].body.tags).toEqual(["review", "important"]);
+    expect(annotationSet.items[0].body).not.toHaveProperty("tag");
     expect(isIReadiumAnnotationSet(annotationSet)).toBe(true);
 });
 
-test("HTML export can retain the legacy model for EPUB", () => {
+test("detached EPUB annotation sets preserve all tags with the legacy context", () => {
+    const note = createNote({ tags: ["review", "important"] });
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet("en", [note], publicationView, "Detached", LEGACY_ANNOTATION_CONTEXT);
+
+    expect(annotationSet["@context"]).toBe(LEGACY_ANNOTATION_CONTEXT);
+    expect(annotationSet.items[0].body.tags).toEqual(["review", "important"]);
+    expect(annotationSet.items[0].body).not.toHaveProperty("tag");
+    expect(isIReadiumAnnotationSet(annotationSet)).toBe(true);
+});
+
+test("HTML export can retain the legacy context for EPUB", () => {
     const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet("en", [createNote()], publicationView, "HTML", LEGACY_ANNOTATION_CONTEXT);
     expect(annotationSet["@context"]).toBe(LEGACY_ANNOTATION_CONTEXT);
     expect(Mustache.render("{{#body.tags}}Tag: {{.}}{{/body.tags}}", {

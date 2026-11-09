@@ -64,11 +64,16 @@ describe("inline external authentication lifecycle", () => {
         expect(f.dispatch).not.toHaveBeenCalledWith(historyActions.refresh.build());
     });
 
-    it("reports a browser launch failure inline", async () => {
+    it("keeps manual browser login available after a browser launch failure", async () => {
         const f = fixture(); f.dependencies.openExternal.mockRejectedValue(new Error("No browser"));
-        await runSaga({ dispatch: f.dispatch }, runExternalAuthentication, f.dependencies,
-            authActions.externalRequest.build(url, "view", "start")).toPromise();
-        expect(f.dispatch).toHaveBeenCalledWith(authActions.externalStatus.build("view", "failed"));
+        const task = runSaga({ dispatch: f.dispatch }, runExternalAuthentication, f.dependencies,
+            authActions.externalRequest.build(url, "view", "start"));
+        await flush();
+        expect(f.dispatch).toHaveBeenCalledWith(authActions.externalStatus.build("view", "failed", f.session.authorizationUrl));
+        expect(task.isRunning()).toBe(true);
+        f.callbacks.put(f.event());
+        await task.toPromise();
+        expect(f.dispatch).toHaveBeenCalledWith(authActions.externalStatus.build("view", "complete"));
         expect(f.session.dispose).toHaveBeenCalled();
     });
 

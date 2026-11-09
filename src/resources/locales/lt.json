@@ -120,10 +120,13 @@
         "numberOfPages": "Puslapių skaičius",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Nutraukti",
                 "external": "Jūsų interneto naršyklėje atsidarys prisijungimo puslapis, sekite instrukcijas. Kai prisijungsite, interneto naršyklė grąžins jus į šią programą.",
+                "externalBrowserInstructions": "",
                 "fallback": "Pastaba: jei kyla problemų prisijungiant naudojant numatytąjį žiniatinklio naršyklės metodą, bandykite dar kartą naudodami alternatyvų programos metodą.",
                 "login": "Prisijungim/as",
+                "openExternalBrowser": "",
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
                 "retry": "Bandyti dar kartą",
@@ -132,7 +135,7 @@
                 "username": "Naudotojo vardas / El. pašto adresas"
             },
             "info": {
-                "availableSince": "Prieinama nuo",
+                "availableSince": "Prieinama nuo {{- date}}",
                 "availableState": {
                     "available": "Prieinama",
                     "ready": "Paruošta",
@@ -140,7 +143,7 @@
                     "unavailable": "Neprieinama",
                     "unknown": "Nežinoma"
                 },
-                "availableUntil": "Prieinama iki",
+                "availableUntil": "Prieinama iki {{- date}}",
                 "copyAvalaible": "Prieinamų kopijų skaičius",
                 "copyTotal": "Kopijų skaičius",
                 "holdPosition": "Jūsų vieta eilėje",

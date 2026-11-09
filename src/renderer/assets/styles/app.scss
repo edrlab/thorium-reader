@@ -9,26 +9,38 @@
 }
 
 .downloadsPanel {
-  display: block;
   position: absolute;
-  left: 20px;
-  right: 20px;
-  border-radius: 5px;
-  bottom: 0;
-  height: auto;
-  max-height: 45vh;
-  overflow: hidden;
-  overflow-y: auto;
-  background: var(--color-gray-50);
-  border: 2px solid var(--color-brand-secondary);
-  margin: 0;
-  padding: 10px;
-  z-index: 110;
+  inset-inline-end: 16px;
+  inset-block-end: 16px;
+  inline-size: min(400px, calc(100% - 32px));
+  max-block-size: min(45vh, 440px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block-start: 52px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 12px;
+  background: var(--color-neutral-base);
+  box-shadow: 0 6px 24px rgb(0 0 0 / 22%);
   color: var(--color-text-primary);
+  z-index: 110;
 
   > h2 {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
     margin: 0;
-    font: inherit;
+    padding: 12px 16px;
+    border-block-end: 1px solid var(--color-gray-200);
+    background: var(--color-neutral-base);
+    font-size: 1rem;
+    font-weight: 700;
+
+    > span {
+      margin-inline-start: 4px;
+      font-size: 0.875em;
+      font-weight: 400;
+    }
   }
 
   &:focus-visible {
@@ -36,113 +48,128 @@
     outline-offset: 2px;
   }
 
+  .downloadList,
   .subDownloads {
-    margin: 4px 0 12px 30px;
-    padding-left: 12px;
-    border-left: 2px solid var(--color-brand-secondary);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-    > li {
-      display: flex;
+  .downloadItem {
+    padding: 8px 16px 12px;
+  }
+
+  .downloadItem + .downloadItem {
+    border-block-start: 1px solid var(--color-gray-200);
+  }
+
+  .downloadTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-weight: 700;
+
+    > bdi {
+      min-inline-size: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    > button {
+      display: inline-flex;
+      flex-shrink: 0;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 4px;
-      padding: 3px 0;
-    }
+      justify-content: center;
+      inline-size: 32px;
+      block-size: 32px;
+      margin-inline-end: -4px;
+      padding: 0;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--color-text-primary);
+      cursor: pointer;
 
-    .filename {
-      flex: 1;
-      min-width: min(160px, 100%);
-      overflow-wrap: anywhere;
-    }
+      &:hover {
+        background: var(--color-gray-100);
+        color: var(--color-error-text);
+      }
 
-    .transferSize {
-      min-width: min(170px, 100%);
-      overflow-wrap: anywhere;
-    }
+      &:focus-visible {
+        background: var(--color-gray-100);
+        outline: 2px solid var(--color-brand-primary);
+        outline-offset: -3px;
+      }
 
-    .transferSpeed {
-      min-width: min(80px, 100%);
-      text-align: right;
+      > svg {
+        display: block;
+        inline-size: 14px;
+        block-size: 14px;
+        fill: currentcolor;
+      }
     }
   }
 
-  li {
-    display: inline-block;
-    width: 100%;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+  .downloadProgress,
+  .downloadMetrics {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
 
-    span.percent {
-      display: inline-block;
-      width: 40px;
-      margin: 0;
-      margin-right: 5px;
-      padding: 3px;
-    }
+  .downloadProgress {
+    min-block-size: 22px;
 
-    progress:not(:indeterminate) {
-      background-color: green;
-      border-radius: 0;
-      height: 20px;
-      display: inline-block;
-      border: 0;
-      width: 120px;
-      margin: 0;
-      margin-right: 7px;
-      padding: 0;
-    }
+    progress {
+      flex: 1;
+      min-inline-size: 0;
+      block-size: 8px;
+      accent-color: var(--color-brand-primary);
 
-    progress:not(:indeterminate)::-webkit-progress-bar {
-      background-color: silver;
-      border-radius: 0;
-    }
+      &:not(:indeterminate) {
+        appearance: none;
 
-    progress:not(:indeterminate)::-webkit-progress-value {
-      background-color: var(--color-brand-primary);
-      border-radius: 0;
-    }
+        &::-webkit-progress-bar {
+          border-radius: 4px;
+          background: var(--color-gray-200);
+        }
 
-    progress:indeterminate {
-      /* background-color: red; */
-      /* border-radius: 0; */
-      height: 20px;
-      display: inline-block;
-      /* border: 0; */
-      width: 120px;
-      margin: 0;
-      margin-right: 7px;
-      padding: 0;
-    }
-
-    span.title {
-      display: inline-block;
-      width: auto;
-      max-width: 100%;
-      overflow-wrap: anywhere;
-      margin: 0;
-      padding: 3px;
-      color: var(--color-text-primary);
-
-      button {
-        min-width: 24px;
-        min-height: 24px;
-        cursor: pointer;
-      }
-
-      svg {
-        width: 12px;
-        height: 12px;
-        fill: var(--color-text-primary);
-        color: var(--color-text-primary);
-        transition: 200ms;
-
-        &:hover {
-          fill: var(--color-error-text);
-          color: var(--color-error-text);
+        &::-webkit-progress-value {
+          border-radius: 4px;
+          background: var(--color-brand-primary);
         }
       }
     }
+
+    > span {
+      min-inline-size: 4ch;
+      text-align: end;
+    }
+  }
+
+  .downloadMetrics {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .subDownloads {
+    margin-block-start: 10px;
+    padding-inline-start: 10px;
+    border-inline-start: 2px solid var(--color-gray-200);
+
+    > li + li {
+      margin-block-start: 8px;
+    }
+  }
+
+  .downloadFilename {
+    display: block;
+    overflow-wrap: anywhere;
+    font-size: 0.875rem;
   }
 }
 

@@ -27,7 +27,9 @@ export const Browser = () => {
     const location = useLocation();
     const route = parseOpdsBrowserRoute(location.pathname);
     const identifier = route?.rootFeedIdentifier;
-    const breadcrumb = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb);
+    const storedBreadcrumb = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb);
+    const storedCatalog = storedBreadcrumb[1] && parseOpdsBrowserRoute(storedBreadcrumb[1].path)?.rootFeedIdentifier;
+    const breadcrumb = identifier && identifier === storedCatalog ? storedBreadcrumb : [];
     const search = useSelector((state: ILibraryRootState) => state.opds.browser.search);
     const [catalog, getCatalog] = useApi("opds-browser-catalog:" + identifier, "opds/getFeed");
     React.useEffect(() => {
@@ -38,7 +40,8 @@ export const Browser = () => {
     const current = breadcrumb[breadcrumb.length - 1];
     const root = breadcrumb[1];
     const fallback = route?.title?.trim() || catalogTitle || "-";
-    const currentLocation = current && { ...current, name: current.name?.trim() || fallback };
+    const currentLocation = current ? { ...current, name: current.name?.trim() || fallback } :
+        route && { path: location.pathname, name: fallback };
     const rootLocation = root && { ...root, name: root.name?.trim() || catalogTitle || fallback };
     const feedColor = catalog?.data?.result?.color || (location.state as Partial<IRouterLocationState> | undefined)?.feedColor;
     return (

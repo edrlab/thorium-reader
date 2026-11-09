@@ -120,10 +120,13 @@
         "numberOfPages": "Aantal pagina's",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Annuleer",
                 "external": "Deze inlogpagina zal geopend worden in jouw webbrowser, volg alsjeblieft de instructies. Wanneer je ingelogd bent zal de webbrowser je terug sturen naar deze applicatie.",
+                "externalBrowserInstructions": "",
                 "fallback": "Opmerking: in het geval van login problemen met de default webbrowser methode, probeer opnieuw met alternatieve inlogmanieren in deze applicatie.",
                 "login": "Login",
+                "openExternalBrowser": "",
                 "password": "Wachtwoord",
                 "register": "Registreer",
                 "retry": "Probeer opnieuw",
@@ -132,7 +135,7 @@
                 "username": "Gebruikersnaam / e-mailadres"
             },
             "info": {
-                "availableSince": "Sinds",
+                "availableSince": "Sinds {{- date}}",
                 "availableState": {
                     "available": "Beschikbaar",
                     "ready": "Klaar",
@@ -140,7 +143,7 @@
                     "unavailable": "Niet beschikbaar",
                     "unknown": "Onbekend"
                 },
-                "availableUntil": "Tot",
+                "availableUntil": "Tot {{- date}}",
                 "copyAvalaible": "Aantal beschikbaar",
                 "copyTotal": "Aantal exemplaren",
                 "holdPosition": "Je reserveringen",

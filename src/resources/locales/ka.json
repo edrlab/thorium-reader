@@ -120,10 +120,13 @@
         "numberOfPages": "გვერდების რაოდენობა",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "გადაფიქრება",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "შესვლა",
+                "openExternalBrowser": "",
                 "password": "",
                 "register": "",
                 "retry": "",
@@ -132,7 +135,7 @@
                 "username": ""
             },
             "info": {
-                "availableSince": "თარიღიდან",
+                "availableSince": "დაწყების თარიღი: {{- date}}",
                 "availableState": {
                     "available": "ხელმისაწვდომია",
                     "ready": "მზადაა",
@@ -140,7 +143,7 @@
                     "unavailable": "ხელმიუწვდომელია",
                     "unknown": "უცნობია"
                 },
-                "availableUntil": "თარიღამდე",
+                "availableUntil": "დასრულების თარიღი: {{- date}}",
                 "copyAvalaible": "ხელმისაწვდომი რაოდენობა",
                 "copyTotal": "ასლების რაოდენობა",
                 "holdPosition": "შენი შეკვეთის პოზიცია",

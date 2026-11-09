@@ -16,7 +16,8 @@ import {
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getOpdsFeedColor, getOpdsFeedIcon } from "readium-desktop/common/models/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
-import { ContentType } from "readium-desktop/utils/contentType";
+import { OPDS_AUTHORIZATION_CODE_PKCE_TYPE, OPDS_PKCE_CANONICAL_TYPE } from "readium-desktop/main/network/opdsPkce";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import { OPDS_PROGRESSION_MEDIA_TYPE, OPDS_PROGRESSION_REL } from "readium-desktop/common/models/opdsProgression";
 import { normalizeLcpHashedPassphrase } from "readium-desktop/utils/lcp";
 
@@ -92,6 +93,12 @@ const supportedFileTypeLinksForPayWallAcquisition = [
     ContentType.Xml,
     ContentType.AtomXml,
 ];
+
+const handledFeedRelations = new Set([
+    "next", "previous", "first", "last", "start", "up", "search", "authenticate", "self",
+    "shelf", "http://opds-spec.org/shelf", "http://opds-spec.org/wishlist",
+    "http://opds-spec.org/history", "profile",
+]);
 
 export const normalizeOpdsAuthenticationLink = (
     authenticate: unknown,
@@ -557,7 +564,11 @@ export class OpdsFeedViewConverter {
             a.Type === "http://opds-spec.org/auth/basic" || a.Type === "http://opds-spec.org/auth/local"
             || a.Type === "http://opds-spec.org/auth/oauth/password"
             || a.Type === "http://opds-spec.org/auth/oauth/implicit"
-            || a.Type === "http://opds-spec.org/auth/oauth/authorization-code-pkce");
+            || OPDS_AUTHORIZATION_CODE_PKCE_TYPE.some(type => type === a.Type));
+        const pkce = OPDS_AUTHORIZATION_CODE_PKCE_TYPE.some(type => type === method?.Type);
+        const authenticationType = pkce
+            ? OPDS_PKCE_CANONICAL_TYPE
+            : method?.Type;
         const oauth = method;
 
         let labelLogin: string | undefined;
@@ -589,9 +600,9 @@ export class OpdsFeedViewConverter {
         const register = methodLinks.find(l => l.Rel?.includes("register"));
         const auth: IOpdsAuthView = {
             credentialsUrl: method ? baseUrl : undefined,
-            external: method?.Type === "http://opds-spec.org/auth/oauth/implicit"
-                || method?.Type === "http://opds-spec.org/auth/oauth/authorization-code-pkce",
-            authenticationType: method?.Type as IOpdsAuthView["authenticationType"],
+            external: authenticationType === "http://opds-spec.org/auth/oauth/implicit"
+                || pkce,
+            authenticationType: authenticationType as IOpdsAuthView["authenticationType"],
             authenticationId: r2OpdsAuth.Id,
             registerUrl: register ? urlPathResolve(baseUrl, register.Href) : undefined,
             helpUrls: methodLinks.filter(l => l.Rel?.includes("help")).map(l => urlPathResolve(baseUrl, l.Href)),
@@ -714,6 +725,7 @@ export class OpdsFeedViewConverter {
                 up: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
                 search: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
                 authenticate: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "authenticate" }),
+                authenticationDocument: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/auth/document" }),
                 wishlist: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/wishlist" }),
                 history: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/history" }),
                 profile: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "profile" }),
@@ -722,6 +734,13 @@ export class OpdsFeedViewConverter {
                     .map((link) => this.convertLinkToView(link, baseUrl)),
                 text: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { type: [ContentType.Html] }),
                 self: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
+                custom: r2OpdsFeed.Links.filter((link) => {
+                    const type = parseContentType(link.TypeLink);
+                    return link.Href && typeof link.Title === "string" && link.Title.trim() &&
+                        (type === ContentType.Opds2 || type === ContentType.AtomXml) &&
+                        !link.Rel?.some((rel) => handledFeedRelations.has(rel));
+                }).map((link) => this.convertLinkToView(link, baseUrl))
+                    .filter((link) => /^https?:\/\//i.test(link.url)),
             }
             : undefined;
         const metadata: IOpdsFeedMetadataView | undefined = r2OpdsFeed.Metadata

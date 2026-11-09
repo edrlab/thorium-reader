@@ -120,10 +120,13 @@
         "numberOfPages": "Orrialde-kopurua",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Utzi",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "Hasi saioa",
+                "openExternalBrowser": "",
                 "password": "Pasahitza",
                 "register": "Izena eman",
                 "retry": "",
@@ -132,7 +135,7 @@
                 "username": "Erabiltzaile izena / Helbide elektronikoa"
             },
             "info": {
-                "availableSince": "Noiztik",
+                "availableSince": "Hasiera: {{- date}}",
                 "availableState": {
                     "available": "Eskuragarri",
                     "ready": "Prest",
@@ -140,7 +143,7 @@
                     "unavailable": "Ez dago erabilgarri",
                     "unknown": "Ezezaguna"
                 },
-                "availableUntil": "Noiz arte",
+                "availableUntil": "Amaiera: {{- date}}",
                 "copyAvalaible": "Erabilgarri kopurua",
                 "copyTotal": "Kopia-kopurua",
                 "holdPosition": "Zure kokalekua",
