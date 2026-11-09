@@ -1,6 +1,7 @@
 import { expect, test } from "@jest/globals";
 
 import type { ITtsLookAheadSnapshot } from "@r2-navigator-js/electron/common/tts-lookahead";
+import { TtsLookAheadListenerRegistry } from "@r2-navigator-js/electron/renderer/common/tts-lookahead-listener";
 import type { TTSStateEnum } from "@r2-navigator-js/electron/renderer/readaloud";
 import { TTS_LOOK_AHEAD_CHANNEL, type ITtsLookAheadMessage } from "readium-desktop/common/ipc/ttsLookAhead";
 import {
@@ -283,6 +284,39 @@ test("stops once on STOPPED and gives the next eligible session a new stream ID"
         { streamId: "stream-1", type: "stop" },
         { snapshot: toVoiceLinkSnapshot(snapshot), streamId: "stream-2", type: "snapshot" },
     ]);
+});
+
+test("does not reopen a stopped stream for a late snapshot after opt-in is disabled", () => {
+    const messages: Array<{ channel: string; message: ITtsLookAheadMessage }> = [];
+    const createdIds: string[] = [];
+    const session = new TtsLookAheadSession({
+        createStreamId: () => {
+            const streamId = `stream-${createdIds.length + 1}`;
+            createdIds.push(streamId);
+            return streamId;
+        },
+        send: (channel, message) => messages.push({ channel, message }),
+    });
+    const registry = new TtsLookAheadListenerRegistry();
+    registry.listen(
+        (snapshot) => session.onSnapshot(snapshot),
+        () => session.stop(),
+    );
+    const snapshot = richSnapshot();
+
+    registry.setEnabled(true);
+    registry.handle(snapshot);
+    registry.setEnabled(false);
+    registry.handle(snapshot);
+
+    expect(createdIds).toEqual(["stream-1"]);
+    expect(messages.map(({ message }) => message.type)).toEqual(["snapshot", "stop"]);
+
+    registry.setEnabled(true);
+    registry.handle(snapshot);
+
+    expect(createdIds).toEqual(["stream-1", "stream-2"]);
+    expect(messages.map(({ message }) => message.type)).toEqual(["snapshot", "stop", "snapshot"]);
 });
 
 test("never sends non-VoiceLink data and ends an active stream when the provider changes", () => {

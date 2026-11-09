@@ -380,6 +380,7 @@ test("delivers a canonical snapshot to a registered listener", () => {
     const registry = new TtsLookAheadListenerRegistry();
     const received: ITtsLookAheadSnapshot[] = [];
     registry.listen((snapshot) => received.push(snapshot));
+    registry.setEnabled(true);
 
     const snapshot = snapshotWithBlock(2, 5);
     registry.handle(snapshot);
@@ -424,6 +425,7 @@ test.each([
     const registry = new TtsLookAheadListenerRegistry();
     const received: ITtsLookAheadSnapshot[] = [];
     registry.listen((snapshot) => received.push(snapshot));
+    registry.setEnabled(true);
     const malformed = cloneSnapshot(snapshotWithTwoBlocks());
     mutate(malformed);
 
@@ -437,6 +439,7 @@ test("exports the public renderer listener contract without loading Electron run
     const listen: typeof ttsLookAheadListen = registry.listen.bind(registry);
     const received: PublicTtsLookAheadSnapshot[] = [];
     listen((snapshot) => received.push(snapshot));
+    registry.setEnabled(true);
 
     const snapshot: PublicTtsLookAheadSnapshot = snapshotWithBlock(6, 2);
     registry.handle(snapshot);
@@ -449,6 +452,7 @@ test("filters stale webviews and assigns monotonic renderer generations and revi
     const coordinator = new TtsLookAheadRendererCoordinator<string>(registry);
     const received: ITtsLookAheadSnapshot[] = [];
     registry.listen((snapshot) => received.push(snapshot));
+    registry.setEnabled(true);
 
     expect(coordinator.handle("webview-a", "webview-b", snapshotWithBlock(9, 1))).toBe(false);
     expect(coordinator.handle("webview-a", "webview-a", snapshotWithBlock(9, 1))).toBe(true);

@@ -135,7 +135,7 @@ export class TtsLookAheadListenerRegistry {
     }
 
     public handle(payload: unknown): void {
-        if (!this._listener || !isTtsLookAheadSnapshot(payload)) {
+        if (!this._enabled || !this._listener || !isTtsLookAheadSnapshot(payload)) {
             return;
         }
 
