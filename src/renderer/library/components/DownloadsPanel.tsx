@@ -50,6 +50,24 @@ const formatBytes = (bytes: number): string => bytes >= 1024 * 1024
     ? `${(bytes / (1024 * 1024)).toFixed(1)} MiB`
     : `${(bytes / 1024).toFixed(1)} KiB`;
 
+const formatSpeed = (speed: number): string | undefined =>
+    Number.isFinite(speed) && speed > 0 ? `${formatBytes(speed * 1024)}/s` : undefined;
+
+const formatTransfer = (downloaded: number, total?: number): string =>
+    total === undefined ? formatBytes(downloaded) : `${formatBytes(downloaded)} / ${formatBytes(total)}`;
+
+const TransferProgress = ({ progress, label, unknown }: {
+    progress?: number;
+    label: string;
+    unknown?: string;
+}) => (
+    <div className={stylesApp.downloadProgress}>
+        <progress aria-label={label} aria-description={progress === undefined ? unknown : undefined}
+            max={100} value={progress} />
+        {progress !== undefined && <span aria-hidden="true">{Math.floor(progress)}%</span>}
+    </div>
+);
+
 export class DownloadsPanelView extends React.Component<DownloadsPanelProps> {
 
     public render(): React.ReactElement<{}> {
@@ -61,48 +79,49 @@ export class DownloadsPanelView extends React.Component<DownloadsPanelProps> {
             aria-labelledby="downloads-panel-heading"
             tabIndex={0}
             >
-            <h2 id="downloads-panel-heading">{labels.heading}</h2>
-            <ul role="list">
-                {
-                downloads.map((dl) => {
-                    const { id, progress } = dl;
-                    return <li key={id}>
-                        <span className={stylesApp.title}><button type="button" aria-label={labels.cancel(dl)} onClick={() => onCancel(id)}><SVG ariaHidden svg={CloseIcon} /></button></span>
-                        {
-                            progress === undefined ? // indeterminate
-                            (<>
-                                <span aria-hidden="true" className={stylesApp.percent}>? %</span>
-                                <progress aria-label={labels.progress(dl)} aria-description={labels.progressUnknown} value={undefined}>{"..."}</progress>
-                            </>)
-                            :
-                            (<>
-                                <span aria-hidden="true" className={stylesApp.percent}>{progress}%</span>
-                                <progress aria-label={labels.progress(dl)} max="100" value={progress}>{progress}</progress>
-                            </>)
-                        }
-                        <span className={stylesApp.title}>{dl.label}</span>
-                        <span className={stylesApp.title}>{dl.sizeLabel}</span>
-                        <span className={stylesApp.title}>{Math.trunc(dl.speedKiBPerSecond || 0) + " KiB/s"}</span>
-                        {dl.subDownloads.length > 0 && <ul role="list" aria-label={labels.progress(dl)} className={stylesApp.subDownloads}>
-                            {dl.subDownloads.map((file) => {
+            <h2 id="downloads-panel-heading">{labels.heading} <span>({downloads.length})</span></h2>
+            <ul role="list" className={stylesApp.downloadList}>
+                {downloads.map((dl) => {
+                    const { id, progress, subDownloads } = dl;
+                    const label = dl.label || subDownloads[0]?.filename || dl.urls[0] || labels.heading;
+                    const namedDownload = dl.label ? dl : { ...dl, label };
+                    const cancelLabel = labels.cancel(namedDownload);
+                    const progressLabel = labels.progress(namedDownload);
+                    const downloaded = subDownloads.reduce((sum, file) => sum + file.downloadedBytes, 0);
+                    const total = subDownloads.every((file) => file.totalBytes !== undefined) ?
+                        subDownloads.reduce((sum, file) => sum + (file.totalBytes ?? 0), 0) : undefined;
+                    const size = subDownloads.length ? formatTransfer(downloaded, total) : dl.sizeLabel;
+                    const speed = formatSpeed(dl.speedKiBPerSecond);
+                    return <li key={id} className={stylesApp.downloadItem}>
+                        <div className={stylesApp.downloadTitle}>
+                            <bdi title={label}>{label}</bdi>
+                            <button type="button" aria-label={cancelLabel} title={cancelLabel} onClick={() => onCancel(id)}>
+                                <SVG ariaHidden svg={CloseIcon} />
+                            </button>
+                        </div>
+                        <TransferProgress progress={progress} label={progressLabel} unknown={labels.progressUnknown} />
+                        {(size || speed) && <div className={stylesApp.downloadMetrics}>
+                            <bdi>{size}</bdi>
+                            {speed && <bdi>{speed}</bdi>}
+                        </div>}
+                        {subDownloads.length > 1 && <ul role="list" aria-label={progressLabel} className={stylesApp.subDownloads}>
+                            {subDownloads.map((file) => {
                                 const filename = file.filename || file.url;
                                 const fileProgress = Number.isFinite(file.progress)
                                     ? Math.min(100, Math.max(0, file.progress)) : undefined;
                                 return <li key={file.id}>
-                                    <span className={stylesApp.filename} title={file.url}>{filename}</span>
-                                    <span aria-hidden="true" className={stylesApp.percent}>{fileProgress === undefined ? "? %" : `${Math.trunc(fileProgress)}%`}</span>
-                                    <progress aria-label={`${labels.progress(dl)}: ${filename}`} aria-description={fileProgress === undefined ? labels.progressUnknown : undefined} max="100" value={fileProgress} />
-                                    <span className={stylesApp.transferSize}>
-                                        {formatBytes(file.downloadedBytes)}
-                                        {file.totalBytes !== undefined && ` / ${formatBytes(file.totalBytes)}`}
-                                    </span>
-                                    <span className={stylesApp.transferSpeed}>{Math.trunc(file.speedKiBPerSecond || 0)} KiB/s</span>
+                                    <bdi className={stylesApp.downloadFilename} title={filename}>{filename}</bdi>
+                                    <TransferProgress progress={fileProgress} label={`${progressLabel}: ${filename}`}
+                                        unknown={labels.progressUnknown} />
+                                    <div className={stylesApp.downloadMetrics}>
+                                        <bdi>{formatTransfer(file.downloadedBytes, file.totalBytes)}</bdi>
+                                        {file.speedKiBPerSecond > 0 && <bdi>{formatSpeed(file.speedKiBPerSecond)}</bdi>}
+                                    </div>
                                 </li>;
                             })}
                         </ul>}
                     </li>;
-                })
-                }
+                })}
             </ul>
         </section>);
     }

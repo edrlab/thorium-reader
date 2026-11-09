@@ -120,10 +120,13 @@
         "numberOfPages": "Número de páginas",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Cancelar",
                 "external": "Se abrirá la página de inicio de sesión en su navegador web; siga las instrucciones. Una vez que haya iniciado sesión, el navegador web volverá a la aplicación.",
+                "externalBrowserInstructions": "",
                 "fallback": "Nota: si tienes problemas para iniciar sesión con el navegador web predeterminado, vuelve a intentarlo con el método alternativo integrado en la aplicación.",
                 "login": "Iniciar sesión",
+                "openExternalBrowser": "",
                 "password": "Contraseña",
                 "register": "Registrar",
                 "retry": "Inténtalo de nuevo",
@@ -132,7 +135,7 @@
                 "username": "Nombre de usuario/dirección de correo electrónico"
             },
             "info": {
-                "availableSince": "Desde",
+                "availableSince": "Desde {{- date}}",
                 "availableState": {
                     "available": "Disponible",
                     "ready": "Listo",
@@ -140,7 +143,7 @@
                     "unavailable": "No disponible",
                     "unknown": "Desconocido"
                 },
-                "availableUntil": "Hasta",
+                "availableUntil": "Hasta {{- date}}",
                 "copyAvalaible": "Número de disponibles",
                 "copyTotal": "Número de copias",
                 "holdPosition": "Tu ubicación",

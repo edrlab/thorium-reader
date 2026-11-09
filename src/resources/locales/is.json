@@ -120,10 +120,13 @@
         "numberOfPages": "Fjöldi síðna",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Hætta við",
                 "external": "Innskráningarsíðan opnast í vafranum. Fylgdu leiðbeiningunum þar. Að innskráningu lokinni fer vafrinn aftur í þetta forrit.",
+                "externalBrowserInstructions": "",
                 "fallback": "Athugaðu: Ef innskráning í sjálfgefnum vafra gengur ekki skaltu reyna aftur með innskráningu inni í forritinu.",
                 "login": "Skrá inn",
+                "openExternalBrowser": "",
                 "password": "Lykilorð",
                 "register": "Nýskrá",
                 "retry": "Reyna aftur",
@@ -132,7 +135,7 @@
                 "username": "Notandanafn / netfang"
             },
             "info": {
-                "availableSince": "Frá",
+                "availableSince": "Frá {{- date}}",
                 "availableState": {
                     "available": "Tiltæk",
                     "ready": "Tilbúin",
@@ -140,7 +143,7 @@
                     "unavailable": "Ekki tiltæk",
                     "unknown": "Óþekkt"
                 },
-                "availableUntil": "Til",
+                "availableUntil": "Til {{- date}}",
                 "copyAvalaible": "Tiltæk",
                 "copyTotal": "Eintök",
                 "holdPosition": "Staða í biðröð",

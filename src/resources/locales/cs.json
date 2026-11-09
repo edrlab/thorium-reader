@@ -120,10 +120,13 @@
         "numberOfPages": "Počet stránek",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Zrušit",
                 "external": "Přihlašovací stránka se otevře ve webovém prohlížeči, postupujte prosím podle pokynů. Po přihlášení vás webový prohlížeč vrátí do této aplikace.",
+                "externalBrowserInstructions": "",
                 "fallback": "Poznámka: v případě problémů s přihlašováním metodou s výchozím webovým prohlížečem, zkuste to znovu alternativní metodou v aplikaci.",
                 "login": "Přihlásit se",
+                "openExternalBrowser": "",
                 "password": "Heslo",
                 "register": "Registrovat",
                 "retry": "Zkusit znovu",
@@ -132,7 +135,7 @@
                 "username": "Uživatelské jméno / e-mailová adresa"
             },
             "info": {
-                "availableSince": "Od",
+                "availableSince": "Od {{- date}}",
                 "availableState": {
                     "available": "Dostupný",
                     "ready": "Připraveno",
@@ -140,7 +143,7 @@
                     "unavailable": "Nedostupné",
                     "unknown": "Neznámé"
                 },
-                "availableUntil": "Do",
+                "availableUntil": "Do {{- date}}",
                 "copyAvalaible": "Dostupné",
                 "copyTotal": "Kopie",
                 "holdPosition": "Držet pozici",

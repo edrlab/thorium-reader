@@ -120,10 +120,13 @@
         "numberOfPages": "عدد الصفحات",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "إلغاء",
                 "external": "ستفتح صفحة تسجيل الدخول في متصفح الويب الخاص بك، يرجى اتباع التعليمات. بعد تسجيل الدخول، سيعيدك متصفح الويب إلى هذا التطبيق.",
+                "externalBrowserInstructions": "",
                 "fallback": "ملاحظة: في حال حدوث مشاكل في تسجيل الدخول باستخدام طريقة متصفح الويب الافتراضية، حاول مرة أخرى باستخدام الطريقة البديلة داخل التطبيق.",
                 "login": "تسجيل الدخول",
+                "openExternalBrowser": "",
                 "password": "كلمة المرور",
                 "register": "تسجيل",
                 "retry": "حاول مرة أخرى",
@@ -132,7 +135,7 @@
                 "username": "اسم المستخدم / البريد الإلكتروني"
             },
             "info": {
-                "availableSince": "منذ",
+                "availableSince": "منذ {{- date}}",
                 "availableState": {
                     "available": "متوفر",
                     "ready": "جاهز",
@@ -140,7 +143,7 @@
                     "unavailable": "غير متوفر",
                     "unknown": "مجهول"
                 },
-                "availableUntil": "حتى",
+                "availableUntil": "حتى {{- date}}",
                 "copyAvalaible": "متوفر",
                 "copyTotal": "النُّسخ",
                 "holdPosition": "حفظ الموضع",

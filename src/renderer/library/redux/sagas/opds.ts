@@ -11,7 +11,7 @@ import { replace } from "redux-first-history";
 import { catalogAnalyticsEvents } from "readium-desktop/common/analytics/catalog";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { IOpdsLinkView, OPDS_OPEN_SEARCH_DATA_SEPARATOR } from "readium-desktop/common/views/opds";
@@ -28,10 +28,10 @@ import { call, delay, put, spawn, take } from "redux-saga/effects";
 import { race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { IOpdsHeaderState } from "readium-desktop/common/redux/states/renderer/opds";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
-import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opds/constants";
+import { BROWSE_OPDS_API_REQUEST_ID, OPDS_NAVIGATION_REQUEST_PREFIX } from "readium-desktop/renderer/library/opds/constants";
 import { takeBrowseResponse } from "readium-desktop/renderer/library/opds/browseResponse";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 
-export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
 export const SEARCH_TERM = "{searchTerms}";
 
 // Logger
@@ -97,8 +97,14 @@ export function* browseWatcher(action: routerActions.locationChanged.TAction) {
         } else {
             ({ b: opdsBrowseAction } = yield* raceTyped({
                 a: delay(20000),
-                b: call(opdsBrowse, url, BROWSE_OPDS_API_REQUEST_ID),
+                b: call(opdsBrowse, url, OPDS_NAVIGATION_REQUEST_PREFIX + uuidv4()),
             }));
+            if (opdsBrowseAction) {
+                yield put(apiActions.result.build({
+                    ...opdsBrowseAction.meta.api,
+                    requestId: BROWSE_OPDS_API_REQUEST_ID,
+                }, opdsBrowseAction.payload));
+            }
         }
 
         if (!opdsBrowseAction) {
@@ -174,14 +180,15 @@ function* updateHeaderLinkWatcher(action: apiActions.result.TAction<THttpGetBrow
 
 function* getUrlApi(links: IOpdsLinkView[]) {
 
-    yield apiSaga("opds/getUrlWithSearchLinks", SEARCH_OPDS_API_REQUEST_ID, links);
+    const searchRequestId = OPDS_NAVIGATION_REQUEST_PREFIX + uuidv4();
+    yield apiSaga("opds/getUrlWithSearchLinks", searchRequestId, links);
     while (true) {
         const action:
             apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["opds/getUrlWithSearchLinks"]>>
             = yield take(apiActions.result.ID);
 
         const { requestId } = action.meta.api;
-        if (requestId === SEARCH_OPDS_API_REQUEST_ID) {
+        if (requestId === searchRequestId) {
             return action;
         }
     }
@@ -263,7 +270,7 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
 
 export function saga() {
     // listen on router location and trigger only on opds browse route
-    return takeSpawnEvery(
+    return takeSpawnLatest(
         routerActions.locationChanged.ID,
         browseWatcher,
         (e) => debug(e),

@@ -120,10 +120,13 @@
         "numberOfPages": "Antal sidor",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Avbryt",
                 "external": "Loginsidan kommer att öppnas i din webbläsare. Följ instruktionerna. Efter att du har loggat in så kommer du att komma tillbaka till det här programmet.",
+                "externalBrowserInstructions": "",
                 "fallback": "Obs!: Vid inloggningsproblem med standardwebbläsarmetoden, försök igen med den alternativa inbyggda metoden i appen.",
                 "login": "Logga in",
+                "openExternalBrowser": "",
                 "password": "Lösenord",
                 "register": "Registrera dig",
                 "retry": "Försök igen",
@@ -132,7 +135,7 @@
                 "username": "Användarnamn/e-postadress"
             },
             "info": {
-                "availableSince": "Sedan",
+                "availableSince": "Sedan {{- date}}",
                 "availableState": {
                     "available": "Tillgänglig",
                     "ready": "Klar",
@@ -140,7 +143,7 @@
                     "unavailable": "Otillgänglig",
                     "unknown": "Okänt"
                 },
-                "availableUntil": "Till",
+                "availableUntil": "Till {{- date}}",
                 "copyAvalaible": "Tillgänglig",
                 "copyTotal": "Antal exemplar",
                 "holdPosition": "Din plats i reservationskön",

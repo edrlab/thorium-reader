@@ -120,10 +120,13 @@
         "numberOfPages": "Number of pages",
         "opds": {
             "auth": {
+                "alternativeLogin": "Alternative login",
                 "cancel": "Cancel",
                 "external": "The login page will open in your web browser, please follow the instructions. Once logged-in, the web browser will return you to this application.",
-                "fallback": "Note: in case of login problems with the default web browser method, try again with the alternative in-application method.",
+                "externalBrowserInstructions": "If the web browser does not open automatically, click on the following link.",
+                "fallback": "In case of login problems with the default web browser method, try again with the alternative in-application method.",
                 "login": "Login",
+                "openExternalBrowser": "Open external browser",
                 "password": "Password",
                 "register": "Register",
                 "retry": "Try again",
@@ -132,7 +135,7 @@
                 "username": "Username / Email Address"
             },
             "info": {
-                "availableSince": "Since",
+                "availableSince": "Since {{- date}}",
                 "availableState": {
                     "available": "Available",
                     "ready": "Ready",
@@ -140,7 +143,7 @@
                     "unavailable": "Unavailable",
                     "unknown": "Unknown"
                 },
-                "availableUntil": "Until",
+                "availableUntil": "Until {{- date}}",
                 "copyAvalaible": "Available",
                 "copyTotal": "Copies",
                 "holdPosition": "Hold position",
@@ -228,7 +231,7 @@
         "importTitle": "Import publication",
         "listTitle": "Table",
         "myCatalogs": "My catalogs",
-        "refreshTitle": "reload",
+        "refreshTitle": "Reload",
         "searchPlaceholder": "Search",
         "searchTitle": "Search",
         "settings": "Settings",

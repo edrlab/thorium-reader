@@ -120,10 +120,13 @@
         "numberOfPages": "Broj stranica",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Poništi",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "Prijavi se",
+                "openExternalBrowser": "",
                 "password": "",
                 "register": "",
                 "retry": "",
@@ -132,7 +135,7 @@
                 "username": ""
             },
             "info": {
-                "availableSince": "Od",
+                "availableSince": "Od {{- date}}",
                 "availableState": {
                     "available": "Dostupno",
                     "ready": "Spremno",
@@ -140,7 +143,7 @@
                     "unavailable": "Nedostupno",
                     "unknown": "Nepoznato"
                 },
-                "availableUntil": "Do",
+                "availableUntil": "Do {{- date}}",
                 "copyAvalaible": "Dostupno",
                 "copyTotal": "Ukupno kopija",
                 "holdPosition": "Status rezervacije",

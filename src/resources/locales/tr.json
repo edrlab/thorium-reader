@@ -120,10 +120,13 @@
         "numberOfPages": "Sayfa sayısı",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "İptal",
                 "external": "giriş sayfası web tarayıcınızda açılacak, lütfen talimatları izleyin. Giriş yaptıktan sonra, web tarayıcısı sizi bu uygulamaya geri döndürecek.",
+                "externalBrowserInstructions": "",
                 "fallback": "Not: Varsayılan web tarayıcısı yöntemiyle giriş sorunları yaşamanız durumunda, uygulama içi alternatif yöntemle tekrar deneyin.",
                 "login": "Giriş Yap",
+                "openExternalBrowser": "",
                 "password": "Şifre",
                 "register": "Kaydol",
                 "retry": "Yeniden dene",
@@ -132,7 +135,7 @@
                 "username": "Kullanıcı adı / E-posta adresi"
             },
             "info": {
-                "availableSince": "Tarihinden beri",
+                "availableSince": "Başlangıç tarihi: {{- date}}",
                 "availableState": {
                     "available": "Mevcut",
                     "ready": "Hazır",
@@ -140,7 +143,7 @@
                     "unavailable": "Mevcut değil",
                     "unknown": "Bilinmeyen"
                 },
-                "availableUntil": "Tarihine kadar",
+                "availableUntil": "Bitiş tarihi: {{- date}}",
                 "copyAvalaible": "Mevcut",
                 "copyTotal": "Kopyalar",
                 "holdPosition": "Bekleme konumu",

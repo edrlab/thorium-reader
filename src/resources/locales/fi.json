@@ -120,10 +120,13 @@
         "numberOfPages": "Sivumäärä",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Peru",
                 "external": "Kirjautumissivu aukeaa verkkoselaimessa, seuraa sivun ohjeita. Kun olet kirjautunut sisään, verkkoselain palauttaa sinut tähän sovellukseen.",
+                "externalBrowserInstructions": "",
                 "fallback": "Huom. Jos kirjautuminen selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
                 "login": "Kirjaudu",
+                "openExternalBrowser": "",
                 "password": "Salasana",
                 "register": "Rekisteröidy",
                 "retry": "Yritä uudelleen",
@@ -132,7 +135,7 @@
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
             "info": {
-                "availableSince": "Lähtien",
+                "availableSince": "{{- date}} alkaen",
                 "availableState": {
                     "available": "Saatavilla",
                     "ready": "Valmis",
@@ -140,7 +143,7 @@
                     "unavailable": "Ei saatavilla",
                     "unknown": "Tuntematon"
                 },
-                "availableUntil": "Asti",
+                "availableUntil": "{{- date}} asti",
                 "copyAvalaible": "Saatavilla oleva määrä",
                 "copyTotal": "Kopioiden määrä",
                 "holdPosition": "Varauksesi tila",
