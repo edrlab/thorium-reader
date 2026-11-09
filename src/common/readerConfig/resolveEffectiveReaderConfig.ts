@@ -25,42 +25,6 @@ export interface IResolveEffectiveReaderConfig {
     localConfigByFormat?: ReaderConfigByPublicationFormat;
 }
 
-function inferPublicationLang(
-    publicationView: Partial<PublicationView> | undefined,
-    r2Publication: R2Publication | undefined,
-): string | undefined {
-    const publicationViewLanguage = publicationView?.languages?.[0];
-    if (publicationViewLanguage) {
-        return publicationViewLanguage;
-    }
-
-    const publicationLanguage = r2Publication?.Metadata?.Language;
-    if (typeof publicationLanguage === "string") {
-        return publicationLanguage;
-    }
-    if (Array.isArray(publicationLanguage) && publicationLanguage[0]) {
-        return publicationLanguage[0];
-    }
-
-    return undefined;
-}
-
-function inferPublicationReadingDirection(
-    publicationView: Partial<PublicationView> | undefined,
-    r2Publication: R2Publication | undefined,
-): ReaderConfig["readingDirection"] {
-    const direction = (r2Publication?.Metadata?.Direction || "").toLowerCase();
-    if (direction === "rtl" || direction === "ltr" || direction === "ttb" || direction === "btt") {
-        return direction as ReaderConfig["readingDirection"];
-    }
-
-    if (publicationView?.isFixedLayoutPublication) {
-        return "auto";
-    }
-
-    return undefined;
-}
-
 export function resolveEffectiveReaderConfig(params: IResolveEffectiveReaderConfig): ReaderConfig {
     const {
         globalConfig,
@@ -84,15 +48,6 @@ export function resolveEffectiveReaderConfig(params: IResolveEffectiveReaderConf
         ...(allowLocalConfig ? localFormatConfig : {}),
         ...(allowLocalConfig ? (publicationConfig || {}) : {}),
     };
-
-    if (allowLocalConfig) {
-        if (!resolved.lang) {
-            resolved.lang = inferPublicationLang(publicationView, r2Publication);
-        }
-        if (!resolved.readingDirection) {
-            resolved.readingDirection = inferPublicationReadingDirection(publicationView, r2Publication);
-        }
-    }
 
     return resolved;
 }

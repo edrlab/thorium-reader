@@ -11,7 +11,6 @@ import { Radio as AriaRadio } from "readium-desktop/renderer/common/components/R
 import { Tab, TabList, TabPanelOrRegion, TabPanelsOrFragment, Tabs } from "readium-desktop/renderer/common/components/TabsComponent";
 
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
-import * as GuearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.svg";
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
@@ -22,7 +21,7 @@ import { IReaderSettingsProps } from "readium-desktop/renderer/reader/components
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { useDiffBoolBetweenReaderConfigAndDefaultConfig, useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
+import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 
 import { Theme } from "readium-desktop/renderer/reader/components/ReaderSettings/Themes";
 import { FontSize } from "readium-desktop/renderer/reader/components/ReaderSettings/FontSize";
@@ -35,7 +34,7 @@ import { ReadingDisplayCheckboxSettings } from "readium-desktop/renderer/reader/
 import { DivinaSetReadingMode } from "readium-desktop/renderer/reader/components/ReaderSettings/DivinaSetReadingMode";
 import { PdfZoom } from "readium-desktop/renderer/reader/components/ReaderSettings/pdfZoom";
 import { AllowCustom } from "readium-desktop/renderer/reader/components/ReaderSettings/AllowCustom";
-import { SaveResetApplyPreset } from "readium-desktop/renderer/reader/components/ReaderSettings/SaveResetApplyPreset";
+// import { SaveResetApplyPreset } from "readium-desktop/renderer/reader/components/ReaderSettings/SaveResetApplyPreset";
 import { ModalControlButtons } from "readium-desktop/renderer/reader/components/ModalControlButtons";
 import { DockedHeader } from "readium-desktop/renderer/reader/components/DockedHeader";
 
@@ -70,9 +69,6 @@ const TabTitle = ({ value }: { value: string }) => {
             break;
         case "tab-audio":
             title = __("reader.media-overlays.title");
-            break;
-        case "tab-preset":
-            title = __("reader.settings.preset.title");
             break;
     }
     return (
@@ -121,8 +117,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const setSection = (value: string) => {
         setReaderConfig({ readerSettingsSection: value});
     };
-
-    const diffBetweenDefaultConfigAndConfig = useDiffBoolBetweenReaderConfigAndDefaultConfig();
 
     const [__] = useTranslator();
 
@@ -275,16 +269,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         show: isEpub,
         extra: !overridePublisherDefault ? <i>{__("reader.settings.disabled")}</i> : null,
     },
-    {
-        id: 5,
-        value: "tab-preset",
-        name: __("reader.settings.preset.title"),
-        disabled: false,
-        svg: GuearIcon,
-        show: isEpub,
-        separatorBefore: true,
-        extra: diffBetweenDefaultConfigAndConfig ? <span className={stylesSettings.notification_preset}></span> : null,
-    },
 ];
 
 const visibleTabs = TabItem.filter(tab => tab.show);
@@ -294,7 +278,7 @@ const TabTriggers = visibleTabs.map(tab => (
             key={tab.value}
             id={tab.value}
             data-focus-id={tab.value === section ? "reader-settings-nav" : undefined}
-            data-separator-before={tab.separatorBefore || undefined}
+            data-separator-before={undefined}
             data-value={tab.value}
             isDisabled={tab.disabled}
         >
@@ -365,11 +349,6 @@ if (optionSelectedIsOnOptionDisabled) {
                             {isPdf ? <></> : <ReadingDisplayAlign />}
                             <ReadingDisplayCol isPdf={props.isPdf} pdfCol={props.pdfPlayerSpreadMode === 0 ? "1" : props.pdfPlayerSpreadMode > 0 ? "2" : "1" /* OR "auto" */} spreadModeEven={props.pdfPlayerSpreadMode === 2} />
                             {isPdf ? <></> : <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
-                        </section>
-                    </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-preset" focusId="readerSettings_tabs-tab-preset" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-preset")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <section className={stylesSettings.settings_tab}>
-                            <SaveResetApplyPreset />
                         </section>
                     </TabPanelOrRegion>
                     </TabPanelsOrFragment>
