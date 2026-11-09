@@ -16,6 +16,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
+import { IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { BrowserOptions } from "./BrowserOptions";
 import BrowserResult from "./BrowserResult";
 import SearchForm from "./SearchForm";
@@ -42,10 +43,12 @@ export const Browser = () => {
     const currentLocation = current ? { ...current, name: current.name?.trim() || fallback } :
         route && { path: location.pathname, name: fallback };
     const rootLocation = root && { ...root, name: root.name?.trim() || catalogTitle || fallback };
+    const feedColor = catalog?.data?.result?.color || (location.state as Partial<IRouterLocationState> | undefined)?.feedColor;
     return (
         <LibraryLayout
             page={__("opds.breadcrumbRoot")}
             title={catalogTitle}
+            feedColor={feedColor}
             catalogHeader={<CatalogHeader currentLocation={currentLocation} rootLocation={rootLocation}
                 previousLocation={breadcrumb[breadcrumb.length - 2]} />}
             catalogOptions={<BrowserOptions />}

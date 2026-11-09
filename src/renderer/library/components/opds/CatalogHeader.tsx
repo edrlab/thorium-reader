@@ -11,7 +11,7 @@ import { popBreadcrumb } from "../../redux/actions/opds";
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { Link } from "react-router-dom";
-import { resolveDisplayType } from "readium-desktop/renderer/library/routing";
+import { resolveRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -27,7 +27,7 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
     const { currentLocation, previousLocation, rootLocation } = props;
     const dispatch = useDispatch();
     const [__] = useTranslator();
-    const labelStyle: React.CSSProperties = { fontSize: "16px", fontWeight: 400, lineHeight: 1.5, minWidth: 0, overflowWrap: "anywhere", whiteSpace: "normal" };
+    const labelStyle: React.CSSProperties = { fontSize: "18px", fontWeight: 400, lineHeight: 1.5, minWidth: 0, overflowWrap: "anywhere", whiteSpace: "normal" };
     const location = useSelector((state: ILibraryRootState) => state.router.location);
     const savedDisplayType = useSelector((state: ILibraryRootState) => state.settings.libraryView?.displayType);
 
@@ -39,7 +39,7 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
                 to={{
                     pathname: previousLocation?.path,
                 }}
-                state={{ displayType: resolveDisplayType(location.state, savedDisplayType) }}
+                state={resolveRouterLocationState(location.state, savedDisplayType)}
                 onClick={(e) => {
                     if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                         e.preventDefault();
@@ -76,7 +76,7 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
                     <Link style={labelStyle} to={{ pathname: rootLocation.path }}
                         title={rootLocation.name}
                         aria-label={rootLocation.name}
-                        state={{ displayType: resolveDisplayType(location.state, savedDisplayType) }}>
+                        state={resolveRouterLocationState(location.state, savedDisplayType)}>
                         {truncateBreadcrumbLabel(rootLocation.name)}
                     </Link>
                     <span aria-hidden="true">/</span>

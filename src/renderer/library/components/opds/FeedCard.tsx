@@ -16,7 +16,7 @@ import * as StarIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { DisplayType, IRouterLocationState } from "../../routing";
+import { DisplayType, resolveRouterLocationState } from "../../routing";
 import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
 import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -57,7 +57,10 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
         try {
             const url = await apiAction("opds/getBookshelfUrl", feed.identifier);
             navigate(buildOpdsBrowserRoute(feed.identifier, __("opds.shelf"), url), {
-                state: { displayType: location.state?.displayType || DisplayType.Grid },
+                state: {
+                    ...resolveRouterLocationState(location.state, DisplayType.Grid),
+                    feedColor: feed.color,
+                },
             });
         } catch (err) {
             console.error("Error opening OPDS bookshelf", err);
@@ -89,7 +92,10 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
                         feed.url,
                     ),
                 }}
-                state={{ displayType: (location.state && (location.state as IRouterLocationState).displayType) ? (location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                state={{
+                    ...resolveRouterLocationState(location.state, DisplayType.Grid),
+                    feedColor: feed.color,
+                }}
                 className={stylesCatalogs.catalog_content}
                 onClick={(e) => {
                     if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
