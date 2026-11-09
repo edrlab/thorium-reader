@@ -351,22 +351,22 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             <PdfZoom pdfScale={props.pdfPlayerZoom} /*pdfView={pdfView}*/ />
                         </TabPanelOrRegion>
                         <TabPanelOrRegion id="tab-text" focusId="readerSettings_tabs-tab-text" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-text")} className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE", stylesSettings.settings_tab)}>
-                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px" }}>
-                                <h3>{__("reader.settings.font")}</h3>
+                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px" }} aria-labelledby="reader-settings-font">
+                                <h3 id="reader-settings-font">{__("reader.settings.font")}</h3>
                                 <FontSize overridePublisherDefault={overridePublisherDefault} />
                                 <FontFamily overridePublisherDefault={overridePublisherDefault} />
                             </section>
                             {!isPdf &&
                                 <>
-                                    <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px" }}>
-                                        <h3>{__("reader.settings.justification")}</h3>
+                                    <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px" }} aria-labelledby="reader-settings-justification">
+                                        <h3 id="reader-settings-justification">{__("reader.settings.justification")}</h3>
                                         <ReadingDisplayAlign overridePublisherDefault={overridePublisherDefault} />
                                     </section>
                                 </>
                             }
-                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px" }}>
+                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px" }} aria-labelledby="reader-settings-spacing">
                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
-                                    <h3>
+                                    <h3 id="reader-settings-spacing">
                                         {__("reader.settings.spacing")}
                                     </h3>
                                     <Button style={{ minWidth: "20px" }} aria-label={__("reader.settings.spacingCustomButton")} onClick={() => { setIsSpacingAdvancedOpen((isOpen) => !isOpen); }}>
@@ -375,9 +375,9 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 </div>
                                 {isSpacingAdvancedOpen ? <ReaderSpacingAdvanced overridePublisherDefault={overridePublisherDefault} /> : <ReaderSpacingPresets overridePublisherDefault={overridePublisherDefault} />}
                             </section>
-                            <section>
+                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px" }} aria-labelledby="reader-settings-deactivate-text-formatting">
                                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding:"0 10px" }}>
-                                <h3  style={{margin: "0"}} >{__("reader.settings.deactivateTextFormatting")}</h3>
+                                <h3  style={{margin: "0"}} id="reader-settings-deactivate-text-formatting">{__("reader.settings.deactivateTextFormatting")}</h3>
                                 <AllowCustomContainer />
                                 </div>
                             </section>
