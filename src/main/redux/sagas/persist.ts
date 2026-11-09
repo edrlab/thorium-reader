@@ -465,17 +465,21 @@ export function saga() {
                     update.annotation_defaultDrawView = readerConfigInitialState.annotation_defaultDrawView;
                 }
 
-                const { globalUpdate, localUpdate } = splitReaderConfigUpdateByScope(update);
+                const { globalUpdate, formatUpdate, localUpdate } = splitReaderConfigUpdateByScope(update);
 
                 const config: Partial<ReaderConfig> = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config"))) || {};
                 const configUnion = stripGlobalOnlyReaderConfigKeys({ ...config, ...localUpdate });
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", configUnion));
 
                 if (Object.keys(globalUpdate).length) {
+                    yield* putTyped(readerActions.configSetDefault.build(globalUpdate));
+                }
+
+                if (Object.keys(formatUpdate).length) {
                     const readerSession = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
                     const publicationView = readerSession?.reduxState?.info?.publicationView;
                     const format = detectReaderConfigPublicationFormat(publicationView, undefined);
-                    yield* putTyped(readerActions.configSetDefaultByFormat.build(format, globalUpdate));
+                    yield* putTyped(readerActions.configSetDefaultByFormat.build(format, formatUpdate));
                 }
             },
             (e) => debug(e),

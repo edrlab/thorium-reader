@@ -47,6 +47,8 @@ export function resolveEffectiveReaderConfig(params: IResolveEffectiveReaderConf
         ...globalFormatConfig,
         ...(allowLocalConfig ? localFormatConfig : {}),
         ...(allowLocalConfig ? (publicationConfig || {}) : {}),
+        // Ignore legacy theme values in format and publication settings.
+        theme: globalConfig.theme,
     };
 
     return resolved;

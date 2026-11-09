@@ -25,11 +25,13 @@ function isGlobalOnlyReaderConfigKey(key: keyof ReaderConfig): boolean {
 
 export interface IReaderConfigScopeUpdates {
     globalUpdate: Partial<ReaderConfig>;
+    formatUpdate: Partial<ReaderConfig>;
     localUpdate: Partial<ReaderConfig>;
 }
 
 export function splitReaderConfigUpdateByScope(update: Partial<ReaderConfig>): IReaderConfigScopeUpdates {
     const globalUpdate: Partial<ReaderConfig> = {};
+    const formatUpdate: Partial<ReaderConfig> = {};
     const localUpdate: Partial<ReaderConfig> = {};
 
     for (const key of Object.keys(update) as Array<keyof ReaderConfig>) {
@@ -47,11 +49,12 @@ export function splitReaderConfigUpdateByScope(update: Partial<ReaderConfig>): I
 
         // Dual-scope default: keep local publication state and update global-by-format.
         (localUpdate as any)[key] = value;
-        (globalUpdate as any)[key] = value;
+        (formatUpdate as any)[key] = value;
     }
 
     return {
         globalUpdate,
+        formatUpdate,
         localUpdate,
     };
 }

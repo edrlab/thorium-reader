@@ -79,8 +79,12 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const publicationConfig = publicationConfigRaw
         ? stripGlobalOnlyReaderConfigKeys(publicationConfigRaw)
         : undefined;
-    if (pubId && publicationConfigRaw && Object.keys(publicationConfig).length !== Object.keys(publicationConfigRaw).length) {
-        // Migrate legacy local config shape so global-only keys do not override global defaults.
+    const migratePresetTab = publicationConfig?.readerSettingsSection === "tab-preset";
+    if (migratePresetTab) {
+        publicationConfig.readerSettingsSection = "tab-display";
+    }
+    if (pubId && publicationConfigRaw && (migratePresetTab || Object.keys(publicationConfig).length !== Object.keys(publicationConfigRaw).length)) {
+        // Persist legacy tab migration and remove global-only keys from local settings.
         yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", publicationConfig));
     }
     const config = resolveEffectiveReaderConfig({
