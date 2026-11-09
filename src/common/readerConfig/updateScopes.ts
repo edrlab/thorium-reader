@@ -12,8 +12,6 @@ const GLOBAL_ONLY_KEYS = new Set<keyof ReaderConfig>([
 ]);
 
 const LOCAL_ONLY_KEYS = new Set<keyof ReaderConfig>([
-    "lang",
-    "readingDirection",
     "readerSettingsSection",
     "readerMenuSection",
     "ttsVoices",

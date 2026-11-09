@@ -10,7 +10,6 @@
 
 .downloadsPanel {
   position: absolute;
-<<<<<<< Updated upstream
   inset-inline-end: 16px;
   inset-block-end: 16px;
   inline-size: min(400px, calc(100% - 32px));
@@ -23,25 +22,9 @@
   border-radius: 12px;
   background: var(--color-neutral-base);
   box-shadow: 0 6px 24px rgb(0 0 0 / 22%);
-=======
-  left: 20px;
-  right: 20px;
-  border-radius: 5px;
-  bottom: 0;
-  height: auto;
-  max-height: 45vh;
-  overflow: hidden;
-  overflow-y: auto;
-  background: var(--color-gray-50);
-  border: 2px solid var(--color-brand-secondary);
-  margin: 0;
-  padding: 10px;
-  z-index: 110;
->>>>>>> Stashed changes
   color: var(--color-text-primary);
   z-index: 110;
 
-<<<<<<< Updated upstream
   > h2 {
     position: sticky;
     inset-block-start: 0;
@@ -60,52 +43,14 @@
     }
   }
 
-=======
->>>>>>> Stashed changes
   &:focus-visible {
     outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 
-<<<<<<< Updated upstream
   .downloadList,
   .subDownloads {
     list-style: none;
-=======
-  .subDownloads {
-    margin: 4px 0 12px 30px;
-    padding-left: 12px;
-    border-left: 2px solid var(--color-brand-secondary);
-
-    > li {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 4px;
-      padding: 3px 0;
-    }
-
-    .filename {
-      flex: 1;
-      min-width: min(160px, 100%);
-      overflow-wrap: anywhere;
-    }
-
-    .transferSize {
-      min-width: 170px;
-    }
-
-    .transferSpeed {
-      min-width: 80px;
-      text-align: right;
-    }
-  }
-
-  li {
-    display: inline-block;
-    width: 100%;
-    list-style-type: none;
->>>>>>> Stashed changes
     margin: 0;
     padding: 0;
   }
