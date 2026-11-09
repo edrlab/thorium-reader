@@ -38,6 +38,7 @@ import { SaveResetApplyPreset } from "readium-desktop/renderer/reader/components
 import { ModalControlButtons } from "readium-desktop/renderer/reader/components/ModalControlButtons";
 import { DockedHeader } from "readium-desktop/renderer/reader/components/DockedHeader";
 import * as AdvancedIcon from "readium-desktop/renderer/assets/icons/advanced-icon.svg";
+import { Button } from "react-aria-components";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -343,74 +344,68 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 <div className={stylesSettings.settings_content}
                     style={{ marginTop: dockedMode && "0" }}>
                     <TabPanelsOrFragment dockedMode={dockedMode}>
-                    <TabPanelOrRegion id="tab-divina" focusId="readerSettings_tabs-tab-divina" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-divina")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={stylesSettings.settings_tab}>
+                        <TabPanelOrRegion id="tab-divina" focusId="readerSettings_tabs-tab-divina" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-divina")} className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE", stylesSettings.settings_tab)}>
                             <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
-                        </div>
-                    </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-pdfzoom" focusId="readerSettings_tabs-tab-pdfzoom" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-pdfzoom")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={stylesSettings.settings_tab}>
+                        </TabPanelOrRegion>
+                        <TabPanelOrRegion id="tab-pdfzoom" focusId="readerSettings_tabs-tab-pdfzoom" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-pdfzoom")} className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE", stylesSettings.settings_tab)}>
                             <PdfZoom pdfScale={props.pdfPlayerZoom} /*pdfView={pdfView}*/ />
-                        </div>
-                    </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-text" focusId="readerSettings_tabs-tab-text" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-text")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <section className={stylesSettings.settings_tab}>
-                            <h3>{__("reader.settings.font")}</h3>
-                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px"}}>
+                        </TabPanelOrRegion>
+                        <TabPanelOrRegion id="tab-text" focusId="readerSettings_tabs-tab-text" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-text")} className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE", stylesSettings.settings_tab)}>
+                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px" }}>
+                                <h3>{__("reader.settings.font")}</h3>
                                 <FontSize overridePublisherDefault={overridePublisherDefault} />
                                 <FontFamily overridePublisherDefault={overridePublisherDefault} />
                             </section>
-                            {!isPdf && 
-                            <>
-                            <h3>{__("reader.settings.justification")}</h3>
-                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px"}}>
-                                <ReadingDisplayAlign overridePublisherDefault={overridePublisherDefault} />
-                            </section>
-                            </>
+                            {!isPdf &&
+                                <>
+                                    <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px" }}>
+                                        <h3>{__("reader.settings.justification")}</h3>
+                                        <ReadingDisplayAlign overridePublisherDefault={overridePublisherDefault} />
+                                    </section>
+                                </>
                             }
-                           
-                            <h3 style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                {__("reader.settings.spacing")}
-                                <button onClick={() => { setIsSpacingAdvancedOpen((isOpen) => !isOpen); }}>
-                                    <SVG aria-hidden svg={GuearIcon} />
-                                </button>
-                            </h3>
-                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px"}}>
-                            {isSpacingAdvancedOpen ? <ReaderSpacingAdvanced overridePublisherDefault={overridePublisherDefault} /> : <ReaderSpacingPresets overridePublisherDefault={overridePublisherDefault} />}
+                            <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px" }}>
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                                    <h3>
+                                        {__("reader.settings.spacing")}
+                                    </h3>
+                                    <Button style={{ minWidth: "20px" }} aria-label={__("reader.settings.spacingCustomButton")} onClick={() => { setIsSpacingAdvancedOpen((isOpen) => !isOpen); }}>
+                                        <SVG aria-hidden svg={GuearIcon} />
+                                    </Button>
+                                </div>
+                                {isSpacingAdvancedOpen ? <ReaderSpacingAdvanced overridePublisherDefault={overridePublisherDefault} /> : <ReaderSpacingPresets overridePublisherDefault={overridePublisherDefault} />}
                             </section>
-                            <AllowCustomContainer />
-                        </section>
-                    </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-display" focusId="readerSettings_tabs-tab-display" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-display")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <section className={stylesSettings.settings_tab}>
+                            <section>
+                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding:"0 10px" }}>
+                                <h3  style={{margin: "0"}} >{__("reader.settings.deactivateTextFormatting")}</h3>
+                                <AllowCustomContainer />
+                                </div>
+                            </section>
+                        </TabPanelOrRegion>
+                        <TabPanelOrRegion id="tab-display" focusId="readerSettings_tabs-tab-display" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-display")} className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE", stylesSettings.settings_tab)}>
                             {!isPdf && (
                                 <>
                                     <h3>{__("reader.settings.theme.title")}</h3>
                                     <Theme dockedMode={dockedMode} />
                                 </>
                             )}
-                            {!isPdf && 
-                            <>
-                                <h3>{__("reader.settings.disposition.title")}</h3>
-                                <ReadingDisplayLayout isFXL={props.isFXL} dockedMode={dockedMode} />
-                            </>
+                            {!isPdf &&
+                                <>
+                                    <h3>{__("reader.settings.disposition.title")}</h3>
+                                    <ReadingDisplayLayout isFXL={props.isFXL} dockedMode={dockedMode} />
+                                </>
                             }
                             <h3>{__("reader.settings.column.title")}</h3>
                             <ReadingDisplayCol isPdf={props.isPdf} pdfCol={props.pdfPlayerSpreadMode === 0 ? "1" : props.pdfPlayerSpreadMode > 0 ? "2" : "1" /* OR "auto" */} spreadModeEven={props.pdfPlayerSpreadMode === 2} dockedMode={dockedMode} />
-                        </section>
-                    </TabPanelOrRegion>
-                    {!isPdf && (
-                        <TabPanelOrRegion id="tab-advanced" focusId="readerSettings_tabs-tab-advanced" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-advanced")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                            <section className={stylesSettings.settings_tab}>
-                                <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />
-                            </section>
                         </TabPanelOrRegion>
-                    )}
-                    <TabPanelOrRegion id="tab-preset" focusId="readerSettings_tabs-tab-preset" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-preset")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <section className={stylesSettings.settings_tab}>
+                        {!isPdf && (
+                            <TabPanelOrRegion id="tab-advanced" focusId="readerSettings_tabs-tab-advanced" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-advanced")} className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE", stylesSettings.settings_tab)}>
+                                <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />
+                            </TabPanelOrRegion>
+                        )}
+                        <TabPanelOrRegion id="tab-preset" focusId="readerSettings_tabs-tab-preset" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-preset")} className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE", stylesSettings.settings_tab)}>
                             <SaveResetApplyPreset />
-                        </section>
-                    </TabPanelOrRegion>
+                        </TabPanelOrRegion>
                     </TabPanelsOrFragment>
                 </div>
                 <ModalControlButtons dockedMode={dockedMode} />

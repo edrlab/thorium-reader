@@ -15,7 +15,7 @@ import { usePublisherReaderConfig, useSavePublisherReaderConfig } from "readium-
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { Button, Tooltip, TooltipTrigger } from "react-aria-components";
+import { Button, Tooltip, TooltipTrigger, OverlayArrow } from "react-aria-components";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
@@ -78,14 +78,10 @@ export const FontFamily = ({ overridePublisherDefault }: { overridePublisherDefa
         }
     };
 
-    const labelInfos = <div className={stylesSettings.session_text} style={{ margin: "0", backgroundColor: "var(--color-gray-100)" }}>
-        {
-            options.find((v) => v.name === inputval) ?
-                <p>{__("reader.settings.infoCustomFont")}</p>
-                :
-                <p>{__("reader.settings.customFontSelected")}</p>
-        }
-    </div>;
+    const labelInfos: string = options.find((v) => v.name === inputval) ?
+        __("reader.settings.infoCustomFont")
+        :
+        __("reader.settings.customFontSelected");
 
 
     const isRTL = langStringIsRTL(locale);
@@ -119,10 +115,11 @@ export const FontFamily = ({ overridePublisherDefault }: { overridePublisherDefa
             </ComboBox>
             {labelInfos &&
                 <TooltipTrigger>
-                    <Button style={{ width: "15px", height: "15px", marginLeft: "3px" }}>
+                    <Button style={{ width: "15px", height: "15px", marginLeft: "3px" }} aria-label={labelInfos}>
                         <SVG ariaHidden svg={InfoIcon} />
                     </Button>
-                    <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{ border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-gray-100)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)", margin: "0", height: "fit-content" }}>
+                    <Tooltip aria-hidden offset={5} dir={isRTL ? "rtl" : "ltr"} placement='top' style={{ border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)", margin: "0", height: "fit-content" }}>
+                         <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
                         {labelInfos}
                     </Tooltip>
                 </TooltipTrigger>

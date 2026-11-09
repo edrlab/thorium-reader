@@ -31,7 +31,6 @@ export const AllowCustom = () => {
             isSelected={deactivateTextFormatting}
             onChange={onAllowCustomChange}
         >
-            <span>{__("reader.settings.deactivateTextFormatting")}</span>
         </Switch>
     );
 };

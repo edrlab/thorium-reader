@@ -7,7 +7,7 @@ import * as stylesSwitch from "readium-desktop/renderer/assets/styles/components
 import * as React from "react";
 
 export interface SwitchProps extends Omit<SwitchFieldProps, "children"> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export function Switch({children,...props}: SwitchProps) {
