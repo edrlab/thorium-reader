@@ -21,7 +21,7 @@ import { IReaderSettingsProps } from "readium-desktop/renderer/reader/components
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { useDiffBoolBetweenReaderConfigAndDefaultConfig, useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
+import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 
 import { Theme } from "readium-desktop/renderer/reader/components/ReaderSettings/Themes";
 import { FontSize } from "readium-desktop/renderer/reader/components/ReaderSettings/FontSize";
@@ -34,7 +34,6 @@ import { ReadingDisplayCheckboxSettings } from "readium-desktop/renderer/reader/
 import { DivinaSetReadingMode } from "readium-desktop/renderer/reader/components/ReaderSettings/DivinaSetReadingMode";
 import { PdfZoom } from "readium-desktop/renderer/reader/components/ReaderSettings/pdfZoom";
 import { AllowCustom } from "readium-desktop/renderer/reader/components/ReaderSettings/AllowCustom";
-import { SaveResetApplyPreset } from "readium-desktop/renderer/reader/components/ReaderSettings/SaveResetApplyPreset";
 import { ModalControlButtons } from "readium-desktop/renderer/reader/components/ModalControlButtons";
 import { DockedHeader } from "readium-desktop/renderer/reader/components/DockedHeader";
 import * as AdvancedIcon from "readium-desktop/renderer/assets/icons/advanced-icon.svg";
@@ -59,7 +58,6 @@ const TabTitle = ({ value }: { value: string }) => {
         "tab-display": __("reader.settings.display"),
         "tab-advanced": __("settings.tabs.advanced"),
         "tab-audio": __("reader.media-overlays.title"),
-        "tab-preset": __("reader.settings.preset.title"),
     };
 
     const title = titleByTabValue[value] ?? "";
@@ -122,8 +120,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         setReaderConfig({ readerSettingsSection: value });
     }, [setReaderConfig]);
     const [isSpacingAdvancedOpen, setIsSpacingAdvancedOpen] = React.useState(false);
-
-    const diffBetweenDefaultConfigAndConfig = useDiffBoolBetweenReaderConfigAndDefaultConfig();
 
     const [__] = useTranslator();
 
@@ -273,17 +269,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             svg: AdvancedIcon,
             show: isEpub,
         },
-        {
-            id: 5,
-            value: "tab-preset",
-            name: __("reader.settings.preset.title"),
-            disabled: false,
-            svg: GuearIcon,
-            show: isEpub,
-            separatorBefore: true,
-            extra: diffBetweenDefaultConfigAndConfig ? <span className={stylesSettings.notification_preset}></span> : undefined,
-        },
-    ], [__, diffBetweenDefaultConfigAndConfig, isDivina, isEpub, isPdf]);
+    ], [__, isDivina, isEpub, isPdf]);
 
     const visibleTabs = React.useMemo(() => tabItems.filter((tab) => tab.show), [tabItems]);
 
@@ -292,7 +278,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             key={tab.value}
             id={tab.value}
             data-focus-id={tab.value === section ? "reader-settings-nav" : undefined}
-            data-separator-before={tab.separatorBefore || undefined}
+            data-separator-before={undefined}
             data-value={tab.value}
             isDisabled={tab.disabled}
         >
@@ -403,9 +389,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />
                             </TabPanelOrRegion>
                         )}
-                        <TabPanelOrRegion id="tab-preset" focusId="readerSettings_tabs-tab-preset" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-preset")} className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE", stylesSettings.settings_tab)}>
-                            <SaveResetApplyPreset />
-                        </TabPanelOrRegion>
                     </TabPanelsOrFragment>
                 </div>
                 <ModalControlButtons dockedMode={dockedMode} />

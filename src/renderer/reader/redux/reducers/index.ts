@@ -32,6 +32,7 @@ import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/read
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { screenReaderReducer } from "readium-desktop/common/redux/reducers/screenReader";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
+import { readerDefaultConfigByFormatReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfigByFormat";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
@@ -71,6 +72,7 @@ export const rootReducer = () => {
         i18n: i18nReducer,
         reader: combineReducers({ // IReaderStateReader, dehydrated from main process registry (preloaded state)
             defaultConfig: readerDefaultConfigReducer,
+            defaultConfigByFormat: readerDefaultConfigByFormatReducer,
             config: readerConfigReducer,
             allowCustomConfig: readerAllowCustomConfigReducer,
             noteTotalCount: readerBookmarkTotalCountReducer,
