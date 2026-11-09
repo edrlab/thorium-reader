@@ -246,20 +246,24 @@ export function* addFeed(
                     opdsFeedJson,
                     OPDSFeed,
                 );
-                const opdsFeedView = opdsFeedViewConverter.convertOpdsFeedToView(opdsFeed, data.url);
+                const opdsFeedView = opdsFeedViewConverter.convertOpdsFeedToView(opdsFeed, response.responseUrl || data.url);
                 if (opdsFeedView) {
-                    const candidates = [...(opdsFeedView.links?.authenticate || []), ...(opdsFeedView.links?.bookshelf || [])];
-                    for (const bookshelf of candidates) {
+                    const candidates = [
+                        ...(opdsFeedView.links?.authenticationDocument || []),
+                        ...(opdsFeedView.links?.authenticate || []),
+                        ...(opdsFeedView.links?.bookshelf || []),
+                    ];
+                    for (const authDoc of candidates) {
                         try {
-                            const responseBookshelf = yield* callTyped(() => httpGetWithAuth(false)(bookshelf.url));
-                            const mimeType = parseContentType(responseBookshelf.contentType);
-                            if (contentTypeisOpdsAuth(mimeType)) {
+                            const responseAuthDoc = yield* callTyped(() => httpGetWithAuth(false)(authDoc.url));
+                            const mimeTypeAuthDoc = parseContentType(responseAuthDoc.contentType);
+                            if (contentTypeisOpdsAuth(mimeTypeAuthDoc)) {
                                 // link url found
 
                                 const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
                                 const found = opdsFeeds.find((o) => o.url === data.url);
                                 if (found) {
-                                    yield* callTyped(() => opdsFeedRepository.update(found.identifier, { authenticationUrl: bookshelf.url }));
+                                    yield* callTyped(() => opdsFeedRepository.update(found.identifier, { authenticationUrl: authDoc.url }));
 
                                     yield* putTyped(opdsActions.refresh.build());
                                     break;

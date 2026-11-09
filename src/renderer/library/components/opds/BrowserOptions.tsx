@@ -15,6 +15,7 @@ import * as ProfileIcon from "readium-desktop/renderer/assets/icons/person-fill.
 import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh-icon.svg";
 import * as LogoutIcon from "readium-desktop/renderer/assets/icons/export-icon.svg";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
 import * as React from "react";
 import { shell } from "electron";
 import { Button, Dialog, Heading, Menu, MenuItem, MenuTrigger, Modal, ModalOverlay, Popover, Separator } from "react-aria-components";
@@ -22,6 +23,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { historyActions } from "readium-desktop/common/redux/actions";
 import { IOpdsBrowserOptions, OpdsBrowserLinks, opdsBrowserLinksFromView } from "readium-desktop/common/models/opdsBrowserOptions";
 import { IOpdsUserProfile } from "readium-desktop/common/models/opdsUserProfile";
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -30,7 +32,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
-import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opds/constants";
+import { BROWSE_OPDS_API_REQUEST_ID, ENABLE_CUSTOM_OPDS_FEED_SHORTCUTS } from "readium-desktop/renderer/library/opds/constants";
 import { buildOpdsBrowserRoute, parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
@@ -47,6 +49,7 @@ export const BrowserOptions = () => {
     const catalogTitle = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb[1]?.name);
     const [open, setOpen] = React.useState(false);
     const [cached, setCached] = React.useState<{ identifier: string; links: OpdsBrowserLinks }>();
+    const [custom, setCustom] = React.useState<{ identifier: string; links: Map<string, IOpdsLinkView> }>();
     const [checked, setChecked] = React.useState<{ result: typeof result; options: IOpdsBrowserOptions }>();
     const [loggingOut, setLoggingOut] = React.useState(false);
     const [profileOpen, setProfileOpen] = React.useState(false);
@@ -61,6 +64,7 @@ export const BrowserOptions = () => {
         ...(successful ? opdsBrowserLinksFromView(result.data.opds.links) : {}) };
 
     const shelfUrl = links.shelf?.url;
+    const customLinks = custom?.identifier === identifier ? custom?.links : undefined;
 
     React.useEffect(() => {
         setOpen(false); setChecked(undefined); setProfileOpen(false);
@@ -69,6 +73,16 @@ export const BrowserOptions = () => {
         if (!identifier || !successful) return;
         const observed = opdsBrowserLinksFromView(result.data.opds.links);
         setCached(previous => ({ identifier, links: { ...(previous?.identifier === identifier ? previous.links : {}), ...observed } }));
+        const discovered = result.data.opds.links?.custom;
+        if (ENABLE_CUSTOM_OPDS_FEED_SHORTCUTS && discovered?.length) {
+            setCustom(previous => {
+                const links = new Map(previous?.identifier === identifier ? previous.links : undefined);
+                for (const link of discovered) {
+                    links.set(`custom:${link.url}`, link);
+                }
+                return { identifier, links };
+            });
+        }
     }, [identifier, result, successful]);
     React.useEffect(() => {
         if (!open || !identifier || !currentUrl) return undefined;
@@ -101,7 +115,7 @@ export const BrowserOptions = () => {
         try {
             await apiAction("opds/logoutCatalog", identifier, currentUrl);
             if (latestPath.current !== path) return;
-            setChecked(undefined); setCached(undefined); setProfile(undefined); setProfileOpen(false);
+            setChecked(undefined); setCached(undefined); setCustom(undefined); setProfile(undefined); setProfileOpen(false);
             navigate(buildOpdsBrowserRoute(identifier, catalogTitle || "", catalogUrl), { state: location.state });
         } catch { /* The API supplies the translated failure notification. */ }
         finally { setLoggingOut(false); }
@@ -117,6 +131,11 @@ export const BrowserOptions = () => {
                     if (key === "home" && home) { dispatchOpdsLink(dispatch)({ url: home, type: ContentType.Opds2 }, location, __("header.homeTitle")); return; }
                     if (key === "refresh") { dispatch(historyActions.refresh.build()); return; }
                     if (key === "logout") { void logout(); return; }
+                    const customLink = customLinks?.get(String(key));
+                    if (customLink) {
+                        dispatchOpdsLink(dispatch)(customLink, location, customLink.title);
+                        return;
+                    }
                     const link = links[key as keyof OpdsBrowserLinks];
                     if (!link) return;
                     if (key === "profile" && parseContentType(link.type) === ContentType.OpdsProfile) { void showProfile(); return; }
@@ -128,7 +147,12 @@ export const BrowserOptions = () => {
                     {links.wishlist && <MenuItem id="wishlist" textValue={labels.wishlist} className={`${styles.opds_options_item} R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE`}><SVG ariaHidden svg={WishlistIcon} /><span>{labels.wishlist}</span></MenuItem>}
                     {links.history && <MenuItem id="history" textValue={labels.history} className={`${styles.opds_options_item} R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE`}><SVG ariaHidden svg={HistoryIcon} /><span>{labels.history}</span></MenuItem>}
                     {links.profile && <MenuItem id="profile" textValue={labels.profile} className={`${styles.opds_options_item} R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE`}><SVG ariaHidden svg={ProfileIcon} /><span>{labels.profile}</span></MenuItem>}
-                    {Object.keys(links).length > 0 && <Separator className={styles.opds_options_separator} />}
+                    {customLinks && Array.from(customLinks, ([id, link]) => (
+                        <MenuItem key={id} id={id} textValue={link.title} className={styles.opds_options_item}>
+                            <SVG ariaHidden svg={CatalogsIcon} /><span>{link.title}</span>
+                        </MenuItem>
+                    ))}
+                    {(Object.keys(links).length > 0 || !!customLinks?.size) && <Separator className={styles.opds_options_separator} />}
                     <MenuItem id="refresh" className={`${styles.opds_options_item} R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE`}><SVG ariaHidden svg={RefreshIcon} /><span>{__("header.refreshTitle")}</span></MenuItem>
                     {authenticated && <MenuItem id="logout" isDisabled={loggingOut} className={`${styles.opds_options_item} R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE`}><SVG ariaHidden svg={LogoutIcon} /><span>{__("catalog.logout")}</span></MenuItem>}
                 </Menu>

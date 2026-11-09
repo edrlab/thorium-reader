@@ -136,15 +136,23 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
                 }
                 {
                     properties.availabilitySince ?
-                        <MetadataLineComponent text={__("catalog.opds.info.availableSince")}>
-                            <>{moment(properties.availabilitySince).locale([this.props.locale, "en"]).format("LLL")}</>
-                        </MetadataLineComponent> : <></>
+                        <div className={stylesBookDetailsDialog.opds_book_infos}>
+                            <span className={stylesBookDetailsDialog.allowUserSelect}>
+                                {__("catalog.opds.info.availableSince", {
+                                    date: moment(properties.availabilitySince).locale([this.props.locale, "en"]).format("LLL"),
+                                })}
+                            </span>
+                        </div> : <></>
                 }
                 {
                     properties.availabilityUntil ?
-                        <MetadataLineComponent text={__("catalog.opds.info.availableUntil")}>
-                            <>{moment(properties.availabilityUntil).locale([this.props.locale, "en"]).format("LLL")}</>
-                        </MetadataLineComponent> : <></>
+                        <div className={stylesBookDetailsDialog.opds_book_infos}>
+                            <span className={stylesBookDetailsDialog.allowUserSelect}>
+                                {__("catalog.opds.info.availableUntil", {
+                                    date: moment(properties.availabilityUntil).locale([this.props.locale, "en"]).format("LLL"),
+                                })}
+                            </span>
+                        </div> : <></>
                 }
             </>
         );

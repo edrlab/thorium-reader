@@ -120,10 +120,13 @@
         "numberOfPages": "ページ数",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "キャンセル",
                 "external": "ウェブ ブラウザーでログインページが開かれたら、表示される指示に従ってください。ログインが完了すると、ウェブ ブラウザーはこのアプリに戻ります。",
+                "externalBrowserInstructions": "",
                 "fallback": "注：デフォルトのウェブ ブラウザーによるログインで問題が発生した場合は、アプリ内の代替方法を使用して再度お試しください。",
                 "login": "ログイン",
+                "openExternalBrowser": "",
                 "password": "パスワード",
                 "register": "登録",
                 "retry": "もう一度やり直してください",
@@ -132,7 +135,7 @@
                 "username": "ユーザー名 / メールアドレス"
             },
             "info": {
-                "availableSince": "いつから",
+                "availableSince": "{{- date}}から利用可能",
                 "availableState": {
                     "available": "利用できます",
                     "ready": "準備中",
@@ -140,7 +143,7 @@
                     "unavailable": "利用できません",
                     "unknown": "利用可能か不明です"
                 },
-                "availableUntil": "いつまで",
+                "availableUntil": "{{- date}}まで利用可能",
                 "copyAvalaible": "利用できます",
                 "copyTotal": "コピー",
                 "holdPosition": "待機順番",

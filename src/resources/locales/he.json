@@ -120,10 +120,13 @@
         "numberOfPages": "",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "",
+                "openExternalBrowser": "",
                 "password": "",
                 "register": "",
                 "retry": "",
@@ -132,7 +135,7 @@
                 "username": ""
             },
             "info": {
-                "availableSince": "",
+                "availableSince": "זמין מ־{{- date}}",
                 "availableState": {
                     "available": "",
                     "ready": "",
@@ -140,7 +143,7 @@
                     "unavailable": "",
                     "unknown": ""
                 },
-                "availableUntil": "",
+                "availableUntil": "זמין עד {{- date}}",
                 "copyAvalaible": "",
                 "copyTotal": "",
                 "holdPosition": "",

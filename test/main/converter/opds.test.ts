@@ -451,8 +451,12 @@ it.each(["http://opds-spec.org/auth/local", "http://opds-spec.org/auth/oauth/pas
 );
 
 
-it.each(["http://opds-spec.org/auth/oauth/implicit", "http://opds-spec.org/auth/oauth/authorization-code-pkce"])(
-    "renders %s as an external authentication result without starting a modal", async type => {
+it.each([
+    ["http://opds-spec.org/auth/oauth/implicit", "http://opds-spec.org/auth/oauth/implicit"],
+    ["http://opds-spec.org/auth/oauth/authorization-code-pkce", "http://opds-spec.org/auth/oauth/authorization-code-pkce"],
+    ["http://opds-spec.org/auth/oauth/code", "http://opds-spec.org/auth/oauth/authorization-code-pkce"],
+])(
+    "renders %s as an external authentication result without starting a modal", async (type, expectedType) => {
         const service = new OpdsService();
         Object.assign(service, { opdsFeedViewConverter: createConverter() });
         const modal = jest.spyOn(service as unknown as { dispatchAuthenticationProcess: () => void }, "dispatchAuthenticationProcess");
@@ -462,7 +466,7 @@ it.each(["http://opds-spec.org/auth/oauth/implicit", "http://opds-spec.org/auth/
                 id: "provider", title: "Sign in", authentication: [{ type, links: [{ rel: "authenticate", href: "/authorize" }] }],
             }) },
         } as unknown as IHttpGetResult<IOpdsResultView>);
-        expect(result.auth).toMatchObject({ external: true, authenticationType: type, credentialsUrl: baseUrl,
+        expect(result.auth).toMatchObject({ external: true, authenticationType: expectedType, credentialsUrl: baseUrl,
             oauthUrl: "https://example.org/authorize" });
         expect(modal).not.toHaveBeenCalled();
     },

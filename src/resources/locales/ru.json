@@ -120,10 +120,13 @@
         "numberOfPages": "Количество страниц",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Отменить",
                 "external": "В вашем браузере откроется страница входа. Следуйте инструкциям. После выполнения входа браузер вернёт вас в это приложение.",
+                "externalBrowserInstructions": "",
                 "fallback": "Примечание: в случае возникновения проблем со входом в систему с помощью веб-браузера, повторите попытку альтернативным способом - через приложение.",
                 "login": "Логин",
+                "openExternalBrowser": "",
                 "password": "Пароль",
                 "register": "Регистрация",
                 "retry": "Попробовать ещё раз",
@@ -132,7 +135,7 @@
                 "username": "Имя пользователя / Адрес электронной почты"
             },
             "info": {
-                "availableSince": "C",
+                "availableSince": "С {{- date}}",
                 "availableState": {
                     "available": "Имеется в наличии",
                     "ready": "Готово",
@@ -140,7 +143,7 @@
                     "unavailable": "Недоступно",
                     "unknown": "Неизвестно"
                 },
-                "availableUntil": "До",
+                "availableUntil": "До {{- date}}",
                 "copyAvalaible": "Количество доступных",
                 "copyTotal": "Количество копий",
                 "holdPosition": "Удерживать позицию",

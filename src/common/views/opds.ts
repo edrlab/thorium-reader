@@ -197,10 +197,12 @@ export interface IOpdsLinkView {
 }
 
 export interface IOpdsNavigationLink {
+    custom?: IOpdsLinkView[];
     wishlist?: IOpdsLinkView[];
     history?: IOpdsLinkView[];
     profile?: IOpdsLinkView[];
     authenticate?: IOpdsLinkView[];
+    authenticationDocument?: IOpdsLinkView[];
     next: IOpdsLinkView[];
     previous: IOpdsLinkView[];
     first: IOpdsLinkView[];

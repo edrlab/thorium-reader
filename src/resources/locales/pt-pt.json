@@ -120,10 +120,13 @@
         "numberOfPages": "Número de páginas",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Cancelar",
                 "external": "A página de autenticação será aberta no navegador Web; siga as instruções apresentadas. Depois de se autenticar, o navegador regressará a esta aplicação.",
+                "externalBrowserInstructions": "",
                 "fallback": "Nota: em caso de problemas ao autenticar com o método do navegador predefinido, tente novamente utilizando o método alternativo dentro da aplicação.",
                 "login": "Autenticar",
+                "openExternalBrowser": "",
                 "password": "Senha",
                 "register": "Registar",
                 "retry": "Tentar novamente",
@@ -132,7 +135,7 @@
                 "username": "Nome de utilizador / Endereço de email"
             },
             "info": {
-                "availableSince": "Desde",
+                "availableSince": "Desde {{- date}}",
                 "availableState": {
                     "available": "Disponível",
                     "ready": "Pronto",
@@ -140,7 +143,7 @@
                     "unavailable": "Indisponível",
                     "unknown": "Desconhecido"
                 },
-                "availableUntil": "Até",
+                "availableUntil": "Até {{- date}}",
                 "copyAvalaible": "Disponíveis",
                 "copyTotal": "Exemplares",
                 "holdPosition": "Sua posição na fila",

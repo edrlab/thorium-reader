@@ -120,10 +120,13 @@
         "numberOfPages": "Seitenzahl",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Abbrechen",
                 "external": "Die Anmeldeseite wird in Ihrem Webbrowser geöffnet. Bitte befolgen Sie die Anweisungen. Sobald Sie sich angemeldet haben, leitet der Webbrowser Sie zurück zu dieser Anwendung.",
+                "externalBrowserInstructions": "",
                 "fallback": "Hinweis: Sollten beim Anmelden über den Standard-Webbrowser Probleme auftreten, versuchen Sie es bitte erneut über die alternative Methode innerhalb der Anwendung.",
                 "login": "Anmelden",
+                "openExternalBrowser": "",
                 "password": "Passwort",
                 "register": "Registrieren",
                 "retry": "Erneut versuchen",
@@ -132,7 +135,7 @@
                 "username": "Benutzername / E-Mail-Adresse"
             },
             "info": {
-                "availableSince": "Verfügbar seit",
+                "availableSince": "Verfügbar seit {{- date}}",
                 "availableState": {
                     "available": "Verfügbar",
                     "ready": "Bereit",
@@ -140,7 +143,7 @@
                     "unavailable": "Nicht verfügbar",
                     "unknown": "Unbekannt"
                 },
-                "availableUntil": "Verfügbar bis",
+                "availableUntil": "Verfügbar bis {{- date}}",
                 "copyAvalaible": "Anzahl der verfügbaren",
                 "copyTotal": "Anzahl der Kopien",
                 "holdPosition": "Ihre Halteposition",

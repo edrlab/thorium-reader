@@ -120,10 +120,13 @@
         "numberOfPages": "पृष्ठों की संख्या",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "रद्द करें",
                 "external": "लॉगिन पृष्ठ आपके वेब ब्राउज़र में खुलेगा, कृपया निर्देशों का पालन करें। लॉग इन होने के बाद वेब ब्राउज़र आपको इस एप्लिकेशन पर वापस ले आएगा।",
+                "externalBrowserInstructions": "",
                 "fallback": "नोट: डिफ़ॉल्ट वेब ब्राउज़र विधि से लॉगिन में समस्या होने पर, ऐप के अंदर की वैकल्पिक विधि से फिर कोशिश करें।",
                 "login": "लॉगिन",
+                "openExternalBrowser": "",
                 "password": "पासवर्ड",
                 "register": "रजिस्टर",
                 "retry": "फिर कोशिश करें",
@@ -132,7 +135,7 @@
                 "username": "उपयोगकर्ता नाम/ईमेल पता"
             },
             "info": {
-                "availableSince": "से उपलब्ध",
+                "availableSince": "{{- date}} से उपलब्ध",
                 "availableState": {
                     "available": "उपलब्ध",
                     "ready": "तैयार",
@@ -140,7 +143,7 @@
                     "unavailable": "अनुपलब्ध",
                     "unknown": "अज्ञात"
                 },
-                "availableUntil": "तक उपलब्ध",
+                "availableUntil": "{{- date}} तक उपलब्ध",
                 "copyAvalaible": "उपलब्ध",
                 "copyTotal": "प्रतियाँ",
                 "holdPosition": "होल्ड स्थिति",

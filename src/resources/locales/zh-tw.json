@@ -120,10 +120,13 @@
         "numberOfPages": "頁碼",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "取消",
                 "external": "登入頁面將在您的瀏覽器中打開，請按照提示操作。登入成功後，瀏覽器將自動返回此應用程式。",
+                "externalBrowserInstructions": "",
                 "fallback": "注意：如果使用預設的網頁瀏覽器方法登入出現問題，請嘗試使用應用程式內的備用登入方法。",
                 "login": "登入",
+                "openExternalBrowser": "",
                 "password": "密碼",
                 "register": "註冊",
                 "retry": "在試一次",
@@ -132,7 +135,7 @@
                 "username": "使用者名稱/電子郵件地址"
             },
             "info": {
-                "availableSince": "開始時間",
+                "availableSince": "開始時間：{{- date}}",
                 "availableState": {
                     "available": "在售",
                     "ready": "準備中",
@@ -140,7 +143,7 @@
                     "unavailable": "不可用",
                     "unknown": "不明"
                 },
-                "availableUntil": "直到",
+                "availableUntil": "結束時間：{{- date}}",
                 "copyAvalaible": "可用",
                 "copyTotal": "副本",
                 "holdPosition": "保持位置",

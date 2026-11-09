@@ -9,7 +9,7 @@ import { apiActions } from "readium-desktop/common/redux/actions";
 import { ApiState } from "readium-desktop/common/redux/states/api";
 import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
-import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opds/constants";
+import { BROWSE_OPDS_API_REQUEST_ID, OPDS_NAVIGATION_REQUEST_PREFIX } from "readium-desktop/renderer/library/opds/constants";
 import { attachLocalBookshelfPublicationToResult } from "readium-desktop/renderer/library/opds/localBookshelfPublication";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import { Reducer } from "redux";
@@ -20,6 +20,10 @@ function libraryApiReducer_(
     state: ApiState<any> | undefined,
     action: TAction,
 ): ApiState<any> {
+    // The navigation saga publishes only the active response to the browser's shared slot.
+    if (action.type === apiActions.result.ID && action.meta.api.requestId.startsWith(OPDS_NAVIGATION_REQUEST_PREFIX)) {
+        return state ?? apiReducer(undefined, apiActions.clean.build(action.meta.api.requestId));
+    }
     if (action.type !== opdsActions.publicationImported.ID || !state) {
         return apiReducer(state, action);
     }

@@ -120,10 +120,13 @@
         "numberOfPages": "பக்கங்களின் எண்ணிக்கை",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "ரத்துசெய்",
                 "external": "",
+                "externalBrowserInstructions": "",
                 "fallback": "",
                 "login": "புகுபதிவு",
+                "openExternalBrowser": "",
                 "password": "கடவுச்சொல்",
                 "register": "பதிவு செய்யுங்கள்",
                 "retry": "",
@@ -132,7 +135,7 @@
                 "username": "பயனர்பெயர் / மின்னஞ்சல் முகவரி"
             },
             "info": {
-                "availableSince": "முதல்",
+                "availableSince": "{{- date}} முதல்",
                 "availableState": {
                     "available": "கிடைக்கிறது",
                     "ready": "ஆயத்தம்",
@@ -140,7 +143,7 @@
                     "unavailable": "கிடைக்கவில்லை",
                     "unknown": "தெரியவில்லை"
                 },
-                "availableUntil": "வரை",
+                "availableUntil": "{{- date}} வரை",
                 "copyAvalaible": "கிடைக்கிறது",
                 "copyTotal": "நகல்கள்",
                 "holdPosition": "நிலை பிடி",

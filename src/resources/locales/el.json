@@ -120,10 +120,13 @@
         "numberOfPages": "Σύνολο σελίδων",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Ακύρωση",
                 "external": "Η σελίδα σύνδεσης θα ανοίξει στον browser σας. Ακολουθήστε τις οδηγίες. Μόλις συνδεθείτε, θα επιστρέψετε σε αυτήν την εφαρμογή.",
+                "externalBrowserInstructions": "",
                 "fallback": "Σημείωση: σε περίπτωση προβλημάτων σύνδεσης με τον προεπιλεγμένο browser, δοκιμάστε ξανά με την εναλλακτική μέθοδο εντός της εφαρμογής.",
                 "login": "Σύνδεση",
+                "openExternalBrowser": "",
                 "password": "Κωδικός πρόσβασης",
                 "register": "Εγγραφή",
                 "retry": "Ξαναπροσπαθήστε",
@@ -132,7 +135,7 @@
                 "username": "Όνομα χρήστη / διεύθυνση ηλεκτρονικού ταχυδρομείου"
             },
             "info": {
-                "availableSince": "Από",
+                "availableSince": "Από {{- date}}",
                 "availableState": {
                     "available": "Διαθέσιμο",
                     "ready": "Έτοιμο",
@@ -140,7 +143,7 @@
                     "unavailable": "Μη διαθέσιμο",
                     "unknown": "Άγνωστο"
                 },
-                "availableUntil": "Μέχρι",
+                "availableUntil": "Μέχρι {{- date}}",
                 "copyAvalaible": "Διαθέσιμο",
                 "copyTotal": "Αντίγραφα",
                 "holdPosition": "Κράτηση θέσης",

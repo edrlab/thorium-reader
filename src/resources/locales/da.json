@@ -120,10 +120,13 @@
         "numberOfPages": "Antal sider",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Annullér",
                 "external": "Login-siden åbnes i din webbrowser. Følg venligst instruktionerne. Når du er logget ind, fører webbrowseren dig tilbage til denne applikation.",
+                "externalBrowserInstructions": "",
                 "fallback": "Bemærk: Hvis du oplever problemer med at logge ind med din standard webbrowser, kan du prøve igen med den alternative metode inde i applikationen.",
                 "login": "Log ind",
+                "openExternalBrowser": "",
                 "password": "Adgangskode",
                 "register": "Registrér",
                 "retry": "Prøv igen",
@@ -132,7 +135,7 @@
                 "username": "Brugernavn / email-adresse"
             },
             "info": {
-                "availableSince": "Siden",
+                "availableSince": "Siden {{- date}}",
                 "availableState": {
                     "available": "Til rådighed",
                     "ready": "Klar",
@@ -140,7 +143,7 @@
                     "unavailable": "Ikke til rådighed",
                     "unknown": "Ukendt"
                 },
-                "availableUntil": "Indtil",
+                "availableUntil": "Indtil {{- date}}",
                 "copyAvalaible": "Til rådighed",
                 "copyTotal": "Kopier",
                 "holdPosition": "Din position på ventelisten",

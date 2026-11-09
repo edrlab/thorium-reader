@@ -120,10 +120,13 @@
         "numberOfPages": "Antall sider",
         "opds": {
             "auth": {
+                "alternativeLogin": "",
                 "cancel": "Avbryt",
                 "external": "Innloggingssiden åpnes i nettleseren din. Følg instruksjonene der. Når du er logget inn, går nettleseren tilbake til dette programmet.",
+                "externalBrowserInstructions": "",
                 "fallback": "Merk: Hvis du får problemer med innlogging via standardmetoden i nettleseren, kan du prøve igjen med den alternative innloggingsmetoden i programmet.",
                 "login": "Logg inn",
+                "openExternalBrowser": "",
                 "password": "Passord",
                 "register": "Registrer deg",
                 "retry": "Prøv igjen",
@@ -132,7 +135,7 @@
                 "username": "Brukernavn / e-postadresse"
             },
             "info": {
-                "availableSince": "Tilgjengelig fra",
+                "availableSince": "Tilgjengelig fra {{- date}}",
                 "availableState": {
                     "available": "Tilgjengelig",
                     "ready": "Klar",
@@ -140,7 +143,7 @@
                     "unavailable": "Ikke tilgjengelig",
                     "unknown": "Ukjent"
                 },
-                "availableUntil": "Tilgjengelig til",
+                "availableUntil": "Tilgjengelig til {{- date}}",
                 "copyAvalaible": "Antall tilgjengelige",
                 "copyTotal": "Antall eksemplarer",
                 "holdPosition": "Din plass i reservasjonskøen",
