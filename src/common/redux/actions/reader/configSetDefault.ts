@@ -38,6 +38,9 @@ export function build(config: ReaderConfig = readerConfigInitialState):
     if (isNotNil(configCopy["ttsHighlightColor_WORD"])) {
         configCopy["ttsHighlightColor_WORD"] = { ...configCopy["ttsHighlightColor_WORD"] };
     }
+    if (isNotNil(configCopy["customSpacingPreset"])) {
+        configCopy["customSpacingPreset"] = { ...configCopy["customSpacingPreset"] };
+    }
     delete configCopy.readerSettingsSection;
     delete configCopy.readerMenuSection;
 

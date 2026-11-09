@@ -1010,8 +1010,7 @@
                 "two": "2 სვეტი"
             },
             "customFontSelected": "",
-            "customizeReader": "",
-            "disabled": "",
+            "deactivateTextFormatting": "",
             "display": "გამოსახულება",
             "disposition": {
                 "title": "განლაგება"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "მოძრაობის შემცირება",
             "scrolled": "ბრუნვადი",
             "spacing": "დაშორება",
+            "spacingCustomButton": "",
             "spreadModeEven": "",
             "text": "ტექსტი",
             "theme": {

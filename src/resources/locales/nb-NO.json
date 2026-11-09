@@ -1010,8 +1010,7 @@
                 "two": "2 kolonner"
             },
             "customFontSelected": "Du har valgt en egen skrifttype",
-            "customizeReader": "Tilpass tekstformatering",
-            "disabled": "deaktivert",
+            "deactivateTextFormatting": "",
             "display": "Visning",
             "disposition": {
                 "title": "Layout"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "Reduser bevegelser",
             "scrolled": "Rullbar",
             "spacing": "Avstand",
+            "spacingCustomButton": "",
             "spreadModeEven": "Sideoppslag med partallsside først (standard er oddetallsside)",
             "text": "Tekst",
             "theme": {

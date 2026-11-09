@@ -1010,8 +1010,7 @@
                 "two": "2 dálkar"
             },
             "customFontSelected": "Þú hefur valið eigin leturgerð",
-            "customizeReader": "Sérsníða textasnið",
-            "disabled": "óvirkt",
+            "deactivateTextFormatting": "",
             "display": "Birting",
             "disposition": {
                 "title": "Uppsetning"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "Draga úr hreyfingu",
             "scrolled": "Leshamur",
             "spacing": "Bil",
+            "spacingCustomButton": "",
             "spreadModeEven": "Jafnar síður saman (sjálfgefið eru oddatölusíður saman)",
             "text": "Texti",
             "theme": {

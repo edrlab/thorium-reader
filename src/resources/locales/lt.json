@@ -1024,8 +1024,7 @@
                 "two": "2 stulpeliai"
             },
             "customFontSelected": "Pasirinkote asmeninį šriftą",
-            "customizeReader": "Tinkinti teksto formatavimą",
-            "disabled": "išjungta",
+            "deactivateTextFormatting": "",
             "display": "Atvaizdavimas",
             "disposition": {
                 "title": "Išdėstymas"
@@ -1074,6 +1073,7 @@
             "reduceMotion": "Mažinti judesių kiekį",
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",
+            "spacingCustomButton": "",
             "spreadModeEven": "Lyginis puslapių išdėstymas (numatytasis išdėstymas – nelyginis)",
             "text": "Tekstas",
             "theme": {

@@ -1003,8 +1003,7 @@
                 "two": "2欄"
             },
             "customFontSelected": "您已選擇個人字體",
-            "customizeReader": "自訂文字格式",
-            "disabled": "停用",
+            "deactivateTextFormatting": "",
             "display": "顯示",
             "disposition": {
                 "title": "布局"
@@ -1053,6 +1052,7 @@
             "reduceMotion": "減少動態效果",
             "scrolled": "捲動",
             "spacing": "間距",
+            "spacingCustomButton": "",
             "spreadModeEven": "",
             "text": "文字",
             "theme": {

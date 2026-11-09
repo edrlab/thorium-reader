@@ -20,13 +20,12 @@ import { RadioGroupItem } from "readium-desktop/renderer/reader/components/Reade
 import { RadioGroup } from "readium-desktop/renderer/common/components/RadioGroupComponent";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
 
-export const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
+export const ReadingDisplayLayout = ({ isFXL, dockedMode }: { isFXL: boolean, dockedMode: boolean }) => {
     const [__] = useTranslator();
     const layout = useReaderConfig("paged");
     const set = useSaveReaderConfigDebounced();
     return (
-        <div className={stylesSettings.section}>
-            <h3>{__("reader.settings.disposition.title")}</h3>
+        <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px"}}>
             <div className={stylesSettings.display_options} style={{marginBottom: "20px"}}>
                 <RadioGroup aria-label={__("reader.settings.disposition.title")} orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={(layout || isFXL) ? "page_option" : "scroll_option"}
                     onValueChange={(v) => {
@@ -40,6 +39,6 @@ export const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
                     <RadioGroupItem value="page_option" description={`${__("reader.settings.paginated")}`} svg={PaginatedIcon} disabled={false} />
                 </RadioGroup>
             </div>
-        </div>
+        </section>
     );
 };

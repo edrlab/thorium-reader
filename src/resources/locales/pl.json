@@ -1024,8 +1024,7 @@
                 "two": "2 kol"
             },
             "customFontSelected": "Wybrano własną czcionkę",
-            "customizeReader": "Dostosuj formatowanie tekstu",
-            "disabled": "wyłączone",
+            "deactivateTextFormatting": "",
             "display": "Wyświetlanie",
             "disposition": {
                 "title": "Układ"
@@ -1074,6 +1073,7 @@
             "reduceMotion": "Zmniejsz animacje",
             "scrolled": "Przewijalny",
             "spacing": "Odstępy",
+            "spacingCustomButton": "",
             "spreadModeEven": "Rozkładówki 'parzyste' (domyślnie 'nieparzyste')",
             "text": "Tekst",
             "theme": {

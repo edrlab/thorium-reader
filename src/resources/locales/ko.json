@@ -1003,8 +1003,7 @@
                 "two": "2단"
             },
             "customFontSelected": "",
-            "customizeReader": "",
-            "disabled": "",
+            "deactivateTextFormatting": "",
             "display": "디스플레이",
             "disposition": {
                 "title": "레이아웃"
@@ -1053,6 +1052,7 @@
             "reduceMotion": "모션 줄이기",
             "scrolled": "스크롤",
             "spacing": "간격",
+            "spacingCustomButton": "",
             "spreadModeEven": "",
             "text": "텍스트",
             "theme": {

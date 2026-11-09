@@ -1010,8 +1010,7 @@
                 "two": "2 στήλες"
             },
             "customFontSelected": "Έχεις επιλέξει μια προσωπική γραμματοσειρά",
-            "customizeReader": "Προσαρμογή μορφοποίησης κειμένου",
-            "disabled": "απενεργοποιημένο",
+            "deactivateTextFormatting": "",
             "display": "Εμφάνιση",
             "disposition": {
                 "title": "Διάταξη"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "Μείωση κίνησης",
             "scrolled": "Μετακυλίσιμο",
             "spacing": "Διαστήματα",
+            "spacingCustomButton": "",
             "spreadModeEven": "Οι σελίδες ανοίγουν «ζυγές» (η προεπιλογή είναι «μονές»)",
             "text": "Κείμενο",
             "theme": {

@@ -9,18 +9,18 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as React from "react";
 import { cssFontFamilyName } from "@r2-navigator-js/electron/common/css-font-family";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
 import { usePublisherReaderConfig, useSavePublisherReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { Button, Tooltip, TooltipTrigger, OverlayArrow } from "react-aria-components";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 
-export const FontFamily = () => {
+export const FontFamily = ({ overridePublisherDefault }: { overridePublisherDefault: boolean }) => {
     const [__] = useTranslator();
 
     const font = usePublisherReaderConfig("font");
@@ -60,15 +60,15 @@ export const FontFamily = () => {
         // a"b:c    ;d;<e>f'g&h
         val = trimNormaliseWhitespaceAndCollapse(
             val.
-            replace(/"/g, "").
-            replace(/:/g, "").
-            replace(/'/g, "").
-            replace(/;/g, "").
-            replace(/</g, "").
-            replace(/>/g, "").
-            replace(/\\/g, "").
-            replace(/\//g, "").
-            replace(/&/g, ""),
+                replace(/"/g, "").
+                replace(/:/g, "").
+                replace(/'/g, "").
+                replace(/;/g, "").
+                replace(/</g, "").
+                replace(/>/g, "").
+                replace(/\\/g, "").
+                replace(/\//g, "").
+                replace(/&/g, ""),
         );
         if (!val) { // includes empty string (falsy)
             val = undefined;
@@ -78,10 +78,18 @@ export const FontFamily = () => {
         }
     };
 
+    const labelInfos: string = options.find((v) => v.name === inputval) ?
+        __("reader.settings.infoCustomFont")
+        :
+        __("reader.settings.customFontSelected");
+
+
+    const isRTL = langStringIsRTL(locale);
 
     return (
         <div>
-            <ComboBox label={__("reader.settings.font")} defaultItems={options} selectedKey={defaultkey} placeholder={inputval}
+            <div style={{display: "flex", alignItems: "center", gap:"8px"}}>
+            <ComboBox className={stylesSettings.range_size_container} label="Family" defaultItems={options} selectedKey={defaultkey} placeholder={inputval} isDisabled={!overridePublisherDefault}
                 onSelectionChange={
                     (key: React.Key) => {
                         // console.log("@@@@@");
@@ -100,32 +108,38 @@ export const FontFamily = () => {
                             saveFont(found.value);
                         }
                     }}
-                svg={TextAreaIcon}
                 allowsCustomValue
                 onInputChange={(v) => setInputval(v)}
             >
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
             </ComboBox>
-            <div className={stylesSettings.session_text} style={{ marginTop: "0", marginRight: "20px" }}>
-                <SVG ariaHidden svg={InfoIcon} />
-                {
-                    options.find((v) => v.name === inputval) ?
-                    <p>{__("reader.settings.infoCustomFont")}</p>
-                    :
-                    <p>{__("reader.settings.customFontSelected")}</p>
-                }
+            {labelInfos &&
+                <TooltipTrigger>
+                    <Button style={{ width: "15px", height: "15px", marginLeft: "3px" }} aria-label={labelInfos}>
+                        <SVG ariaHidden svg={InfoIcon} />
+                    </Button>
+                    <Tooltip aria-hidden offset={5} dir={isRTL ? "rtl" : "ltr"} placement='top' style={{ border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)", margin: "0", height: "fit-content" }}>
+                         <OverlayArrow><svg width={10} height={10} viewBox="0 0 8 8"><path d="M0 0 L4 4 L8 0" /></svg></OverlayArrow>
+                        {labelInfos}
+                    </Tooltip>
+                </TooltipTrigger>
+            }
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <h3>{__("reader.settings.preview")}:</h3>
-                <span
-                    aria-hidden
-                    style={{
-                        fontSize: "1.4em",
-                        lineHeight: "1.2em",
-                        display: "block",
-                        fontFamily,
-                    }}>{fontName}
-                </span>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", justifyContent: "space-between", padding: "10px 20px 5px 0" }}>
+                <label style={{ flexGrow: 1, margin: "0" }}>{__("reader.settings.preview")}:</label>
+                {fontFamily ?
+                    <span
+                        aria-hidden
+                        style={{
+                            fontSize: "1.4em",
+                            lineHeight: "1.2em",
+                            display: "block",
+                            fontFamily,
+                            width: "160px",
+                        }}>{fontName}
+                    </span>
+                    : <></>
+                }
             </div>
         </div>
     );

@@ -1010,8 +1010,7 @@
                 "two": "2 Spalten"
             },
             "customFontSelected": "Sie haben eine persönliche Schriftart gewählt",
-            "customizeReader": "Anpassen der Textformatierung",
-            "disabled": "deaktiviert",
+            "deactivateTextFormatting": "",
             "display": "Lesefluss",
             "disposition": {
                 "title": "Layout"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "Bewegung reduzieren",
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",
+            "spacingCustomButton": "",
             "spreadModeEven": "Doppelseiten „gerade“ (Standard ist „ungerade“)",
             "text": "Text",
             "theme": {

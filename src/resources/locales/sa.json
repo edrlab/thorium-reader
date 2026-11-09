@@ -1010,8 +1010,7 @@
                 "two": "2 स्तम्भौ"
             },
             "customFontSelected": "व्यक्तिगतम् अक्षररूपं चितम्",
-            "customizeReader": "पाठस्वरूपणम् अनुकूलयतु",
-            "disabled": "निष्क्रियम्",
+            "deactivateTextFormatting": "",
             "display": "प्रदर्शनम्",
             "disposition": {
                 "title": "रचना"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "गतिं न्यूनयतु",
             "scrolled": "अनुसञ्चरणीयम्",
             "spacing": "अन्तरम्",
+            "spacingCustomButton": "",
             "spreadModeEven": "पृष्ठप्रसारः 'सम' (पूर्वनिर्धारितः 'विषम')",
             "text": "पाठः",
             "theme": {

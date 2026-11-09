@@ -1024,8 +1024,7 @@
                 "two": "2 столбца"
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
-            "customizeReader": "Настройка форматирования текста",
-            "disabled": "отключено",
+            "deactivateTextFormatting": "",
             "display": "Отображение",
             "disposition": {
                 "title": "Макет"
@@ -1074,6 +1073,7 @@
             "reduceMotion": "Уменьшить скорость перемещения",
             "scrolled": "Потоковый",
             "spacing": "Интервал",
+            "spacingCustomButton": "",
             "spreadModeEven": "Развороты страниц «чётные» (по умолчанию «нечётные»)",
             "text": "Текст",
             "theme": {

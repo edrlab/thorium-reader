@@ -1017,8 +1017,7 @@
                 "two": "2 cols."
             },
             "customFontSelected": "",
-            "customizeReader": "Personalitza el format del text",
-            "disabled": "desactivat",
+            "deactivateTextFormatting": "",
             "display": "Visualització",
             "disposition": {
                 "title": "Disposició"
@@ -1067,6 +1066,7 @@
             "reduceMotion": "Disminuir moviment",
             "scrolled": "Desplaçable",
             "spacing": "Espaiat",
+            "spacingCustomButton": "",
             "spreadModeEven": "",
             "text": "Text",
             "theme": {
