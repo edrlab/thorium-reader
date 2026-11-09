@@ -417,7 +417,7 @@ $entry-card-colors-dark: (
             color: color-mix(in srgb, var(--entry-card-background-end) 45%, currentcolor);
             -webkit-line-clamp: unset;
                     line-clamp: unset;
-            overflow: visible;
+            overflow: hidden;
         }
 
         // Le titre prend la place restante
@@ -582,7 +582,7 @@ $entry-card-colors-dark: (
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(135deg, var(--entry-card-background-start), var(--entry-card-background-end));
+    background: var(--entry-card-background-start);
     padding: 15px;
     min-height: 40px;
     margin-bottom: 40px;
