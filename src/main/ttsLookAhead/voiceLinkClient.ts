@@ -14,6 +14,8 @@ const VOICE_LINK_ORIGIN = "http://127.0.0.1:7860" as const;
 const DEFAULT_TIMEOUT_MS = 750;
 const CAPABILITY_RETRY_BASE_MS = 1_000;
 const CAPABILITY_RETRY_MAX_MS = 30_000;
+const PUT_RETRY_BASE_MS = 250;
+const PUT_RETRY_MAX_MS = 30_000;
 const HARD_MAX_UNITS = 12;
 const HARD_MAX_CHARACTERS = 12_000;
 const HARD_MAX_UNIT_CHARACTERS = 4_000;
@@ -43,12 +45,31 @@ interface ICapabilityRequestResult {
     response: Response;
 }
 
+interface IPutRetryState {
+    failureCount: number;
+    retryAt: number;
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function isTransientCapabilityStatus(status: number): boolean {
+function isTransientHttpStatus(status: number): boolean {
     return status === 408 || status === 425 || status === 429 || status < 400 || status >= 500;
+}
+
+function parseRetryAfter(value: string | null, now: number): number | undefined {
+    if (value === null) {
+        return undefined;
+    }
+
+    const seconds = Number(value);
+    if (Number.isFinite(seconds) && seconds >= 0) {
+        return seconds * 1_000;
+    }
+
+    const date = Date.parse(value);
+    return Number.isFinite(date) ? Math.max(0, date - now) : undefined;
 }
 
 function isPositiveSafeInteger(value: unknown): value is number {
@@ -144,6 +165,7 @@ export class VoiceLinkClient {
     private capabilityProbe?: Promise<IVoiceLinkCapabilities | undefined>;
     private capabilityRetryAt = 0;
     private disabled = false;
+    private readonly putRetries = new Map<string, IPutRetryState>();
 
     public constructor(options: VoiceLinkClientOptions = {}) {
         const origin = options.origin ?? VOICE_LINK_ORIGIN;
@@ -166,6 +188,9 @@ export class VoiceLinkClient {
         if (!CANONICAL_UUID.test(streamId)) {
             this.emit({ operation: "put", reason: "invalid-stream-id" });
             return "disabled";
+        }
+        if (this.isPutCoolingDown(streamId)) {
+            return "transient-error";
         }
 
         const capabilities = await this.getCapabilities();
@@ -196,13 +221,20 @@ export class VoiceLinkClient {
             (value) => value,
         );
         if (!response) {
+            this.deferPutRetry(streamId);
             return "transient-error";
         }
         if (response.status >= 200 && response.status < 300) {
+            this.putRetries.delete(streamId);
             return "accepted";
         }
         if (response.status >= 400 && response.status < 500) {
             this.emit({ operation: "put", reason: "client-error", status: response.status });
+            if (isTransientHttpStatus(response.status)) {
+                this.deferPutRetry(streamId, response.headers.get("Retry-After"));
+                return "transient-error";
+            }
+            this.putRetries.delete(streamId);
             return "disabled";
         }
 
@@ -211,6 +243,7 @@ export class VoiceLinkClient {
             reason: response.status >= 500 ? "server-error" : "unexpected-status",
             status: response.status,
         });
+        this.deferPutRetry(streamId, response.headers.get("Retry-After"));
         return "transient-error";
     }
 
@@ -219,6 +252,7 @@ export class VoiceLinkClient {
             this.emit({ operation: "delete", reason: "invalid-stream-id" });
             return;
         }
+        this.putRetries.delete(streamId);
 
         const response = await this.request(
             "delete",
@@ -276,7 +310,7 @@ export class VoiceLinkClient {
                 reason: "http-error",
                 status: result.response.status,
             });
-            if (isTransientCapabilityStatus(result.response.status)) {
+            if (isTransientHttpStatus(result.response.status)) {
                 this.deferCapabilityRetry();
             } else {
                 this.disabled = true;
@@ -307,6 +341,25 @@ export class VoiceLinkClient {
         const delay = Math.min(CAPABILITY_RETRY_BASE_MS * (2 ** exponent), CAPABILITY_RETRY_MAX_MS);
         this.capabilityFailureCount += 1;
         this.capabilityRetryAt = Date.now() + delay;
+    }
+
+    private deferPutRetry(streamId: string, retryAfter: string | null = null): void {
+        const now = Date.now();
+        const current = this.putRetries.get(streamId);
+        const failureCount = current?.failureCount ?? 0;
+        const exponent = Math.min(failureCount, 7);
+        const fallbackDelay = Math.min(PUT_RETRY_BASE_MS * (2 ** exponent), PUT_RETRY_MAX_MS);
+        const requestedDelay = parseRetryAfter(retryAfter, now) ?? fallbackDelay;
+        const delay = Math.max(PUT_RETRY_BASE_MS, Math.min(requestedDelay, PUT_RETRY_MAX_MS));
+        this.putRetries.set(streamId, {
+            failureCount: failureCount + 1,
+            retryAt: now + delay,
+        });
+    }
+
+    private isPutCoolingDown(streamId: string): boolean {
+        const retry = this.putRetries.get(streamId);
+        return retry !== undefined && Date.now() < retry.retryAt;
     }
 
     private async request<T>(

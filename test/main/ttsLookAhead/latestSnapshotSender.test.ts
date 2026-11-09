@@ -1,8 +1,8 @@
-import { expect, test } from "@jest/globals";
+import { afterEach, expect, jest, test } from "@jest/globals";
 
 import type { IVoiceLinkSnapshot } from "readium-desktop/common/ipc/ttsLookAhead";
 import { LatestSnapshotSender } from "readium-desktop/main/ttsLookAhead/latestSnapshotSender";
-import type { VoiceLinkClient } from "readium-desktop/main/ttsLookAhead/voiceLinkClient";
+import { VoiceLinkClient } from "readium-desktop/main/ttsLookAhead/voiceLinkClient";
 
 type PutResult = Awaited<ReturnType<VoiceLinkClient["putSnapshot"]>>;
 
@@ -65,6 +65,24 @@ function snapshot(generation: number, revision: number): IVoiceLinkSnapshot {
         ],
     };
 }
+
+function capabilityResponse(): Response {
+    return Response.json({
+        bridgeProtocolRequiredForPauses: 1,
+        lookahead: {
+            maxBodyBytes: 65_536,
+            maxCharacters: 12_000,
+            maxUnitCharacters: 4_000,
+            maxUnits: 12,
+            protocols: [1],
+        },
+        structuredPauses: true,
+    });
+}
+
+afterEach(() => {
+    jest.useRealTimers();
+});
 
 async function nextTurn(): Promise<void> {
     await new Promise<void>((resolve) => setImmediate(resolve));
@@ -145,7 +163,7 @@ test("prefers a higher generation even when it has a lower revision", async () =
     await nextTurn();
 });
 
-test("retries the newest transient snapshot once and drops a second transient result", async () => {
+test("keeps the stream open for a newer snapshot after a second transient result", async () => {
     const client = new ControlledClient();
     const sender = new LatestSnapshotSender(client);
 
@@ -158,7 +176,53 @@ test("retries the newest transient snapshot once and drops a second transient re
     client.puts[1].gate.resolve("transient-error");
     await nextTurn();
 
-    expect(client.puts).toHaveLength(2);
+    sender.enqueue(STREAM_A, snapshot(3, 13));
+    expect(client.puts.map(({ snapshot: value }) => value.revision)).toStrictEqual([12, 12, 13]);
+    expect(client.puts[2].streamId).toBe(STREAM_A);
+    client.puts[2].gate.resolve("accepted");
+    await nextTurn();
+});
+
+test("keeps one stream usable across capability, PUT 429 cooldown, and a newer accepted snapshot", async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(0);
+    const calls: Array<{ input: RequestInfo | URL; init?: RequestInit }> = [];
+    let putCount = 0;
+    const fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+        calls.push({ input, init });
+        if (init?.method === "GET") {
+            return capabilityResponse();
+        }
+        if (init?.method === "PUT" && putCount++ === 0) {
+            return new Response(null, {
+                headers: { "Retry-After": "1" },
+                status: 429,
+            });
+        }
+        return new Response(null, { status: 202 });
+    }) as typeof globalThis.fetch;
+    const sender = new LatestSnapshotSender(new VoiceLinkClient({ fetch }));
+
+    sender.enqueue(STREAM_A, snapshot(3, 12));
+    await jest.advanceTimersByTimeAsync(0);
+
+    expect(calls.filter(({ init }) => init?.method === "PUT")).toHaveLength(1);
+
+    await jest.advanceTimersByTimeAsync(999);
+    sender.enqueue(STREAM_A, snapshot(3, 13));
+    await jest.advanceTimersByTimeAsync(0);
+    expect(calls.filter(({ init }) => init?.method === "PUT")).toHaveLength(1);
+
+    await jest.advanceTimersByTimeAsync(1);
+    sender.enqueue(STREAM_A, snapshot(3, 14));
+    await jest.advanceTimersByTimeAsync(0);
+
+    const putCalls = calls.filter(({ init }) => init?.method === "PUT");
+    expect(putCalls.map(({ init }) => JSON.parse(init?.body as string).revision)).toStrictEqual([12, 14]);
+    expect(putCalls.map(({ input }) => input)).toStrictEqual([
+        `http://127.0.0.1:7860/v1/tts/lookahead/${STREAM_A}`,
+        `http://127.0.0.1:7860/v1/tts/lookahead/${STREAM_A}`,
+    ]);
 });
 
 test("sends a newer pending snapshot instead of retrying a stale transient snapshot", async () => {

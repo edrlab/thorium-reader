@@ -395,7 +395,12 @@ test("permanently disables malformed successful capability JSON without unhandle
 
 test.each([
     [400, "disabled"],
-    [429, "disabled"],
+    [408, "transient-error"],
+    [409, "disabled"],
+    [413, "disabled"],
+    [425, "transient-error"],
+    [426, "disabled"],
+    [429, "transient-error"],
     [500, "transient-error"],
     [503, "transient-error"],
 ] as const)("classifies PUT status %i as %s without retrying", async (status, expected) => {
@@ -404,6 +409,29 @@ test.each([
 
     await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe(expected);
     expect(harness.calls).toHaveLength(2);
+});
+
+test("honors PUT Retry-After after 429 without hammering the stream", async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(0);
+    const throttled = new Response(null, {
+        headers: { "Retry-After": "1" },
+        status: 429,
+    });
+    const harness = fetchStub(capabilityResponse(), throttled, response(202));
+    const client = new VoiceLinkClient({ fetch: harness.fetch });
+
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("transient-error");
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("transient-error");
+    expect(harness.calls).toHaveLength(2);
+
+    await jest.advanceTimersByTimeAsync(999);
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("transient-error");
+    expect(harness.calls).toHaveLength(2);
+
+    await jest.advanceTimersByTimeAsync(1);
+    await expect(client.putSnapshot(STREAM_ID, snapshot())).resolves.toBe("accepted");
+    expect(harness.calls).toHaveLength(3);
 });
 
 test("classifies a PUT transport failure as transient without retrying", async () => {
