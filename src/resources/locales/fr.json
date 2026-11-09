@@ -1063,6 +1063,7 @@
             "reduceMotion": "Réduire les animations visuelles",
             "scrolled": "Défilement vertical",
             "spacing": "Espacement",
+            "spacingCustomButton": "",
             "spreadModeEven": "Une double page commence par une page paire (impaire par défaut)",
             "text": "Texte",
             "theme": {

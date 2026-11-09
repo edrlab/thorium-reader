@@ -1063,6 +1063,7 @@
             "reduceMotion": "Disminuir moviment",
             "scrolled": "Desplaçable",
             "spacing": "Espaiat",
+            "spacingCustomButton": "",
             "spreadModeEven": "",
             "text": "Text",
             "theme": {

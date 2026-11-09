@@ -1056,6 +1056,7 @@
             "reduceMotion": "Draga úr hreyfingu",
             "scrolled": "Leshamur",
             "spacing": "Bil",
+            "spacingCustomButton": "",
             "spreadModeEven": "Jafnar síður saman (sjálfgefið eru oddatölusíður saman)",
             "text": "Texti",
             "theme": {

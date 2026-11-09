@@ -1084,6 +1084,7 @@
             "reduceMotion": "تقليل الحركة",
             "scrolled": "قابل للتمرير",
             "spacing": "التباعد",
+            "spacingCustomButton": "",
             "spreadModeEven": "توزيع الصفحات: 'زوجية' (الافتراضي: 'فردية')",
             "text": "النص",
             "theme": {

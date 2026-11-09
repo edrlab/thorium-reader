@@ -1063,6 +1063,7 @@
             "reduceMotion": "Reduzir movimento",
             "scrolled": "Rolável",
             "spacing": "Espaçamento",
+            "spacingCustomButton": "",
             "spreadModeEven": "Espelhamento de páginas: 'par' (a predefinição é 'ímpar')",
             "text": "Texto",
             "theme": {

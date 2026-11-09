@@ -1063,6 +1063,7 @@
             "reduceMotion": "Riduci il movimento",
             "scrolled": "Scrollabile",
             "spacing": "Spaziatura",
+            "spacingCustomButton": "",
             "spreadModeEven": "Pagine affiancate 'pari' (l'impostazione predefinita è 'dispari')",
             "text": "Testo",
             "theme": {

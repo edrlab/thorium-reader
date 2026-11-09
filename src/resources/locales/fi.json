@@ -1056,6 +1056,7 @@
             "reduceMotion": "Vähennä liikettä",
             "scrolled": "Vieritettävä",
             "spacing": "Välit",
+            "spacingCustomButton": "",
             "spreadModeEven": "Parilliset aukeamat (oletus on pariton)",
             "text": "Teksti",
             "theme": {

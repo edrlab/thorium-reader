@@ -1063,6 +1063,7 @@
             "reduceMotion": "Disminuir movimiento",
             "scrolled": "Desplazable",
             "spacing": "Espaciado",
+            "spacingCustomButton": "",
             "spreadModeEven": "Las páginas se distribuyen «pares» (el valor predeterminado es «impares»)",
             "text": "Texto",
             "theme": {

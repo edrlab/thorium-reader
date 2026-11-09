@@ -1056,6 +1056,7 @@
             "reduceMotion": "Vähenda liikumisefekte",
             "scrolled": "Keritav",
             "spacing": "Vahed",
+            "spacingCustomButton": "",
             "spreadModeEven": "Lehtede jagunemine „paaris“ viisil (vaikimisi on „paaritu“)",
             "text": "Tekst",
             "theme": {

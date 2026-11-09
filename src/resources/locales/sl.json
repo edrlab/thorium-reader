@@ -1070,6 +1070,7 @@
             "reduceMotion": "Zmanjšaj gibanje",
             "scrolled": "Drsno",
             "spacing": "Razmik",
+            "spacingCustomButton": "",
             "spreadModeEven": "Razmiki strani »sodi« (privzeto so »lihi«)",
             "text": "Besedilo",
             "theme": {

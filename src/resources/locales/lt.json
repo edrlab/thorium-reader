@@ -1070,6 +1070,7 @@
             "reduceMotion": "Mažinti judesių kiekį",
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",
+            "spacingCustomButton": "",
             "spreadModeEven": "Lyginis puslapių išdėstymas (numatytasis išdėstymas – nelyginis)",
             "text": "Tekstas",
             "theme": {

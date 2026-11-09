@@ -1049,6 +1049,7 @@
             "reduceMotion": "모션 줄이기",
             "scrolled": "스크롤",
             "spacing": "간격",
+            "spacingCustomButton": "",
             "spreadModeEven": "",
             "text": "텍스트",
             "theme": {

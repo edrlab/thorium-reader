@@ -1070,6 +1070,7 @@
             "reduceMotion": "Zmniejsz animacje",
             "scrolled": "Przewijalny",
             "spacing": "Odstępy",
+            "spacingCustomButton": "",
             "spreadModeEven": "Rozkładówki 'parzyste' (domyślnie 'nieparzyste')",
             "text": "Tekst",
             "theme": {
