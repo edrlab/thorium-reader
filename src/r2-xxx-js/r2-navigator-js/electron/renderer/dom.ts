@@ -214,7 +214,9 @@ function readiumCssApplyToWebview(
             //     // stealFocusDisable(true);
             //     win.READIUM2.stealFocusDisabled = true;
             // }
-            handleLinkLocator(loc.locator, actualReadiumCss);
+            // Same document, re-positioned after the CSS change: the readaloud keeps
+            // its place (playing or paused) instead of restarting the current pair.
+            handleLinkLocator(loc.locator, actualReadiumCss, true);
             // if (forceDisable) {
             //     setTimeout(() => {
             //         if (win.READIUM2) {
