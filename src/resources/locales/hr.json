@@ -1017,8 +1017,7 @@
                 "two": "2 stupca"
             },
             "customFontSelected": "",
-            "customizeReader": "",
-            "disabled": "",
+            "deactivateTextFormatting": "",
             "display": "Prikaz",
             "disposition": {
                 "title": "Izgled"
@@ -1067,6 +1066,7 @@
             "reduceMotion": "Smanji kretanje",
             "scrolled": "Mogućnost klizanja",
             "spacing": "Razmak",
+            "spacingCustomButton": "",
             "spreadModeEven": "",
             "text": "Tekst",
             "theme": {

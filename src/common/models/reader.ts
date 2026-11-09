@@ -56,6 +56,14 @@ export interface ReaderConfigStringsAdjustables {
     lineHeight: string;
 }
 
+export interface ReaderSpacingPreset {
+    pageMargins: string;
+    wordSpacing: string;
+    letterSpacing: string;
+    paraSpacing: string;
+    lineHeight: string;
+}
+
 export type TTheme = "neutral" | "sepia" | "night" | "contrast1" | "contrast2" | "contrast3"   | "contrast4" | "paper";
 
 export interface ReaderConfigStrings extends ReaderConfigStringsAdjustables {
@@ -119,6 +127,7 @@ export interface IAnnotationReaderConfigState {
 }
 
 export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderConfigSettingsMenuState, ReaderTTSMediaOverlay {
+    customSpacingPreset: ReaderSpacingPreset;
 
     ttsHighlightStyle: number;
     ttsHighlightStyle_WORD: number;

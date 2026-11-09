@@ -1010,8 +1010,7 @@
                 "two": "2 cols"
             },
             "customFontSelected": "You have chosen a personal font",
-            "customizeReader": "Customize text formatting",
-            "disabled": "disabled",
+            "deactivateTextFormatting": "Deactivate text formatting",
             "display": "Display",
             "disposition": {
                 "title": "Layout"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "Reduce motion",
             "scrolled": "Scrollable",
             "spacing": "Spacing",
+            "spacingCustomButton": "Custom spacing options",
             "spreadModeEven": "Page spreads 'even' (default is 'odd')",
             "text": "Text",
             "theme": {

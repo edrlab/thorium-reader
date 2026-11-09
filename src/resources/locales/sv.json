@@ -1010,8 +1010,7 @@
                 "two": "2 kolumner"
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
-            "customizeReader": "Anpassa textformatering",
-            "disabled": "inaktiverad",
+            "deactivateTextFormatting": "",
             "display": "Visning",
             "disposition": {
                 "title": "Layout"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "Minska rörelse",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
+            "spacingCustomButton": "",
             "spreadModeEven": "Uppslag börjar på jämna sidor (standard är udda)",
             "text": "Text",
             "theme": {

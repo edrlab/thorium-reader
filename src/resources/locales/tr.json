@@ -1010,8 +1010,7 @@
                 "two": "2 sütun"
             },
             "customFontSelected": "Kişisel bir yazı tipi seçtiniz",
-            "customizeReader": "Metin biçimlendirmesini özelleştir",
-            "disabled": "geçersiz",
+            "deactivateTextFormatting": "",
             "display": "Görüntüleme",
             "disposition": {
                 "title": "Düzen"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "Hareketi azalt",
             "scrolled": "Kaydırılabilir",
             "spacing": "Aralık ayarları",
+            "spacingCustomButton": "",
             "spreadModeEven": "Sayfa görüntülenmesi 'çift' (varsayılan 'tek'tir)",
             "text": "Metin ayarları",
             "theme": {

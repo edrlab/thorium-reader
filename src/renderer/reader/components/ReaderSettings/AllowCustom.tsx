@@ -5,58 +5,32 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as React from "react";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { Switch } from "readium-desktop/renderer/common/components/Switch";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
 export const AllowCustom = () => {
     const [__] = useTranslator();
     const overridePublisherDefault = useSelector((state: IReaderRootState) => state.reader.allowCustomConfig.state);
+    const deactivateTextFormatting = !overridePublisherDefault;
     const dispatch = useDispatch();
-    const set = React.useCallback(() => {
-        dispatch(readerActions.allowCustom.build(!overridePublisherDefault));
-    }, [dispatch, overridePublisherDefault]);
+
+    const onAllowCustomChange = React.useCallback((isSelected: boolean) => {
+        dispatch(readerActions.allowCustom.build(!isSelected));
+    }, [dispatch]);
 
     return (
-        <>
-            <input id="allow-custom" className={stylesGlobal.checkbox_custom_input} type="checkbox" checked={overridePublisherDefault} onChange={() => { set(); }} />
-            <label htmlFor="allow-custom" className={stylesGlobal.checkbox_custom_label}>
-                <div
-                    tabIndex={0}
-                    role="checkbox"
-                    aria-checked={overridePublisherDefault}
-                    aria-label={__("reader.settings.customizeReader")}
-                    onKeyDown={(e) => {
-                        // if (e.code === "Space") {
-                        if (e.key === " ") {
-                            e.preventDefault(); // prevent scroll
-                        }
-                    }}
-                    onKeyUp={(e) => {
-                        // if (e.code === "Space") {
-                        if (e.key === " ") {
-                            e.preventDefault();
-                            set();
-                        }
-                    }}
-                    className={stylesGlobal.checkbox_custom}
-                    style={{ border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: overridePublisherDefault ? "var(--color-brand-primary)" : "transparent" }}>
-                    {overridePublisherDefault ?
-                        <SVG ariaHidden svg={CheckIcon} />
-                        :
-                        <></>
-                    }
-                </div>
-                <span aria-hidden>
-                    {__("reader.settings.customizeReader")}
-                </span>
-            </label>
-        </>
+        <Switch
+            id="allow-custom"
+            style={{ flexGrow: "unset" }}
+            aria-label={__("reader.settings.deactivateTextFormatting")}
+            isSelected={deactivateTextFormatting}
+            onChange={onAllowCustomChange}
+        >
+        </Switch>
     );
 };

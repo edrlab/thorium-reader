@@ -1017,8 +1017,7 @@
                 "two": "2 colonnes"
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
-            "customizeReader": "Personnaliser la mise en forme",
-            "disabled": "Désactivé",
+            "deactivateTextFormatting": "",
             "display": "Affichage",
             "disposition": {
                 "title": "Pagination"
@@ -1067,6 +1066,7 @@
             "reduceMotion": "Réduire les animations visuelles",
             "scrolled": "Défilement vertical",
             "spacing": "Espacement",
+            "spacingCustomButton": "",
             "spreadModeEven": "Une double page commence par une page paire (impaire par défaut)",
             "text": "Texte",
             "theme": {

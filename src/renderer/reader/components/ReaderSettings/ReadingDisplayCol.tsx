@@ -38,7 +38,7 @@ interface IState {
     spreadModeEven?: boolean | undefined;
 }
 
-export const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol }: Pick<IBaseProps, "isPdf"> & Pick<IState, "spreadModeEven"> & Pick<IState, "pdfCol">) => {
+export const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol, dockedMode }: Pick<IBaseProps, "isPdf"> & Pick<IState, "spreadModeEven"> & Pick<IState, "pdfCol"> & { dockedMode: boolean }) => {
     const [__] = useTranslator();
 
     const paged = useReaderConfig("paged");
@@ -58,10 +58,7 @@ export const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol }: Pick<IBaseP
     // console.log("ReadingDisplayCol spreadModeEven", spreadModeEven);
     // console.log("ReadingDisplayCol pdfCol", pdfCol);
     return (
-        <section className={stylesSettings.section}>
-            <div>
-                <h3>{__("reader.settings.column.title")}</h3>
-            </div>
+        <section className={stylesSettings.settings_display_section} style={{ padding: dockedMode ? "10px 20px 10px 0px" : "10px 20px"}}>
             <div className={stylesSettings.display_options} style={{marginBottom: "20px"}}>
                 <RadioGroup aria-label={__("reader.settings.column.title")} orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? (pdfCol ? pdfCol : "1") : state}
                     onValueChange={(v) => {

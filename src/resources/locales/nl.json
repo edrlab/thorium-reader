@@ -1010,8 +1010,7 @@
                 "two": "2 kol"
             },
             "customFontSelected": "Je hebt een eigen lettertype gekozen",
-            "customizeReader": "Pas de tekstopmaak aan",
-            "disabled": "uitgeschakeld",
+            "deactivateTextFormatting": "",
             "display": "Weergave",
             "disposition": {
                 "title": "Indeling"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "Beperk beweging",
             "scrolled": "Doorlopend",
             "spacing": "Afstand",
+            "spacingCustomButton": "",
             "spreadModeEven": "Page spread 'even' (standaard is 'oneven')",
             "text": "Tekst",
             "theme": {

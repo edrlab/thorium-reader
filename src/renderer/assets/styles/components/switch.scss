@@ -1,0 +1,81 @@
+.switchField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &[data-disabled] {
+    color: var(--color-disabled);
+  }
+}
+
+.switchButton {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  forced-color-adjust: none;
+  -webkit-tap-highlight-color: transparent;
+
+  .track {
+    --height: 20px;
+
+    height: var(--height);
+    width: 34px;
+    border-radius: 999px;
+    transition: background-color 140ms ease;
+    background: var(--color-gray-400);
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid transparent;
+
+    .handle {
+      display: block;
+      width: 14px;
+      height: 14px;
+      margin-left: 3px;
+      border-radius: 50%;
+      transition: transform 140ms ease;
+      transform-origin: 0 50%;
+      will-change: transform;
+      background: var(--color-neutral-base);
+      transform: translateX(0);
+    }
+  }
+
+  &[data-pressed] .handle {
+    transform: translateX(1px);
+  }
+
+  &[data-selected] {
+    .handle {
+      transform: translateX(14px);
+      transform-origin: 0 50%;
+    }
+
+    .track {
+      background: var(--color-brand-primary);
+      border-color: var(--color-brand-primary);
+    }
+  }
+
+  &[data-focus-visible] .track {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
+  }
+
+  &[data-disabled] {
+    color: var(--color-disabled);
+    cursor: not-allowed;
+    opacity: 0.8;
+
+    .track {
+      background: var(--color-gray-300);
+    }
+
+    &[data-selected] .handle {
+      background: var(--color-gray-200);
+    }
+  }
+}

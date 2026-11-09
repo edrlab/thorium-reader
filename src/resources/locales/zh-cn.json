@@ -1003,8 +1003,7 @@
                 "two": "2栏"
             },
             "customFontSelected": "您已选择自定义字体",
-            "customizeReader": "自定义文本格式",
-            "disabled": "已禁用",
+            "deactivateTextFormatting": "",
             "display": "显示",
             "disposition": {
                 "title": "布局"
@@ -1053,6 +1052,7 @@
             "reduceMotion": "减少动态效果",
             "scrolled": "滚屏",
             "spacing": "间距",
+            "spacingCustomButton": "",
             "spreadModeEven": "展开偶数页(默认为奇数)",
             "text": "文字",
             "theme": {

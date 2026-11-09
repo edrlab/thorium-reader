@@ -1017,8 +1017,7 @@
                 "two": "2 cols."
             },
             "customFontSelected": "Has elegido una fuente personalizada",
-            "customizeReader": "Personalizar el estilo del texto",
-            "disabled": "desactivado",
+            "deactivateTextFormatting": "",
             "display": "Visualización",
             "disposition": {
                 "title": "Disposición"
@@ -1067,6 +1066,7 @@
             "reduceMotion": "Disminuir movimiento",
             "scrolled": "Desplazable",
             "spacing": "Espaciado",
+            "spacingCustomButton": "",
             "spreadModeEven": "Las páginas se distribuyen «pares» (el valor predeterminado es «impares»)",
             "text": "Texto",
             "theme": {

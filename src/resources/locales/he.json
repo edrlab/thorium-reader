@@ -1017,8 +1017,7 @@
                 "two": ""
             },
             "customFontSelected": "",
-            "customizeReader": "",
-            "disabled": "",
+            "deactivateTextFormatting": "",
             "display": "",
             "disposition": {
                 "title": ""
@@ -1067,6 +1066,7 @@
             "reduceMotion": "",
             "scrolled": "",
             "spacing": "",
+            "spacingCustomButton": "",
             "spreadModeEven": "",
             "text": "",
             "theme": {

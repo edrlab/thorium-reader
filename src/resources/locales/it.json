@@ -1017,8 +1017,7 @@
                 "two": "2 colonne"
             },
             "customFontSelected": "Hai scelto un font personale",
-            "customizeReader": "Personalizza la formattazione del testo",
-            "disabled": "Disattivato",
+            "deactivateTextFormatting": "",
             "display": "Visualizzazione",
             "disposition": {
                 "title": "Impaginazione"
@@ -1067,6 +1066,7 @@
             "reduceMotion": "Riduci il movimento",
             "scrolled": "Scrollabile",
             "spacing": "Spaziatura",
+            "spacingCustomButton": "",
             "spreadModeEven": "Pagine affiancate 'pari' (l'impostazione predefinita è 'dispari')",
             "text": "Testo",
             "theme": {

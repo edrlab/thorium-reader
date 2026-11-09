@@ -1010,8 +1010,7 @@
                 "two": "2 колони"
             },
             "customFontSelected": "",
-            "customizeReader": "",
-            "disabled": "",
+            "deactivateTextFormatting": "",
             "display": "Екран",
             "disposition": {
                 "title": "Оформление"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "Намали движението",
             "scrolled": "Скролируем",
             "spacing": "Интервал",
+            "spacingCustomButton": "",
             "spreadModeEven": "",
             "text": "Текст",
             "theme": {

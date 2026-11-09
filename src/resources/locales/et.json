@@ -1010,8 +1010,7 @@
                 "two": "2 veergu"
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
-            "customizeReader": "Kohenda teksti vormindust",
-            "disabled": "pole kasutusel",
+            "deactivateTextFormatting": "",
             "display": "Ekraanivaade",
             "disposition": {
                 "title": "Paigutus"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "Vähenda liikumisefekte",
             "scrolled": "Keritav",
             "spacing": "Vahed",
+            "spacingCustomButton": "",
             "spreadModeEven": "Lehtede jagunemine „paaris“ viisil (vaikimisi on „paaritu“)",
             "text": "Tekst",
             "theme": {

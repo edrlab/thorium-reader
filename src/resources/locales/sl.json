@@ -1024,8 +1024,7 @@
                 "two": "2 stolpca"
             },
             "customFontSelected": "Izbrana je pisava po meri",
-            "customizeReader": "Prilagodi oblikovanje besedila",
-            "disabled": "onemogočeno",
+            "deactivateTextFormatting": "",
             "display": "Zaslon",
             "disposition": {
                 "title": "Postavitev"
@@ -1074,6 +1073,7 @@
             "reduceMotion": "Zmanjšaj gibanje",
             "scrolled": "Drsno",
             "spacing": "Razmik",
+            "spacingCustomButton": "",
             "spreadModeEven": "Razmiki strani »sodi« (privzeto so »lihi«)",
             "text": "Besedilo",
             "theme": {

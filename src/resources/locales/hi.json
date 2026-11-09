@@ -1010,8 +1010,7 @@
                 "two": "2 कॉलम"
             },
             "customFontSelected": "आपने एक व्यक्तिगत फ़ॉन्ट चुना है",
-            "customizeReader": "पाठ स्वरूपण को अनुकूलित करें",
-            "disabled": "अक्षम",
+            "deactivateTextFormatting": "",
             "display": "प्रदर्शन",
             "disposition": {
                 "title": "लेआउट"
@@ -1060,6 +1059,7 @@
             "reduceMotion": "गति कम करें",
             "scrolled": "स्क्रॉल करने योग्य",
             "spacing": "रिक्ति",
+            "spacingCustomButton": "",
             "spreadModeEven": "पृष्ठ स्प्रेड 'सम' (डिफ़ॉल्ट 'विषम' है)",
             "text": "पाठ",
             "theme": {
