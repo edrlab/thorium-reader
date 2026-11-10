@@ -10,6 +10,7 @@ import { ipcRenderer } from "electron";
 
 import {
     R2_EVENT_TTS_DOC_END, R2_EVENT_TTS_DOC_BACK, R2_EVENT_TTS_IS_PAUSED, R2_EVENT_TTS_IS_PLAYING, R2_EVENT_TTS_IS_STOPPED,
+    R2_EVENT_TTS_LOOKAHEAD,
 } from "../../common/events";
 import {
     HighlightDrawTypeBackground, HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler, HighlightDrawTypeUnderline, IColor, IHighlight,
@@ -31,6 +32,11 @@ import {
 } from "../common/dom-text-utils";
 import { easings } from "../common/easings";
 import { IHTMLDialogElementWithPopup, PopupDialog, isPopupDialogOpen } from "./popup-dialog";
+import {
+    TtsLookAheadLifecycle, resumeTtsWithLookAhead, scheduleTtsLookAheadNavigation,
+    startTtsWithLookAhead,
+    type ITtsLookAheadSource,
+} from "../common/tts-lookahead";
 import { createHighlights, destroyHighlight, ENABLE_CSS_HIGHLIGHTS, HIGHLIGHT_GROUP_TTS } from "./highlight";
 import { isRTL, clearImageZoomOutlineDebounced } from "./readium-css";
 
@@ -67,10 +73,19 @@ interface IHTMLDialogElementWithTTSState extends IHTMLDialogElementWithPopup {
 }
 
 let _dialogState: IHTMLDialogElementWithTTSState | undefined;
+const _ttsLookAheadLifecycle = new TtsLookAheadLifecycle();
+
+export function ttsLookAheadEnable(doEnable: boolean): void {
+    _ttsLookAheadLifecycle.setEnabled(doEnable);
+}
 
 function resetState(stop: boolean) {
     if (stop) {
         _resumableState = undefined;
+    }
+    const sessionEnded = stop || !_resumableState;
+    if (sessionEnded) {
+        _ttsLookAheadLifecycle.endSession();
     }
 
     if (_dialogState) {
@@ -103,7 +118,7 @@ function resetState(stop: boolean) {
     _dialogState = undefined;
 
     win.document.documentElement.classList.remove(TTS_CLASS_IS_ACTIVE);
-    if (stop || !_resumableState) {
+    if (sessionEnded) {
         ipcRenderer.sendToHost(R2_EVENT_TTS_IS_STOPPED);
         win.READIUM2.ttsClickEnabled = false;
         win.document.documentElement.classList.remove(TTS_CLASS_PLAYING, TTS_CLASS_PAUSED);
@@ -340,7 +355,11 @@ export function ttsResume() {
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (_dialogState.ttsUtterance as any).r2_cancel = false;
-                win.speechSynthesis.speak(_dialogState.ttsUtterance);
+                resumeTtsWithLookAhead(
+                    _dialogState.ttsUtterance,
+                    emitTtsLookAheadSnapshot,
+                    (utterance) => win.speechSynthesis.speak(utterance),
+                );
             }
         }, 0);
 
@@ -488,7 +507,12 @@ export function ttsNext(skipSentences: boolean, escape = false) {
             return;
         }
         ttsPause(true);
-        ttsPlayQueueIndexDebounced(ttsQueueIndex);
+        scheduleTtsLookAheadNavigation(
+            _ttsLookAheadLifecycle,
+            "next",
+            { escape, skipSentences },
+            () => ttsPlayQueueIndexDebounced(ttsQueueIndex),
+        );
     } else if (_resumableState) {
         ttsResume();
     }
@@ -552,7 +576,12 @@ export function ttsPrevious(skipSentences: boolean, escape = false) {
             return;
         }
         ttsPause(true);
-        ttsPlayQueueIndexDebounced(ttsQueueIndex);
+        scheduleTtsLookAheadNavigation(
+            _ttsLookAheadLifecycle,
+            "previous",
+            { escape, skipSentences },
+            () => ttsPlayQueueIndexDebounced(ttsQueueIndex),
+        );
     } else if (_resumableState) {
         ttsResume();
     }
@@ -566,7 +595,12 @@ export function ttsPreviewAndEventuallyPlayQueueIndex(n: number) {
     //     updateTTSInfo(getTtsQueueItemRef(_dialogState.ttsQueue, n), -1, undefined);
     // }
 
-    ttsPlayQueueIndexDebounced(n);
+    scheduleTtsLookAheadNavigation(
+        _ttsLookAheadLifecycle,
+        "slider",
+        {},
+        () => ttsPlayQueueIndexDebounced(n),
+    );
 }
 
 // const _getCssSelectorOptions = {
@@ -1546,6 +1580,33 @@ export function assignUtteranceVoice(utterance: SpeechSynthesisUtterance) {
     }
 }
 
+function emitTtsLookAheadSnapshot(utterance: SpeechSynthesisUtterance) {
+    if (!_ttsLookAheadLifecycle.enabled || !_dialogState || !_dialogState.ttsQueue || !_dialogState.ttsQueueItem) {
+        return;
+    }
+
+    const source: ITtsLookAheadSource = {
+        rate: utterance.rate,
+    };
+    if (utterance.voice) {
+        source.voiceName = utterance.voice.name;
+        source.voiceURI = utterance.voice.voiceURI;
+        source.lang = utterance.voice.lang;
+    } else if (utterance.lang) {
+        source.lang = utterance.lang;
+    }
+    const token = _ttsLookAheadLifecycle.createEmissionToken(source);
+    const snapshot = _ttsLookAheadLifecycle.buildSnapshot(
+        _dialogState.ttsQueue,
+        _dialogState.ttsQueueItem.iGlobal,
+        token,
+        source,
+    );
+    if (snapshot && _ttsLookAheadLifecycle.acceptEmission(token)) {
+        ipcRenderer.sendToHost(R2_EVENT_TTS_LOOKAHEAD, snapshot);
+    }
+}
+
 export function ttsPlayQueueIndex(ttsQueueIndex: number, ttsAndMediaOverlaysManualPlayNext = false) {
 
     if (!_dialogState ||
@@ -1619,7 +1680,12 @@ export function ttsPlayQueueIndex(ttsQueueIndex: number, ttsAndMediaOverlaysManu
 
     if (txtStr === "") {
         highlights(false);
-        ttsPlayQueueIndexDebounced(ttsQueueIndex + 1);
+        scheduleTtsLookAheadNavigation(
+            _ttsLookAheadLifecycle,
+            "automatic",
+            {},
+            () => ttsPlayQueueIndexDebounced(ttsQueueIndex + 1),
+        );
         return;
     }
 
@@ -1682,14 +1748,24 @@ export function ttsPlayQueueIndex(ttsQueueIndex: number, ttsAndMediaOverlaysManu
         if (win.READIUM2.ttsAndMediaOverlaysManualPlayNext) {
 
             highlights(false);
-            ttsPlayQueueIndexDebounced(ttsQueueIndex + 1, true);
+            scheduleTtsLookAheadNavigation(
+                _ttsLookAheadLifecycle,
+                "automatic",
+                {},
+                () => ttsPlayQueueIndexDebounced(ttsQueueIndex + 1, true),
+            );
             ttsPause(true); // calls highlights(false);
 
             return;
         }
 
         highlights(false, true);
-        ttsPlayQueueIndexDebounced(ttsQueueIndex + 1);
+        scheduleTtsLookAheadNavigation(
+            _ttsLookAheadLifecycle,
+            "automatic",
+            {},
+            () => ttsPlayQueueIndexDebounced(ttsQueueIndex + 1),
+        );
     };
     utterance.onend = (_ev: SpeechSynthesisEvent) => {
         onEnd();
@@ -1708,22 +1784,26 @@ export function ttsPlayQueueIndex(ttsQueueIndex: number, ttsAndMediaOverlaysManu
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (utterance as any).r2_cancel = false;
-    setTimeout(() => {
-        // note that isSkippable===true never reaches into a ttsQueueItem because we eject at compilation time instead of runtime / playback:
-        // if (win.READIUM2.ttsSkippabilityEnabled && ttsQueueItem.item.isSkippable) {
-        //     onEnd();
-        // } else {
-        //     win.speechSynthesis.speak(utterance);
-        // }
-        win.speechSynthesis.speak(utterance);
-    }, 0);
-
-    win.document.documentElement.classList.remove(TTS_CLASS_PAUSED, TTS_CLASS_STOPPED);
-    win.document.documentElement.classList.add(TTS_CLASS_PLAYING);
-    if (_dialogState && _dialogState.ttsOverlayEnabled) {
-        win.document.documentElement.classList.add(TTS_CLASS_IS_ACTIVE);
-    }
-    ipcRenderer.sendToHost(R2_EVENT_TTS_IS_PLAYING);
+    startTtsWithLookAhead(
+        () => {
+            win.document.documentElement.classList.remove(TTS_CLASS_PAUSED, TTS_CLASS_STOPPED);
+            win.document.documentElement.classList.add(TTS_CLASS_PLAYING);
+            if (_dialogState && _dialogState.ttsOverlayEnabled) {
+                win.document.documentElement.classList.add(TTS_CLASS_IS_ACTIVE);
+            }
+            ipcRenderer.sendToHost(R2_EVENT_TTS_IS_PLAYING);
+        },
+        () => emitTtsLookAheadSnapshot(utterance),
+        () => setTimeout(() => {
+            // note that isSkippable===true never reaches into a ttsQueueItem because we eject at compilation time instead of runtime / playback:
+            // if (win.READIUM2.ttsSkippabilityEnabled && ttsQueueItem.item.isSkippable) {
+            //     onEnd();
+            // } else {
+            //     win.speechSynthesis.speak(utterance);
+            // }
+            win.speechSynthesis.speak(utterance);
+        }, 0),
+    );
     win.READIUM2.ttsClickEnabled = true;
     clearImageZoomOutlineDebounced();
 }
@@ -1900,6 +1980,7 @@ ${win.READIUM2.ttsOverlayEnabled ?
 
     _dialogState.ttsQueue = ttsQueue;
     _dialogState.ttsQueueLength = ttsQueueLength;
+    _ttsLookAheadLifecycle.rebuildQueue(ttsQueue);
 
     if (_dialogState.domSlider) {
         _dialogState.domSlider.addEventListener("input", (_ev: Event) => {
@@ -1948,7 +2029,12 @@ ${win.READIUM2.ttsOverlayEnabled ?
                         if (ttsQItem) {
                             if (ttsQItem.iGlobal !== _dialogState.ttsQueueItem.iGlobal) {
                                 ttsPause(true);
-                                ttsPlayQueueIndexDebounced(index);
+                                scheduleTtsLookAheadNavigation(
+                                    _ttsLookAheadLifecycle,
+                                    "jump",
+                                    {},
+                                    () => ttsPlayQueueIndexDebounced(index),
+                                );
                                 return;
                             }
                         }

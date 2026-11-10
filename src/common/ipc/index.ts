@@ -8,11 +8,13 @@
 import * as analyticsIpc from "./analytics";
 import * as readerIpc from "./reader";
 import * as syncIpc from "./sync";
+import * as ttsLookAheadIpc from "./ttsLookAhead";
 import * as winIpc from "./win";
 
 export {
     analyticsIpc,
     readerIpc,
     syncIpc,
+    ttsLookAheadIpc,
     winIpc,
 };

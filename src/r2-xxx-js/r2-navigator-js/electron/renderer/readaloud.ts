@@ -9,13 +9,15 @@ import debounce from "debounce";
 
 import {
     IEventPayload_R2_EVENT_TTS_CLICK_ENABLE, IEventPayload_R2_EVENT_TTS_DO_NEXT_OR_PREVIOUS,
-    IEventPayload_R2_EVENT_TTS_DO_PLAY, IEventPayload_R2_EVENT_TTS_OVERLAY_ENABLE,
+    IEventPayload_R2_EVENT_TTS_DO_PLAY, IEventPayload_R2_EVENT_TTS_LOOKAHEAD_ENABLE,
+    IEventPayload_R2_EVENT_TTS_OVERLAY_ENABLE,
     IEventPayload_R2_EVENT_TTS_PLAYBACK_RATE, IEventPayload_R2_EVENT_TTS_SENTENCE_DETECT_ENABLE,
     IEventPayload_R2_EVENT_TTS_SKIP_ENABLE, R2_EVENT_TTS_SKIP_ENABLE,
     IEventPayload_R2_EVENT_TTS_VOICE, R2_EVENT_READING_LOCATION, R2_EVENT_TTS_CLICK_ENABLE,
     R2_EVENT_TTS_DOC_END, R2_EVENT_TTS_DOC_BACK, R2_EVENT_TTS_DO_NEXT, R2_EVENT_TTS_DO_PAUSE, R2_EVENT_TTS_DO_PLAY,
     R2_EVENT_TTS_DO_PREVIOUS, R2_EVENT_TTS_DO_RESUME, R2_EVENT_TTS_DO_STOP, R2_EVENT_TTS_IS_PAUSED,
-    R2_EVENT_TTS_IS_PLAYING, R2_EVENT_TTS_IS_STOPPED, R2_EVENT_TTS_OVERLAY_ENABLE,
+    R2_EVENT_TTS_IS_PLAYING, R2_EVENT_TTS_IS_STOPPED, R2_EVENT_TTS_LOOKAHEAD, R2_EVENT_TTS_LOOKAHEAD_ENABLE,
+    R2_EVENT_TTS_OVERLAY_ENABLE,
     R2_EVENT_TTS_PLAYBACK_RATE, R2_EVENT_TTS_SENTENCE_DETECT_ENABLE, R2_EVENT_TTS_VOICE,
     IEventPayload_R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
     R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
@@ -26,6 +28,19 @@ import { getCurrentReadingLocation, navPreviousOrNext } from "./location";
 import { ReadiumElectronBrowserWindow, IReadiumElectronWebview } from "./webview/state";
 import { IColor } from "../common/highlight";
 import { IRangeInfo } from "../common/selection";
+import type { ITtsLookAheadSnapshot } from "../common/tts-lookahead";
+import { TtsLookAheadListenerRegistry, TtsLookAheadRendererCoordinator } from "./common/tts-lookahead-listener";
+
+export type {
+    ITtsLookAheadBlock,
+    ITtsLookAheadPosition,
+    ITtsLookAheadSnapshot,
+    ITtsLookAheadSource,
+    ITtsLookAheadUnit,
+    TtsLookAheadBlockKind,
+    TtsLookAheadBoundary,
+    TtsLookAheadDirection,
+} from "../common/tts-lookahead";
 
 // import debug_ from "debug";
 // const debug = debug_("r2:navigator#electron/renderer/index");
@@ -153,6 +168,8 @@ export function ttsHandleIpcMessage(
         if (_ttsListener) {
             _ttsListener(TTSStateEnum.PLAYING);
         }
+    } else if (eventChannel === R2_EVENT_TTS_LOOKAHEAD) {
+        _ttsLookAheadRendererCoordinator.handle(_lastTTSWebView, eventCurrentTarget, _eventArgs[0]);
     } else if (eventChannel === R2_EVENT_TTS_DOC_END) {
         // _lastTTSWebView = undefined;
         // _lastTTSWebViewHref = undefined;
@@ -204,10 +221,48 @@ export function ttsListen(ttsListener: (ttsState: TTSStateEnum) => void) {
     _ttsListener = ttsListener;
 }
 
-export function ttsPlay(speed: number, voice: SpeechSynthesisVoice[] | SpeechSynthesisVoice | null | undefined) {
+const _ttsLookAheadListenerRegistry = new TtsLookAheadListenerRegistry();
+const _ttsLookAheadRendererCoordinator =
+    new TtsLookAheadRendererCoordinator<IReadiumElectronWebview>(_ttsLookAheadListenerRegistry);
+export function ttsLookAheadListen(
+    listener: ((snapshot: ITtsLookAheadSnapshot) => void) | undefined,
+    stopListener?: () => void,
+): void {
+    _ttsLookAheadListenerRegistry.listen(listener, stopListener);
+}
+
+let _ttsLookAheadEnabled = false;
+
+export function ttsLookAheadEnable(doEnable: boolean) {
+    _ttsLookAheadEnabled = doEnable;
+    _ttsLookAheadListenerRegistry.setEnabled(doEnable);
     if (!win.READIUM2) {
         return;
     }
+
+    const payload: IEventPayload_R2_EVENT_TTS_LOOKAHEAD_ENABLE = { doEnable };
+    for (const activeWebView of win.READIUM2.getActiveWebViews()) {
+        if (activeWebView.READIUM2?.DOMisReady) {
+            activeWebView.send(R2_EVENT_TTS_LOOKAHEAD_ENABLE, payload)
+                .then((_v) => { /* noop */ })
+                .catch((_err) => { /* debug(err); */ });
+        }
+    }
+}
+
+export function ttsPlay(
+    speed: number,
+    voice: SpeechSynthesisVoice[] | SpeechSynthesisVoice | null | undefined,
+    lookAheadEnabled?: boolean,
+) {
+    if (!win.READIUM2) {
+        return;
+    }
+
+    if (typeof lookAheadEnabled !== "undefined") {
+        _ttsLookAheadEnabled = lookAheadEnabled;
+    }
+    ttsLookAheadEnable(_ttsLookAheadEnabled);
 
     win.READIUM2.ttsPlaybackRate = speed;
 

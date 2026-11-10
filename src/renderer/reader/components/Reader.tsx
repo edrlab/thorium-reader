@@ -61,6 +61,7 @@ import { NavigationAnnouncement, NavigationAnnouncementHandle } from "readium-de
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import { normalizeLocatorProgressionForPublication } from "readium-desktop/renderer/reader/locatorProgression";
+import { shouldEnableVoiceLinkLookAhead } from "readium-desktop/renderer/reader/ttsLookAhead";
 import {
     TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
@@ -98,6 +99,7 @@ import {
     ttsAndMediaOverlaysManualPlayNext,
     ttsClickEnable,
     ttsHighlightStyle,
+    ttsLookAheadEnable,
     ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume,
     ttsSentenceDetectionEnable,
@@ -3491,7 +3493,11 @@ class Reader extends React.Component<IProps, IState> {
         this.hideAnnotationsForTTSorMOPlay();
 
         setTimeout(() => {
-            ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoices);
+            ttsPlay(
+                parseFloat(this.props.ttsPlaybackRate),
+                this.props.ttsVoices,
+                shouldEnableVoiceLinkLookAhead(process.platform, this.props.ttsVoices),
+            );
         }, delay);
     }
     private handleTTSPause() {
@@ -3555,6 +3561,7 @@ class Reader extends React.Component<IProps, IState> {
 
         // console.log("HANDLE_TTS_VOICE", "PUSH_DEFAULT_TTS_VOICES_TO_NAVIGATOR", v);
         navigatorTTSVoicesSetter(v);
+        ttsLookAheadEnable(shouldEnableVoiceLinkLookAhead(process.platform, v));
         this.props.setConfig({ ttsVoices: v });
     }
 
