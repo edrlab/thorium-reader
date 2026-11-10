@@ -55,7 +55,7 @@
     "_NOT_NEEDED_build:dev:renderer:reader": "webpack --config webpack.config.renderer-reader.js",
     "_NOT_NEEDED_build:dev:renderer:pdf": "webpack --config webpack.config.renderer-pdf.js",
     "_NOT_NEEDED_build:dev:renderer:pdf-extract": "webpack --config webpack.config.renderer-pdf-extract.js",
-    "start:debug": "cross-env RELEASE_TAG=xxx npm run build && cross-env DEBUG=* electron .",
+    "start:debug": "cross-env RELEASE_TAG_CI_NON_PROD_BUILDS=xxx npm run build && cross-env DEBUG=* electron .",
     "start": "npm run build:prod && cross-env DEBUG=* electron .",
     "start:windows": "npm run build:prod:windows && cross-env DEBUG=* electron .",
     "start:quick": "cross-env DEBUG=* electron .",

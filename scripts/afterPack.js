@@ -22,7 +22,7 @@ const asarChecksum = require('./asarChecksum');
 
 // https://github.com/electron-userland/electron-builder/issues/6365
 
-const isContinuousIntegrationDeploy = process.env.RELEASE_TAG ? true : false;
+const isContinuousIntegrationDeploy = process.env.RELEASE_TAG_CI_NON_PROD_BUILDS ? true : false;
 
 module.exports = async function afterPack(context) {
 

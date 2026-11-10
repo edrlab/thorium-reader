@@ -112,7 +112,7 @@ RUN chown -R notroot:notroot /THORIUM/ &&\
 USER notroot
 
 # use this only for dev/debug builds! (simulates CI)
-# ENV RELEASE_TAG=xyz
+# ENV RELEASE_TAG_CI_NON_PROD_BUILDS=xyz
 
 # Electron Builder workaround
 # ENV USE_HARD_LINKS="false"
