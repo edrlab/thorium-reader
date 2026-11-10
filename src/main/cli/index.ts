@@ -350,7 +350,7 @@ export function commandLineMainEntry(
     debug("process.argv", process.argv);
     debug("process.env", process.env);
 
-    if (!__TH__IS_DEV__ && __TH__IS_PACKAGED__) {
+    if (!__TH__IS_DEV__ && __TH__IS_PACKAGED__ && !__TH__IS_CI__) {
         // https://nodejs.org/fr/docs/guides/debugging-getting-started/#enable-inspector
         // SIGUSR1
 

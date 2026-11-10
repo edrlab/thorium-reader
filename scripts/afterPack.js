@@ -22,6 +22,8 @@ const asarChecksum = require('./asarChecksum');
 
 // https://github.com/electron-userland/electron-builder/issues/6365
 
+const isContinuousIntegrationDeploy = process.env.RELEASE_TAG ? true : false;
+
 module.exports = async function afterPack(context) {
 
     // https://www.electron.build/docs/configuration/#afterpack
@@ -60,17 +62,17 @@ module.exports = async function afterPack(context) {
         resetAdHocDarwinSignature: context.electronPlatformName === "darwin" && context.arch === builder.Arch.arm64,
 
         // RunAsNode = 0,
-        [FuseV1Options.RunAsNode]: false, // ELECTRON_RUN_AS_NODE
+        [FuseV1Options.RunAsNode]: isContinuousIntegrationDeploy ? true : false, // ELECTRON_RUN_AS_NODE
 
         // EnableCookieEncryption = 1,
         // https://www.electron.build/tutorials/adding-electron-fuses.html#enablecookieencryption
         [FuseV1Options.EnableCookieEncryption]: true, // TODO: make this TRUE
 
         // EnableNodeOptionsEnvironmentVariable = 2,
-        [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false, // NODE_OPTIONS + NODE_EXTRA_CA_CERTS
+        [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: isContinuousIntegrationDeploy ? true : false, // NODE_OPTIONS + NODE_EXTRA_CA_CERTS
 
         // EnableNodeCliInspectArguments = 3,
-        [FuseV1Options.EnableNodeCliInspectArguments]: false, // --inspect
+        [FuseV1Options.EnableNodeCliInspectArguments]: isContinuousIntegrationDeploy ? true : false, // --inspect
 
         // EnableEmbeddedAsarIntegrityValidation = 4,
         // https://github.com/electron/fuses/issues/7
@@ -90,10 +92,10 @@ module.exports = async function afterPack(context) {
         // modify ASAR manifest, for example edit `/PATH/TO/ASAR-EXTRACTED/main.js`
         // npm exec --no --offline asar p /PATH/TO/ASAR-EXTRACTED/ /PATH/TO/Thorium.app/Contents/Resources/app.asar
         // DOES NOT WORK ON MACOS ARM and INTEL (`strings` empty in 50KB executable binary): xxd /PATH/TO/Thorium.app/Contents/MacOS/Thorium | sed 's/OLD_SHA/NEW_SHA/' | xxd -r > /PATH/TO/Thorium.app/Contents/MacOS/Thorium
-        [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
+        [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: isContinuousIntegrationDeploy ? false : true,
 
         // OnlyLoadAppFromAsar = 5,
-        [FuseV1Options.OnlyLoadAppFromAsar]: true,
+        [FuseV1Options.OnlyLoadAppFromAsar]: isContinuousIntegrationDeploy ? false : true,
 
         // LoadBrowserProcessSpecificV8Snapshot = 6,
         [FuseV1Options.LoadBrowserProcessSpecificV8Snapshot]: false,
