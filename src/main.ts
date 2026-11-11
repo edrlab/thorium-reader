@@ -18,7 +18,7 @@ import { commandLineMainEntry } from "readium-desktop/main/cli";
 import { httpGetWithAuth } from "readium-desktop/main/network/http";
 import { ContentType } from "readium-desktop/utils/contentType";
 
-import { app, crashReporter } from "electron";
+import { app } from "electron";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
@@ -107,23 +107,25 @@ setCRLGetter((): Promise<string> => lcpCrlCache.retrieve());
 app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
 app.commandLine.appendSwitch("enable-speech-dispatcher");
 
-// export ELECTRON_ENABLE_LOGGING=1
-// debug("xxxxx process.platform", process.platform, process.env.XDG_RUNTIME_DIR, process.env.ELECTRON_ENABLE_LOGGING);
-if (process.platform === "linux" && process.env.XDG_RUNTIME_DIR?.includes("wrap-desktop")) {
-    // app.commandLine.appendSwitch("no-sandbox");
-
-    // app.commandLine.appendSwitch("disable-gpu");
-    // app.commandLine.appendSwitch("disable-gpu-compositing");
-    // app.disableHardwareAcceleration();
-
-    app.commandLine.appendSwitch("disable-dev-shm-usage");
-
-    // /home/user/.config/EDRLab.ThoriumReader/Crashpad
-    if (!process.platform) { // always false
-        crashReporter.start({ uploadToServer: false });
-        debug("xxxxx crashDumps:", app.getPath("crashDumps"));
-    }
-}
+// Mitigations for Docker/Container/Podman etc. OCI containers (headless with virtual frame buffer or with X11 display server streaming via Voxl (for example))
+// /dev/shm 64 MB limits
+// [container|docker] run --shm-size 1g --memory 8g (for instance)
+// if (process.platform === "linux" && process.env.XDG_RUNTIME_DIR?.includes("wrap-desktop")) {
+//     // app.commandLine.appendSwitch("no-sandbox");
+//
+//     // app.commandLine.appendSwitch("disable-gpu");
+//     // app.commandLine.appendSwitch("disable-gpu-compositing");
+//     // app.disableHardwareAcceleration();
+//
+//     app.commandLine.appendSwitch("disable-dev-shm-usage");
+//
+//     // export ELECTRON_ENABLE_LOGGING=1
+//     // /home/user/.config/EDRLab.ThoriumReader/Crashpad
+//     if (!process.platform) { // always false
+//         crashReporter.start({ uploadToServer: false });
+//         debug("xxxxx crashDumps:", app.getPath("crashDumps"));
+//     }
+// }
 
 // https://github.com/electron/electron/issues/46538
 // --gtk-version=3
