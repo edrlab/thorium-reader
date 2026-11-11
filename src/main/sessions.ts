@@ -109,7 +109,9 @@ export const initPermissions = () => {
             debug("setPermissionRequestHandler session.defaultSession");
             debug(wc.getURL());
             debug(permission);
-            if (permission === "clipboard-sanitized-write") { // toast.tsx `navigator.clipboard.writeText`
+            if (permission === "background-sync" && wc.getURL()?.startsWith("devtools://devtools/")) {
+                callback(true);
+            } else if (permission === "clipboard-sanitized-write") { // toast.tsx `navigator.clipboard.writeText`
                 callback(true);
             } else {
                 callback(false);
@@ -120,6 +122,9 @@ export const initPermissions = () => {
             debug(wc?.getURL());
             debug(permission);
             debug(origin);
+            if (permission === "background-sync" && (origin === "devtools://devtools/" || origin?.startsWith("http://localhost"))) {
+                return true;
+            }
             return false;
         });
     }
