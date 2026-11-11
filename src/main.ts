@@ -5,27 +5,27 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import debug_ from "debug";
-import * as path from "node:path";
-import * as fs from "node:fs";
-import { commandLineMainEntry } from "readium-desktop/main/cli";
-import { httpGetWithAuth } from "readium-desktop/main/network/http";
+import { setCRLGetter, setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { BUILD_CRL, BUILD_CRL_CACHED_AT, CRL_URL } from "@r2-lcp-js/parser/epub/lcp-certificate";
-import { setLcpNativePluginPath, setCRLGetter } from "@r2-lcp-js/parser/epub/lcp";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
+import debug_ from "debug";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import { commandLineMainEntry } from "readium-desktop/main/cli";
+import { httpGetWithAuth } from "readium-desktop/main/network/http";
 import { ContentType } from "readium-desktop/utils/contentType";
 
-import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHttp";
+import { app, crashReporter } from "electron";
+import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
+import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
+import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 import { createStoreFromDi } from "./main/di";
 import { appActions } from "./main/redux/actions";
-import { app } from "electron";
-import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
-import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
-import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 import { LcpCrlCache } from "./main/services/lcpCrlCache";
+import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHttp";
 
 // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
 // import isURL from "validator/lib/isURL";
@@ -106,6 +106,24 @@ setCRLGetter((): Promise<string> => lcpCrlCache.retrieve());
 
 app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
 app.commandLine.appendSwitch("enable-speech-dispatcher");
+
+// export ELECTRON_ENABLE_LOGGING=1
+// debug("xxxxx process.platform", process.platform, process.env.XDG_RUNTIME_DIR, process.env.ELECTRON_ENABLE_LOGGING);
+if (process.platform === "linux" && process.env.XDG_RUNTIME_DIR?.includes("wrap-desktop")) {
+    // app.commandLine.appendSwitch("no-sandbox");
+
+    // app.commandLine.appendSwitch("disable-gpu");
+    // app.commandLine.appendSwitch("disable-gpu-compositing");
+    // app.disableHardwareAcceleration();
+
+    app.commandLine.appendSwitch("disable-dev-shm-usage");
+
+    // /home/user/.config/EDRLab.ThoriumReader/Crashpad
+    if (!process.platform) { // always false
+        crashReporter.start({ uploadToServer: false });
+        debug("xxxxx crashDumps:", app.getPath("crashDumps"));
+    }
+}
 
 // https://github.com/electron/electron/issues/46538
 // --gtk-version=3

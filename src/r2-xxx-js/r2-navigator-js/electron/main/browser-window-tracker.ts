@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { BrowserWindow, HandlerDetails, Menu, WebContentsWillNavigateEventParams, Event as ElectronEvent, app, ipcMain, webContents, shell } from "electron";
+import { BrowserWindow, Event as ElectronEvent, HandlerDetails, Menu, WebContentsWillNavigateEventParams, app, ipcMain, shell, webContents } from "electron";
 
 import { CONTEXT_MENU_SETUP } from "../common/context-menu";
 import {
@@ -160,6 +160,10 @@ ipcMain.on(CONTEXT_MENU_SETUP, (event, webContentID: number) => {
 //     }
 // });
 
+app.on("child-process-gone", (_event, details) => {
+  debug("!!! child-process-gone !!!", details.reason, details.exitCode);
+});
+
 // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#how-9
 app.on("web-contents-created", (_evt, wc) => {
     debug("app.on('web-contents-created')", wc.id);
@@ -199,6 +203,10 @@ app.on("web-contents-created", (_evt, wc) => {
         // }
     });
 
+    wc.on("render-process-gone", (_event, details) => {
+      console.error("!!! render-process-gone !!! 1", wc.hostWebContents?.id, details.reason, details.exitCode);
+    });
+
     if (!wc.hostWebContents) {
         debug("app.on('web-contents-created') ==> !webContents.hostWebContents (skip)");
         return;
@@ -211,6 +219,10 @@ app.on("web-contents-created", (_evt, wc) => {
     _electronBrowserWindows.forEach((win) => {
         if (wc.hostWebContents.id === win.webContents.id) {
             debug("app.on('web-contents-created') ==> webContents.hostWebContents.id === _electronBrowserWindows[x].webContents.id", win.webContents.id);
+
+            wc.on("render-process-gone", (_event, details) => {
+              console.error("!!! render-process-gone !!! 1", win.webContents?.id, wc.hostWebContents?.id, details.reason, details.exitCode);
+            });
 
             const willNavigate = (navUrl: string | undefined | null) => {
 

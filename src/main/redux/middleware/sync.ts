@@ -207,16 +207,17 @@ export const reduxSyncMiddleware: Middleware
                             const a = ActionSerializer.serialize(action as ActionWithSender);
                             // debug(a);
                             try {
-                                if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
-                                win.webContents.send(syncIpc.CHANNEL, {
-                                    type: syncIpc.EventType.MainAction,
-                                    payload: {
-                                        action: a,
-                                    },
-                                    sender: {
-                                        type: SenderType.Main,
-                                    },
-                                } as syncIpc.EventPayload);
+                                // TODO: factor-out this guard!
+                                if (!win.isDestroyed() && !win.webContents?.isDestroyed() && !win.webContents?.isCrashed() && !win.webContents.mainFrame?.isDestroyed()) {
+                                    win.webContents.send(syncIpc.CHANNEL, {
+                                        type: syncIpc.EventType.MainAction,
+                                        payload: {
+                                            action: a,
+                                        },
+                                        sender: {
+                                            type: SenderType.Main,
+                                        },
+                                    } as syncIpc.EventPayload);
                                 }
                             } catch (error) {
                                 debug("ERROR in SYNC ACTION", error);
