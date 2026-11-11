@@ -229,7 +229,7 @@ $entry-card-colors-dark: (
                 padding-right: 10px;
                 top: 35px;
                 left: -10px;
-                color: color-mix(in srgb, var(--entry-card-background-end) 80%, black);
+                color: var(--color-text-primary);
                 font-size: 14px;
                 font-weight: 600;
                 overflow-wrap: anywhere;
@@ -342,7 +342,7 @@ $entry-card-colors-dark: (
     svg {
         width: 16px;
         height: 16px;
-        color: var(--entry-card-background-end);
+        color: var(--color-text-primary);
     }
 }
 
