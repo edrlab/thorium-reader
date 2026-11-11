@@ -120,13 +120,13 @@
         "numberOfPages": "Número de páginas",
         "opds": {
             "auth": {
-                "alternativeLogin": "",
+                "alternativeLogin": "Login alternativo",
                 "cancel": "Cancelar",
                 "external": "A página de login será aberta em seu navegador, siga as instruções. Uma vez conectado, o navegador web irá devolvê-lo a esta aplicação.",
-                "externalBrowserInstructions": "",
-                "fallback": "Nota: em caso de problemas de login com o método padrão do navegador web, tente novamente com o método alternativo da aplicação.",
+                "externalBrowserInstructions": "Se o navegador não abrir automaticamente, clique no link a seguir.",
+                "fallback": "Em caso de problemas de login com o método padrão do navegador web, tente novamente com o método alternativo da aplicação.",
                 "login": "Login",
-                "openExternalBrowser": "",
+                "openExternalBrowser": "Abrir navegador externo",
                 "password": "Senha",
                 "register": "Registrar-se",
                 "retry": "Tente novamente",
@@ -177,14 +177,14 @@
         "annotations": {
             "descAuthor": "por '{{- author}} '",
             "descCreator": "criado por",
-            "descList_one": "{{- count}} A nota de {{- creator}} será importada em '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} As notas de {{- creator}} serão importadas em '{{- title}}' {{- author}}",
+            "descList_one": "{{- count}} A nota de {{- creator}} será importada em '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} As notas de {{- creator}} serão importadas em '{{- title}}' {{- author}}",
-            "descNewer_one": "Conflito: {{- count}} nota mais recente",
             "descNewer_many": "Conflito(s): {{- count}} notas mais recentes",
+            "descNewer_one": "Conflito: {{- count}} nota mais recente",
             "descNewer_other": "Conflito(s): {{- count}} notas mais recentes",
-            "descOlder_one": "Conflito: {{- count}} nota mais antiga",
             "descOlder_many": "Conflito(s): {{- count}} notas mais antigas",
+            "descOlder_one": "Conflito: {{- count}} nota mais antiga",
             "descOlder_other": "Conflito(s): {{- count}} notas mais antigas",
             "descTitle": "Título de anotações: ",
             "importAll": "Importar todas as notas",
@@ -202,12 +202,12 @@
             }
         },
         "deleteAnnotations": "Excluir anotações?",
-        "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} nota?",
         "deleteAnnotationsText_many": "Tem certeza de que deseja excluir {{- count}} notas?",
+        "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} nota?",
         "deleteAnnotationsText_other": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteBookmarks": "Excluir marcadores?",
-        "deleteBookmarksText_one": "Tem certeza de que deseja excluir {{- count}} marcador?",
         "deleteBookmarksText_many": "Tem certeza de que deseja excluir {{- count}} marcadores?",
+        "deleteBookmarksText_one": "Tem certeza de que deseja excluir {{- count}} marcador?",
         "deleteBookmarksText_other": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteFeed": "Deseja excluir este catálogo?",
         "deletePublication": "Deseja excluir esta publicação?",
@@ -236,7 +236,7 @@
         "importTitle": "Importar publicação",
         "listTitle": "Tabela",
         "myCatalogs": "Meus catálogos",
-        "refreshTitle": "recarregar",
+        "refreshTitle": "Recarregar",
         "searchPlaceholder": "Buscar",
         "searchTitle": "Iniciar uma busca",
         "settings": "Configurações",
@@ -278,63 +278,63 @@
             "success": "Importação concluída com sucesso."
         },
         "diagnostics": {
-            "category": "",
-            "causedBy": "",
-            "downloadSource": "",
-            "error": "",
-            "httpStatus": "",
-            "invalidUrl": "",
-            "source": "",
-            "url": ""
+            "category": "Categoria: {{- category}}",
+            "causedBy": "Causado por:",
+            "downloadSource": "Fonte de download: {{- source}}",
+            "error": "Erro",
+            "httpStatus": "Status HTTP: {{- status}}",
+            "invalidUrl": "[URL inválida]",
+            "source": "Fonte: {{- source}}",
+            "url": "URL: {{- url}}"
         },
         "download": {
             "cancelled": "Download cancelado.",
             "errors": {
-                "failed": "",
+                "failed": "Download falhou.",
                 "hashMismatch": "Falha na verificação de integridade do arquivo baixado: hash SHA-256 esperado {{- expected}}, obtido {{- actual}}.",
                 "httpGet": "Falha no download HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "O nome do arquivo de download temporário é inválido.",
                 "invalidLink": "O link de download é inválido.",
                 "invalidTempDirectory": "O diretório temporário de download é inválido.",
                 "lengthMismatch": "Falha na verificação de integridade do arquivo baixado: esperavam-se {{- expected}} bytes, foram obtidos {{- actual}} bytes.",
-                "pathMissing": "",
-                "publicationLinkMissing": "",
+                "pathMissing": "O caminho do arquivo baixado está ausente.",
+                "publicationLinkMissing": "A licença não contém um link para download da publicação.",
                 "readStreamMissing": "O fluxo de download está indisponível.",
-                "streamClosed": "",
+                "streamClosed": "O fluxo de download foi encerrado antes da conclusão.",
                 "tooManyFilenameAttempts": "Não foi possível criar um nome de arquivo temporário exclusivo para download: {{- path}}"
             },
-            "failed": "",
-            "integrityFailed": "",
-            "saveFailed": "",
+            "failed": "Não foi possível baixar de “{{- hostname}}”. Tente novamente.",
+            "integrityFailed": "O download a partir de “{{- hostname}}” está incompleto ou corrompido. Tente novamente.",
+            "saveFailed": "Não foi possível salvar o download. Verifique o armazenamento disponível e as permissões.",
             "startedWithTitle": "Baixando {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} já foi importado.",
             "errors": {
-                "acquisitionUrlMissing": "",
-                "cbzNoImages": "",
-                "contextMissing": "",
-                "daisyConversionFailed": "",
-                "manifestContext": "",
-                "manifestImportFailed": "",
-                "manifestInvalidJson": "",
-                "manifestMissing": "",
-                "manifestNotFound": "",
-                "manifestParsingFailed": "",
-                "noImportResult": "",
-                "notImported": "",
-                "profileAssetUrl": "",
-                "profileEmpty": "",
-                "profileEntryMissing": "",
-                "profileMissing": "",
-                "profileNotZip": ""
+                "acquisitionUrlMissing": "A URL de download da publicação está ausente ou é inválida.",
+                "cbzNoImages": "O arquivo CBZ não contém nenhuma imagem compatível.",
+                "contextMissing": "ausente",
+                "daisyConversionFailed": "Não foi possível converter a publicação DAISY.",
+                "manifestContext": "Manifesto de publicação não reconhecido: @context em {{- url}}: {{- context}}",
+                "manifestImportFailed": "A importação do manifesto da publicação falhou.",
+                "manifestInvalidJson": "JSON inválido no manifesto da publicação em {{- url}}.",
+                "manifestMissing": "O manifesto da publicação está ausente.",
+                "manifestNotFound": "Nenhum manifesto de publicação foi encontrado em {{- url}}.",
+                "manifestParsingFailed": "Não foi possível analisar o manifesto da publicação em {{- url}}.",
+                "noImportResult": "A importação não retornou uma publicação.",
+                "notImported": "A publicação não pôde ser adicionada à biblioteca.",
+                "profileAssetUrl": "URL de publicação de perfil inválida: {{- path}}",
+                "profileEmpty": "O arquivo ZIP do perfil personalizado está vazio.",
+                "profileEntryMissing": "Publicação não encontrada no perfil personalizado: {{- path}}",
+                "profileMissing": "Perfil personalizado não encontrado: {{- id}}",
+                "profileNotZip": "O perfil personalizado não é um arquivo ZIP."
             },
-            "failed": "",
-            "invalidLicense": "",
-            "invalidPublication": "",
-            "lcpLicenseMalformed": "",
+            "failed": "Não foi possível importar “{{- name}}”.",
+            "invalidLicense": "Não foi possível importar “{{- name}}”. A licença da publicação é inválida.",
+            "invalidPublication": "Não foi possível importar “{{- name}}”. O manifesto da publicação está ausente.",
+            "lcpLicenseMalformed": "Licença LCP malformada.",
             "success": "A importação de {{- title}} terminou.",
-            "unsupportedFormat": ""
+            "unsupportedFormat": "Não foi possível importar “{{- name}}”. Este formato de arquivo não é compatível."
         },
         "notifications": {
             "annotationImportFailed": "Não foi possível importar as anotações. Verifique se o arquivo é uma exportação de anotações válido.",
@@ -362,15 +362,15 @@
             "tagsFailed": "Não foi possível salvar as etiquetas da publicação. Tente novamente."
         },
         "open": {
-            "failed": "",
+            "failed": "Não foi possível abrir esta publicação.",
             "folderNotFound": "O diretório de publicação não pôde ser encontrado. Importe-o novamente ou configure o armazenamento adicional em Configurações > Armazenamento.",
-            "missingLicense": ""
+            "missingLicense": "Não foi possível abrir esta publicação. Ela está criptografada, mas a sua licença LCP está ausente."
         },
         "storage": {
             "recovery": {
                 "failure": "A recuperação da publicação falhou.",
-                "success_one": "{{- count}} publicação recuperada.",
                 "success_many": "{{- count}} publicações recuperadas.",
+                "success_one": "{{- count}} publicação recuperada.",
                 "success_other": "{{- count}} publicações recuperadas."
             },
             "removed": "Diretório de publicação removido.",
@@ -393,10 +393,10 @@
         "addMenu": "Adicionar origem OPDS",
         "breadcrumbRoot": "Catálogos",
         "browserMenu": {
-            "history": "",
-            "options": "",
-            "profile": "",
-            "wishlist": ""
+            "history": "Histórico",
+            "options": "Opções do catálogo",
+            "profile": "Perfil do usuário",
+            "wishlist": "Lista de desejos"
         },
         "color": {
             "blue": "Azul",
@@ -629,10 +629,10 @@
         },
         "legal-considerations": {
             "legal-considerations-exempt": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Alega isenção de requisitos de acessibilidade em algumas jurisdições",
+                "descriptive": "A editora alega isenção dos requisitos de acessibilidade em algumas jurisdições."
             },
-            "legal-considerations-title": ""
+            "legal-considerations-title": "Considerações legais"
         },
         "navigation": {
             "navigation-index": {
@@ -979,8 +979,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} correspondência",
                 "founds_many": "{{- count}} correspondências",
+                "founds_one": "{{- count}} correspondência",
                 "founds_other": "{{- count}} correspondências",
                 "input": "texto para correspondência",
                 "next": "Próximo",
@@ -1017,7 +1017,7 @@
                 "two": "2 colunas"
             },
             "customFontSelected": "Você escolheu uma fonte personalizada",
-            "deactivateTextFormatting": "",
+            "deactivateTextFormatting": "Desativar formatação de texto",
             "display": "Exibição",
             "disposition": {
                 "title": "Layout"
@@ -1066,7 +1066,7 @@
             "reduceMotion": "Reduzir o movimento",
             "scrolled": "Escroleável",
             "spacing": "Espaçamento",
-            "spacingCustomButton": "",
+            "spacingCustomButton": "Opções de espaçamento personalizadas",
             "spreadModeEven": "Espalhamento de páginas: par (o padrão é ímpar)",
             "text": "Texto",
             "theme": {
@@ -1123,7 +1123,7 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Cancelar",
-            "disableTooltips": "",
+            "disableTooltips": "Desativar dicas de atalhos de teclado",
             "disclaimer": "Os atalhos foram definidos a partir do layout de teclado QWERTY",
             "editUserJson": "Editar arquivo de usuário...",
             "exportToHTML": "Exportar em HTML",
@@ -1465,14 +1465,14 @@
                 "description": "Verifica o armazenamento de publicações para encontrar publicações que possam ser recuperadas com segurança.",
                 "dialog": {
                     "confirm": "Recuperar",
-                    "description_one": "O Thorium encontrou {{- count}} publicação no disco que não constam no banco de dados. Você deseja importá-la novamente para o Thorium?",
                     "description_many": "O Thorium encontrou {{- count}} publicações no disco que não constam no banco de dados. Você deseja importá-las novamente para o Thorium?",
+                    "description_one": "O Thorium encontrou {{- count}} publicação no disco que não constam no banco de dados. Você deseja importá-la novamente para o Thorium?",
                     "description_other": "O Thorium encontrou {{- count}} publicações no disco que não constam no banco de dados. Você deseja importá-las novamente para o Thorium?",
                     "title": "Recuperar publicações"
                 },
                 "none": "Não foram encontradas publicações recuperáveis.",
-                "recoverableCount_one": "{{- count}} publicação pode ser recuperada com o identificador de armazenamento original.",
                 "recoverableCount_many": "{{- count}} publicações podem ser recuperadas com o identificador de armazenamento original.",
+                "recoverableCount_one": "{{- count}} publicação pode ser recuperada com o identificador de armazenamento original.",
                 "recoverableCount_other": "{{- count}} publicações podem ser recuperadas com o identificador de armazenamento original.",
                 "title": "Recuperação"
             }
