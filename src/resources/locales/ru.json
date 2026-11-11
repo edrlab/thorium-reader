@@ -16,13 +16,13 @@
         "leftSlideButton": "Сдвиньте список влево",
         "loading": "Загрузка…",
         "mainContent": "основное содержимое",
-        "notificationCopied": "Уведомление скопировано",
+        "notificationCopied": "Скопировано в буфер обмена:",
         "notificationCopyFailed": "Не удалось скопировать уведомление",
         "printPage": "Страница {{page}}",
         "publicationDetails": "{{- field}}: {{- title}}",
         "resetSetting": "Сбросить {{- setting}}",
         "rightSlideButton": "Сдвиньте список вправо",
-        "searching": "",
+        "searching": "Идёт поиск…",
         "skipLink": "Перейти к содержимому",
         "toolbar": "панель инструментов"
     },
@@ -120,13 +120,13 @@
         "numberOfPages": "Количество страниц",
         "opds": {
             "auth": {
-                "alternativeLogin": "",
+                "alternativeLogin": "Альтернативный способ входа",
                 "cancel": "Отменить",
                 "external": "В вашем браузере откроется страница входа. Следуйте инструкциям. После выполнения входа браузер вернёт вас в это приложение.",
-                "externalBrowserInstructions": "",
-                "fallback": "Примечание: в случае возникновения проблем со входом в систему с помощью веб-браузера, повторите попытку альтернативным способом - через приложение.",
+                "externalBrowserInstructions": "Если веб-браузер не открывается автоматически, перейдите по следующей ссылке.",
+                "fallback": "В случае возникновения проблем со входом в систему с помощью веб-браузера, повторите попытку альтернативным способом - через приложение.",
                 "login": "Логин",
-                "openExternalBrowser": "",
+                "openExternalBrowser": "Откройте внешний браузер",
                 "password": "Пароль",
                 "register": "Регистрация",
                 "retry": "Попробовать ещё раз",
@@ -164,7 +164,7 @@
         "tags": "Теги",
         "update": "Изменить",
         "userProfile": {
-            "available": "",
+            "available": "Доступно: {{count}}",
             "edit": "Редактировать профиль",
             "holds": "",
             "loading": "Загрузка учётной записи…",
@@ -177,18 +177,15 @@
         "annotations": {
             "descAuthor": "автор '{{- author}}'",
             "descCreator": "создано",
-            "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_few": "{{- count}} примечания {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} примечаний {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_other": "",
-            "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
+            "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descNewer_few": "Конфликт(ы): {{- count}} новейшие заметки",
             "descNewer_many": "Конфликт(ы): {{- count}} новейших заметок",
-            "descNewer_other": "",
-            "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
+            "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
             "descOlder_few": "Конфликт(ы): {{- count}} наиболее старые заметки",
             "descOlder_many": "Конфликт(ы): {{- count}} наиболее старых заметок",
-            "descOlder_other": "",
+            "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
             "descTitle": "Название аннотации: ",
             "importAll": "Импортировать все заметки",
             "importWithoutConflict": "Импортировать только заметки без конфликтов",
@@ -205,15 +202,13 @@
             }
         },
         "deleteAnnotations": "Удалить аннотации?",
-        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
         "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметки?",
         "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметок?",
-        "deleteAnnotationsText_other": "",
+        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
         "deleteBookmarks": "Удалить закладки?",
-        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
         "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладки?",
         "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладок?",
-        "deleteBookmarksText_other": "",
+        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
         "deletePublicationWithNotes": "Внимание: эта книга содержит аннотации и/или закладки, они также будут удалены! (Если вы хотите их сохранить, обязательно экспортируйте заметки перед удалением книги)",
@@ -283,34 +278,34 @@
             "success": "Импорт успешно завершён."
         },
         "diagnostics": {
-            "category": "",
+            "category": "Категория: {{- category}}",
             "causedBy": "",
             "downloadSource": "",
-            "error": "",
-            "httpStatus": "",
-            "invalidUrl": "",
+            "error": "Ошибка",
+            "httpStatus": "Состояние HTTP: {{- status}}",
+            "invalidUrl": "[недействительный URL]",
             "source": "",
-            "url": ""
+            "url": "URL: {{- url}}"
         },
         "download": {
             "cancelled": "Загрузка отменена.",
             "errors": {
-                "failed": "",
+                "failed": "Скачивание не удалась.",
                 "hashMismatch": "Ошибка проверки целостности загруженного файла: ожидаемый хэш SHA-256 {{- expected}}, полученный {{- actual}}.",
                 "httpGet": "Ошибка загрузки по протоколу HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Неверное имя временного скачиваемого файла.",
                 "invalidLink": "Ссылка для скачивания недействительна.",
                 "invalidTempDirectory": "Временный каталог загрузки недействителен.",
                 "lengthMismatch": "Ошибка проверки целостности скаченного файла: ожидалось {{- expected}} байт, получено {{- actual}} байт.",
-                "pathMissing": "",
-                "publicationLinkMissing": "",
+                "pathMissing": "Отсутствует путь к скаченному файлу.",
+                "publicationLinkMissing": "Лицензия не содержит ссылки для скачивания публикации.",
                 "readStreamMissing": "Поток загрузки недоступен.",
-                "streamClosed": "",
+                "streamClosed": "Загрузка потока прервалась до завершения.",
                 "tooManyFilenameAttempts": "Не удалось создать уникальное имя временного файла для скачивания: {{- path}}"
             },
-            "failed": "",
-            "integrityFailed": "",
-            "saveFailed": "",
+            "failed": "Не удалось скачать файл с «{{- hostname}}». Пожалуйста, попробуйте ещё раз.",
+            "integrityFailed": "Загрузка с «{{- hostname}}» неполная или повреждена. Пожалуйста, попробуйте ещё раз.",
+            "saveFailed": "Не удалось сохранить скаченный файл. Проверьте доступное место на диске и права доступа.",
             "startedWithTitle": "Скачивание {{- title}}."
         },
         "import": {
@@ -374,10 +369,9 @@
         "storage": {
             "recovery": {
                 "failure": "Не удалось восстановить публикацию.",
-                "success_one": "{{- count}} публикация восстановлена.",
                 "success_few": "{{- count}} публикации восстановлено.",
                 "success_many": "{{- count}} публикаций восстановлено.",
-                "success_other": ""
+                "success_one": "{{- count}} публикация восстановлена."
             },
             "removed": "Каталог публикаций удалён.",
             "updateFailed": "Не удалось обновить каталог публикаций: {{- message}}",
@@ -985,10 +979,9 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} найден",
                 "founds_few": "{{- count}} найдено",
                 "founds_many": "{{- count}} найдено",
-                "founds_other": "",
+                "founds_one": "{{- count}} найден",
                 "input": "текст для поиска",
                 "next": "Далее",
                 "notFound": "нет совпадений",
@@ -1472,17 +1465,15 @@
                 "description": "Проверьте место хранения публикаций, чтобы найти те, которые можно безопасно восстановить.",
                 "dialog": {
                     "confirm": "Восстановить",
-                    "description_one": "Thorium обнаружил на диске {{- count}} публикацию, отсутствующую в базе данных. Желаете вернуть её обратно в Thorium?",
                     "description_few": "Thorium обнаружил на диске {{- count}} публикации, отсутствующие в базе данных. Желаете вернуть их обратно в Thorium?",
                     "description_many": "Thorium обнаружил на диске {{- count}} публикации, отсутствующих в базе данных. Желаете вернуть их обратно в Thorium?",
-                    "description_other": "",
+                    "description_one": "Thorium обнаружил на диске {{- count}} публикацию, отсутствующую в базе данных. Желаете вернуть её обратно в Thorium?",
                     "title": "Восстановить публикации"
                 },
                 "none": "Публикаций, которые можно восстановить, не обнаружено.",
-                "recoverableCount_one": "{{- count}} публикацию можно восстановить, используя её исходный идентификатор хранилища.",
                 "recoverableCount_few": "{{- count}} публикации можно восстановить, используя их исходный идентификатор хранилища.",
                 "recoverableCount_many": "{{- count}} публикаций можно восстановить, используя их исходный идентификатор хранилища.",
-                "recoverableCount_other": "",
+                "recoverableCount_one": "{{- count}} публикацию можно восстановить, используя её исходный идентификатор хранилища.",
                 "title": "Восстановление"
             }
         },
