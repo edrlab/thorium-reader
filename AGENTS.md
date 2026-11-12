@@ -26,7 +26,7 @@ First, to check "minor" updates:
 
 `npm exec --no --offline -- taze major --maturity-period 2 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .`
 
-At this point, do not edit `./package.json`, do not actually install any updates, simply summarize and wait for user instructions. The user may explicitely ask you to update `./package.json` after analysing the Taze report.
+At this point, do not edit `./package.json`, do not actually install any updates, simply summarize and wait for user instructions. The user may explicitly ask you to update `./package.json` after analysing the Taze report.
 
 The user will need to ensure that updated package versions are safe to upgrade (major updates usually introduce breaking changes, while minor updates can introduce safety issues due to supply chain security breaches).
 

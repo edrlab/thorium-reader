@@ -253,9 +253,9 @@ List of all Actions in place (src/common/redux/actions):
   - returnPublication
   - unlockPublicationWithPassphrase
   - userKeyCheckRequest
-- load: main proceess busy or not
+- load: main process busy or not
   - busy
-  - iddle
+  - idle
 - net (not used)
 - reader
   - clipboardCopy
