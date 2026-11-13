@@ -311,10 +311,10 @@
         "import": {
             "alreadyImport": "[{{- title}}] уже импортировано.",
             "errors": {
-                "acquisitionUrlMissing": "",
-                "cbzNoImages": "",
+                "acquisitionUrlMissing": "URL для скачивания публикации отсутствует или недействителен.",
+                "cbzNoImages": "Архив CBZ не содержит поддерживаемых изображений.",
                 "contextMissing": "",
-                "daisyConversionFailed": "",
+                "daisyConversionFailed": "Не удалось преобразовать публикацию DAISY.",
                 "manifestContext": "",
                 "manifestImportFailed": "",
                 "manifestInvalidJson": "",
@@ -322,19 +322,19 @@
                 "manifestNotFound": "",
                 "manifestParsingFailed": "",
                 "noImportResult": "",
-                "notImported": "",
-                "profileAssetUrl": "",
-                "profileEmpty": "",
-                "profileEntryMissing": "",
-                "profileMissing": "",
-                "profileNotZip": ""
+                "notImported": "Публикацию не удалось добавить в библиотеку.",
+                "profileAssetUrl": "Неверный URL профиля публикации: {{-path}}",
+                "profileEmpty": "ZIP-архив с пользовательскими профилями пуст.",
+                "profileEntryMissing": "Публикация не найдена в пользовательском профиле: {{-path}}",
+                "profileMissing": "Пользовательский профиль не найден: {{- id}}",
+                "profileNotZip": "Пользовательский профиль не является ZIP-архивом."
             },
-            "failed": "",
-            "invalidLicense": "",
-            "invalidPublication": "",
-            "lcpLicenseMalformed": "",
+            "failed": "Не удалось импортировать «{{- name}}».",
+            "invalidLicense": "Не удалось импортировать «{{- name}}». Лицензия публикации недействительна.",
+            "invalidPublication": "Не удалось импортировать «{{- name}}». Отсутствует манифест публикации.",
+            "lcpLicenseMalformed": "Лицензия LCP имеет некорректный формат.",
             "success": "Импорт {{- title}} закончен.",
-            "unsupportedFormat": ""
+            "unsupportedFormat": "Не удалось импортировать «{{- name}}». Этот формат файла не поддерживается."
         },
         "notifications": {
             "annotationImportFailed": "Не удалось импортировать заметки. Убедитесь в валидности файла экспорта заметок.",
@@ -362,9 +362,9 @@
             "tagsFailed": "Не удалось сохранить теги публикации. Попробуйте ещё раз."
         },
         "open": {
-            "failed": "",
+            "failed": "Не удалось открыть данную публикацию.",
             "folderNotFound": "Каталог публикации не найден. Повторно импортируйте его или настройте дополнительное хранилище в разделе Настройки > Хранилище.",
-            "missingLicense": ""
+            "missingLicense": "Не удалось открыть эту публикацию. Она зашифрована, но лицензия LCP отсутствует."
         },
         "storage": {
             "recovery": {
@@ -393,9 +393,9 @@
         "addMenu": "Добавить OPDS каталог",
         "breadcrumbRoot": "Каталоги",
         "browserMenu": {
-            "history": "",
-            "options": "",
-            "profile": "",
+            "history": "История",
+            "options": "Параметры каталога",
+            "profile": "Профиль пользователя",
             "wishlist": ""
         },
         "color": {
@@ -629,8 +629,8 @@
         },
         "legal-considerations": {
             "legal-considerations-exempt": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Заявлено об исключении из требований доступности в некоторых юрисдикциях",
+                "descriptive": "Издатель заявляет об исключении из требований доступности в некоторых юрисдикциях."
             },
             "legal-considerations-title": ""
         },
@@ -1017,7 +1017,7 @@
                 "two": "2 столбца"
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
-            "deactivateTextFormatting": "",
+            "deactivateTextFormatting": "Отключить форматирование текста",
             "display": "Отображение",
             "disposition": {
                 "title": "Макет"
