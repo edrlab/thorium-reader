@@ -1,10 +1,13 @@
-## Project stack and targets
+## Project technology stack
 
-- Desktop application targeting Windows, macOS, and Linux.
-- TypeScript with Electron, Node.js, and Chromium/Web APIs.
-- React UI; Redux state management and Redux Saga side effects.
-- SCSS styles; Webpack builds; electron-builder packaging.
-- Keep changes compatible with all three operating systems, especially filesystem paths, keyboard shortcuts, shell commands, and native integrations.
+Thorium Desktop reader is a software application for "desktop" operating systems: Windows, MacOS, and Linux.
+
+- Electron framework = NodeJS for the "backend" and Chromium webview APIs for the "frontend".
+- TypeScript programming language (plus some occasional Javascript for utility jobs, and a minute amount of C++ for a native Windows module).
+- React user interface, Adobe's React ARIA Components.
+- Redux for state management, Redux Saga for side effects orchestration.
+- SCSS for styling.
+- Webpack as the build system and to provide a debugging / development environment.
 
 ## How to install software dependencies, SBOM (Software Bill Of Materials)
 
@@ -14,25 +17,26 @@ This project uses NPM (not PNPM, not Bun, not Yarn, etc.)
 * Read the ["taze" skill](./.agents/skills/taze/SKILL.md) (Taze to check for updates and apply them selectively once approved for the package lockfile).
 * Read the ["npx" skill](./.agents/skills/npx/SKILL.md) (NPM "exec" to safely run arbitrary code from the NPM registry, as part of this project's approved dependencies).
 
-Additionally, to learn about using Flox (Nix packages) for setting up the development environment, read the ["flox" skill](./.agents/skills/flox/SKILL.md).
+Optionally, to learn about using Flox (Nix packages) for setting up the development environment, read the ["flox" skill](./.agents/skills/flox/SKILL.md).
 
 ## How to build the software
 
-- The shell command `npm run typescript-check-GO` performs fast TypeScript type-checking over the entire codebase, using the TypeScript version 7 compiler implemented in Go. Use this command to quickly check code changes.
-- The shell command `npm run typescript-check` performs slow TypeScript type-checking over the entire codebase, using the TypeScript version 6 compiler implemented in Javascript. You do not need to use this command, use the fast one instead as there is now complete parity between the Go and Javascript capabilities. Only use the slow command if you need to compare the output or the performance timings.
-- The shell command `npm run build` performs a full compilation (using Webpack) for the entire Electron codebase: main process, renderer processes and preload scripts. This is a computationally expensive operation, but it is only needed to validate the complete source tree before committing changes to the repository. The command `npm run build` must be invoked when files inside the following directories have changed: `./src/common`, `./src/utils`, `./src/typings`, `./src/third_party`, `./src/resources`.
-  - MAIN PROCESS: The shell command `./node_modules/.bin/webpack-cli --config webpack.config.main.js` can be used to check the compilation of **only** the source code of the Electron main process (i.e. files located inside the `./src/main` directory, and the entry point file `./src/main.ts` itself).
-  - PRELOAD: The shell command `./node_modules/.bin/webpack-cli --config webpack.config.preload.js` can be used to check the compilation of **only** the source code of the Electron webview preload script (i.e. files located inside the `./src/r2-xxx-js` directory, and more specifically the entry point file `./src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/preload.ts`).
-  - RENDERER PROCESS LIBRARY: The shell command `./node_modules/.bin/webpack-cli --config webpack.config.renderer-library.js` can be used to check the compilation of **only** the source code of the "library" Electron browser window (i.e. files located inside the `./src/renderer/library` directory, more specifically the entry point file `./src/renderer/library/index_library.ts`, but also the `./src/renderer/common` and `./src/renderer/asset` folders which are shared).
-  - RENDERER PROCESS READER: The shell command `./node_modules/.bin/webpack-cli --config webpack.config.renderer-reader.js` can be used to check the compilation of **only** the source code of the "reader" Electron browser window (i.e. files located inside the `./src/renderer/reader` directory, more specifically the entry point file `./src/renderer/library/index_reader.ts`, but also the `./src/renderer/common` and `./src/renderer/asset` folders which are shared).
-  - RENDERER PDF: The shell command `./node_modules/.bin/webpack-cli --config webpack.config.pdf.js` can be used to check the compilation of **only** the source code of the PDF.js webview inside the "reader" Electron browser window (i.e. files located inside the `./src/renderer/reader/pdf/webview` directory, including more specifically the entry point file `./src/renderer/reader/pdf/webview/index_pdf.ts` itself).
-  - RENDERER PDF EXTRACT: The shell command `./node_modules/.bin/webpack-cli --config webpack.config.pdf-extract.js` can be used to check the compilation of **only** the source code of the PDF.js integration inside the "reader" Electron browser window used when importing PDF files (also files located inside the `./src/renderer/reader/pdf` directory, but more specifically the entry point file `./src/renderer/reader/pdf/webview/index_pdf_extract.ts`).
-
-Important instruction: if in doubt about which compilation command to call when code is changed, ask the user.
-
-- The shell command `npm run lint` performs linting over the entire source tree. This is a computationally expensive operation, and this is a prerequisite before committing code to the repository. However, linting is not necessary during fast programming iterations / active development of new features or bug fixes (only successful compilation is required).
-
+- The command `npm run typescript-check-GO` performs fast TypeScript type-checking over the entire codebase, using the TypeScript version 7 compiler implemented in Go. Use this command to quickly check code changes.
+- The command `npm run typescript-check` performs slow TypeScript type-checking over the entire codebase, using the TypeScript version 6 compiler implemented in Javascript. You do not need to use this command, use the fast one instead as there is now complete parity between the Go and Javascript capabilities. Only use the slow command if you need to compare the output or the performance timings.
+- The command `npm run lint` performs linting over the entire source tree. This is a computationally expensive operation, and this is a prerequisite before committing code to the repository. However, linting is not necessary during fast programming iterations / active development of new features or bug fixes (only successful compilation is required).
 - When CSS styling files are changed, the command `npm run style-typed` must be called in order to generate the TypeScript typings that are used during compilation to validate the usage of CSS classes inside TypeScript JSX / TSX.
+- The command `npm run build` performs a full compilation (using Webpack) for the entire Electron codebase: main process, renderer processes and preload scripts. This is a computationally expensive operation, but it is only needed to validate the complete source tree before committing changes to the repository. The command `npm run build` must be invoked when files inside the following directories have changed: `./src/common`, `./src/utils`, `./src/typings`, `./src/third_party`, `./src/resources`.
+
+Breakdown of scoped Webpack build commands:
+
+- MAIN PROCESS: The command `./node_modules/.bin/webpack-cli --config webpack.config.main.js` can be used to check the compilation of **only** the source code of the Electron main process (i.e. files located inside the `./src/main` directory, and the entry point file `./src/main.ts` itself).
+- PRELOAD: The command `./node_modules/.bin/webpack-cli --config webpack.config.preload.js` can be used to check the compilation of **only** the source code of the Electron webview preload script (i.e. files located inside the `./src/r2-xxx-js` directory, and more specifically the entry point file `./src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/preload.ts`).
+- RENDERER PROCESS LIBRARY: The command `./node_modules/.bin/webpack-cli --config webpack.config.renderer-library.js` can be used to check the compilation of **only** the source code of the "library" Electron browser window (i.e. files located inside the `./src/renderer/library` directory, more specifically the entry point file `./src/renderer/library/index_library.ts`, but also the `./src/renderer/common` and `./src/renderer/asset` folders which are shared).
+- RENDERER PROCESS READER: The command `./node_modules/.bin/webpack-cli --config webpack.config.renderer-reader.js` can be used to check the compilation of **only** the source code of the "reader" Electron browser window (i.e. files located inside the `./src/renderer/reader` directory, more specifically the entry point file `./src/renderer/library/index_reader.ts`, but also the `./src/renderer/common` and `./src/renderer/asset` folders which are shared).
+- RENDERER PDF: The command `./node_modules/.bin/webpack-cli --config webpack.config.pdf.js` can be used to check the compilation of **only** the source code of the PDF.js webview inside the "reader" Electron browser window (i.e. files located inside the `./src/renderer/reader/pdf/webview` directory, including more specifically the entry point file `./src/renderer/reader/pdf/webview/index_pdf.ts` itself).
+- RENDERER PDF EXTRACT: The command `./node_modules/.bin/webpack-cli --config webpack.config.pdf-extract.js` can be used to check the compilation of **only** the source code of the PDF.js integration inside the "reader" Electron browser window used when importing PDF files (also files located inside the `./src/renderer/reader/pdf` directory, but more specifically the entry point file `./src/renderer/reader/pdf/webview/index_pdf_extract.ts`).
+
+Ask the user if you have doubts about which compilation command to use.
 
 ## Localization
 
@@ -48,8 +52,8 @@ Important instruction: if in doubt about which compilation command to call when 
 
 ## How to run the software
 
-- The shell command `npm run start:dev:quick` launches the application in debugging mode with a Webpack dev server that supports hot module reloading for the Electron renderer processes (including CSS styles). However the application must be restarted to take into account code changes in the main NodeJS process.
-- The shell command `npm run start` launches the application in slow bundling mode (including full type checking and linting), without the fast dev server. This closely emulates a production packaged application. Recommendation: use the quick variant for most troubleshooting tasks.
+- The command `npm run start:dev:quick` launches the application in debugging mode with a Webpack dev server that supports hot module reloading for the Electron renderer processes (including CSS styles). However the application must be restarted to take into account code changes in the main NodeJS process.
+- The command `npm run start` launches the application in slow bundling mode (including full type checking and linting), without the fast dev server. This closely emulates a production packaged application. Recommendation: use the quick variant for most troubleshooting tasks.
 
 ## Source code organisation
 
@@ -58,6 +62,8 @@ The Typescript source tree is located in the `./src` directory, there are tests 
 You must ignore the `./.flox/`, `./.git/`, `./pi/` directories inside the current working directory, unless explicitly instructed by the user to do so.
 
 You are not allowed to read or write files outside the project folder. Your access to the filesystem is strictly limited to the current working directory.
+
+Keep changes compatible with all three operating systems, especially filesystem paths, keyboard shortcuts, commands, and native integrations.
 
 To learn how to organise additional project folders in order to work on features / fixes inside separate worktrees / branches, read the ["git" skill](./.agents/skills/git/SKILL.md).
 
