@@ -9,7 +9,7 @@
         "copyNotificationInstruction": "Copy notification",
         "decreaseSetting": "Decrease {{- setting}}",
         "downloadProgress": "Download progress: {{- title}}",
-        "downloadProgressUnknown": "Download progress is unknown.",
+        "downloadProgressUnknown": "Download progression is unknown.",
         "editTag": "Edit tag: {{- tag}}",
         "favoriteCatalog": "Favorite catalog: {{- title}}",
         "increaseSetting": "Increase {{- setting}}",
@@ -327,7 +327,7 @@
             "failed": "Could not import “{{- name}}”.",
             "invalidLicense": "Could not import “{{- name}}”. The publication’s license is invalid.",
             "invalidPublication": "Could not import “{{- name}}”. The publication manifest is missing.",
-            "lcpLicenseMalformed": "LCP license malformed.",
+            "lcpLicenseMalformed": "Malformed LCP license.",
             "success": "Importing [{{- title}}] completed.",
             "unsupportedFormat": "Could not import “{{- name}}”. This file format is not supported."
         },
@@ -417,7 +417,7 @@
             "goLoanBook": "Borrow publication",
             "goRevokeLoanBook": "Revoke loan",
             "goSubBook": "Subscribe",
-            "placeHold": "Place hold"
+            "placeHold": "Place a hold"
         },
         "network": {
             "error": "Error accessing feed",
@@ -429,7 +429,7 @@
         "next": "Next",
         "previous": "Previous",
         "registry": {
-            "empty": "No catalogs found.",
+            "empty": "No catalog found.",
             "error": "Unable to search the registry. Please try again.",
             "loading": "Searching catalogs…",
             "title": "Search catalogs"
