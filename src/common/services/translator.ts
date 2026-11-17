@@ -53,8 +53,16 @@ import zhTwCatalog from "readium-desktop/resources/locales/zh-tw.json";
 
 
 // import { TFunction } from "readium-desktop/typings/en.translation";
-import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
-
+// 
+// import "i18next";
+// import res from "readium-desktop/typings/i18next-interface";
+// declare module "i18next" {
+//     interface CustomTypeOptions {
+//         defaultNS: "en";
+//         resources: res;
+//         strictInterpolationChecks: true;
+//     }
+// }
 
 import i18next from "i18next";
 
@@ -270,8 +278,8 @@ export const availableLanguages = {
     :{}),
 };
 
-export type I18nFunction = (key: TTranslatorKeyParameter, __?: {}) => string;
-// export type I18nFunction = (...args: Parameters<typeof i18next.t>) => ReturnType<typeof i18next.t>;
+// export type I18nFunction = (key: TTranslatorKeyParameter, __?: {}) => string;
+export type I18nFunction = (...args: Parameters<typeof i18next.t>) => ReturnType<typeof i18next.t>;
 // Types of parameters 'args' and '_' are incompatible
 // Type '[_: TTranslatorKeyParameter, __?: {}]' is not assignable to types:
 // '[key: string | (string | TemplateStringsArray)[] | TemplateStringsArray] | [key: string | string[], defaultValue: string] | [key: string | string[], options: TOptionsBase & $Dictionary & { ...; }] | [key: ...] | [key: ...]'
@@ -348,7 +356,7 @@ export const translate = (...args: Parameters<typeof i18next.t>): ReturnType<typ
 // };
 
 export const translator = {
-    __: translate as unknown as I18nFunction,
+    __: translate, // as unknown as I18nFunction,
     setLocale,
     translate,
 };
