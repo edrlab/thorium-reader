@@ -2381,8 +2381,7 @@ declare namespace typed_i18n {
       readonly "reset": string,
       readonly "resetDetails": string,
       readonly "save": string,
-      readonly "saveDetails": string,
-      readonly "title": string
+      readonly "saveDetails": string
     },
     readonly "preview": string,
     readonly "reduceFontSize": string,
@@ -2800,8 +2799,7 @@ declare namespace typed_i18n {
     readonly "reset": string,
     readonly "resetDetails": string,
     readonly "save": string,
-    readonly "saveDetails": string,
-    readonly "title": string
+    readonly "saveDetails": string
   },
   readonly "preview": string,
   readonly "reduceFontSize": string,
@@ -2896,8 +2894,7 @@ declare namespace typed_i18n {
   readonly "reset": string,
   readonly "resetDetails": string,
   readonly "save": string,
-  readonly "saveDetails": string,
-  readonly "title": string
+  readonly "saveDetails": string
 };
   (_: "reader.settings.preset.apply", __?: {}): string;
   (_: "reader.settings.preset.applyDetails", __?: {}): string;
@@ -2905,7 +2902,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.preset.resetDetails", __?: {}): string;
   (_: "reader.settings.preset.save", __?: {}): string;
   (_: "reader.settings.preset.saveDetails", __?: {}): string;
-  (_: "reader.settings.preset.title", __?: {}): string;
   (_: "reader.settings.preview", __?: {}): string;
   (_: "reader.settings.reduceFontSize", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;

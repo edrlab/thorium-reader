@@ -1051,8 +1051,7 @@
                 "reset": "Återställ läsinställningar",
                 "resetDetails": "Återställ dina läsinställningar till standardinställningarna.",
                 "save": "Spara egna läsinställningar",
-                "saveDetails": "Spara dina nuvarande inställningar för visning och textformatering. Du kan använda dem i andra böcker genom att klicka på \"Använd\" i andra läsarfönster.",
-                "title": "Förinställningar"
+                "saveDetails": "Spara dina nuvarande inställningar för visning och textformatering. Du kan använda dem i andra böcker genom att klicka på \"Använd\" i andra läsarfönster."
             },
             "preview": "Förhandsvisning",
             "reduceFontSize": "Minska textstorlek",

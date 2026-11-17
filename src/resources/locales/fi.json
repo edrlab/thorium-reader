@@ -1051,8 +1051,7 @@
                 "reset": "Nollaa",
                 "resetDetails": "Palauta oletusasetukset.",
                 "save": "Tallenna",
-                "saveDetails": "Tämä toiminto tallentaa nykyisen ulkoasun eli tekstin ja näytön asetukset, jotka olet valinnut. Ulkoasua voi käyttää muissakin julkaisuissa painamalla Käytä-painiketta.",
-                "title": "Omat asetukset"
+                "saveDetails": "Tämä toiminto tallentaa nykyisen ulkoasun eli tekstin ja näytön asetukset, jotka olet valinnut. Ulkoasua voi käyttää muissakin julkaisuissa painamalla Käytä-painiketta."
             },
             "preview": "Esikatselu",
             "reduceFontSize": "Pienennä fonttikokoa",

@@ -1058,8 +1058,7 @@
                 "reset": "Nustatyti iš naujo",
                 "resetDetails": "Nustatyti pageidautiną konfigūraciją į numatytąsias reikšmes.",
                 "save": "Išsaugoti",
-                "saveDetails": "Šis veiksmas išsaugo dabartinę konfigūraciją, t. y. Jūsų pageidautinus išvaizdos ir teksto formatavimo parametrus. Šias nuostatas galėsite taikyti kitiems leidiniams skaitytuvės lange paspaudę mygtuką „Taikyti“.",
-                "title": "Nuostatos"
+                "saveDetails": "Šis veiksmas išsaugo dabartinę konfigūraciją, t. y. Jūsų pageidautinus išvaizdos ir teksto formatavimo parametrus. Šias nuostatas galėsite taikyti kitiems leidiniams skaitytuvės lange paspaudę mygtuką „Taikyti“."
             },
             "preview": "Peržiūrėti",
             "reduceFontSize": "Sumažinti šrifto dydį",

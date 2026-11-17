@@ -1051,8 +1051,7 @@
                 "reset": "Endurstilla",
                 "resetDetails": "Endurstilla kjörstillingarnar á sjálfgefin gildi.",
                 "save": "Vista",
-                "saveDetails": "Vistar núverandi útlit og textastillingar sem kjörstillingar. Síðan má nota þær fyrir aðrar bækur með því að velja Nota í öðrum lestrargluggum.",
-                "title": "Kjörstillingar"
+                "saveDetails": "Vistar núverandi útlit og textastillingar sem kjörstillingar. Síðan má nota þær fyrir aðrar bækur með því að velja Nota í öðrum lestrargluggum."
             },
             "preview": "Forskoðun",
             "reduceFontSize": "Minnka letur",

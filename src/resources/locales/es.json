@@ -1058,8 +1058,7 @@
                 "reset": "Restablecer opciones preferidas de lectura",
                 "resetDetails": "Restablecer los parámetros de lectura preferidos y aplicarlos al libro actual",
                 "save": "Guardar los parámetros de lectura preferidos",
-                "saveDetails": "Guardar los parámetros personalizados para el texto, de modo que puedan aplicarse a otros libros, una vez abiertos, pulsando el siguiente botón",
-                "title": "Establecer opciones predeterminadas"
+                "saveDetails": "Guardar los parámetros personalizados para el texto, de modo que puedan aplicarse a otros libros, una vez abiertos, pulsando el siguiente botón"
             },
             "preview": "Previsualizar",
             "reduceFontSize": "Reducir el tamaño del texto",

@@ -1065,8 +1065,7 @@
                 "reset": "Resetuj",
                 "resetDetails": "Resetuj preferowaną konfigurację (ustawienia domyślne).",
                 "save": "Zapisz",
-                "saveDetails": "Ta akcja zapisuje bieżącą konfigurację, tj. preferowane opcje wyświetlania i formatowania tekstu. Ustawienia można następnie zastosować do innych publikacji klikając przycisk „zastosuj” w innych oknach czytnika.",
-                "title": "Preferencje"
+                "saveDetails": "Ta akcja zapisuje bieżącą konfigurację, tj. preferowane opcje wyświetlania i formatowania tekstu. Ustawienia można następnie zastosować do innych publikacji klikając przycisk „zastosuj” w innych oknach czytnika."
             },
             "preview": "Podgląd",
             "reduceFontSize": "Zmniejsz rozmiar czcionki",

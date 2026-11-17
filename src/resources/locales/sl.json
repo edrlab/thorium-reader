@@ -1065,8 +1065,7 @@
                 "reset": "Ponastavi",
                 "resetDetails": "Ponastavi želeno konfiguracijo (privzete nastavitve).",
                 "save": "Shrani",
-                "saveDetails": "To dejanje shrani trenutno konfiguracijo, tj. želene možnosti prikaza in oblikovanja besedila. Nastavitve lahko nato uporabite za druge publikacije s klikom na gumb »uporabi« v drugih oknih bralnika.",
-                "title": "Uporabniške nastavitve"
+                "saveDetails": "To dejanje shrani trenutno konfiguracijo, tj. želene možnosti prikaza in oblikovanja besedila. Nastavitve lahko nato uporabite za druge publikacije s klikom na gumb »uporabi« v drugih oknih bralnika."
             },
             "preview": "Predogled",
             "reduceFontSize": "Zmanjšaj velikost pisave",

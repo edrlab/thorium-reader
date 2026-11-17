@@ -1058,8 +1058,7 @@
                 "reset": "Redefinir",
                 "resetDetails": "Redefinir a configuração preferida (configurações padrão).",
                 "save": "Salvar",
-                "saveDetails": "Esta ação salva a configuração atual, ou seja, suas opções de exibição e formatação de texto preferidas. As configurações podem então ser aplicadas a outras publicações clicando no botão \"aplicar\" em outras janelas do leitor.",
-                "title": "Referências"
+                "saveDetails": "Esta ação salva a configuração atual, ou seja, suas opções de exibição e formatação de texto preferidas. As configurações podem então ser aplicadas a outras publicações clicando no botão \"aplicar\" em outras janelas do leitor."
             },
             "preview": "pré-visualização",
             "reduceFontSize": "Diminuir o tamanho da fonte",

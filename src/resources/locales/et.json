@@ -1051,8 +1051,7 @@
                 "reset": "Lähtesta",
                 "resetDetails": "Lähtesta sinu tehtud seadistused (vaikimisi seadistusteks).",
                 "save": "Salvesta",
-                "saveDetails": "Järgnevaga salvestad praegused seadistused, näiteks ekraanivaate ja teksti kuvamise eelistused. Sellisena salvestatud seadistusi saad kasutada muude väljaannete puhul - pead vaid lugemisvaates klõpsama „Rakenda“ nuppu.",
-                "title": "Eelistused"
+                "saveDetails": "Järgnevaga salvestad praegused seadistused, näiteks ekraanivaate ja teksti kuvamise eelistused. Sellisena salvestatud seadistusi saad kasutada muude väljaannete puhul - pead vaid lugemisvaates klõpsama „Rakenda“ nuppu."
             },
             "preview": "Eelvaade",
             "reduceFontSize": "Vähenda teksti suurust",
