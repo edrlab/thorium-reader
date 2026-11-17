@@ -1,4 +1,4 @@
-const util = require('util');
+const util = require("util");
 var fs = require("fs");
 var path = require("path");
 
@@ -43,6 +43,17 @@ const jsonSrcTxt = fs.readFileSync(path.join(process.cwd(), jsonSrcPath), { enco
 let obj = JSON.parse(jsonSrcTxt);
 collapsePluralKeys(obj);
 obj = jsonUtils.sortObject(obj);
+
+const mini = JSON.stringify(obj, (_key, value) => {
+if (typeof value === "string") {
+    const matches = value.match(/\{\{.+?\}\}/g);
+    return matches ? matches.join("").replace(/\s*/g, "").replace(/-/g, "") : "";
+}
+return value;
+}, 2);
+const dts = `declare const data = ${mini} as const;\nexport default data;\n`;
+fs.writeFileSync(path.join(process.cwd(), "src", "typings", jsonDstPath + ".d.ts"), dts, { encoding: "utf8" });
+
 const jsonDstObj = { "en": { "translation": obj } };
 console.log(util.inspect(jsonDstObj, { colors: true, depth: null, compact: false }));
 const jsonDstTxt = JSON.stringify(jsonDstObj, null, "    ") + "\n";

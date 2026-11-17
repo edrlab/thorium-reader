@@ -5,25 +5,25 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as React from "react";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
-import { useReaderConfigAll, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
-import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline, HighlightDrawTypeOutline, HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler } from "@r2-navigator-js/electron/common/highlight";
+import { HighlightDrawTypeBackground, HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler, HighlightDrawTypeOutline, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 import { TTSStateEnum } from "@r2-navigator-js/electron/renderer/readaloud";
-import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
-import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
+import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
+import { useReaderConfigAll, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 
 
 // WARNING: Do not remove these references; they are required by the i18n scanner/checker.
@@ -386,9 +386,15 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                                                                 });
                                                             }}
                                                             checked={ttsHighlightColorHex === colorHex}
-                                                            aria-label={__(translatorKey)}
+                                                            aria-label={
+                                                                // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
+                                                                __(translatorKey)
+                                                            }
                                                         />
-                                                        <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
+                                                        <label aria-hidden={true} title={
+                                                            // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
+                                                            __(translatorKey)
+                                                        } htmlFor={`ttscolorpick${colorHex}`}
                                                             style={{
                                                                 background: colorHex === "#000000" ? "linear-gradient(90deg,rgba(255, 255, 255, 1) 0%, rgba(71, 71, 71, 1) 50%, rgba(0, 0, 0, 1) 100%)" : undefined,
                                                                 backgroundColor: colorHex === "#000000" ? undefined : colorHex,
@@ -421,9 +427,15 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                                                                 });
                                                             }}
                                                             checked={ttsHighlightColor_WORDHex === colorHex}
-                                                            aria-label={__(translatorKey)}
+                                                            aria-label={
+                                                                // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
+                                                                __(translatorKey)
+                                                            }
                                                         />
-                                                        <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
+                                                        <label aria-hidden={true} title={
+                                                            // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
+                                                            __(translatorKey)
+                                                        } htmlFor={`ttscolorpickword${colorHex}`}
                                                             style={{
                                                                 cursor: useMO ? "not-allowed" : undefined,
                                                                 background: colorHex === "#000000" ? "linear-gradient(90deg,rgba(255, 255, 255, 1) 0%, rgba(71, 71, 71, 1) 50%, rgba(0, 0, 0, 1) 100%)" : undefined,

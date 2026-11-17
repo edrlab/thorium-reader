@@ -8,24 +8,24 @@
 import * as React from "react";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 // import { annotationActions } from "readium-desktop/common/redux/actions";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 // import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
-import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { customizationActions } from "readium-desktop/common/redux/actions";
-import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 
-import DOMPurify from "dompurify";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
+import DOMPurify from "dompurify";
+import { URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PROTOCOL_THORIUMHTTPS } from "readium-desktop/common/streamerProtocol";
 import Loader from "./Loader";
 
 export const CustomizationProfileDialog: React.FC = () => {
@@ -124,7 +124,8 @@ export const CustomizationProfileDialog: React.FC = () => {
                                 !(customization.lock.state === "IDLE" || dangerousInnerHTML_WelcomeScreenSanitized) ?
                                 <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", flexDirection: "column", justifyContent: "space-between"}}>
                                     <Loader></Loader>
-                                    <span>{__("dialog.customization.splashscreen.state", {state: customization.lock.state, id: customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"})}</span>
+                                    {/*, id: customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined" */}
+                                    <span>{__("dialog.customization.splashscreen.state", {state: customization.lock.state})}</span>
                                     {/* <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span> */}
                                 </div>
                                 : <></>

@@ -5,43 +5,43 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
-import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
-import * as stylesMarkdown from "readium-desktop/renderer/assets/styles/github-markdown.scss";
 import classNames from "classnames";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
-import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button } from "react-aria-components";
+import { Button, DialogTrigger, Popover, Dialog as PopoverDialog, Pressable } from "react-aria-components";
 import FocusLock from "react-focus-lock";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+import * as stylesMarkdown from "readium-desktop/renderer/assets/styles/github-markdown.scss";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
-import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
 import * as BookOpenIcon from "readium-desktop/renderer/assets/icons/bookOpen-icon.svg";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
-import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
+import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { AnnotationEdit } from "../AnnotationEdit";
 
 import { IReaderMenuProps } from "../options-values";
 
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { rgbToHex } from "readium-desktop/common/rgb";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { useReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { readerActions } from "readium-desktop/common/redux/actions";
-import { useReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
-import { rgbToHex } from "readium-desktop/common/rgb";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 
 import DOMPurify from "dompurify";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
-import { computeProgression } from "./ReaderMenu";
 import { buildAnnotationPanelSaveNote, canDeleteAnnotationInPanel, canEditAnnotationInPanel, getAnnotationCardText, getAnnotationPanelNavigation, getAnnotationSelectionText, getPdfAnnotationPageLabel } from "../../pdf/pdfAnnotationPanel";
+import { computeProgression } from "./ReaderMenu";
 
 import debug_ from "debug";
 
@@ -156,7 +156,10 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                 }, 100);
             }
         } : undefined}
-        aria-label={__("reader.annotations.note", {color: __(Object.entries(noteColorCodeToColorTranslatorKeySet).find(([colorHex]) => colorHex === annotationColor)?.[1])})}
+        aria-label={__("reader.annotations.note", {
+            // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
+            color: __(Object.entries(noteColorCodeToColorTranslatorKeySet).find(([colorHex]) => colorHex === annotationColor)?.[1])
+        })}
     >
         <div className={stylesAnnotations.annotation_container}>
             {isEditing ?

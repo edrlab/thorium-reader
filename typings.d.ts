@@ -4,17 +4,7 @@
 // Use of this source code is governed by a BSD-style license
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
-
-// import "i18next";
-// import res from "readium-desktop/typings/i18next-interface";
-// declare module "i18next" {
-//     interface CustomTypeOptions {
-//         defaultNS: "";
-//         resources: res;
-//         strictInterpolationChecks: true;
-//     }
-// }
-
+//
 declare module "*.json" {
     const value: any;
     export default value;
