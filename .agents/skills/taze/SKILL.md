@@ -14,8 +14,8 @@ description: "Learn how to use Taze to check for updates in NPM package dependen
 
 When the user asks for Taze, execute the following commands exactly as they are:
 
-1. check "minor" updates: `npm exec --no --offline --cache /tmp/empty-npm-cache -- taze --maturity-period 2 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .`
-2. check "major" updates: `npm exec --no --offline --cache /tmp/empty-npm-cache -- taze major --maturity-period 2 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .`
+1. check "minor" updates: `npm exec --no --offline --cache /tmp/empty-npm-cache -- taze --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .`
+2. check "major" updates: `npm exec --no --offline --cache /tmp/empty-npm-cache -- taze major --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .`
 
 Tip: refer to the "npx" skill which explains how to safely use the `npm exec` command (shorthand `npx`) to run arbitrary NPM programs.
 
