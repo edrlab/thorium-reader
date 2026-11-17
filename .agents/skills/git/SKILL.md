@@ -61,6 +61,8 @@ Depending on the project rules, Git hooks can be required (for example pre-commi
 
 The variables `GIT_CONFIG_COUNT` + `GIT_CONFIG_KEY_x` + `GIT_CONFIG_VALUE_x` (x is a zero-based index) can be used to configure the environment without writing into `./.git/config` or `~/.git/config`.
 
+Also note that arbitrary executables reachable via the environment variable `PATH` will be run when calling `git arbitrary-executable ...` (Git automatically discovers "extensions").
+
 ## Coding agents, AGENT.md, CLAUDE.md
 
 This is a user tip:
