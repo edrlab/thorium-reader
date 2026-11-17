@@ -120,13 +120,13 @@
         "numberOfPages": "Sivumäärä",
         "opds": {
             "auth": {
-                "alternativeLogin": "",
+                "alternativeLogin": "Vaihtoehtoinen kirjautumistapa",
                 "cancel": "Peru",
                 "external": "Kirjautumissivu aukeaa verkkoselaimessa, seuraa sivun ohjeita. Kun olet kirjautunut sisään, verkkoselain palauttaa sinut tähän sovellukseen.",
-                "externalBrowserInstructions": "",
+                "externalBrowserInstructions": "Jos verkkoselain ei avaudu automaattisesti, napsauta seuraavaa linkkiä.",
                 "fallback": "Huom. Jos kirjautuminen selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
                 "login": "Kirjaudu",
-                "openExternalBrowser": "",
+                "openExternalBrowser": "Avaa ulkoinen selain",
                 "password": "Salasana",
                 "register": "Rekisteröidy",
                 "retry": "Yritä uudelleen",
@@ -310,56 +310,56 @@
                 "cbzNoImages": "CBZ-arkisto ei sisällä tuettuja kuvia.",
                 "contextMissing": "puuttuva",
                 "daisyConversionFailed": "DAISY-julkaisua ei voitu muuntaa.",
-                "manifestContext": "",
-                "manifestImportFailed": "",
-                "manifestInvalidJson": "",
-                "manifestMissing": "",
-                "manifestNotFound": "",
-                "manifestParsingFailed": "",
-                "noImportResult": "",
-                "notImported": "",
-                "profileAssetUrl": "",
-                "profileEmpty": "",
-                "profileEntryMissing": "",
-                "profileMissing": "",
-                "profileNotZip": ""
+                "manifestContext": "Tuntematon julkaisuluettelo @context osoitteessa {{- url}}: {{- context}}",
+                "manifestImportFailed": "Julkaisuluettelon tuonti epäonnistui.",
+                "manifestInvalidJson": "Julkaisuluettelon JSON-tiedosto on virheellinen osoitteessa {{- url}}.",
+                "manifestMissing": "Julkaisuluettelo puuttuu.",
+                "manifestNotFound": "Osoitteesta {{- url}} ei löytynyt julkaisuluetteloa.",
+                "manifestParsingFailed": "Julkaisuluettelon jäsentäminen osoitteessa {{- url}} ei onnistunut.",
+                "noImportResult": "Tuonti ei palauttanut yhtään julkaisua.",
+                "notImported": "Julkaisun lisääminen kirjastoon ei onnistunut.",
+                "profileAssetUrl": "Julkaisun URL-osoite on virheellinen: {{- path}}",
+                "profileEmpty": "Mukautetun profiilin ZIP-arkisto on tyhjä.",
+                "profileEntryMissing": "Julkaisua ei löydy mukautetusta profiilista: {{- path}}",
+                "profileMissing": "Mukautettua profiilia ei löytynyt: {{- id}}",
+                "profileNotZip": "Mukautettu profiili ei ole ZIP-arkisto."
             },
-            "failed": "",
-            "invalidLicense": "",
-            "invalidPublication": "",
-            "lcpLicenseMalformed": "",
+            "failed": "“{{- name}}” ei voitu tuoda.",
+            "invalidLicense": "”{{- name}}” -tiedostoa ei voitu tuoda. Julkaisun lisenssi ei ole voimassa.",
+            "invalidPublication": "”{{- name}}” -tiedostoa ei voitu tuoda. Julkaisuluettelo puuttuu.",
+            "lcpLicenseMalformed": "LCP-lisenssin muoto on virheellinen.",
             "success": "Julkaisun {{- title}} tuonti on valmis.",
-            "unsupportedFormat": ""
+            "unsupportedFormat": "”{{- name}}” -tiedostoa ei voitu tuoda. Tätä tiedostomuotoa ei tueta."
         },
         "notifications": {
             "annotationImportFailed": "Merkintöjä ei voitu tuoda. Varmista, että tiedosto on kelvollinen",
-            "annotationPublicationUnavailable": "",
-            "annotationStopPlayback": "",
-            "authenticationFailed": "",
-            "catalogLinkFailed": "",
-            "catalogUpdateFailed": "",
-            "copyLimit": "",
-            "deleteFailed": "",
-            "exportFailed": "",
-            "openFileFailed": "",
-            "openLinkFailed": "",
-            "printLimit": "",
-            "profileActivationFailed": "",
-            "profileBusy": "",
-            "profileProvisionFailed": "",
-            "profileTimeout": "",
-            "publicationUnavailable": "",
-            "readingPositionFailed": "",
-            "recoveryPartialFailure": "",
-            "renewFailed": "",
-            "returnFailed": "",
-            "storageRefreshFailed": "",
-            "tagsFailed": ""
+            "annotationPublicationUnavailable": "Merkintöjen tuonti ei onnistu, koska julkaisua ei ole saatavilla. Yritä tuoda julkaisu uudelleen.",
+            "annotationStopPlayback": "Keskeytä tekstistä puheeksi -toiminto tai luenta, jotta voit luoda merkinnän.",
+            "authenticationFailed": "Kirjautuminen tähän luetteloon ei onnistu. Tarkista verkkoyhteytesi ja yritä uudelleen.",
+            "catalogLinkFailed": "Tätä luetteloa ei voitu lisätä. Tarkista linkki ja verkkoyhteytesi.",
+            "catalogUpdateFailed": "Tätä luetteloa ei voitu päivittää. Tarkista luettelon asetukset ja yritä uudelleen.",
+            "copyLimit": "Tämän julkaisun kopiointiraja on tullut täyteen.",
+            "deleteFailed": "Julkaisua ei voitu poistaa. Yritä uudelleen.",
+            "exportFailed": "Julkaisua ei voitu viedä. Tarkista kohdekansio ja saatavilla olevan levytilan määrä.",
+            "openFileFailed": "Julkaisua ei voitu avata. Varmista, että se on saatavilla ja tuetussa formaatissa.",
+            "openLinkFailed": "Julkaisun linkkiä ei voitu avata. Tarkista linkki ja yritä uudelleen.",
+            "printLimit": "Tämän julkaisun tulostusraja on tullut täyteen.",
+            "profileActivationFailed": "Profiilia ei voitu aktivoida. Tarkista profiilipaketti tai ota yhteyttä sen tarjoajaan.",
+            "profileBusy": "Käsitellään toista profiilia. Odota, että käsittely valmistuu ja yritä sitten uudelleen.",
+            "profileProvisionFailed": "Profiilia ei voitu asentaa. Tarkista profiilipaketti tai ota yhteyttä sen toimittajaan.",
+            "profileTimeout": "Profiilin asennus aikakatkaistiin. Tarkista yhteytesi ja yritä uudelleen.",
+            "publicationUnavailable": "Julkaisu ei ole saatavilla. Yritä tuoda se uudelleen.",
+            "readingPositionFailed": "Lukukohtaa ei voitu määrittää. Yritä uudelleen.",
+            "recoveryPartialFailure": "Palautettu {{- recovered}} julkaisua; {{- failed}} julkaisun palautus ei onnistunut.",
+            "renewFailed": "Lainaa ei voitu uusia. Yritä uudelleen tai ota yhteyttä kirjastoosi.",
+            "returnFailed": "Lainaa ei voitu palauttaa. Yritä uudelleen tai ota yhteyttä kirjastoosi.",
+            "storageRefreshFailed": "Tallennustilan asetukset tallennettiin, mutta kirjaston päivittäminen ei onnistunut. Yritä päivittää kirjasto.",
+            "tagsFailed": "Julkaisun tunnisteita ei voitu tallentaa. Yritä uudelleen."
         },
         "open": {
-            "failed": "",
+            "failed": "Julkaisua ei voitu avata.",
             "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila.",
-            "missingLicense": ""
+            "missingLicense": "Julkaisua ei voitu avata. Julkaisu on suojattu, mutta sen LCP-lisenssi puuttuu."
         },
         "storage": {
             "recovery": {
@@ -387,10 +387,10 @@
         "addMenu": "Lisää OPDS-syöte",
         "breadcrumbRoot": "Luettelot",
         "browserMenu": {
-            "history": "",
-            "options": "",
-            "profile": "",
-            "wishlist": ""
+            "history": "Historia",
+            "options": "Luettelovaihtoehdot",
+            "profile": "Käyttäjäprofiili",
+            "wishlist": "Toivelista"
         },
         "color": {
             "blue": "Sininen",
@@ -411,13 +411,13 @@
         "menu": {
             "aboutBook": "Tietoja tästä kirjasta",
             "addExtract": "Tuo näyte",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Peruuta varaus",
+            "cancelHoldError": "Varausta ei voitu peruuttaa. Yritä uudelleen.",
             "goBuyBook": "Osta kirja",
             "goLoanBook": "Lainaa kirja",
             "goRevokeLoanBook": "Peruuta laina",
             "goSubBook": "Tilaa",
-            "placeHold": ""
+            "placeHold": "Varaa"
         },
         "network": {
             "error": "OPDS-syöte ei ole saatavilla",
@@ -429,10 +429,10 @@
         "next": "Seuraava",
         "previous": "Edellinen",
         "registry": {
-            "empty": "",
-            "error": "",
-            "loading": "",
-            "title": ""
+            "empty": "Luetteloita ei löytynyt.",
+            "error": "Rekisteriä ei voitu hakea. Yritä uudelleen.",
+            "loading": "Etsitään luetteloita…",
+            "title": "Etsi luetteloita"
         },
         "resumeBrowsing": "Palaa selailuun",
         "shelf": "Hylly",
@@ -623,10 +623,10 @@
         },
         "legal-considerations": {
             "legal-considerations-exempt": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vedotaan poikkeukseen saavutettavuusvaatimuksissa",
+                "descriptive": "Tämän julkaisun kohdalla vedotaan poikkeukseen saavutettavuusvaatimuksissa."
             },
-            "legal-considerations-title": ""
+            "legal-considerations-title": "Oikeudellisia huomioita"
         },
         "navigation": {
             "navigation-index": {
@@ -783,7 +783,7 @@
         "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa.",
         "cover": {
             "img": "kansikuva",
-            "zoom": ""
+            "zoom": "Suurenna kansikuvaa"
         },
         "day": "päivä",
         "days": "päivää",
@@ -806,21 +806,21 @@
         "notStarted": "Ei ole aloitettu",
         "onGoing": "Luettavana",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "Tuoreempi lukukohta laitteesta {{- device}} on saatavilla ja osoittaa {{- progression}} %.",
+            "remoteTitle": "Jatketaanko toisesta laitteesta?",
             "title": "Eteneminen",
-            "useRemote": ""
+            "useRemote": "Siirry kohtaan"
         },
         "read": "Luettu",
         "remainingTime": "Laina (aikaa jäljellä)",
         "remoteProgression": {
-            "checking": "",
-            "disabled": "",
-            "empty": "",
-            "position": "",
-            "ready": "",
-            "title": "",
-            "unavailable": ""
+            "checking": "Sallittu ja tarkistetaan palvelua…",
+            "disabled": "Ei sallittu tässä julkaisussa.",
+            "empty": "Ei etänä tallennettua edistymistä.",
+            "position": "Etäedistyminen:  {{percent}} % ({{device}}).",
+            "ready": "Sallittu ja valmis.",
+            "title": "Lukemisen edistymisen synkronointi:",
+            "unavailable": "Sallittu, mutta palvelu ei ole käytettävissä."
         },
         "renewButton": "Uudista",
         "returnButton": "Palauta",
@@ -1010,7 +1010,7 @@
                 "two": "2 saraketta"
             },
             "customFontSelected": "Olet valinnut oman fontin",
-            "deactivateTextFormatting": "",
+            "deactivateTextFormatting": "Poista tekstin muotoilu käytöstä",
             "display": "Näyttöasetukset",
             "disposition": {
                 "title": "Asettelu"
@@ -1059,7 +1059,7 @@
             "reduceMotion": "Vähennä liikettä",
             "scrolled": "Vieritettävä",
             "spacing": "Välit",
-            "spacingCustomButton": "",
+            "spacingCustomButton": "Mukautetut välistysasetukset",
             "spreadModeEven": "Parilliset aukeamat (oletus on pariton)",
             "text": "Teksti",
             "theme": {
@@ -1116,7 +1116,7 @@
         "keyboard": {
             "advancedMenu": "Pikanäppäinten valikko",
             "cancel": "Peruuta",
-            "disableTooltips": "",
+            "disableTooltips": "Poista pikanäppäinvinkit käytöstä",
             "disclaimer": "Oletuspikanäppäimet perustuvat QWERTY-näppäinasetteluun",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
             "exportToHTML": "Vie html-muotoon",
@@ -1469,7 +1469,7 @@
             }
         },
         "tabs": {
-            "advanced": "",
+            "advanced": "Lisäasetukset",
             "general": "Yleiset",
             "keyboardShortcuts": "Pikanäppäimet",
             "profiles": "Profiilit",
