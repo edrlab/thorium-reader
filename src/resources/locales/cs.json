@@ -1065,8 +1065,7 @@
                 "reset": "Obnovit",
                 "resetDetails": "Obnovit preferovanou konfiguraci (výchozí nastavení).",
                 "save": "Uložit",
-                "saveDetails": "Tento krok uloží aktuální konfiguraci, tj. vámi preferované možnosti zobrazení a formátování textu. Nastavení pak můžete použít na další publikace kliknutím na tlačítko „použít“ v ostatních čtecích oknech.",
-                "title": "Preference"
+                "saveDetails": "Tento krok uloží aktuální konfiguraci, tj. vámi preferované možnosti zobrazení a formátování textu. Nastavení pak můžete použít na další publikace kliknutím na tlačítko „použít“ v ostatních čtecích oknech."
             },
             "preview": "Náhled",
             "reduceFontSize": "",

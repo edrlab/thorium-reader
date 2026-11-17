@@ -1051,8 +1051,7 @@
                 "reset": "Reset",
                 "resetDetails": "Reset your preferred configuration (default settings).",
                 "save": "Save",
-                "saveDetails": "This action saves the current configuration, i.e. your preferred display and text formatting options. The settings can then be applied to other publications by clicking the 'apply' button in other reader windows.",
-                "title": "Preferences"
+                "saveDetails": "This action saves the current configuration, i.e. your preferred display and text formatting options. The settings can then be applied to other publications by clicking the 'apply' button in other reader windows."
             },
             "preview": "Preview",
             "reduceFontSize": "Reduce font size",

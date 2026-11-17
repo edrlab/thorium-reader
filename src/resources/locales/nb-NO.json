@@ -1051,8 +1051,7 @@
                 "reset": "Tilbakestill",
                 "resetDetails": "Tilbakestill den foretrukne konfigurasjonen til standardinnstillingene.",
                 "save": "Lagre",
-                "saveDetails": "Lagrer de gjeldende innstillingene som din foretrukne konfigurasjon for visning og tekstformatering. Innstillingene kan deretter brukes på andre publikasjoner ved å velge «Bruk» i andre leservinduer.",
-                "title": "Preferanser"
+                "saveDetails": "Lagrer de gjeldende innstillingene som din foretrukne konfigurasjon for visning og tekstformatering. Innstillingene kan deretter brukes på andre publikasjoner ved å velge «Bruk» i andre leservinduer."
             },
             "preview": "Forhåndsvisning",
             "reduceFontSize": "",

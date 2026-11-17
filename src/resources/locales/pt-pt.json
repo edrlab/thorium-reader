@@ -1058,8 +1058,7 @@
                 "reset": "Repor",
                 "resetDetails": "Repor os seus parâmetros de leitura preferidos (valores predefinidos).",
                 "save": "Guardar",
-                "saveDetails": "Esta ação guarda a configuração atual, ou seja, as suas opções preferidas de visualização e formatação de texto. As definições podem ser aplicadas a outras publicações clicando no botão \"Aplicar\" noutras janelas do leitor.",
-                "title": "Preferências"
+                "saveDetails": "Esta ação guarda a configuração atual, ou seja, as suas opções preferidas de visualização e formatação de texto. As definições podem ser aplicadas a outras publicações clicando no botão \"Aplicar\" noutras janelas do leitor."
             },
             "preview": "Pré-visualização",
             "reduceFontSize": "",

@@ -1051,8 +1051,7 @@
                 "reset": "Sıfırla",
                 "resetDetails": "Tercih ettiğiniz yapılandırmayı sıfırlayın (varsayılan ayarlar).",
                 "save": "Kaydet",
-                "saveDetails": "Bu eylem, geçerli yapılandırmayı, yani tercih ettiğiniz görüntüleme ve metin biçimlendirme seçeneklerini kaydeder. Ayarlar, daha sonra diğer okuyucu pencerelerindeki 'uygula' düğmesine tıklanarak diğer eserlere uygulanabilir.",
-                "title": "Tercihler"
+                "saveDetails": "Bu eylem, geçerli yapılandırmayı, yani tercih ettiğiniz görüntüleme ve metin biçimlendirme seçeneklerini kaydeder. Ayarlar, daha sonra diğer okuyucu pencerelerindeki 'uygula' düğmesine tıklanarak diğer eserlere uygulanabilir."
             },
             "preview": "Önizleme",
             "reduceFontSize": "Yazı tipi boyutunu azalt",

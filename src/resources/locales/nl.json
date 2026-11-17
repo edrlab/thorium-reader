@@ -1051,8 +1051,7 @@
                 "reset": "Stel opnieuw in",
                 "resetDetails": "Reset uw voorkeursconfiguratie (standaardinstellingen).",
                 "save": "Bewaar",
-                "saveDetails": "Deze actie slaat de huidige configuratie op, d.w.z. je voorkeursopties voor weergave en tekst-opmaak. De instellingen kunnen vervolgens op andere publicaties worden toegepast door in andere leesvensters op de knop 'Toepassen' te klikken.",
-                "title": "Voorkeuren"
+                "saveDetails": "Deze actie slaat de huidige configuratie op, d.w.z. je voorkeursopties voor weergave en tekst-opmaak. De instellingen kunnen vervolgens op andere publicaties worden toegepast door in andere leesvensters op de knop 'Toepassen' te klikken."
             },
             "preview": "Voorbeeld",
             "reduceFontSize": "Lettergrootte verkleinen",

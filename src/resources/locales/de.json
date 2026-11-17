@@ -1051,8 +1051,7 @@
                 "reset": "Zurücksetzen",
                 "resetDetails": "Setzen Sie Ihre bevorzugte Konfiguration auf Standardeinstellungen zurück.",
                 "save": "Speichern",
-                "saveDetails": "Diese Aktion speichert die aktuelle Konfiguration, d. h. die von Ihnen bevorzugten Anzeige- und Textformatierungsoptionen. Die Einstellungen können dann auf andere Publikationen übertragen werden, indem Sie in anderen Lesefenstern auf die Schaltfläche „Anwenden“ klicken.",
-                "title": "Einstellungen"
+                "saveDetails": "Diese Aktion speichert die aktuelle Konfiguration, d. h. die von Ihnen bevorzugten Anzeige- und Textformatierungsoptionen. Die Einstellungen können dann auf andere Publikationen übertragen werden, indem Sie in anderen Lesefenstern auf die Schaltfläche „Anwenden“ klicken."
             },
             "preview": "Vorschau",
             "reduceFontSize": "Schriftgröße verkleinern",

@@ -1051,8 +1051,7 @@
                 "reset": "Nulstil mit foretrukne læsetema til standard indstillingerne",
                 "resetDetails": "Nulstil din foretrukne læseindstillinger til standard-indstillingerne.",
                 "save": "Gem de nuværende læse-indstillinger som mit foretrukne læsetema",
-                "saveDetails": "Gem dine ændringer til den nuværende bogs formatering og visningsindstillinger. Disse indstillinger kan anvendes med andre bøger, når de er åbnet, ved at klikke på knappen nedenfor.",
-                "title": "Læsetema"
+                "saveDetails": "Gem dine ændringer til den nuværende bogs formatering og visningsindstillinger. Disse indstillinger kan anvendes med andre bøger, når de er åbnet, ved at klikke på knappen nedenfor."
             },
             "preview": "Forhåndsvisning",
             "reduceFontSize": "Formindsk skriftstørrelsen",
