@@ -119,7 +119,7 @@ export const test = () => {
 };
 
 // CLI test:
-// npm exec --no --offline sucrase ./src/main/fs/ -d ./dist --transforms typescript,imports
+// npm exec --no --offline --cache /tmp/empty-npm-cache -- sucrase ./src/main/fs/ -d ./dist --transforms typescript,imports
 // &&
 // sed -i.old 's/debug = debug_/debug = debug_.default/g' dist/persistCrypto.js
 // &&
