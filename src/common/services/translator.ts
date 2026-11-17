@@ -64,8 +64,9 @@ const i18nextInstance = i18next.createInstance();
 i18nextInstance.init({
     // https://www.i18next.com/misc/migration-guide#v-20-x-x-to-v-21-0-0
     // https://www.i18next.com/misc/migration-guide#v23.x.x-to-v24.0.0
+    // https://www.i18next.com/misc/migration-guide#v26.x.x-to-v27.0.0
     // https://github.com/i18next/i18next-v4-format-converter
-    compatibilityJSON: "v4",
+    // compatibilityJSON: "v4",
     interpolation: {
         skipOnVariables: false,
     },
@@ -74,12 +75,6 @@ i18nextInstance.init({
     // supportedLngs: LANGUAGE_KEYS,
     // nonExplicitSupportedLngs: true,
     // --
-    // https://github.com/i18next/i18next/pull/1584
-    // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#2000
-    // --
-    // https://github.com/i18next/i18next/issues/1589
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     ignoreJSONStructure: false,
     debug: false,
     resources: {
@@ -275,7 +270,13 @@ export const availableLanguages = {
     :{}),
 };
 
-export type I18nFunction = (_: TTranslatorKeyParameter, __?: {}) => string;
+export type I18nFunction = (key: TTranslatorKeyParameter, __?: {}) => string;
+// export type I18nFunction = (...args: Parameters<typeof i18next.t>) => ReturnType<typeof i18next.t>;
+// Types of parameters 'args' and '_' are incompatible
+// Type '[_: TTranslatorKeyParameter, __?: {}]' is not assignable to types:
+// '[key: string | (string | TemplateStringsArray)[] | TemplateStringsArray] | [key: string | string[], defaultValue: string] | [key: string | string[], options: TOptionsBase & $Dictionary & { ...; }] | [key: ...] | [key: ...]'
+// '[key: string | (string | TemplateStringsArray)[] | TemplateStringsArray] | [key: string | string[], defaultValue: string] | [key: string | string[], options: TOptionsBase & $Dictionary & { ...; }] | [key: ...]'
+// '[key: string | (string | TemplateStringsArray)[] | TemplateStringsArray, options: Omit<TOptions, "context"> & { context?: unknown; }]'
 
 export const setLocale = async (newLocale: keyof typeof availableLanguages) => {
 
@@ -291,6 +292,7 @@ export const setLocale = async (newLocale: keyof typeof availableLanguages) => {
 // type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
 // type TParams = ArgumentTypes<typeof i18next.t>;
 // type TParams = Parameters<typeof i18next.t>;
+// I18nFunction
 export const translate = (...args: Parameters<typeof i18next.t>): ReturnType<typeof i18next.t> => {
     const label = i18nextInstance.t(...args);
     if (!label || !label.length) {
@@ -346,7 +348,7 @@ export const translate = (...args: Parameters<typeof i18next.t>): ReturnType<typ
 // };
 
 export const translator = {
-    __: translate,
+    __: translate as unknown as I18nFunction,
     setLocale,
     translate,
 };
