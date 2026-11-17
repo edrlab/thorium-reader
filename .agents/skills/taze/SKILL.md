@@ -5,17 +5,17 @@ description: "Learn how to use Taze to check for updates in NPM package dependen
 
 # Taze
 
-* Taze helps manage the project's SBOM - Software Bill Of Materials.
-* Taze is a more feature-rich alternative to NPM's built-in `npm outdated` command.
-* Taze discovers updated NPM package dependencies, and reports available version increments as per semantic versioning rules (minor and major).
-* Taze is capable of updating the project's `./package.json` file, but ultimately the user decides which packages are safe to upgrade / install in the project's `./node_modules` folder.
+- Taze helps manage the project's SBOM - Software Bill Of Materials.
+- Taze is a more feature-rich alternative to NPM's built-in `npm outdated` command.
+- Taze discovers updated NPM package dependencies, and reports available version increments as per semantic versioning rules (minor and major).
+- Taze is capable of updating the project's `./package.json` file, but ultimately the user decides which packages are safe to upgrade / install in the project's `./node_modules` folder.
 
 ## Automated checks
 
 When the user asks for Taze, execute the following commands exactly as they are:
 
-1) check "minor" updates: `npm exec --no --offline --cache /tmp/empty-npm-cache -- taze --maturity-period 2 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .`
-2) check "major" updates: `npm exec --no --offline --cache /tmp/empty-npm-cache -- taze major --maturity-period 2 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .`
+1. check "minor" updates: `npm exec --no --offline --cache /tmp/empty-npm-cache -- taze --maturity-period 2 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .`
+2. check "major" updates: `npm exec --no --offline --cache /tmp/empty-npm-cache -- taze major --maturity-period 2 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .`
 
 Tip: refer to the "npx" skill which explains how to safely use the `npm exec` command (shorthand `npx`) to run arbitrary NPM programs.
 
@@ -28,3 +28,5 @@ The user needs to decide which package updates are safe to upgrade with respect 
 ## Package updates
 
 Refer to the "sfw" skill (Socket Security Firewall) for information on how to safely fetch packages from the software supply chain (i.e. `npm install` or `npm i` or `npm ci` or `npm update` commands, via the `sfw` proxy).
+
+Specific note about Electron package updates: in `./package.json` (and in `./src/package.json` if this file exists), make sure to also change the Electron versions referenced by the command line arguments `--target=` and `--version=` (these specific versions are required to fetch the correct native Electron headers from the URL specified in the CLI argument `--disturl=https://electronjs.org/headers`). The relevant scripts are `node-gyp`, `electron-rebuild` and `npm rebuild`.
