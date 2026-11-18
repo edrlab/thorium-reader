@@ -327,7 +327,7 @@
             "failed": "Kunde inte importera \"{{- name}}\".",
             "invalidLicense": "Kunde inte importera \"{{- name}}\". Bokens licens är ogiltig.",
             "invalidPublication": "Kunde inte importera \"{{- name}}\". Bokens manifest saknas.",
-            "lcpLicenseMalformed": "LCP-licensen är felformaterad.",
+            "lcpLicenseMalformed": "Felformaterad LCP-licens.",
             "success": "Importen av {{- title}} är slutförd.",
             "unsupportedFormat": "Kunde inte importera \"{{- name}}\". Det här filformatet stöds inte."
         },
@@ -1468,7 +1468,7 @@
             }
         },
         "tabs": {
-            "advanced": "Avancerad",
+            "advanced": "Avancerat",
             "general": "Allmänt",
             "keyboardShortcuts": "Kortkommandon",
             "profiles": "Profiler",
