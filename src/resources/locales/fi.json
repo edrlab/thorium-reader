@@ -9,14 +9,14 @@
         "copyNotificationInstruction": "Kopioi ilmoitus",
         "decreaseSetting": "Pienennä {{- setting}}",
         "downloadProgress": "Latauksen eteneminen: {{- title}}",
-        "downloadProgressUnknown": "Latauksen eteneminen ei tiedossa.",
+        "downloadProgressUnknown": "Latauksen eteneminen ei ole tiedossa.",
         "editTag": "Muokkaa tunnistetta: {{- tag}}",
         "favoriteCatalog": "Suosikkiluettelo: {{- title}}",
         "increaseSetting": "Suurenna {{- setting}}",
         "leftSlideButton": "Siirry listalla vasemmalle",
         "loading": "Ladataan…",
         "mainContent": "Pääsisältö",
-        "notificationCopied": "Ilmoitus kopioitu",
+        "notificationCopied": "Kopioitu leikepöydälle:",
         "notificationCopyFailed": "Ilmoitusta ei voitu kopioida",
         "printPage": "Sivu {{page}}",
         "publicationDetails": "{{- field}}: {{- title}}",
@@ -123,8 +123,8 @@
                 "alternativeLogin": "Vaihtoehtoinen kirjautumistapa",
                 "cancel": "Peru",
                 "external": "Kirjautumissivu aukeaa verkkoselaimessa, seuraa sivun ohjeita. Kun olet kirjautunut sisään, verkkoselain palauttaa sinut tähän sovellukseen.",
-                "externalBrowserInstructions": "Jos verkkoselain ei avaudu automaattisesti, napsauta seuraavaa linkkiä.",
-                "fallback": "Huom. Jos kirjautuminen selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
+                "externalBrowserInstructions": "Jos verkkoselain ei avaudu automaattisesti, klikkaa seuraavaa linkkiä.",
+                "fallback": "Jos kirjautuminen selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
                 "login": "Kirjaudu",
                 "openExternalBrowser": "Avaa ulkoinen selain",
                 "password": "Salasana",
@@ -170,7 +170,7 @@
             "loading": "Ladataan tiliä…",
             "loans": "Lainat",
             "title": "Tili",
-            "unavailable": "Profiilitietoja ei ole saatavilla"
+            "unavailable": "Profiilitietoja ei ole saatavilla."
         }
     },
     "dialog": {
@@ -275,7 +275,7 @@
         "diagnostics": {
             "category": "Luokka: {{- category}}",
             "causedBy": "Syy:",
-            "downloadSource": "Lataa lähde: {{- source}}",
+            "downloadSource": "Latauksen lähde: {{- source}}",
             "error": "Virhe",
             "httpStatus": "HTTP-tila: {{- status}}",
             "invalidUrl": "[virheellinen URL-osoite]",
@@ -295,7 +295,7 @@
                 "pathMissing": "Ladattu tiedostopolku puuttuu.",
                 "publicationLinkMissing": "Käyttöoikeus ei sisällä julkaisun latauslinkkiä.",
                 "readStreamMissing": "Suoratoiston lataaminen ei onnistu.",
-                "streamClosed": "Lataus keskeytettiin ennen kuin se valmistui.",
+                "streamClosed": "Lataus katkesi ennen kuin se valmistui.",
                 "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
             },
             "failed": "Lataus osoitteesta “{{- hostname}}” ei onnistunut. Yritä uudelleen.",
