@@ -5,32 +5,32 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as React from "react";
 import { Button } from "react-aria-components";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
 // import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
-import SVG from "readium-desktop/renderer/common/components/SVG";
+import classNames from "classnames";
+import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
+import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-icon.svg";
-import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
-import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
-import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
+import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import classNames from "classnames";
 // import { Button, TextArea } from "react-aria-components";
-import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { noteColorCodeToColorTranslatorKeySet, noteDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { noteColorCodeToColorTranslatorKeySet, noteDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -41,7 +41,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
 // e__slint-disable-next-line @typescript-eslint/ban-ts-comment
 // @__ts-ignore TS1479
-import {subscribe} from "@github/paste-markdown";
+import { subscribe } from "@github/paste-markdown";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
@@ -167,9 +167,15 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                             <input type="radio"  id={`${uuid}_color-${colorHex}`} name="colorpicker" value={colorHex}
                                 onChange={() => setColor(colorHex)}
                                 checked={colorSelected === colorHex}
-                                aria-label={__(translatorKey)}
+                                aria-label={
+                                    // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
+                                    __(translatorKey)
+                                }
                             />
-                            <label aria-hidden={true} title={__(translatorKey)} htmlFor={`${uuid}_color-${colorHex}`}
+                            <label aria-hidden={true} title={
+                                // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
+                                __(translatorKey)
+                            } htmlFor={`${uuid}_color-${colorHex}`}
                                 style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-gray-900)" : "" }}
                             >
                                 {colorSelected === colorHex ? <SVG ariaHidden svg={CheckIcon} /> : <></>}

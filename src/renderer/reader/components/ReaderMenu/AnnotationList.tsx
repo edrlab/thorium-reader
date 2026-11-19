@@ -5,60 +5,60 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
-import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import classNames from "classnames";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import * as SaveIcon from "readium-desktop/renderer/assets/icons/export-icon.svg";
-import * as ImportIcon from "readium-desktop/renderer/assets/icons/import-icon.svg";
+import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
+import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
-import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
-import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
-import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as SaveIcon from "readium-desktop/renderer/assets/icons/export-icon.svg";
 import * as OptionsIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
-import * as SortIcon from "readium-desktop/renderer/assets/icons/sort-icon.svg";
 import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-icon.svg";
-import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
-import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
+import * as ImportIcon from "readium-desktop/renderer/assets/icons/import-icon.svg";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as SortIcon from "readium-desktop/renderer/assets/icons/sort-icon.svg";
 import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
+import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
+import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
 
-import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
-import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button, ListBox, ListBoxItem } from "react-aria-components";
 import type { Selection } from "react-aria-components";
+import { Button, DialogTrigger, ListBox, ListBoxItem, Popover, Dialog as PopoverDialog, Pressable } from "react-aria-components";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 
 import { IReaderMenuProps } from "../options-values";
 
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
-import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
-import { rgbToHex } from "readium-desktop/common/rgb";
-import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
+import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
+import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { rgbToHex } from "readium-desktop/common/rgb";
+import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
 import { getSaga } from "../../createStore";
-import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
-import { AnnotationCard } from "../ReaderMenu/AnnotationCard";
-import { computeProgression } from "./ReaderMenu";
 import { canUseReadiumAnnotationImportExport, compareAnnotationPanelProgression, filterDeletableAnnotationPanelNotes } from "../../pdf/pdfAnnotationPanel";
+import { AnnotationCard } from "../ReaderMenu/AnnotationCard";
 import FilterPopover from "./FilterPopover";
+import { computeProgression } from "./ReaderMenu";
 
 export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number,*/ isPdf: boolean, popoverBoundary: HTMLDivElement, advancedAnnotationsOnChange: () => void, quickAnnotationsOnChange: () => void, marginAnnotationsOnChange: () => void, hideAnnotationOnChange: () => void, serialAnnotator: boolean, START_PAGE: number, selectionIsSet: (a: Selection) => a is Set<string>, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
 
@@ -134,7 +134,11 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
 
     const creatorListName = React.useMemo(() => annotationsListAll.map(({ creator }) => creator?.name).filter(v => v), [annotationsListAll]);
     const selectCreatorOptions = React.useMemo(() => [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name })), [creatorListName]);
-    const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
+    const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({
+        hex: k, name:
+            // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
+            __(v),
+    })), [__]);
     const selectDrawtypesOptions = React.useMemo(() => [
         { name: "solid_background", svg: HighLightIcon, textValue: `${__("reader.annotations.type.solid")}` },
         { name: "underline", svg: UnderLineIcon, textValue: `${__("reader.annotations.type.underline")}` },

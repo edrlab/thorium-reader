@@ -6,13 +6,13 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { formatImportDiagnostics } from "readium-desktop/main/tools/importDiagnostics";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { formatImportDiagnostics } from "readium-desktop/main/tools/importDiagnostics";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 import { SagaGenerator } from "typed-redux-saga";
-import { call as callTyped, put as putTyped, getContext as getContextTyped } from "typed-redux-saga/macro";
+import { call as callTyped, getContext as getContextTyped, put as putTyped } from "typed-redux-saga/macro";
 
 const debug = debug_("readium-desktop:main:saga:api:operation");
 
@@ -34,6 +34,7 @@ export function withErrorNotification<Args extends unknown[], Result>(
             const owner = yield* getContextTyped<unknown>("apiNotificationOwner");
             if (owner === notifyOperation) {
                 const windowIdentifier = yield* getContextTyped<string | undefined>("toastWindowIdentifier");
+                // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
                 const text = getTranslator().translate(message);
                 yield* putTyped(toastActions.openRequest.build(ToastType.Error, text, undefined, windowIdentifier,
                     includeErrorDetails ? formatImportDiagnostics(text, error, diagnosticSource?.(...args)) : undefined));
