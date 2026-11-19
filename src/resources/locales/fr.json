@@ -177,14 +177,14 @@
         "annotations": {
             "descAuthor": "par {{- author}}",
             "descCreator": "créées par",
+            "descList_many": "{{- count}} notes {{- creator}} seront importées vers {{- title}} {{- author}}",
             "descList_one": "{{- count}} note {{- creator}} sera importée vers {{- title}} {{- author}}",
-            "descList_many": "",
             "descList_other": "{{- count}} notes {{- creator}} seront importées vers {{- title}} {{- author}}",
+            "descNewer_many": "{{- count}} conflits : certaines notes associées à la publication sont plus récentes",
             "descNewer_one": "{{- count}} conflit : une note associée à la publication est plus récente",
-            "descNewer_many": "",
             "descNewer_other": "{{- count}} conflits : certaines notes associées à la publication sont plus récentes",
+            "descOlder_many": "{{- count}} conflits : certaines notes associées à la publication sont plus anciennes",
             "descOlder_one": "{{- count}} conflit : une note associée à la publication est plus ancienne",
-            "descOlder_many": "",
             "descOlder_other": "{{- count}} conflits : certaines notes associées à la publication sont plus anciennes",
             "descTitle": "Titre de la liste de notes : ",
             "importAll": "Importer toutes les notes",
@@ -202,16 +202,16 @@
             }
         },
         "deleteAnnotations": "Supprimer les notes ?",
+        "deleteAnnotationsText_many": "Voulez-vous supprimer {{- count}} notes ?",
         "deleteAnnotationsText_one": "Voulez-vous supprimer {{- count}} note ?",
-        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_other": "Voulez-vous supprimer {{- count}} notes ?",
         "deleteBookmarks": "Supprimer les marque-pages ?",
+        "deleteBookmarksText_many": "Êtes-vous certain de vouloir supprimer {{- count}} marque-pages ?",
         "deleteBookmarksText_one": "Êtes-vous certain de vouloir supprimer {{- count}} marque-page ?",
-        "deleteBookmarksText_many": "",
         "deleteBookmarksText_other": "Êtes-vous certain de vouloir supprimer {{- count}} marque-pages ?",
         "deleteFeed": "Supprimer ce catalogue ?",
         "deletePublication": "Supprimer ce livre ?",
-        "deletePublicationWithNotes": "Attention : cette publication contient des annotations et/ou des marque-pages, qui seront eux aussi supprimés ! Si vous voulez les conserver, assurez-vous d'avoir sauvegardé les notes avant de supprimer la publication.",
+        "deletePublicationWithNotes": "Attention : cette publication contient des notes et/ou des marque-pages, qui seront eux aussi supprimés ! Si vous voulez les conserver, assurez-vous d'avoir sauvegardé les annotations avant de supprimer la publication.",
         "import": "Confirmer l'ajout :",
         "importError": "Une erreur est survenue, vérifiez l'extension du fichier ({{acceptedExtension}})",
         "renew": "Voulez-vous prolonger la durée de l'emprunt ?",
@@ -369,8 +369,8 @@
         "storage": {
             "recovery": {
                 "failure": "La récupération des publications a échoué.",
+                "success_many": "{{- count}} publications récupérées.",
                 "success_one": "{{- count}} publication récupérée.",
-                "success_many": "",
                 "success_other": "{{- count}} publications récupérées."
             },
             "removed": "Le répertoire des publications a été supprimé.",
@@ -629,10 +629,10 @@
         },
         "legal-considerations": {
             "legal-considerations-exempt": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Fait valoir une dérogation aux règles d'accessibilité dans certaines juridictions",
+                "descriptive": "L'éditeur invoque une dérogation aux exigences en matière d'accessibilité dans certaines juridictions."
             },
-            "legal-considerations-title": ""
+            "legal-considerations-title": "Aspects juridiques"
         },
         "navigation": {
             "navigation-index": {
@@ -798,7 +798,7 @@
         },
         "expired": "Prêt expiré",
         "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
-        "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",
+        "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication, ou bien la clé saisie est incorrecte.",
         "lcpNotSupported": "WARNING : il s'agit d'une version préliminaire de Thorium Desktop, qui ne prend pas en charge les licences de production LCP. Elle ne prend en charge que des licences LCP de test.",
         "lcpRightsCopy": "Caractères copiés",
         "lcpRightsPrint": "Pages imprimées",
@@ -812,10 +812,10 @@
         "notStarted": "Non Demarré",
         "onGoing": "En Cours",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "Une nouvelle position de lecture provenant de {{- device}} est disponible à {{- progression}} %.",
+            "remoteTitle": "Reprendre depuis un autre appareil ?",
             "title": "Progression",
-            "useRemote": ""
+            "useRemote": "Aller à la position"
         },
         "read": "Terminé",
         "remainingTime": "Prêt (temps restant)",
@@ -979,8 +979,8 @@
         },
         "picker": {
             "search": {
+                "founds_many": "{{- count}} correspondances",
                 "founds_one": "{{- count}} correspondance",
-                "founds_many": "",
                 "founds_other": "{{- count}} correspondances",
                 "input": "Texte à trouver",
                 "next": "Suivant",
@@ -1017,12 +1017,12 @@
                 "two": "2 colonnes"
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
-            "deactivateTextFormatting": "",
+            "deactivateTextFormatting": "Désactiver la mise en forme du texte",
             "display": "Affichage",
             "disposition": {
                 "title": "Pagination"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Afficher les sauts de page dans la marge",
             "font": "Police de caractères",
             "fontSize": "Taille du texte",
             "increaseFontSize": "Augmenter la taille du texte",
@@ -1065,7 +1065,7 @@
             "reduceMotion": "Réduire les animations visuelles",
             "scrolled": "Défilement vertical",
             "spacing": "Espacement",
-            "spacingCustomButton": "",
+            "spacingCustomButton": "Options d'espacement personnalisées",
             "spreadModeEven": "Une double page commence par une page paire (impaire par défaut)",
             "text": "Texte",
             "theme": {
@@ -1122,7 +1122,7 @@
         "keyboard": {
             "advancedMenu": "Menu avancé raccourcis clavier",
             "cancel": "Annuler",
-            "disableTooltips": "",
+            "disableTooltips": "Désactiver les infobulles des raccourcis clavier",
             "disclaimer": "Les paramètres par défaut de l'application ont été conçus en fonction de l'emplacement physique des touches sur une disposition QWERTY",
             "editUserJson": "Modifier le fichier utilisateur…",
             "exportToHTML": "Exporter en HTML",
@@ -1464,14 +1464,14 @@
                 "description": "Vérifiez le stockage des publications pour trouver celles qui peuvent être récupérées en toute sécurité.",
                 "dialog": {
                     "confirm": "Récupérer",
+                    "description_many": "Thorium a trouvé {{- count}} publications sur le disque, absentes de la base de données. Voulez-vous les réimporter dans Thorium ?",
                     "description_one": "Thorium a trouvé {{- count}} publication sur le disque, absente de la base de données. Voulez-vous la réimporter dans Thorium ?",
-                    "description_many": "",
                     "description_other": "Thorium a trouvé {{- count}} publications sur le disque, absentes de la base de données. Voulez-vous les réimporter dans Thorium ?",
                     "title": "Récupérer les publications"
                 },
                 "none": "Aucune publication récupérable n'a été trouvée.",
+                "recoverableCount_many": "{{- count}} publications peuvent être récupérées avec leur identifiant de stockage d'origine.",
                 "recoverableCount_one": "{{- count}} publication peut être récupérée avec son identifiant de stockage d'origine.",
-                "recoverableCount_many": "",
                 "recoverableCount_other": "{{- count}} publications peuvent être récupérées avec leur identifiant de stockage d'origine.",
                 "title": "Récupération"
             }
