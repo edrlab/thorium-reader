@@ -166,9 +166,9 @@
         "userProfile": {
             "available": "Доступно: {{count}}",
             "edit": "Редактировать профиль",
-            "holds": "",
+            "holds": "Зарезервированные",
             "loading": "Загрузка учётной записи…",
-            "loans": "",
+            "loans": "Выданные",
             "title": "Учётная запись",
             "unavailable": "Информация о профиле недоступна."
         }
@@ -284,7 +284,7 @@
             "error": "Ошибка",
             "httpStatus": "Состояние HTTP: {{- status}}",
             "invalidUrl": "[недействительный URL]",
-            "source": "",
+            "source": "Источник: {{- source}}",
             "url": "URL: {{- url}}"
         },
         "download": {
@@ -313,15 +313,15 @@
             "errors": {
                 "acquisitionUrlMissing": "URL для скачивания публикации отсутствует или недействителен.",
                 "cbzNoImages": "Архив CBZ не содержит поддерживаемых изображений.",
-                "contextMissing": "",
+                "contextMissing": "отсутствует",
                 "daisyConversionFailed": "Не удалось преобразовать публикацию DAISY.",
-                "manifestContext": "",
-                "manifestImportFailed": "",
-                "manifestInvalidJson": "",
-                "manifestMissing": "",
-                "manifestNotFound": "",
-                "manifestParsingFailed": "",
-                "noImportResult": "",
+                "manifestContext": "Неопознанный манифест публикации @context по адресу {{-url}}: {{-context}}",
+                "manifestImportFailed": "Импорт манифеста публикации завершился неудачей.",
+                "manifestInvalidJson": "Недопустимый JSON в манифесте публикации по {{-url}}.",
+                "manifestMissing": "Манифест публикации отсутствует.",
+                "manifestNotFound": "В {{- url}} не найдено ни одного манифеста публикации.",
+                "manifestParsingFailed": "Не удалось разобрать манифест публикации {{- url}}.",
+                "noImportResult": "Импорт не вернул публикацию.",
                 "notImported": "Публикацию не удалось добавить в библиотеку.",
                 "profileAssetUrl": "Неверный URL профиля публикации: {{-path}}",
                 "profileEmpty": "ZIP-архив с пользовательскими профилями пуст.",
@@ -356,8 +356,8 @@
             "publicationUnavailable": "Данная публикация недоступна. Попробуйте импортировать её повторно.",
             "readingPositionFailed": "Не удаётся определить, где вы остановились при чтении. Попробуйте ещё раз.",
             "recoveryPartialFailure": "Восстановлено публикаций: {{- recovered}}; не удалось восстановить публикаций: {{- failed}}.",
-            "renewFailed": "",
-            "returnFailed": "",
+            "renewFailed": "Не удалось продлить срок пользования книгой. Попробуйте ещё раз или свяжитесь с библиотекой.",
+            "returnFailed": "Возврат данной выданной книги невозможен. Попробуйте ещё раз или свяжитесь с библиотекой.",
             "storageRefreshFailed": "Настройки хранилища сохранены, но обновить библиотеку не удалось. Попробуйте обновить библиотеку.",
             "tagsFailed": "Не удалось сохранить теги публикации. Попробуйте ещё раз."
         },
@@ -417,13 +417,13 @@
         "menu": {
             "aboutBook": "Об этой книге",
             "addExtract": "Добавить и извлечь",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Отменить резервирование",
+            "cancelHoldError": "Не удалось отменить это резервирование. Пожалуйста, попробуйте ещё раз.",
             "goBuyBook": "Купить эту книгу",
             "goLoanBook": "Арендовать книгу",
             "goRevokeLoanBook": "Отозвать абонемент",
             "goSubBook": "Подписаться",
-            "placeHold": ""
+            "placeHold": "Оформить резервирование"
         },
         "network": {
             "error": "Невозможно получить доступ к каталогу opds",
@@ -435,7 +435,7 @@
         "next": "Следующая",
         "previous": "Предыдущая",
         "registry": {
-            "empty": "Каталоги не найдены.",
+            "empty": "Каталог не найден.",
             "error": "Не удалось выполнить поиск в реестре. Пожалуйста, попробуйте ещё раз.",
             "loading": "Поиск по каталогам…",
             "title": "Поиск в каталогах"
@@ -632,7 +632,7 @@
                 "compact": "Заявлено об исключении из требований доступности в некоторых юрисдикциях",
                 "descriptive": "Издатель заявляет об исключении из требований доступности в некоторых юрисдикциях."
             },
-            "legal-considerations-title": ""
+            "legal-considerations-title": "Правовые аспекты"
         },
         "navigation": {
             "navigation-index": {
@@ -1065,7 +1065,7 @@
             "reduceMotion": "Уменьшить скорость перемещения",
             "scrolled": "Потоковый",
             "spacing": "Интервал",
-            "spacingCustomButton": "",
+            "spacingCustomButton": "Настройки пользовательского интервала",
             "spreadModeEven": "Развороты страниц «чётные» (по умолчанию «нечётные»)",
             "text": "Текст",
             "theme": {
@@ -1122,7 +1122,7 @@
         "keyboard": {
             "advancedMenu": "Меню",
             "cancel": "Отменить",
-            "disableTooltips": "",
+            "disableTooltips": "Отключить всплывающие подсказки с комбинациями клавиш",
             "disclaimer": "Настройки приложения по умолчанию были разработаны на основе физического расположения клавиш на раскладке QWERTY",
             "editUserJson": "Редактировать файл пользователя...",
             "exportToHTML": "Экспорт в HTML",

@@ -9,14 +9,14 @@
         "copyNotificationInstruction": "Kopioi ilmoitus",
         "decreaseSetting": "Pienennä {{- setting}}",
         "downloadProgress": "Latauksen eteneminen: {{- title}}",
-        "downloadProgressUnknown": "Latauksen eteneminen ei tiedossa.",
+        "downloadProgressUnknown": "Latauksen eteneminen ei ole tiedossa.",
         "editTag": "Muokkaa tunnistetta: {{- tag}}",
         "favoriteCatalog": "Suosikkiluettelo: {{- title}}",
         "increaseSetting": "Suurenna {{- setting}}",
         "leftSlideButton": "Siirry listalla vasemmalle",
         "loading": "Ladataan…",
         "mainContent": "Pääsisältö",
-        "notificationCopied": "Ilmoitus kopioitu",
+        "notificationCopied": "Kopioitu leikepöydälle:",
         "notificationCopyFailed": "Ilmoitusta ei voitu kopioida",
         "printPage": "Sivu {{page}}",
         "publicationDetails": "{{- field}}: {{- title}}",
@@ -123,8 +123,8 @@
                 "alternativeLogin": "Vaihtoehtoinen kirjautumistapa",
                 "cancel": "Peru",
                 "external": "Kirjautumissivu aukeaa verkkoselaimessa, seuraa sivun ohjeita. Kun olet kirjautunut sisään, verkkoselain palauttaa sinut tähän sovellukseen.",
-                "externalBrowserInstructions": "Jos verkkoselain ei avaudu automaattisesti, napsauta seuraavaa linkkiä.",
-                "fallback": "Huom. Jos kirjautuminen selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
+                "externalBrowserInstructions": "Jos verkkoselain ei avaudu automaattisesti, klikkaa seuraavaa linkkiä.",
+                "fallback": "Jos kirjautuminen selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
                 "login": "Kirjaudu",
                 "openExternalBrowser": "Avaa ulkoinen selain",
                 "password": "Salasana",
@@ -170,7 +170,7 @@
             "loading": "Ladataan tiliä…",
             "loans": "Lainat",
             "title": "Tili",
-            "unavailable": "Profiilitietoja ei ole saatavilla"
+            "unavailable": "Profiilitietoja ei ole saatavilla."
         }
     },
     "dialog": {
@@ -275,7 +275,7 @@
         "diagnostics": {
             "category": "Luokka: {{- category}}",
             "causedBy": "Syy:",
-            "downloadSource": "Lataa lähde: {{- source}}",
+            "downloadSource": "Latauksen lähde: {{- source}}",
             "error": "Virhe",
             "httpStatus": "HTTP-tila: {{- status}}",
             "invalidUrl": "[virheellinen URL-osoite]",
@@ -295,7 +295,7 @@
                 "pathMissing": "Ladattu tiedostopolku puuttuu.",
                 "publicationLinkMissing": "Käyttöoikeus ei sisällä julkaisun latauslinkkiä.",
                 "readStreamMissing": "Suoratoiston lataaminen ei onnistu.",
-                "streamClosed": "Lataus keskeytettiin ennen kuin se valmistui.",
+                "streamClosed": "Lataus katkesi ennen kuin se valmistui.",
                 "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
             },
             "failed": "Lataus osoitteesta “{{- hostname}}” ei onnistunut. Yritä uudelleen.",
@@ -316,7 +316,7 @@
                 "manifestMissing": "Julkaisuluettelo puuttuu.",
                 "manifestNotFound": "Osoitteesta {{- url}} ei löytynyt julkaisuluetteloa.",
                 "manifestParsingFailed": "Julkaisuluettelon jäsentäminen osoitteessa {{- url}} ei onnistunut.",
-                "noImportResult": "Tuonti ei palauttanut yhtään julkaisua.",
+                "noImportResult": "Tuloksena ei yhtään julkaisua.",
                 "notImported": "Julkaisun lisääminen kirjastoon ei onnistunut.",
                 "profileAssetUrl": "Julkaisun URL-osoite on virheellinen: {{- path}}",
                 "profileEmpty": "Mukautetun profiilin ZIP-arkisto on tyhjä.",
@@ -324,15 +324,15 @@
                 "profileMissing": "Mukautettua profiilia ei löytynyt: {{- id}}",
                 "profileNotZip": "Mukautettu profiili ei ole ZIP-arkisto."
             },
-            "failed": "“{{- name}}” ei voitu tuoda.",
-            "invalidLicense": "”{{- name}}” -tiedostoa ei voitu tuoda. Julkaisun lisenssi ei ole voimassa.",
-            "invalidPublication": "”{{- name}}” -tiedostoa ei voitu tuoda. Julkaisuluettelo puuttuu.",
+            "failed": "Julkaisua “{{- name}}” ei voitu tuoda.",
+            "invalidLicense": "Julkaisua ”{{- name}}” ei voitu tuoda. Julkaisun lisenssi ei ole voimassa.",
+            "invalidPublication": "Julkaisua ”{{- name}}” ei voitu tuoda. Julkaisuluettelo puuttuu.",
             "lcpLicenseMalformed": "LCP-lisenssin muoto on virheellinen.",
             "success": "Julkaisun {{- title}} tuonti on valmis.",
             "unsupportedFormat": "”{{- name}}” -tiedostoa ei voitu tuoda. Tätä tiedostomuotoa ei tueta."
         },
         "notifications": {
-            "annotationImportFailed": "Merkintöjä ei voitu tuoda. Varmista, että tiedosto on kelvollinen",
+            "annotationImportFailed": "Merkintöjä ei voitu tuoda. Varmista, että tiedosto on kelvollinen merkintöjen tiedosto.",
             "annotationPublicationUnavailable": "Merkintöjen tuonti ei onnistu, koska julkaisua ei ole saatavilla. Yritä tuoda julkaisu uudelleen.",
             "annotationStopPlayback": "Keskeytä tekstistä puheeksi -toiminto tai luenta, jotta voit luoda merkinnän.",
             "authenticationFailed": "Kirjautuminen tähän luetteloon ei onnistu. Tarkista verkkoyhteytesi ja yritä uudelleen.",
@@ -807,7 +807,7 @@
         "onGoing": "Luettavana",
         "progression": {
             "remoteDescription": "Tuoreempi lukukohta laitteesta {{- device}} on saatavilla ja osoittaa {{- progression}} %.",
-            "remoteTitle": "Jatketaanko toisesta laitteesta?",
+            "remoteTitle": "Jatketaanko lukukohdasta, joka tallentui toisessa laitteessa?",
             "title": "Eteneminen",
             "useRemote": "Siirry kohtaan"
         },
@@ -816,8 +816,8 @@
         "remoteProgression": {
             "checking": "Sallittu ja tarkistetaan palvelua…",
             "disabled": "Ei sallittu tässä julkaisussa.",
-            "empty": "Ei etänä tallennettua edistymistä.",
-            "position": "Etäedistyminen:  {{percent}} % ({{device}}).",
+            "empty": "Edistymistä toisessa laitteessa ei ole tallennettu.",
+            "position": "Edistyminen toisessa laitteessa: {{percent}} %, ({{device}}).",
             "ready": "Sallittu ja valmis.",
             "title": "Lukemisen edistymisen synkronointi:",
             "unavailable": "Sallittu, mutta palvelu ei ole käytettävissä."
@@ -860,7 +860,7 @@
             },
             "hide": "Älä näytä",
             "highlight": "Korosta",
-            "noSelectionToast": "Ei valintaa",
+            "noSelectionToast": "Valitse teksti, jotta voit lisätä muistiinpanon.",
             "note": "{{- color}} Muistiinpano",
             "quickAnnotations": "Pikatila (ohita muokkausikkuna)",
             "saveNote": "Tallenna",
@@ -1115,7 +1115,7 @@
         "keyboard": {
             "advancedMenu": "Pikanäppäinten valikko",
             "cancel": "Peruuta",
-            "disableTooltips": "Poista pikanäppäinvinkit käytöstä",
+            "disableTooltips": "Poista pikanäppäinten vinkit käytöstä",
             "disclaimer": "Oletuspikanäppäimet perustuvat QWERTY-näppäinasetteluun",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
             "exportToHTML": "Vie html-muotoon",

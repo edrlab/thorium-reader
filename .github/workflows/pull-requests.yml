@@ -150,13 +150,15 @@ jobs:
         dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise" &&
         dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC" &&
         dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools" &&
-        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" && (
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.52.37025" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.52.37025\bin" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.52.37025\bin\HostArm64" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.52.37025\bin\HostArm64\arm64") || (
         dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231" &&
         dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin" &&
         dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64" &&
-        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64" &&
-        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64" &&
-        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64"
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64")
       shell: cmd
 ###########################
     - name: Microsoft Windows dumpbin to PATH (ARM)
@@ -188,7 +190,7 @@ jobs:
       if: ${{ matrix.osarch == 'windows-arm' }}
       run: >
         dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" &&
-        dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64\dumpbin.exe" | findstr /i machine
+        dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.52.37025\bin\HostArm64\arm64\dumpbin.exe" | findstr /i machine
       shell: cmd
 ###########################
     - name: Microsoft Windows dumpbin check (INTEL)
@@ -205,9 +207,6 @@ jobs:
 # "C:\Program Files\Microsoft Visual Studio\18\Enterprise\MSBuild\Current\Bin"
 # "C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\Tools"
 # "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\bin\amd64"
-# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
-# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64"
-# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64"
     #- run: exit 1
 #    - run: echo 'RELEASE_TAG_CI_NON_PROD_BUILDS:' ${{ env.RELEASE_TAG_CI_NON_PROD_BUILDS }}
 #    - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
