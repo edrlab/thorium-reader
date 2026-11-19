@@ -1,28 +1,28 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Notatka adnotacji",
         "bookMenu": "Menu",
-        "bookmarkNote": "",
-        "cancelDownload": "",
+        "bookmarkNote": "Notatka zakładki",
+        "cancelDownload": "Anuluj pobieranie: {{- title}}",
         "closeDialog": "Zamknij",
-        "closeNotification": "",
-        "copyNotificationInstruction": "",
-        "decreaseSetting": "",
-        "downloadProgress": "",
-        "downloadProgressUnknown": "",
-        "editTag": "",
-        "favoriteCatalog": "",
-        "increaseSetting": "",
+        "closeNotification": "Zamknij powiadomienie",
+        "copyNotificationInstruction": "Kopiuj powiadomienie",
+        "decreaseSetting": "Zmniejsz: {{- setting}}",
+        "downloadProgress": "Postęp pobierania: {{- title}}",
+        "downloadProgressUnknown": "Postęp pobierania jest nieznany.",
+        "editTag": "Edytuj etykietę: {{- tag}}",
+        "favoriteCatalog": "Ulubiony katalog: {{- title}}",
+        "increaseSetting": "Zwiększ: {{- setting}}",
         "leftSlideButton": "Przesuń w lewo",
-        "loading": "",
+        "loading": "Ładowanie…",
         "mainContent": "główna treść",
-        "notificationCopied": "",
-        "notificationCopyFailed": "",
-        "printPage": "",
-        "publicationDetails": "",
-        "resetSetting": "",
+        "notificationCopied": "Skopiowano do schowka:",
+        "notificationCopyFailed": "Nie udało się skopiować powiadomienia",
+        "printPage": "Strona {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Resetuj / Przywróć: {{- setting}}",
         "rightSlideButton": "Przesuń w prawo",
-        "searching": "",
+        "searching": "Wyszukiwanie…",
         "skipLink": "Przejdź do treści",
         "toolbar": "pasek narzędzi"
     },
@@ -65,7 +65,7 @@
         },
         "window": {
             "showLibrary": "Pokaż bibliotekę / półkę z książkami",
-            "trayHint": "{{- appName}} nadal działa w obszarze powiadomień. Kliknij na ikonę kosza, aby wyświetlić bibliotekę.",
+            "trayHint": "{{- appName}} nadal działa w obszarze powiadomień. Kliknij ikonę w obszarze powiadomień, aby wyświetlić bibliotekę.",
             "trayTooltip": "{{- appName}} - kliknij żeby pokazać albo schować bibliotekę"
         }
     },
@@ -96,7 +96,7 @@
         "deleteBook": "Usuń",
         "deleteTag": "Usuń etykietę",
         "description": "Opis",
-        "downloaded": "",
+        "downloaded": "Pobrane",
         "emptyTagList": "Brak zaetykietowanych publikacji.",
         "entry": {
             "continueReading": "Wznów czytanie",
@@ -110,7 +110,7 @@
         "lastRead": "Ostatnio czytane",
         "logout": "Wyloguj się",
         "missing": "Brakujące pliki",
-        "missingUnavailableDescription": "Nie można otworzyć tej publikacji, ponieważ jej pliki są niedostępne. Zaimportuj je ponownie lub przejdź do sekcji „Ustawienia”, a następnie do sekcji „Przestrzeń dyskowa”, aby dodać lub zmienić dodatkową przestrzeń dyskową.",
+        "missingUnavailableDescription": "Nie można otworzyć tej publikacji, ponieważ jej pliki są niedostępne. Zaimportuj ją ponownie lub przejdź do sekcji „Ustawienia”, a następnie do sekcji „Przestrzeń dyskowa”, aby dodać lub zmienić dodatkową przestrzeń dyskową.",
         "moreInfo": "Szczegóły publikacji",
         "myBooks": "Moje publikacje",
         "noPublicationHelpL1": "Upuść pliki tutaj",
@@ -120,13 +120,13 @@
         "numberOfPages": "Liczba stron",
         "opds": {
             "auth": {
-                "alternativeLogin": "",
+                "alternativeLogin": "Alternatywne logowanie",
                 "cancel": "Anuluj",
                 "external": "Strona logowania otworzy się w przeglądarce internetowej. Postępuj zgodnie z instrukcjami. Po zalogowaniu przeglądarka przekieruje Cię z powrotem do tej aplikacji.",
-                "externalBrowserInstructions": "",
-                "fallback": "Uwaga: w przypadku problemów z logowaniem domyślną metodą przeglądarki, spróbuj ponownie za pomocą metody alternatywnej wbudowanej w aplikację.",
+                "externalBrowserInstructions": "Jeśli przeglądarka internetowa nie otworzy się automatycznie, kliknij poniższy link.",
+                "fallback": "W przypadku problemów z logowaniem domyślną metodą przeglądarki, spróbuj ponownie za pomocą metody alternatywnej wbudowanej w aplikację.",
                 "login": "Login",
-                "openExternalBrowser": "",
+                "openExternalBrowser": "Otwórz zewnętrzną przeglądarkę",
                 "password": "Hasło",
                 "register": "Rejestracja",
                 "retry": "Spróbuj ponownie",
@@ -164,31 +164,28 @@
         "tags": "Etykiety",
         "update": "Edytuj",
         "userProfile": {
-            "available": "",
-            "edit": "",
-            "holds": "",
-            "loading": "",
-            "loans": "",
-            "title": "",
-            "unavailable": ""
+            "available": "Dostępne: {{count}}",
+            "edit": "Edytuj profil",
+            "holds": "Rezerwacje",
+            "loading": "Ładowanie konta…",
+            "loans": "Wypożyczenia",
+            "title": "Konto",
+            "unavailable": "Informacje o profilu są niedostępne."
         }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "przez '{{- author}}'",
             "descCreator": "stworzony przez",
-            "descList_one": "{{- count}} notatka {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_few": "{{- count}} notatki {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} notatek {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
-            "descList_other": "",
-            "descNewer_one": "Konflikt(y): {{- count}} nowsza notatka",
+            "descList_one": "{{- count}} notatka {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descNewer_few": "Konflikt(y): {{- count}} nowsze notatki",
             "descNewer_many": "Konflikt(y): {{- count}} nowszych notatek",
-            "descNewer_other": "",
-            "descOlder_one": "Konflikt(y): {{- count}} starsza notatka",
+            "descNewer_one": "Konflikt(y): {{- count}} nowsza notatka",
             "descOlder_few": "Konflikt(y): {{- count}} starsze notatki",
             "descOlder_many": "Konflikt(y): {{- count}} starszych notatek",
-            "descOlder_other": "",
+            "descOlder_one": "Konflikt(y): {{- count}} starsza notatka",
             "descTitle": "Tytuł adnotacji: ",
             "importAll": "Importuj wszystkie notatki",
             "importWithoutConflict": "Importuj notatki tylko wolne od konfliktów",
@@ -205,15 +202,13 @@
             }
         },
         "deleteAnnotations": "Usunąć adnotacje?",
-        "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
         "deleteAnnotationsText_few": "Czy na pewno chcesz usunąć {{- count}} notatki?",
         "deleteAnnotationsText_many": "Czy na pewno chcesz usunąć {{- count}} notatek?",
-        "deleteAnnotationsText_other": "",
+        "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
         "deleteBookmarks": "Usunąć zakładki?",
-        "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
         "deleteBookmarksText_few": "Czy na pewno chcesz usunąć {{- count}} zakładki?",
         "deleteBookmarksText_many": "Czy na pewno chcesz usunąć {{- count}} zakładek?",
-        "deleteBookmarksText_other": "",
+        "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
         "deleteFeed": "Usunąć katalog?",
         "deletePublication": "Usunąć publikację?",
         "deletePublicationWithNotes": "Uwaga: ta publikacja zawiera adnotacje i/lub zakładki, one również zostaną usunięte! (jeśli chcesz je zachować, pamiętaj o wyeksportowaniu notatek przed usunięciem publikacji)",
@@ -283,101 +278,100 @@
             "success": "Import zakończony pomyślnie."
         },
         "diagnostics": {
-            "category": "",
-            "causedBy": "",
-            "downloadSource": "",
-            "error": "",
-            "httpStatus": "",
-            "invalidUrl": "",
-            "source": "",
-            "url": ""
+            "category": "Kategoria: {{- category}}",
+            "causedBy": "Spowodowane przez:",
+            "downloadSource": "Źródło pobierania: {{- source}}",
+            "error": "Błąd",
+            "httpStatus": "Status HTTP: {{- status}}",
+            "invalidUrl": "[nieprawidłowy URL]",
+            "source": "Źródło: {{- source}}",
+            "url": "URL: {{- url}}"
         },
         "download": {
             "cancelled": "Pobieranie pliku zostało anulowane.",
             "errors": {
-                "failed": "",
+                "failed": "Pobieranie nie powiodło się.",
                 "hashMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wartość hasha SHA-256 to {{- expected}}, a obliczona to {{- actual}}.",
                 "httpGet": "Nie udało się pobrać pliku przez HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Tymczasowa nazwa pliku do pobrania jest nieprawidłowa.",
                 "invalidLink": "Link do pobrania jest nieprawidłowy.",
                 "invalidTempDirectory": "Tymczasowy katalog do pobierania jest nieprawidłowy.",
                 "lengthMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wielkość pliku to {{- expected}} bajtów, pobrany plik ma {{- actual}} bajtów.",
-                "pathMissing": "",
-                "publicationLinkMissing": "",
+                "pathMissing": "Brak ścieżki pobranego pliku.",
+                "publicationLinkMissing": "Licencja nie zawiera linku do pobrania publikacji.",
                 "readStreamMissing": "Transmisja danych nie jest dostępna.",
-                "streamClosed": "",
+                "streamClosed": "Transmisja danych została zamknięta przed zakończeniem pobierania.",
                 "tooManyFilenameAttempts": "Nie można utworzyć unikalnej tymczasowej nazwy pliku do pobrania: {{- path}}"
             },
-            "failed": "",
-            "integrityFailed": "",
-            "saveFailed": "",
-            "startedWithTitle": ""
+            "failed": "Nie udało się pobrać z „{{- hostname}}”. Spróbuj ponownie.",
+            "integrityFailed": "Plik pobrany z „{{- hostname}}” jest niekompletny lub uszkodzony. Spróbuj ponownie.",
+            "saveFailed": "Nie udało się zapisać pobranego pliku. Sprawdź dostępne miejsce na dysku i uprawnienia.",
+            "startedWithTitle": "Pobieranie {{- title}}."
         },
         "import": {
             "alreadyImport": "[{{- title}}] został już zaimportowany.",
             "errors": {
-                "acquisitionUrlMissing": "",
-                "cbzNoImages": "",
-                "contextMissing": "",
-                "daisyConversionFailed": "",
-                "manifestContext": "",
-                "manifestImportFailed": "",
-                "manifestInvalidJson": "",
-                "manifestMissing": "",
-                "manifestNotFound": "",
-                "manifestParsingFailed": "",
-                "noImportResult": "",
-                "notImported": "",
-                "profileAssetUrl": "",
-                "profileEmpty": "",
-                "profileEntryMissing": "",
-                "profileMissing": "",
-                "profileNotZip": ""
+                "acquisitionUrlMissing": "Adres URL do pobrania publikacji jest brakujący lub nieprawidłowy.",
+                "cbzNoImages": "Archiwum CBZ nie zawiera żadnych obsługiwanych obrazów.",
+                "contextMissing": "brak",
+                "daisyConversionFailed": "Nie można przekonwertować publikacji DAISY.",
+                "manifestContext": "Nierozpoznany @context manifestu publikacji w {{- url}}: {{- context}}",
+                "manifestImportFailed": "Import manifestu publikacji nie powiódł się.",
+                "manifestInvalidJson": "Nieprawidłowy JSON w manifeście publikacji w {{- url}}.",
+                "manifestMissing": "Brak manifestu publikacji.",
+                "manifestNotFound": "Nie znaleziono manifestu publikacji w {{- url}}.",
+                "manifestParsingFailed": "Nie można przetworzyć manifestu publikacji w {{- url}}.",
+                "noImportResult": "Import nie zwrócił żadnej publikacji.",
+                "notImported": "Nie udało się dodać publikacji do biblioteki.",
+                "profileAssetUrl": "Nieprawidłowy adres URL publikacji profilu: {{- path}}",
+                "profileEmpty": "Archiwum ZIP profilu niestandardowego jest puste.",
+                "profileEntryMissing": "Nie znaleziono publikacji w profilu niestandardowym: {{- path}}",
+                "profileMissing": "Nie znaleziono profilu niestandardowego: {{- id}}",
+                "profileNotZip": "Profil niestandardowy nie jest archiwum ZIP."
             },
-            "failed": "",
-            "invalidLicense": "",
-            "invalidPublication": "",
-            "lcpLicenseMalformed": "",
+            "failed": "Nie udało się zaimportować „{{- name}}”.",
+            "invalidLicense": "Nie udało się zaimportować „{{- name}}”. Licencja publikacji jest nieprawidłowa.",
+            "invalidPublication": "Nie udało się zaimportować „{{- name}}”. Brak manifestu publikacji.",
+            "lcpLicenseMalformed": "Nieprawidłowo sformatowana licencja LCP.",
             "success": "Importowanie [{{- title}}] zakończone.",
-            "unsupportedFormat": ""
+            "unsupportedFormat": "Nie udało się zaimportować „{{- name}}”. Ten format pliku nie jest obsługiwany."
         },
         "notifications": {
-            "annotationImportFailed": "",
-            "annotationPublicationUnavailable": "",
-            "annotationStopPlayback": "",
-            "authenticationFailed": "",
-            "catalogLinkFailed": "",
-            "catalogUpdateFailed": "",
-            "copyLimit": "",
-            "deleteFailed": "",
-            "exportFailed": "",
-            "openFileFailed": "",
-            "openLinkFailed": "",
-            "printLimit": "",
-            "profileActivationFailed": "",
-            "profileBusy": "",
-            "profileProvisionFailed": "",
-            "profileTimeout": "",
-            "publicationUnavailable": "",
-            "readingPositionFailed": "",
-            "recoveryPartialFailure": "",
-            "renewFailed": "",
-            "returnFailed": "",
-            "storageRefreshFailed": "",
-            "tagsFailed": ""
+            "annotationImportFailed": "Nie można zaimportować notatek. Sprawdź, czy plik jest prawidłowym eksportem notatek.",
+            "annotationPublicationUnavailable": "Nie można zaimportować notatek, ponieważ publikacja jest niedostępna. Spróbuj ponownie zaimportować publikację.",
+            "annotationStopPlayback": "Zatrzymaj odczyt na głos lub odtwarzanie audio, aby utworzyć adnotację.",
+            "authenticationFailed": "Nie można zalogować się do tego katalogu. Sprawdź połączenie i spróbuj ponownie.",
+            "catalogLinkFailed": "Nie można dodać tego katalogu. Sprawdź link i połączenie.",
+            "catalogUpdateFailed": "Nie można zaktualizować tego katalogu. Sprawdź jego ustawienia i spróbuj ponownie.",
+            "copyLimit": "Limit kopiowania dla tej publikacji został wyczerpany.",
+            "deleteFailed": "Nie można usunąć tej publikacji. Spróbuj ponownie.",
+            "exportFailed": "Nie można wyeksportować tej publikacji. Sprawdź folder docelowy i dostępne miejsce na dysku.",
+            "openFileFailed": "Nie można otworzyć tego pliku. Sprawdź, czy jest dostępny i czy jego format jest obsługiwany.",
+            "openLinkFailed": "Nie można otworzyć linku do tej publikacji. Sprawdź link i spróbuj ponownie.",
+            "printLimit": "Limit wydruku dla tej publikacji został wyczerpany.",
+            "profileActivationFailed": "Nie można aktywować tego profilu. Sprawdź paczkę profilu lub skontaktuj się z jego dostawcą.",
+            "profileBusy": "Trwa inna operacja na profilu. Poczekaj na jej zakończenie i spróbuj ponownie.",
+            "profileProvisionFailed": "Nie można zainstalować tego profilu. Sprawdź paczkę profilu lub skontaktuj się z jego dostawcą.",
+            "profileTimeout": "Przekroczono czas instalacji profilu. Sprawdź połączenie i spróbuj ponownie.",
+            "publicationUnavailable": "Ta publikacja jest niedostępna. Spróbuj zaimportować ją ponownie.",
+            "readingPositionFailed": "Nie można ustalić pozycji czytania. Spróbuj ponownie.",
+            "recoveryPartialFailure": "Odzyskane publikacje: {{- recovered}}; nie udało się odzyskać: {{- failed}}.",
+            "renewFailed": "Nie można odnowić tego wypożyczenia. Spróbuj ponownie lub skontaktuj się ze swoją biblioteką.",
+            "returnFailed": "Nie można zwrócić tego wypożyczenia. Spróbuj ponownie lub skontaktuj się ze swoją biblioteką.",
+            "storageRefreshFailed": "Ustawienie przestrzeni dyskowej zostało zapisane, ale nie udało się odświeżyć biblioteki. Spróbuj odświeżyć bibliotekę.",
+            "tagsFailed": "Nie można zapisać etykiet publikacji. Spróbuj ponownie."
         },
         "open": {
-            "failed": "",
+            "failed": "Nie udało się otworzyć tej publikacji.",
             "folderNotFound": "Nie można znaleźć katalogu publikacji. Zaimportuj go ponownie lub skonfiguruj dodatkową przestrzeń dyskową w sekcji Ustawienia > Przestrzeń dyskowa.",
-            "missingLicense": ""
+            "missingLicense": "Nie udało się otworzyć tej publikacji. Jest zaszyfrowana, ale brakuje jej licencji LCP."
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
+                "failure": "Odzyskiwanie publikacji nie powiodło się.",
                 "success_few": "",
                 "success_many": "",
-                "success_other": ""
+                "success_one": "Odzyskane publikacje: {{- count}}."
             },
             "removed": "Katalog publikacji został usunięty.",
             "updateFailed": "Nie udało się zaktualizować katalogu publikacji: {{- message}}",
@@ -399,21 +393,21 @@
         "addMenu": "Dodaj kanał OPDS",
         "breadcrumbRoot": "Katalogi",
         "browserMenu": {
-            "history": "",
-            "options": "",
-            "profile": "",
-            "wishlist": ""
+            "history": "Historia",
+            "options": "Opcje katalogu",
+            "profile": "Profil użytkownika",
+            "wishlist": "Lista życzeń"
         },
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Niebieski",
+            "gray": "Szary",
+            "green": "Zielony",
+            "orange": "Pomarańczowy",
+            "pink": "Różowy",
+            "purple": "Fioletowy",
+            "red": "Czerwony",
+            "title": "Kolor katalogu",
+            "yellow": "Żółty"
         },
         "documentation": "Oficjalna strona OPDS",
         "empty": "Nie znaleziono publikacji",
@@ -423,13 +417,13 @@
         "menu": {
             "aboutBook": "O publikacji",
             "addExtract": "Importuj fragment",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Anuluj rezerwację",
+            "cancelHoldError": "Nie można anulować tej rezerwacji. Spróbuj ponownie.",
             "goBuyBook": "Kup publikację",
             "goLoanBook": "Wypożycz publikację",
             "goRevokeLoanBook": "Anuluj wypożyczenie",
             "goSubBook": "Subskrybuj",
-            "placeHold": ""
+            "placeHold": "Zarezerwuj"
         },
         "network": {
             "error": "Błąd dostępu do kanału",
@@ -441,10 +435,10 @@
         "next": "Następna",
         "previous": "Poprzednia",
         "registry": {
-            "empty": "",
-            "error": "",
-            "loading": "",
-            "title": ""
+            "empty": "Nie znaleziono żadnego katalogu.",
+            "error": "Nie można przeszukać rejestru. Spróbuj ponownie.",
+            "loading": "Wyszukiwanie katalogów…",
+            "title": "Szukaj katalogów"
         },
         "resumeBrowsing": "Wznów przeglądanie",
         "shelf": "Półka",
@@ -635,10 +629,10 @@
         },
         "legal-considerations": {
             "legal-considerations-exempt": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Zgłasza wyłączenie z wymogów dostępności w niektórych jurysdykcjach",
+                "descriptive": "Wydawca zgłasza wyłączenie z wymogów dostępności w niektórych jurysdykcjach."
             },
-            "legal-considerations-title": ""
+            "legal-considerations-title": "Kwestie prawne"
         },
         "navigation": {
             "navigation-index": {
@@ -795,7 +789,7 @@
         "certificateSignatureInvalid": "Nieprawidłowy podpis certyfikatu licencji LCP.",
         "cover": {
             "img": "okładka",
-            "zoom": ""
+            "zoom": "Powiększ okładkę"
         },
         "day": "dzień",
         "days": "dni",
@@ -818,21 +812,21 @@
         "notStarted": "Nie rozpoczęta",
         "onGoing": "W trakcie czytania",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "Dostępna jest nowsza pozycja czytania z urządzenia {{- device}}: {{- progression}}%.",
+            "remoteTitle": "Wznowić z innego urządzenia?",
             "title": "Postęp",
-            "useRemote": ""
+            "useRemote": "Przejdź do pozycji"
         },
         "read": "Przeczytana",
         "remainingTime": "Wypożyczenie (pozostały czas)",
         "remoteProgression": {
-            "checking": "",
-            "disabled": "",
-            "empty": "",
-            "position": "",
-            "ready": "",
-            "title": "",
-            "unavailable": ""
+            "checking": "Włączona, sprawdzanie usługi...",
+            "disabled": "Nie jest włączona dla tej publikacji.",
+            "empty": "Brak zapisanego zdalnego postępu.",
+            "position": "Zdalny postęp: {{percent}}% ({{device}}).",
+            "ready": "Włączona i gotowa.",
+            "title": "Synchronizacja postępu czytania:",
+            "unavailable": "Włączona, ale usługa jest niedostępna."
         },
         "renewButton": "Odnów",
         "returnButton": "Zwróć",
@@ -872,7 +866,7 @@
             },
             "hide": "Nie wyświetlaj",
             "highlight": "Wyróżnij",
-            "noSelectionToast": "Brak zaznaczenia",
+            "noSelectionToast": "Zaznacz tekst, aby utworzyć adnotację.",
             "note": "Notatka {{- color}}",
             "quickAnnotations": "Szybkie tworzenie (pomiń edytor)",
             "saveNote": "Zapisz",
@@ -985,10 +979,9 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} dopasowanie",
                 "founds_few": "{{- count}} dopasowania",
                 "founds_many": "{{- count}} dopasowań",
-                "founds_other": "",
+                "founds_one": "{{- count}} dopasowanie",
                 "input": "tekst do wyszukania",
                 "next": "Następny",
                 "notFound": "brak dopasowań",
@@ -1024,12 +1017,12 @@
                 "two": "2 kol"
             },
             "customFontSelected": "Wybrano własną czcionkę",
-            "deactivateTextFormatting": "",
+            "deactivateTextFormatting": "Wyłącz formatowanie tekstu",
             "display": "Wyświetlanie",
             "disposition": {
                 "title": "Układ"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Pokaż podziały stron na marginesie",
             "font": "Czcionka",
             "fontSize": "Rozmiar czcionki",
             "increaseFontSize": "Zwiększ rozmiar czcionki",
@@ -1072,7 +1065,7 @@
             "reduceMotion": "Zmniejsz animacje",
             "scrolled": "Przewijalny",
             "spacing": "Odstępy",
-            "spacingCustomButton": "",
+            "spacingCustomButton": "Własne opcje odstępów",
             "spreadModeEven": "Rozkładówki 'parzyste' (domyślnie 'nieparzyste')",
             "text": "Tekst",
             "theme": {
@@ -1129,7 +1122,7 @@
         "keyboard": {
             "advancedMenu": "Zaawansowane menu skrótów klawiszowych",
             "cancel": "Anuluj",
-            "disableTooltips": "",
+            "disableTooltips": "Wyłącz podpowiedzi skrótów klawiszowych",
             "disclaimer": "Domyślne ustawienia aplikacji zostały zaprojektowane na podstawie fizycznego rozmieszczenia klawiszy w układzie QWERTY",
             "editUserJson": "Edytuj plik użytkownika...",
             "exportToHTML": "Eksportuj do HTML",
@@ -1240,7 +1233,7 @@
                     "name": "Fokus na ustawienia czytnika"
                 },
                 "FocusSearch": {
-                    "description": "Przenieś fokus klawiatury do pola wyszukiwania tekstu w oknie czytnika lub w oknie półki",
+                    "description": "Przenieś fokus klawiatury do pola wyszukiwania tekstu w oknie czytnika; w oknie biblioteki wyszukuje na półce lub w aktywnym kanale OPDS",
                     "name": "Polecenie wyszukiwania"
                 },
                 "FocusToolbar": {
@@ -1368,8 +1361,8 @@
                     "name": "Przełącz pełny ekran"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "W oknie czytnika włącz lub wyłącz tryb Zen, który upraszcza interfejs podczas czytania",
+                    "name": "Przełącz tryb Zen"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "W oknie biblioteki włącz lub wyłącz dodatkowe wsparcie dla czytników ekranu",
@@ -1427,7 +1420,7 @@
             "beta": {
                 "availability": "Ta funkcja działa wyłącznie w najnowszych wersjach programu Thorium; zewnętrzne katalogi książek nie będą wyświetlane w programie Thorium w wersji 3.4 i starszych.",
                 "integrity": "Należy zadbać o bezpieczeństwo i dostępność tego katalogu. Nie usuwaj go, nie ograniczaj dostępu do niego, unikaj korzystania z wolnych lub niestabilnych nośników danych, takich jak dyski sieciowe.",
-                "migration": "Thorium nie przeniesie automatycznie Twoich publikacji: jeśli zwiększysz pojemność dodatkowej przestrzeni dyskowej, musisz ręcznie przenieść swoje publikacje do nowej lokalizacji. Jeśli ją usuniesz, musisz ręcznie przenieść swoje publikacje z powrotem do pierwotnej przestrzeni dyskowej.",
+                "migration": "Thorium nie przeniesie automatycznie Twoich publikacji: jeśli zmienisz dodatkową przestrzeń dyskową, musisz ręcznie przenieść swoje publikacje do nowej lokalizacji. Jeśli ją usuniesz, musisz ręcznie przenieść swoje publikacje z powrotem do pierwotnej przestrzeni dyskowej.",
                 "summary": "Dowiedz się więcej o tej funkcji, która obecnie znajduje się w fazie beta",
                 "warning": "Nie należy ręcznie modyfikować plików w tym folderze, ponieważ może to spowodować problemy z książkami lub czytnikiem. Folder ten należy traktować jako bezpieczną bibliotekę zarządzaną przez Thorium."
             },
@@ -1443,12 +1436,12 @@
                     "title": "Wybierz dodatkową przestrzeń dyskową"
                 },
                 "edit": {
-                    "confirm": "Wybierz katalog",
+                    "confirm": "Zmień katalog",
                     "description": "Aktualizacja dodatkowej przestrzeni dyskowej wymaga ostrożności. System Thorium nie przeniesie za Ciebie istniejących publikacji; będziesz musiał to zrobić ręcznie. Czy chcesz kontynuować?",
                     "title": "Zaktualizuj dodatkową przestrzeń dyskową"
                 },
                 "remove": {
-                    "confirm": "Usuń folder",
+                    "confirm": "Usuń katalog",
                     "description": "Usunięcie dodatkowej przestrzeni dyskowej wymaga ostrożności. Serwis Thorium nie przeniesie za Ciebie istniejących publikacji; będziesz musiał to zrobić ręcznie. Czy chcesz kontynuować?",
                     "title": "Usuń dodatkową przestrzeń dyskową"
                 }
@@ -1456,46 +1449,44 @@
             "locations": {
                 "defaultDescription": "Publikacje zarządzane przez aplikację są domyślnie przechowywane w:",
                 "defaultInternal": "Pamięć systemowa",
-                "externalStorage": "Zewnętrzna pamięć",
+                "externalStorage": "Pamięć zewnętrzna",
                 "title": "Lokalizacje"
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Sprawdź, czy są publikacje do odzyskania",
+                    "checkAgain": "Sprawdź ponownie",
+                    "recover": "Odzyskaj publikacje",
+                    "recovering": "Odzyskiwanie..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Na dysku znaleziono co najmniej jedną publikację, której brakuje w bazie danych. Odzyskanie jest możliwe.",
+                "checking": "Sprawdzanie przestrzeni dyskowej publikacji...",
+                "description": "Sprawdź przestrzeń dyskową publikacji, aby znaleźć publikacje, które można bezpiecznie odzyskać.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
+                    "confirm": "Odzyskaj",
                     "description_few": "",
                     "description_many": "",
-                    "description_other": "",
-                    "title": ""
+                    "description_one": "Thorium znalazł na dysku publikacje ({{- count}}), których brakuje w bazie danych. Czy chcesz zaimportować je z powrotem do programu Thorium?",
+                    "title": "Odzyskaj publikacje"
                 },
-                "none": "",
-                "recoverableCount_one": "",
+                "none": "Nie znaleziono publikacji do odzyskania.",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "recoverableCount_one": "Publikacje, które można odzyskać z oryginalnym identyfikatorem przestrzeni dyskowej: {{- count}}.",
+                "title": "Odzyskiwanie"
             }
         },
         "tabs": {
-            "advanced": "",
+            "advanced": "Zaawansowane",
             "general": "Ogólne",
             "keyboardShortcuts": "Skróty klawiszowe",
             "profiles": "Profile",
             "storage": "Przestrzeń dyskowa"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Wyłącz pomiary telemetryczne",
+            "disableTelemetryMeasurementsDescription": "Gdy ta opcja jest włączona, Thorium nie wysyła pomiarów telemetrycznych.",
+            "title": "Telemetria"
         },
         "theme": {
             "auto": "Automatyczny",
