@@ -177,14 +177,14 @@
         "annotations": {
             "descAuthor": "por '{{- author}} '",
             "descCreator": "criado por",
-            "descList_many": "{{- count}} As notas de {{- creator}} serão importadas em '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} A nota de {{- creator}} será importada em '{{- title}}' {{- author}}",
+            "descList_many": "{{- count}} As notas de {{- creator}} serão importadas em '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} As notas de {{- creator}} serão importadas em '{{- title}}' {{- author}}",
-            "descNewer_many": "Conflito(s): {{- count}} notas mais recentes",
             "descNewer_one": "Conflito: {{- count}} nota mais recente",
+            "descNewer_many": "Conflito(s): {{- count}} notas mais recentes",
             "descNewer_other": "Conflito(s): {{- count}} notas mais recentes",
-            "descOlder_many": "Conflito(s): {{- count}} notas mais antigas",
             "descOlder_one": "Conflito: {{- count}} nota mais antiga",
+            "descOlder_many": "Conflito(s): {{- count}} notas mais antigas",
             "descOlder_other": "Conflito(s): {{- count}} notas mais antigas",
             "descTitle": "Título de anotações: ",
             "importAll": "Importar todas as notas",
@@ -202,12 +202,12 @@
             }
         },
         "deleteAnnotations": "Excluir anotações?",
-        "deleteAnnotationsText_many": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} nota?",
+        "deleteAnnotationsText_many": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteAnnotationsText_other": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteBookmarks": "Excluir marcadores?",
-        "deleteBookmarksText_many": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteBookmarksText_one": "Tem certeza de que deseja excluir {{- count}} marcador?",
+        "deleteBookmarksText_many": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteBookmarksText_other": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteFeed": "Deseja excluir este catálogo?",
         "deletePublication": "Deseja excluir esta publicação?",
@@ -369,8 +369,8 @@
         "storage": {
             "recovery": {
                 "failure": "A recuperação da publicação falhou.",
-                "success_many": "{{- count}} publicações recuperadas.",
                 "success_one": "{{- count}} publicação recuperada.",
+                "success_many": "{{- count}} publicações recuperadas.",
                 "success_other": "{{- count}} publicações recuperadas."
             },
             "removed": "Diretório de publicação removido.",
@@ -979,8 +979,8 @@
         },
         "picker": {
             "search": {
-                "founds_many": "{{- count}} correspondências",
                 "founds_one": "{{- count}} correspondência",
+                "founds_many": "{{- count}} correspondências",
                 "founds_other": "{{- count}} correspondências",
                 "input": "texto para correspondência",
                 "next": "Próximo",
@@ -1464,14 +1464,14 @@
                 "description": "Verifica o armazenamento de publicações para encontrar publicações que possam ser recuperadas com segurança.",
                 "dialog": {
                     "confirm": "Recuperar",
-                    "description_many": "O Thorium encontrou {{- count}} publicações no disco que não constam no banco de dados. Você deseja importá-las novamente para o Thorium?",
                     "description_one": "O Thorium encontrou {{- count}} publicação no disco que não constam no banco de dados. Você deseja importá-la novamente para o Thorium?",
+                    "description_many": "O Thorium encontrou {{- count}} publicações no disco que não constam no banco de dados. Você deseja importá-las novamente para o Thorium?",
                     "description_other": "O Thorium encontrou {{- count}} publicações no disco que não constam no banco de dados. Você deseja importá-las novamente para o Thorium?",
                     "title": "Recuperar publicações"
                 },
                 "none": "Não foram encontradas publicações recuperáveis.",
-                "recoverableCount_many": "{{- count}} publicações podem ser recuperadas com o identificador de armazenamento original.",
                 "recoverableCount_one": "{{- count}} publicação pode ser recuperada com o identificador de armazenamento original.",
+                "recoverableCount_many": "{{- count}} publicações podem ser recuperadas com o identificador de armazenamento original.",
                 "recoverableCount_other": "{{- count}} publicações podem ser recuperadas com o identificador de armazenamento original.",
                 "title": "Recuperação"
             }
