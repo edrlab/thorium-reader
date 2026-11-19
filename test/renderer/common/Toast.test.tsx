@@ -7,10 +7,14 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { build as openToast } from "readium-desktop/common/redux/actions/toast/openRequest";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
+import { I18nFunction } from "readium-desktop/common/services/translator";
 
 jest.mock("electron", () => {
     const { EventEmitter } = jest.requireActual<typeof import("events")>("events");
-    return { clipboard: { writeText: jest.fn() }, ipcRenderer: Object.assign(new EventEmitter(), { send: jest.fn() }) };
+    return {
+        clipboard: { writeText: jest.fn() },
+        ipcRenderer: Object.assign(new EventEmitter(), { send: jest.fn() }),
+    };
 });
 jest.mock("readium-desktop/renderer/assets/styles/components/toasts.scss", () => ({
     toast: "toast",
@@ -22,10 +26,14 @@ jest.mock("readium-desktop/renderer/assets/styles/components/toasts.scss", () =>
     messageButton: "messageButton",
 }));
 jest.mock("readium-desktop/renderer/assets/icons/baseline-close-24px.svg", () => ({}));
-jest.mock("readium-desktop/renderer/common/components/SVG", () => ({ __esModule: true, default: (): null => null }));
+jest.mock("readium-desktop/renderer/common/components/SVG", () => ({
+    __esModule: true,
+    default: (): null => null,
+}));
 jest.mock("readium-desktop/renderer/common/components/hoc/translator", () => ({
-    withTranslator: (component: React.ComponentType<{ __: (key: string) => string }>) => (props: object) =>
-        React.createElement(component, { ...props, __: (key: string) => key }),
+    withTranslator:
+        (component: React.ComponentType<{ __: (key: string) => string }>) => (props: object) =>
+            React.createElement(component, { ...props, __: (key: string) => key }),
 }));
 
 let root: Root;
@@ -33,7 +41,12 @@ let host: HTMLDivElement;
 let dom: JSDOM;
 let ToastManager: typeof import("readium-desktop/renderer/common/components/toast/ToastManager").ToastManager;
 const savedGlobals = new Map<string, PropertyDescriptor | undefined>();
-const initialToast: ToastState = { open: false, data: "", type: ToastType.Info, publicationIdentifier: undefined };
+const initialToast: ToastState = {
+    open: false,
+    data: "",
+    type: ToastType.Info,
+    publicationIdentifier: undefined,
+};
 
 beforeAll(() => {
     dom = new JSDOM("<!doctype html><html><body></body></html>", { pretendToBeVisual: true });
@@ -67,13 +80,19 @@ beforeAll(() => {
             value: dom.window[key as keyof Window],
         });
     }
-    for (const [key, value] of Object.entries({ IS_REACT_ACT_ENVIRONMENT: true, Notification: jest.fn() })) {
+    for (const [key, value] of Object.entries({
+        IS_REACT_ACT_ENVIRONMENT: true,
+        Notification: jest.fn(),
+    })) {
         savedGlobals.set(key, Object.getOwnPropertyDescriptor(globalThis, key));
         Object.defineProperty(globalThis, key, { configurable: true, writable: true, value });
     }
-    Object.defineProperty(dom.window.navigator, "clipboard", { configurable: true, value: {
-        writeText: (text: string) => Promise.resolve(clipboard.writeText(text)),
-    } });
+    Object.defineProperty(dom.window.navigator, "clipboard", {
+        configurable: true,
+        value: {
+            writeText: (text: string) => Promise.resolve(clipboard.writeText(text)),
+        },
+    });
     dom.window.HTMLElement.prototype.scrollIntoView = jest.fn();
     // Load React Aria and React DOM after installing the browser globals.
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -85,7 +104,8 @@ beforeEach(async () => {
     jest.mocked(clipboard.writeText).mockReset();
     jest.mocked(Notification).mockClear();
     jest.mocked(ipcRenderer.send).mockImplementation((channel) => {
-        if (channel === "accessibility-support-query") ipcRenderer.emit("accessibility-support-changed", {}, false);
+        if (channel === "accessibility-support-query")
+            ipcRenderer.emit("accessibility-support-changed", {}, false);
     });
     host = document.createElement("div");
     document.body.appendChild(host);
@@ -111,11 +131,22 @@ afterAll(() => {
 
 async function render(toast: ToastState, pubId?: string) {
     await React.act(async () =>
-        root.render(<ToastManager toast={toast} locale="en" pubId={pubId} __={(key) => key} />),
+        root.render(
+            <ToastManager
+                toast={toast}
+                locale="en"
+                pubId={pubId}
+                __={((key: string) => key) as I18nFunction}
+            />,
+        ),
     );
 }
 
-async function notify(type = ToastType.Error, data = "Download failed", publicationIdentifier?: string) {
+async function notify(
+    type = ToastType.Error,
+    data = "Download failed",
+    publicationIdentifier?: string,
+) {
     await render({ open: true, type, data, publicationIdentifier });
 }
 
@@ -126,8 +157,12 @@ async function advance(milliseconds: number) {
 async function press(element: HTMLElement, key: string) {
     await React.act(async () => {
         element.focus();
-        element.dispatchEvent(new dom.window.KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }));
-        element.dispatchEvent(new dom.window.KeyboardEvent("keyup", { key, bubbles: true, cancelable: true }));
+        element.dispatchEvent(
+            new dom.window.KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }),
+        );
+        element.dispatchEvent(
+            new dom.window.KeyboardEvent("keyup", { key, bubbles: true, cancelable: true }),
+        );
     });
 }
 
@@ -142,14 +177,17 @@ test("F6 enters the native toast region without redirecting focus to a toast or 
     outside.focus();
     await notify();
     const container = dialogs()[0];
-    const tabStops = [container, ...Array.from(container.querySelectorAll<HTMLElement>("button, [tabindex]"))].filter(
-        (element) => element.tabIndex >= 0,
-    );
+    const tabStops = [
+        container,
+        ...Array.from(container.querySelectorAll<HTMLElement>("button, [tabindex]")),
+    ].filter((element) => element.tabIndex >= 0);
     expect(container.tabIndex).toBe(0);
     expect(tabStops).toEqual([container, messageAction(), closeButton()]);
     expect(messageAction().tagName).toBe("BUTTON");
     expect(messageAction().type).toBe("button");
-    expect(messageAction().getAttribute("aria-label")).toBe("accessibility.copyNotificationInstruction");
+    expect(messageAction().getAttribute("aria-label")).toBe(
+        "accessibility.copyNotificationInstruction",
+    );
     const alert = document.querySelector("[role=alert]")!;
     expect(alert.textContent).toBe("Download failed");
     expect(alert.querySelector("button, [aria-expanded]")).toBeNull();
@@ -174,8 +212,12 @@ test("Enter, Space and clicking copy and expand with accessible confirmation whi
     await press(action, "Enter");
     expect(expanded()).toBe(true);
     expect(clipboard.writeText).toHaveBeenCalledWith("Download failed");
-    expect(document.querySelector(".copyStatus")?.textContent).toBe("accessibility.notificationCopied");
-    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopied");
+    expect(document.querySelector(".copyStatus")?.textContent).toBe(
+        "accessibility.notificationCopied",
+    );
+    expect(document.querySelector("[role=status]")?.textContent).toBe(
+        "accessibility.notificationCopied",
+    );
     expect(action.hasAttribute("aria-describedby")).toBe(false);
     expect(action.getAttribute("aria-label")).toBe("accessibility.copyNotificationInstruction");
     expect(action.getAttribute("aria-disabled")).toBe("true");
@@ -183,7 +225,9 @@ test("Enter, Space and clicking copy and expand with accessible confirmation whi
     await press(action, " ");
     expect(expanded()).toBe(false);
     expect(clipboard.writeText).toHaveBeenCalledTimes(2);
-    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopied");
+    expect(document.querySelector("[role=status]")?.textContent).toBe(
+        "accessibility.notificationCopied",
+    );
     expect(action.hasAttribute("aria-describedby")).toBe(false);
     await React.act(async () => (document.querySelector(".message") as HTMLElement).click());
     expect(expanded()).toBe(true);
@@ -263,11 +307,15 @@ test("success timers pause on hover without a shortened mouse-exit timeout", asy
     await notify(ToastType.Success, "Saved");
     const region = document.querySelector("[role=region]")!;
     await advance(2000);
-    await React.act(async () => region.dispatchEvent(new dom.window.MouseEvent("mouseover", { bubbles: true })));
+    await React.act(async () =>
+        region.dispatchEvent(new dom.window.MouseEvent("mouseover", { bubbles: true })),
+    );
     await advance(60000);
     expect(dialogs()).toHaveLength(1);
     await React.act(async () =>
-        region.dispatchEvent(new dom.window.MouseEvent("mouseout", { bubbles: true, relatedTarget: host })),
+        region.dispatchEvent(
+            new dom.window.MouseEvent("mouseout", { bubbles: true, relatedTarget: host }),
+        ),
     );
     await advance(2999);
     expect(dialogs()).toHaveLength(1);
@@ -286,7 +334,9 @@ test("success confirmations arriving while the region is focused also pause", as
 test("success confirmations arriving while the region is hovered also pause", async () => {
     await notify();
     const region = document.querySelector("[role=region]")!;
-    await React.act(async () => region.dispatchEvent(new dom.window.MouseEvent("mouseover", { bubbles: true })));
+    await React.act(async () =>
+        region.dispatchEvent(new dom.window.MouseEvent("mouseover", { bubbles: true })),
+    );
     await notify(ToastType.Success, "Saved");
     await advance(60000);
     expect(dialogs()).toHaveLength(2);
@@ -299,10 +349,16 @@ test("clipboard failures are announced without preventing expansion", async () =
     await notify();
     await press(messageAction(), "Enter");
     expect(expanded()).toBe(true);
-    expect(document.querySelector(".copyStatus")?.textContent).toBe("accessibility.notificationCopyFailed");
-    expect(messageAction().getAttribute("aria-label")).toBe("accessibility.copyNotificationInstruction");
+    expect(document.querySelector(".copyStatus")?.textContent).toBe(
+        "accessibility.notificationCopyFailed",
+    );
+    expect(messageAction().getAttribute("aria-label")).toBe(
+        "accessibility.copyNotificationInstruction",
+    );
     expect(messageAction().getAttribute("aria-disabled")).toBe("false");
-    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopyFailed");
+    expect(document.querySelector("[role=status]")?.textContent).toBe(
+        "accessibility.notificationCopyFailed",
+    );
     expect(document.activeElement).toBe(messageAction());
     expect(Notification).not.toHaveBeenCalled();
 });
@@ -332,7 +388,10 @@ test("independent notices do not block later notices and another publication is 
     await notify(ToastType.Error, "First failure");
     await notify(ToastType.Error, "Second failure");
     expect(dialogs()).toHaveLength(2);
-    await render({ open: true, type: ToastType.Error, data: "Other book", publicationIdentifier: "book-2" }, "book-1");
+    await render(
+        { open: true, type: ToastType.Error, data: "Other book", publicationIdentifier: "book-2" },
+        "book-1",
+    );
     expect(dialogs()).toHaveLength(2);
 });
 
@@ -355,7 +414,6 @@ test("repeated accessibility responses cannot dismiss a focused toast", async ()
     expect(dialogs()).toHaveLength(0);
 });
 
-
 test("copies diagnostic text without rendering or announcing it", async () => {
     const copyText = "Safe message\nError: internal failure\n    at importBook (main.js:12:4)";
     const action = openToast(ToastType.Error, "Safe message", undefined, undefined, copyText);
@@ -366,33 +424,54 @@ test("copies diagnostic text without rendering or announcing it", async () => {
     expect(clipboard.writeText).toHaveBeenCalledWith(copyText);
     expect(document.body.textContent).not.toContain("internal failure");
     await render(toastReducer(state, openToast(ToastType.Info, "Ordinary notice")));
-    expect(toastReducer(state, openToast(ToastType.Info, "Ordinary notice")).copyText).toBeUndefined();
+    expect(
+        toastReducer(state, openToast(ToastType.Info, "Ordinary notice")).copyText,
+    ).toBeUndefined();
 });
 
 test("reports asynchronous clipboard rejection and permits retry", async () => {
-    const write = jest.spyOn(navigator.clipboard, "writeText").mockRejectedValueOnce(new Error("Permission denied"))
+    const write = jest
+        .spyOn(navigator.clipboard, "writeText")
+        .mockRejectedValueOnce(new Error("Permission denied"))
         .mockResolvedValueOnce(undefined);
     await notify();
     await press(messageAction(), "Enter");
-    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopyFailed");
+    expect(document.querySelector("[role=status]")?.textContent).toBe(
+        "accessibility.notificationCopyFailed",
+    );
     expect(messageAction().getAttribute("aria-disabled")).toBe("false");
     await press(messageAction(), "Enter");
     expect(write).toHaveBeenCalledTimes(2);
-    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopied");
+    expect(document.querySelector("[role=status]")?.textContent).toBe(
+        "accessibility.notificationCopied",
+    );
 });
 
 test("waits for clipboard completion before announcing success", async () => {
     let complete: () => void;
-    jest.spyOn(navigator.clipboard, "writeText").mockImplementation(() => new Promise<void>(resolve => { complete = resolve; }));
+    jest.spyOn(navigator.clipboard, "writeText").mockImplementation(
+        () =>
+            new Promise<void>((resolve) => {
+                complete = resolve;
+            }),
+    );
     await notify();
     await press(messageAction(), "Enter");
     expect(document.querySelector("[role=status]")?.textContent).toBe("");
     await React.act(async () => complete());
-    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopied");
+    expect(document.querySelector("[role=status]")?.textContent).toBe(
+        "accessibility.notificationCopied",
+    );
 });
 
 test("a duplicate failure keeps its focus and timer but copies the latest diagnostics", async () => {
-    const first: ToastState = { open: true, type: ToastType.Error, data: "Failed", copyText: "First stack", publicationIdentifier: undefined };
+    const first: ToastState = {
+        open: true,
+        type: ToastType.Error,
+        data: "Failed",
+        copyText: "First stack",
+        publicationIdentifier: undefined,
+    };
     await render(first);
     await advance(2000);
     const button = messageAction();

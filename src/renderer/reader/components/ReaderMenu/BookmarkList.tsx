@@ -5,59 +5,59 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
-import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
-import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
 import classNames from "classnames";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import * as SaveIcon from "readium-desktop/renderer/assets/icons/export-icon.svg";
-import * as ImportIcon from "readium-desktop/renderer/assets/icons/import-icon.svg";
+import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
+import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
-import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
-import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
-import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as SaveIcon from "readium-desktop/renderer/assets/icons/export-icon.svg";
 import * as OptionsIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
+import * as ImportIcon from "readium-desktop/renderer/assets/icons/import-icon.svg";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as SortIcon from "readium-desktop/renderer/assets/icons/sort-icon.svg";
+import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 
-import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
-import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button, ListBox, ListBoxItem } from "react-aria-components";
 import type { Selection } from "react-aria-components";
+import { Button, DialogTrigger, ListBox, ListBoxItem, Popover, Dialog as PopoverDialog, Pressable } from "react-aria-components";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 
 import { IReaderMenuProps } from "../options-values";
 
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
-import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
-import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
-import { rgbToHex } from "readium-desktop/common/rgb";
-import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
+import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
+import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { INoteState, noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { rgbToHex } from "readium-desktop/common/rgb";
+import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
 import { getSaga } from "../../createStore";
-import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { BookmarkCard } from "../ReaderMenu/BookmarkCard";
-import { computeProgression } from "./ReaderMenu";
 import FilterPopover from "./FilterPopover";
-import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { computeProgression } from "./ReaderMenu";
 
 export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnChange: () => void, START_PAGE: number, selectionIsSet: (a: Selection) => a is Set<string>, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
@@ -115,7 +115,11 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
     const creatorListName = bookmarkListAll.map(({ creator }) => creator?.name).filter(v => v);
     const selectCreatorOptions = [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name }));
 
-    const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
+    const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({
+        hex: k, name:
+            // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
+            __(v),
+    })), [__]);
 
     const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
     const selectTagOption = React.useMemo(() => tagsIndexList.map((v, i) => ({ id: i, name: v.tag })), [tagsIndexList]);
