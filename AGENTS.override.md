@@ -13,6 +13,8 @@ Thorium Desktop reader is a software application for "desktop" operating systems
 - SCSS for styling.
 - Webpack as the build system and to provide a debugging / development environment.
 
+NodeJS 22+ and NPM 11+ are required to work on this project.
+
 ## How to install software dependencies, SBOM (Software Bill Of Materials)
 
 This project uses NPM (not PNPM, not Bun, not Yarn, etc.)
@@ -23,10 +25,11 @@ This project uses NPM (not PNPM, not Bun, not Yarn, etc.)
 
 Optionally, to learn about using Flox (Nix packages) for setting up the development environment, read the ["flox" skill](./.agents/skills/flox/SKILL.md).
 
-## How to build and run the software
+## How to build and run the software, and how to create installers
 
 * Read the ["build" skill](./.agents/skills/build/SKILL.md)
 * Read the ["run" skill](./.agents/skills/run/SKILL.md)
+* Read the ["release" skill](./.agents/skills/release/SKILL.md)
 
 ## Localization / internationalization
 
@@ -48,3 +51,7 @@ To learn how to organise additional project folders in order to work on features
 ## Runtime boundaries, codebase scopes
 
 For in-depth documentation about the source tree structure and logical boundaries, read the ["boundaries" skill](./.agents/skills/boundaries/SKILL.md).
+
+## Telemetry and analytics
+
+Read the ["telemetry" skill](./.agents/skills/telemetry/SKILL.md)
