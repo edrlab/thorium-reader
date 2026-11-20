@@ -40,18 +40,21 @@ Optionally, to learn about using Flox (Nix packages) for setting up the developm
 
 The Typescript source tree is located in the `./src` directory, the tests are not colocated, they are inside a separate `./test` folder.
 
-You must ignore the `./.flox/`, `./.git/`, `./pi/` directories inside the current working directory, unless explicitly instructed by the user to do so.
+You must ignore the `./.flox/` and `./.git/` directories inside the current working directory, unless explicitly instructed by the user to do so.
 
 You are not allowed to read or write files outside the project folder. Your read/write access to the filesystem is strictly limited to the current working folder, and the operating system's temporary directory.
 
 Changes must be compatible with all three supported operating systems: filesystem paths, keyboard shortcuts, commands, native integrations, etc.
 
+Code styling rules are checked by linting tools executed during a build. The deterministic ESLINT ruleset is combined with a few project-specific ad-hoc checks, for example to flag incorrect usage of `import { xxx } from "src/**/*"` statements instead of `import { xxx } from "readium-desktop/**/*"` Your role is to help remediate reported linting issues, and to apply additional constraints not already expressed via linting:
+
+- Do not introduce unnecessary single-use function wrappers when the code could be inlined instead.
+- Avoid writing small trivial tests, focus your tokens on tricky edge cases.
+- Refrain from over-commenting when the source code is already sufficiently expressive.
+- Prefer `undefined` over `null` for absent optional values when the existing type or runtime contract allows it (note that the TypeScript compiler settings currently do not enforce `strictNullChecks`).
+
 To learn how to organise additional project folders in order to work on features and fixes inside separate worktrees / branches, read the ["git" skill](./.agents/skills/git/SKILL.md).
 
 ## Runtime boundaries, codebase scopes
 
-For in-depth documentation about the source tree structure and logical boundaries, read the ["boundaries" skill](./.agents/skills/boundaries/SKILL.md).
-
-## Telemetry and analytics
-
-Read the ["telemetry" skill](./.agents/skills/telemetry/SKILL.md)
+During a code design / programming task, you will need to learn about the source tree structure and logical partitioning. If so, read the ["boundaries" skill](./.agents/skills/boundaries/SKILL.md).
