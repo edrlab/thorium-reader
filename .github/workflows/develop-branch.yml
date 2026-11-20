@@ -13,13 +13,13 @@ concurrency:
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions
 permissions:
     actions: none
-    artifact-metadata: none
-    attestations: none
+    artifact-metadata: none # <==========
+    attestations: none # <==========
     checks: none
     contents: none # <==========
     deployments: none
     discussions: none
-    id-token: none
+    id-token: none # <==========
     issues: none
     models: none
     packages: none
@@ -46,13 +46,13 @@ jobs:
     timeout-minutes: 30
     permissions:
       actions: none
-      artifact-metadata: none
-      attestations: none
+      artifact-metadata: none # <==========
+      attestations: none # <==========
       checks: none
       contents: read # <==========
       deployments: none
       discussions: none
-      id-token: none
+      id-token: none # <==========
       issues: none
       models: none
       packages: none
@@ -566,13 +566,13 @@ jobs:
     timeout-minutes: 20
     permissions:
       actions: none
-      artifact-metadata: none
-      attestations: none
+      artifact-metadata: write # <==========
+      attestations: write # <==========
       checks: none
       contents: write # <==========
       deployments: none
       discussions: none
-      id-token: none
+      id-token: write # <==========
       issues: none
       models: none
       packages: none
@@ -640,10 +640,21 @@ jobs:
 #        merge-multiple: true
         path: release
 ###########################
+    - name: Attestation
+      id: attest
+# https://github.com/actions/attest/commits/v4.2.2
+# https://github.com/actions/attest/commits/1e69f48acb82d1966a394da916b4c1698aa569d6
+# https://github.com/actions/download-artifact/compare/v4.2.2...1e69f48acb82d1966a394da916b4c1698aa569d6
+      uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
+      with:
+        subject-path: release/*.*
+###########################
     - name: GitHub Tagged Release Delete/ReCreate and Upload Build Artefacts
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ATTESTATION_ID: ${{ steps.attest.outputs.attestation-id }}
+        ATTESTATION_URL: ${{ steps.attest.outputs.attestation-url }}
       run: >
         ls -alsR release ;
         (gh release delete ${{ matrix.release_tag }} --cleanup-tag --yes || echo OK || true) ;
-        gh release create ${{ matrix.release_tag }} --target=develop --latest=false --prerelease --title="${{ matrix.release_tag }} automated test build" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" "./release/*.*"
+        gh release create ${{ matrix.release_tag }} --target=develop --latest=false --prerelease --title="${{ matrix.release_tag }} automated test build" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) -- (Attestation '$ATTESTATION_ID': $ATTESTATION_URL)" "./release/*.*"
