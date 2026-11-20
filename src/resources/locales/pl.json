@@ -20,7 +20,7 @@
         "notificationCopyFailed": "Nie udało się skopiować powiadomienia",
         "printPage": "Strona {{page}}",
         "publicationDetails": "{{- field}}: {{- title}}",
-        "resetSetting": "Resetuj / Przywróć: {{- setting}}",
+        "resetSetting": "Resetuj: {{- setting}}",
         "rightSlideButton": "Przesuń w prawo",
         "searching": "Wyszukiwanie…",
         "skipLink": "Przejdź do treści",
