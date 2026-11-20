@@ -1,8 +1,3 @@
----
-name: telemetry
-description: "Learn about telemetry and analytics"
----
-
 # Telemetry, analytics
 
 Firebase / GA4 Measurement Protocol support is configured at build time with environment variables consumed by `webpack.config-preprocessor-directives.js`. It is disabled by default, and emitted events still respect the in-app "Disable telemetry measurements" setting.
