@@ -55,38 +55,51 @@ import zhTwCatalog from "readium-desktop/resources/locales/zh-tw.json";
 // import { TFunction } from "readium-desktop/typings/en.translation";
 
 
+import "i18next";
+import type { ParseKeys, TFunction } from "i18next";
 import i18next from "i18next";
+export type TranslationKey = ParseKeys<"translation">;
 
 import type LocaleSchema_ from "readium-desktop/typings/en.json";
 export type LocaleSchema = typeof LocaleSchema_; // enCatalog
 
-export type FlattenPaths<T, Prefix extends string = ""> = {
-    [K in keyof T & string]: T[K] extends string
-        ? { [P in `${Prefix}${K}`]: T[K] }
-        : FlattenPaths<T[K], `${Prefix}${K}.`>;
-}[keyof T & string];
+declare module "i18next" {
+  interface CustomTypeOptions {
+    defaultNS: "translation";
+    nsSeparator: false;
+    resources: {
+      translation: LocaleSchema;
+    };
+  }
+}
 
-export type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
-    k: infer I
-) => void
-    ? I
-    : never;
-
-export type FlatLocale = UnionToIntersection<FlattenPaths<LocaleSchema>>;
-
-export type ExtractVars<S extends string> =
-    S extends `${string}{{- ${infer Var}}}${infer Rest}`
-        ? Var | ExtractVars<Rest>
-        : S extends `${string}{{${infer Var}}}${infer Rest}`
-          ? Var | ExtractVars<Rest>
-          : never;
-
-export type StrictTranslate = <K extends keyof FlatLocale>(
-    key: K,
-    ...[options]: [ExtractVars<FlatLocale[K]>] extends [never]
-        ? [options?: Record<string, never>]
-        : [options?: Record<ExtractVars<FlatLocale[K]>, string | number>]
-) => string;
+// export type FlattenPaths<T, Prefix extends string = ""> = {
+//     [K in keyof T & string]: T[K] extends string
+//         ? { [P in `${Prefix}${K}`]: T[K] }
+//         : FlattenPaths<T[K], `${Prefix}${K}.`>;
+// }[keyof T & string];
+//
+// export type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
+//     k: infer I
+// ) => void
+//     ? I
+//     : never;
+//
+// export type FlatLocale = UnionToIntersection<FlattenPaths<LocaleSchema>>;
+//
+// export type ExtractVars<S extends string> =
+//     S extends `${string}{{- ${infer Var}}}${infer Rest}`
+//         ? Var | ExtractVars<Rest>
+//         : S extends `${string}{{${infer Var}}}${infer Rest}`
+//           ? Var | ExtractVars<Rest>
+//           : never;
+//
+// export type StrictTranslate = <K extends keyof FlatLocale>(
+//     key: K,
+//     ...[options]: [ExtractVars<FlatLocale[K]>] extends [never]
+//         ? [options?: Record<string, never>]
+//         : [options?: Record<ExtractVars<FlatLocale[K]>, string | number>]
+// ) => string;
 
 const i18nextInstance = i18next.createInstance();
 
@@ -99,12 +112,15 @@ i18nextInstance.init({
     interpolation: {
         skipOnVariables: false,
     },
-    nsSeparator: ":",
-    keySeparator: ".",
+    // nsSeparator: ":",
+    // keySeparator: ".",
     // supportedLngs: LANGUAGE_KEYS,
     // nonExplicitSupportedLngs: true,
     ignoreJSONStructure: false,
     debug: false,
+    ns: ["translation"],
+    defaultNS: "translation",
+    nsSeparator: false,
     resources: {
         "ar": {
             translation: arCatalog,
@@ -300,7 +316,7 @@ export const availableLanguages = {
 
 // export type I18nFunction = (_: TTranslatorKeyParameter, __?: {}) => string;
 // export type I18nFunction = (key: TTranslatorKeyParameter, __?: {}) => string;
-export type I18nFunction = StrictTranslate; // typeof translate; // (...args: Parameters<typeof i18next.t>) => ReturnType<typeof i18next.t>;
+export type I18nFunction = typeof translate; // StrictTranslate ----- (...args: Parameters<typeof i18next.t>) => ReturnType<typeof i18next.t>;
 // Types of parameters 'args' and '_' are incompatible
 // Type '[_: TTranslatorKeyParameter, __?: {}]' is not assignable to types:
 // '[key: string | (string | TemplateStringsArray)[] | TemplateStringsArray] | [key: string | string[], defaultValue: string] | [key: string | string[], options: TOptionsBase & $Dictionary & { ...; }] | [key: ...] | [key: ...]'
@@ -321,11 +337,12 @@ export const setLocale = async (newLocale: keyof typeof availableLanguages) => {
 // type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
 // type TParams = ArgumentTypes<typeof i18next.t>;
 // type TParams = Parameters<typeof i18next.t>;
-export const translate: StrictTranslate = (key, option?) => {
-    const label = i18nextInstance.t(key as string, option as undefined | Record<string, unknown>);
+// TFunction<"translation">
+export const translate = <K extends ParseKeys>(...args: Parameters<TFunction<K>>): string => { // key: TranslationKey, option?: Record<string, unknown>): string => { // StrictTranslate
+    const label = i18nextInstance.t(...args); // (key as string, option as undefined | Record<string, unknown>);
     if (!label || !label.length) {
         // fallbackLng: "en" does not take into account empty string (which we output to normalise JSON locales)
-        return i18nextInstanceEN.t(key as string, option as undefined | Record<string, unknown>);
+        return i18nextInstanceEN.t(...args); // (key as string, option as undefined | Record<string, unknown>);
     }
     return label;
 };
