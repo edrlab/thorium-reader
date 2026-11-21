@@ -64,34 +64,6 @@ declare module "i18next" {
 import type { TFunction } from "i18next";
 import i18next from "i18next";
 
-// export type FlattenPaths<T, Prefix extends string = ""> = {
-//     [K in keyof T & string]: T[K] extends string
-//         ? { [P in `${Prefix}${K}`]: T[K] }
-//         : FlattenPaths<T[K], `${Prefix}${K}.`>;
-// }[keyof T & string];
-//
-// export type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
-//     k: infer I
-// ) => void
-//     ? I
-//     : never;
-//
-// export type FlatLocale = UnionToIntersection<FlattenPaths<LocaleSchema>>;
-//
-// export type ExtractVars<S extends string> =
-//     S extends `${string}{{- ${infer Var}}}${infer Rest}`
-//         ? Var | ExtractVars<Rest>
-//         : S extends `${string}{{${infer Var}}}${infer Rest}`
-//           ? Var | ExtractVars<Rest>
-//           : never;
-//
-// export type StrictTranslate = <K extends keyof FlatLocale>(
-//     key: K,
-//     ...[options]: [ExtractVars<FlatLocale[K]>] extends [never]
-//         ? [options?: Record<string, never>]
-//         : [options?: Record<ExtractVars<FlatLocale[K]>, string | number>]
-// ) => string;
-
 const i18nextInstance = i18next.createInstance();
 
 // https://www.i18next.com/overview/configuration-options
@@ -305,15 +277,6 @@ export const availableLanguages = {
     :{}),
 };
 
-// export type I18nFunction = (_: TTranslatorKeyParameter, __?: {}) => string;
-// export type I18nFunction = (key: TTranslatorKeyParameter, __?: {}) => string;
-export type I18nFunction = typeof translate; // StrictTranslate ----- (...args: Parameters<typeof i18next.t>) => ReturnType<typeof i18next.t>;
-// Types of parameters 'args' and '_' are incompatible
-// Type '[_: TTranslatorKeyParameter, __?: {}]' is not assignable to types:
-// '[key: string | (string | TemplateStringsArray)[] | TemplateStringsArray] | [key: string | string[], defaultValue: string] | [key: string | string[], options: TOptionsBase & $Dictionary & { ...; }] | [key: ...] | [key: ...]'
-// '[key: string | (string | TemplateStringsArray)[] | TemplateStringsArray] | [key: string | string[], defaultValue: string] | [key: string | string[], options: TOptionsBase & $Dictionary & { ...; }] | [key: ...]'
-// '[key: string | (string | TemplateStringsArray)[] | TemplateStringsArray, options: Omit<TOptions, "context"> & { context?: unknown; }]'
-//
 export const setLocale = async (newLocale: keyof typeof availableLanguages) => {
 
     if (i18nextInstance.language !== newLocale) {
@@ -325,6 +288,7 @@ export const setLocale = async (newLocale: keyof typeof availableLanguages) => {
     return ;
 };
 
+export type I18nFunction = TFunction;
 export const translate: TFunction = ((...args: Parameters<TFunction>): string => {
     const label = i18nextInstance.t(...args);
     if (!label || !label.length) {
