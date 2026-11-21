@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
-
 // SEE PACKAGE.JSON:
 // ar bg bn brh ca cs da de el en es et eu fi fr gl he hi hr is it ja ka ko lt nb-NO nl pl pt-br pt-pt ru sa sl sv ta tr zh-cn zh-tw
 // 38 languages
@@ -51,27 +49,20 @@ import trCatalog from "readium-desktop/resources/locales/tr.json";
 import zhCnCatalog from "readium-desktop/resources/locales/zh-cn.json";
 import zhTwCatalog from "readium-desktop/resources/locales/zh-tw.json";
 
-
-// import { TFunction } from "readium-desktop/typings/en.translation";
-
-
 import "i18next";
-import type { ParseKeys, TFunction } from "i18next";
-import i18next from "i18next";
-export type TranslationKey = ParseKeys<"translation">;
-
-import type LocaleSchema_ from "readium-desktop/typings/en.json";
-export type LocaleSchema = typeof LocaleSchema_; // enCatalog
-
+import type LocaleSchema from "readium-desktop/typings/en.json";
 declare module "i18next" {
   interface CustomTypeOptions {
     defaultNS: "translation";
     nsSeparator: false;
     resources: {
-      translation: LocaleSchema;
+      translation: typeof LocaleSchema;
     };
   }
 }
+
+import type { TFunction } from "i18next";
+import i18next from "i18next";
 
 // export type FlattenPaths<T, Prefix extends string = ""> = {
 //     [K in keyof T & string]: T[K] extends string
@@ -109,9 +100,9 @@ i18nextInstance.init({
     // https://www.i18next.com/misc/migration-guide#v23.x.x-to-v24.0.0
     // https://github.com/i18next/i18next-v4-format-converter
     // compatibilityJSON: "v4",
-    interpolation: {
-        skipOnVariables: false,
-    },
+    // interpolation: {
+    //     skipOnVariables: false,
+    // },
     // nsSeparator: ":",
     // keySeparator: ".",
     // supportedLngs: LANGUAGE_KEYS,
@@ -334,18 +325,24 @@ export const setLocale = async (newLocale: keyof typeof availableLanguages) => {
     return ;
 };
 
-// type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
-// type TParams = ArgumentTypes<typeof i18next.t>;
-// type TParams = Parameters<typeof i18next.t>;
-// TFunction<"translation">
-export const translate = <K extends ParseKeys>(...args: Parameters<TFunction<K>>): string => { // key: TranslationKey, option?: Record<string, unknown>): string => { // StrictTranslate
-    const label = i18nextInstance.t(...args); // (key as string, option as undefined | Record<string, unknown>);
+export const translate: TFunction = ((...args: Parameters<TFunction>): string => {
+    const label = i18nextInstance.t(...args);
     if (!label || !label.length) {
         // fallbackLng: "en" does not take into account empty string (which we output to normalise JSON locales)
-        return i18nextInstanceEN.t(...args); // (key as string, option as undefined | Record<string, unknown>);
+        return i18nextInstanceEN.t(...args);
     }
     return label;
-};
+}) as TFunction;
+
+// TYPE CHECKS:
+// translate("accessibility.annotationNote");
+// translate("accessibility.annotationNote", {title:"xxx", "other": "yyy"});
+// i18nextInstance.t("accessibility.annotationNote");
+// i18nextInstance.t("accessibility.favoriteCatalog", {title:"xxx", "other": "yyy"});
+// trans--late("xxx.yyy"); // expected: fails the TypeScript check
+// i18nextInstance.t("xxx.yyy"); // expected: fails the TypeScript check
+// trans--late("accessibility.favoriteCatalog"); // expected: fails the TypeScript check
+// i18nextInstance.t("accessibility.favoriteCatalog"); // expected: fails the TypeScript check
 
 // SEE: convertMultiLangStringToLangString() or convertMultiLangStringToString()
 // export const translateContentFieldHelper = (stringOrObject: string | IStringMap, locale: keyof typeof availableLanguages): string => {
@@ -398,3 +395,53 @@ export const translator = {
     translate,
 };
 export const getTranslator = () => translator;
+
+
+
+
+// TYPE CHECKS:
+//
+// import "i18next";
+// import type { TFunction } from "i18next";
+// import i18next from "i18next";
+//
+// const enJSON = {
+//     "key": {
+//         "subkey1": "value1",
+//         "subkey2": "value2 {{-var1}} xx",
+//         "subkey3": "value3 {{var2}} xx",
+//     }
+// } as const;
+// declare module "i18next" {
+//   interface CustomTypeOptions {
+//     defaultNS: "translation";
+//     nsSeparator: false;
+//     resources: {
+//         translation: typeof enJSON;
+//     };
+//   }
+// }
+// const i18n = i18next.createInstance();
+// i18n.init({
+//     defaultNS: "translation",
+//     nsSeparator: false,
+//     resources: {
+//         "en": {
+//             "translation": enJSON
+//         }
+//     }
+// });
+// i18n.t("key.subkey1");
+// i18n.t("key.subkey2"); // expected: fails the TypeScript check
+// i18n.t("key.subkey3"); // expected: fails the TypeScript check
+// i18n.t("key.subkey2", { var1: "...", xx: ""});
+// i18n.t("key.subkey3", { var2: "...", yy: ""});
+//
+// const trans: TFunction = ((...args: Parameters<TFunction>): string => {
+//     return i18n.t(...args);
+// }) as TFunction;
+// trans("key.subkey1");
+// trans("key.subkey2"); // expected: fails the TypeScript check
+// trans("key.subkey3"); // expected: fails the TypeScript check
+// trans("key.subkey2", { var1: "...", xx: ""});
+// trans("key.subkey3", { var2: "...", yy: ""});

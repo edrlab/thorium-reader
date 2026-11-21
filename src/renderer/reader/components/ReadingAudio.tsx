@@ -388,12 +388,12 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                                                             checked={ttsHighlightColorHex === colorHex}
                                                             aria-label={
                                                                 // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
-                                                                __(translatorKey)
+                                                                __(translatorKey) as string
                                                             }
                                                         />
                                                         <label aria-hidden={true} title={
                                                             // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
-                                                            __(translatorKey)
+                                                            __(translatorKey) as string
                                                         } htmlFor={`ttscolorpick${colorHex}`}
                                                             style={{
                                                                 background: colorHex === "#000000" ? "linear-gradient(90deg,rgba(255, 255, 255, 1) 0%, rgba(71, 71, 71, 1) 50%, rgba(0, 0, 0, 1) 100%)" : undefined,
@@ -429,12 +429,12 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                                                             checked={ttsHighlightColor_WORDHex === colorHex}
                                                             aria-label={
                                                                 // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
-                                                                __(translatorKey)
+                                                                __(translatorKey) as string
                                                             }
                                                         />
                                                         <label aria-hidden={true} title={
                                                             // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
-                                                            __(translatorKey)
+                                                            __(translatorKey) as string
                                                         } htmlFor={`ttscolorpickword${colorHex}`}
                                                             style={{
                                                                 cursor: useMO ? "not-allowed" : undefined,

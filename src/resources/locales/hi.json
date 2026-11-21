@@ -310,7 +310,7 @@
                 "cbzNoImages": "CBZ संग्रह में कोई समर्थित छवि नहीं है।",
                 "contextMissing": "अनुपलब्ध",
                 "daisyConversionFailed": "DAISY प्रकाशन रूपांतरित नहीं किया जा सका।",
-                "manifestContext": "{{- url}} पर प्रकाशन मैनिफ़ेस्ट का @context पहचाना नहीं गया: {{- context}}",
+                "manifestContext": "{{- url}} पर प्रकाशन मैनिफ़ेस्ट का @context पहचाना नहीं गया: {{- ctx}}",
                 "manifestImportFailed": "प्रकाशन मैनिफ़ेस्ट आयात करना विफल रहा।",
                 "manifestInvalidJson": "{{- url}} पर प्रकाशन मैनिफ़ेस्ट में अमान्य JSON।",
                 "manifestMissing": "प्रकाशन मैनिफ़ेस्ट उपलब्ध नहीं है।",

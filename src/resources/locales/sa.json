@@ -310,7 +310,7 @@
                 "cbzNoImages": "CBZ सञ्चये समर्थितानि चित्राणि अनुपलब्धानि.",
                 "contextMissing": "लुप्तम्",
                 "daisyConversionFailed": "DAISY प्रकाशनम् परिवर्तयितुम् अशक्यम्.",
-                "manifestContext": "अपरिचितम् प्रकाशनप्रकटस्य @context {{- url}} इत्यत्र: {{- context}}",
+                "manifestContext": "अपरिचितम् प्रकाशनप्रकटस्य @context {{- url}} इत्यत्र: {{- ctx}}",
                 "manifestImportFailed": "प्रकाशनप्रकटस्य आयातः विफलः.",
                 "manifestInvalidJson": "{{- url}} इत्यत्र प्रकाशनप्रकटस्य JSON अमान्यम्.",
                 "manifestMissing": "प्रकाशनप्रकटः लुप्तः.",

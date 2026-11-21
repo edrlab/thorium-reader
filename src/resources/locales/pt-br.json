@@ -315,7 +315,7 @@
                 "cbzNoImages": "O arquivo CBZ não contém nenhuma imagem compatível.",
                 "contextMissing": "ausente",
                 "daisyConversionFailed": "Não foi possível converter a publicação DAISY.",
-                "manifestContext": "Manifesto de publicação não reconhecido: @context em {{- url}}: {{- context}}",
+                "manifestContext": "Manifesto de publicação não reconhecido: @context em {{- url}}: {{- ctx}}",
                 "manifestImportFailed": "A importação do manifesto da publicação falhou.",
                 "manifestInvalidJson": "JSON inválido no manifesto da publicação em {{- url}}.",
                 "manifestMissing": "O manifesto da publicação está ausente.",

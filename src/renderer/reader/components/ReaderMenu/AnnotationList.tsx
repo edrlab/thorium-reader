@@ -137,7 +137,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({
         hex: k, name:
             // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
-            __(v),
+            __(v) as string,
     })), [__]);
     const selectDrawtypesOptions = React.useMemo(() => [
         { name: "solid_background", svg: HighLightIcon, textValue: `${__("reader.annotations.type.solid")}` },

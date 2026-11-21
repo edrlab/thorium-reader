@@ -5,14 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import debug_ from "debug";
-import { startExternalAuthentication, matchesExternalAuthenticationCallback, IExternalAuthenticationSession } from "./externalAuthentication";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import debug_ from "debug";
+import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
+import { URL_HOST_COMMON, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY, URL_PROTOCOL_OPDS, URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
 import { logoutOpdsCatalog } from "readium-desktop/main/services/opdsLogout";
 import { getFeed } from "./api/opds/feed";
+import { IExternalAuthenticationSession, matchesExternalAuthenticationCallback, startExternalAuthentication } from "./externalAuthentication";
 import { submitInlineAuthentication } from "./inlineAuthentication";
-import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY } from "readium-desktop/common/streamerProtocol";
-import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -25,6 +25,7 @@ import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillN
 // @__ts-ignore TS1479
 import { Headers } from "node-fetch";
 
+import { URL } from "node:url";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, opdsActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -41,28 +42,27 @@ import {
     httpSetAuthenticationToken,
     IOpdsAuthenticationToken, wipeAuthenticationTokenStorage,
 } from "readium-desktop/main/network/http";
-import { ContentType } from "readium-desktop/utils/contentType";
 import {
+    createOpdsPkceTransaction,
+    exchangeOpdsPkceAuthorizationCode,
     IOpdsPkceTransaction,
     OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
     OPDS_PKCE_CANONICAL_TYPE,
-    createOpdsPkceTransaction,
-    exchangeOpdsPkceAuthorizationCode,
 } from "readium-desktop/main/network/opdsPkce";
+import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, delay, join, put, race, spawn } from "redux-saga/effects";
 import { call as callTyped, fork as forkTyped, take as takeTyped } from "typed-redux-saga/macro";
-import { URL } from "node:url";
 
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
-import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, TregisterHttpProtocolHandler} from "./getEventChannel";
-import { initClientSecretToken } from "./apiapp";
-import { digestAuthentication } from "readium-desktop/utils/digest";
 import isURL from "readium-desktop/common/utils/isURL";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { digestAuthentication } from "readium-desktop/utils/digest";
+import { initClientSecretToken } from "./apiapp";
+import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, TregisterHttpProtocolHandler } from "./getEventChannel";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -80,8 +80,8 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 import { SESSION_PARTITION_AUTH } from "readium-desktop/common/sessions";
 
 // https://github.com/cure53/DOMPurify?tab=readme-ov-file#running-dompurify-on-the-server
-import { JSDOM } from "jsdom";
 import DOMPurify_ from "dompurify";
+import { JSDOM } from "jsdom";
 const DOMPurify = DOMPurify_(new JSDOM("").window);
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
@@ -1325,8 +1325,8 @@ const escapeKeyScript = "";  // `<script type="text/javascript">window.document.
 
 const htmlLoginTemplate = (
     urlToSubmit = "",
-    loginLabel = getTranslator().translate("catalog.opds.auth.username"),
-    passLabel = getTranslator().translate("catalog.opds.auth.password"),
+    loginLabel: string = getTranslator().translate("catalog.opds.auth.username"),
+    passLabel: string = getTranslator().translate("catalog.opds.auth.password"),
     title: string | undefined,
     logoUrl?: string,
     registerUrl?: string,
