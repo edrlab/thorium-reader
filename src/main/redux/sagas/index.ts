@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { app, dialog, shell } from "electron";
+import { app, dialog, ipcMain, shell } from "electron";
 import { keyboardActions, versionUpdateActions } from "readium-desktop/common/redux/actions";
 import { settingsGoogleAnalyticsTelemetryIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { logMeasurementProtocol } from "readium-desktop/main/analytics/measurementProtocol";
@@ -41,6 +41,7 @@ import * as lcpSharedWorkstationCleanup from "./publication/lcpSharedWorkstation
 import * as reader from "./reader";
 import * as streamer from "./streamer";
 import * as telemetry from "./telemetry";
+import * as ttsLookAheadIpc from "./ttsLookAheadIpc";
 import * as win from "./win";
 
 import { getTranslator } from "readium-desktop/common/services/translator";
@@ -127,6 +128,7 @@ export function* rootSaga() {
     // yield spawnLeading(ipc.watchers, (e) => error("main:rootSaga:ipc", e));
 
     yield analyticsIpc.saga();
+    yield ttsLookAheadIpc.saga(ipcMain);
 
     try {
         yield* callTyped(startMeasurementProtocolQueue);

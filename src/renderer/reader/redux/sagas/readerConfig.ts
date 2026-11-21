@@ -28,6 +28,7 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
+import { shouldEnableVoiceLinkLookAhead } from "readium-desktop/renderer/reader/ttsLookAhead";
 
 function* readerConfigChanged(action: readerActions.setConfig.TAction): SagaGenerator<void> {
 
@@ -267,7 +268,11 @@ function* readerConfigChanged(action: readerActions.setConfig.TAction): SagaGene
             ttsStop();
             if (true) { // !isNotNil(payload.noFootnotes)) {
                 setTimeout(() => {
-                    ttsPlay(parseFloat(readerConfig.ttsPlaybackRate), readerConfig.ttsVoices);
+                    ttsPlay(
+                        parseFloat(readerConfig.ttsPlaybackRate),
+                        readerConfig.ttsVoices,
+                        shouldEnableVoiceLinkLookAhead(process.platform, readerConfig.ttsVoices),
+                    );
                 }, 500);
             }
         }
