@@ -25,6 +25,7 @@ import { submitInlineAuthentication } from "./inlineAuthentication";
 // @__ts-ignore TS1479
 import { Headers } from "node-fetch";
 
+import { URL } from "node:url";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, opdsActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -51,7 +52,6 @@ import {
 import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { URL } from "node:url";
 import { all, call, cancel, delay, join, put, race, spawn } from "redux-saga/effects";
 import { call as callTyped, fork as forkTyped, take as takeTyped } from "typed-redux-saga/macro";
 
@@ -945,7 +945,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
 
     let urlExternal: string | undefined;
     let title: string | undefined;
-    if (urlStr.startsWith('data:text/html')) {
+    if (urlStr.startsWith("data:text/html")) {
         // passthrough
     } else if (/^https?:\/\//.test(urlStr)) {
         if (!retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser) {
