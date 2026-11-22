@@ -1043,7 +1043,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 });
             }
         }}
-        ></input>;
+        />;
 
         // const def = this.props.keyboardShortcuts[id];
         const isDuplicated = !!ObjectKeys(this.props.keyboardShortcuts).filter((idea) => idea !== id).find((idea) => {

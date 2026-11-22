@@ -8,7 +8,7 @@
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { DOMParser, XMLSerializer, type Document } from "@xmldom/xmldom";
 import debug_ from "debug";
-import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
+import { app, AuthenticationResponseDetails, AuthInfo, BrowserWindow, Event as ElectronEvent, Event, HandlerDetails, session, shell, WebContents, WebContentsWillNavigateEventParams } from "electron";
 import { URL_HOST_COMMON, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY, URL_PROTOCOL_OPDS, URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
 import { logoutOpdsCatalog } from "readium-desktop/main/services/opdsLogout";
 import { getFeed } from "./api/opds/feed";
@@ -1146,11 +1146,152 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     //     });
     // });
 
+    let _proxyWasBypassed = false;
+
+    let _proxyWasUsernamePassword = false;
+    let _proxy_username: string | undefined;
+    let _proxy_password: string | undefined;
+    let _proxy_url: string | undefined;
+
+    const appOnLogin = (
+        event: Event,
+        _webContents: WebContents | null,
+        _authenticationResponseDetails: AuthenticationResponseDetails,
+        authInfo: AuthInfo,
+        callback: (username?: string, password?: string) => void) => {
+
+        debug("Electron app.onLogin...");
+        if (_proxyWasUsernamePassword && authInfo.isProxy && _proxy_username && _proxy_password) {
+            debug("Electron app.onLogin PROXY");
+            event.preventDefault();
+            callback(_proxy_username, _proxy_password);
+        }
+    };
+
+    win.on("close", () => {
+        debug("OPDS AUTH win close", urlStr.substring(0, 500));
+
+        if (_proxyWasUsernamePassword) {
+            app.off("login", appOnLogin);
+        }
+        _proxyWasUsernamePassword = false;
+
+        if (_proxyWasBypassed) {
+            const authSession = session.fromPartition(SESSION_PARTITION_AUTH, { cache: false });
+            authSession.setProxy({ mode: "system" }).then(() => { debug("setProxy ok (system)"); }).catch((eee) => { debug("setProxy nok (system)"); debug(eee); });
+        }
+        _proxyWasBypassed = false;
+    });
+
     debug("OPDS AUTH win LOAD 1", urlStr.substring(0, 500));
 
     // win.webContents.loadURL
     // await DO NOT AWAIT!! (race condition when urlStr is a HTTP link that immediately redirects to OPDS://AUTHORIZE)
-    win.loadURL(urlStr).then(() => { debug("loadURL() ok " + urlStr); }).catch((err) => { debug("loadURL() nok " + urlStr); debug(err); });
+    win.loadURL(urlStr).then(() => {
+        debug("loadURL() 1 ok " + urlStr);
+    }).catch((err) => {
+        debug("loadURL() 1 nok " + urlStr);
+        debug(err);
+        if (err && String(err).includes("(-111)")) {
+            // Error:  (-111) loading
+            // Chromium
+            // net::ERR_TUNNEL_CONNECTION_FAILED
+
+            function tryProxy(proxyU: string) {
+                try {
+                    const parsed = new URL(proxyU);
+                    if (parsed.username || parsed.password) {
+                        _proxy_username = decodeURIComponent(parsed.username);
+                        _proxy_password = decodeURIComponent(parsed.password);
+                        _proxy_url = `${parsed.protocol}//${parsed.host}`;
+
+                        _proxyWasUsernamePassword = true;
+
+                        debug("_proxy_username: ", _proxy_username);
+                        debug("_proxy_password: ", _proxy_password);
+                        debug("_proxy_url: ", _proxy_url);
+
+                        session.defaultSession.setProxy({
+                            mode: 'fixed_servers',
+                            proxyRules: _proxy_url,
+                        }).then(() => { debug("setProxy ok (fixed_servers)"); }).catch((eee) => { debug("setProxy nok (fixed_servers)"); debug(eee); });
+                    }
+                } catch (err) {
+                    debug("Proxy URL?", err);
+                }
+            }
+
+            let proxyUrl = process.env.HTTPS_PROXY;
+            if (proxyUrl) {
+                debug("HTTPS_PROXY ...", proxyUrl);
+                tryProxy(proxyUrl);
+            }
+            if (!_proxyWasUsernamePassword) {
+                proxyUrl = process.env.HTTP_PROXY;
+                if (proxyUrl) {
+                    debug("HTTP_PROXY ...", proxyUrl);
+                    tryProxy(proxyUrl);
+                }
+            }
+            if (_proxyWasUsernamePassword) {
+                app.on("login", appOnLogin);
+            }
+
+            debug("OPDS AUTH win LOAD 2", urlStr.substring(0, 500));
+
+            win.loadURL(urlStr).then(() => {
+                debug("loadURL() 2 ok " + urlStr);
+                // authSession.setProxy({ mode: "system" }).then(() => { debug("setProxy ok (system)"); }).catch((eee) => { debug("setProxy nok (system)"); debug(eee); });
+            }).catch((err) => {
+                debug("loadURL() 2 nok " + urlStr);
+                debug(err);
+
+                _proxyWasUsernamePassword = false;
+
+                if (err && String(err).includes("(-111)")) {
+                    // Error:  (-111) loading
+                    // Chromium
+                    // net::ERR_TUNNEL_CONNECTION_FAILED
+
+                    _proxyWasBypassed = true;
+
+                    const authSession = session.fromPartition(SESSION_PARTITION_AUTH, { cache: false });
+                    authSession.setProxy({ mode: "direct" }).then(() => { debug("setProxy ok (direct)"); }).catch((eee) => { debug("setProxy nok (direct)"); debug(eee); });
+
+                    debug("OPDS AUTH win LOAD 3", urlStr.substring(0, 500));
+
+                    win.loadURL(urlStr).then(() => {
+                        debug("loadURL() 3 ok " + urlStr);
+                        // authSession.setProxy({ mode: "system" }).then(() => { debug("setProxy ok (system)"); }).catch((eee) => { debug("setProxy nok (system)"); debug(eee); });
+                    }).catch((err) => {
+                        debug("loadURL() 3 nok " + urlStr);
+                        debug(err);
+
+                        _proxyWasBypassed = false;
+
+                        authSession.setProxy({ mode: "system" }).then(() => { debug("setProxy ok (system)"); }).catch((eee) => { debug("setProxy nok (system)"); debug(eee); });
+                        try {
+                            win.close();
+                        } catch (e) {
+                            debug(e);
+                        }
+                    });
+                } else {
+                    try {
+                        win.close();
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+            });
+        } else {
+            try {
+                win.close();
+            } catch (e) {
+                debug(e);
+            }
+        }
+    });
 
     debug("OPDS AUTH win LOAD 2", urlStr.substring(0, 500));
 
@@ -1722,25 +1863,23 @@ const htmlLoginTemplate = (
                         : ""}
                         <form method="post" id="${ID_formAction}" style="align-items: ${!(logoUrl || help?.length > 0) ? "center" : "end"}">
                             <p>
-                                <input type="text" name="login" value="" required>
-                                    ${AvatarIcon}
-                                </input>
+                                ${AvatarIcon}
+                                <input type="text" name="login" value="" required="required" />
                                 <label for="login" id="${ID_labelForLogin}"></label>
                             </p>
                             <p>
-                                <input type="password" name="password" value="" required>
-                                    ${PasswordIcon}
-                                </input>
+                                ${PasswordIcon}
+                                <input type="password" name="password" value="" required="required" />
                                 <label for="password" id="${ID_labelForPassword}"></label>
                             </p>
                             ${registerUrl ? `<a id="${ID_aRegisterUrl}" target="_blank" class="register_button">
                                 ${AddIcon}
                                 ${getTranslator().translate("catalog.opds.auth.register")}
                             </a>` : ""}
-                            <p><input hidden type="text" name="nonce" id="${ID_inputNonce}" /></p>
-                            <p><input hidden type="text" name="qop" id="${ID_inputQop}" /></p>
-                            <p><input hidden type="text" name="algorithm" id="${ID_inputAlgorithm}" /></p>
-                            <p><input hidden type="text" name="realm" id="${ID_inputRealm}" /></p>
+                            <p><input hidden="hidden" type="text" name="nonce" id="${ID_inputNonce}" /></p>
+                            <p><input hidden="hidden" type="text" name="qop" id="${ID_inputQop}" /></p>
+                            <p><input hidden="hidden" type="text" name="algorithm" id="${ID_inputAlgorithm}" /></p>
+                            <p><input hidden="hidden" type="text" name="realm" id="${ID_inputRealm}" /></p>
                             <div class="submit">
                                 <input
                                     type="button"
@@ -1770,6 +1909,7 @@ const htmlLoginTemplate = (
     try {
         parsedDocument = new DOMParser().parseFromString(rawHtmlTemplate, "text/html");
     } catch (err) {
+        debug(rawHtmlTemplate);
         debug(err);
         return "<body>DOM TEMPLATE PARSE ERROR!?</body>";
     }
@@ -2231,6 +2371,7 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
     try {
         parsedDocument = new DOMParser().parseFromString(rawHtmlTemplate, "text/html");
     } catch (err) {
+        debug(rawHtmlTemplate);
         debug(err);
         return "<body>DOM TEMPLATE PARSE ERROR!?</body>";
     }
