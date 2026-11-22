@@ -5,14 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import debug_ from "debug";
-import { startExternalAuthentication, matchesExternalAuthenticationCallback, IExternalAuthenticationSession } from "./externalAuthentication";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { DOMParser, XMLSerializer, type Document } from "@xmldom/xmldom";
+import debug_ from "debug";
+import { app, AuthenticationResponseDetails, AuthInfo, BrowserWindow, Event as ElectronEvent, Event, HandlerDetails, session, shell, WebContents, WebContentsWillNavigateEventParams } from "electron";
+import { URL_HOST_COMMON, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY, URL_PROTOCOL_OPDS, URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
 import { logoutOpdsCatalog } from "readium-desktop/main/services/opdsLogout";
 import { getFeed } from "./api/opds/feed";
+import { IExternalAuthenticationSession, matchesExternalAuthenticationCallback, startExternalAuthentication } from "./externalAuthentication";
 import { submitInlineAuthentication } from "./inlineAuthentication";
-import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY } from "readium-desktop/common/streamerProtocol";
-import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -25,6 +26,7 @@ import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillN
 // @__ts-ignore TS1479
 import { Headers } from "node-fetch";
 
+import { URL } from "node:url";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, opdsActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -41,28 +43,27 @@ import {
     httpSetAuthenticationToken,
     IOpdsAuthenticationToken, wipeAuthenticationTokenStorage,
 } from "readium-desktop/main/network/http";
-import { ContentType } from "readium-desktop/utils/contentType";
 import {
+    createOpdsPkceTransaction,
+    exchangeOpdsPkceAuthorizationCode,
     IOpdsPkceTransaction,
     OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
     OPDS_PKCE_CANONICAL_TYPE,
-    createOpdsPkceTransaction,
-    exchangeOpdsPkceAuthorizationCode,
 } from "readium-desktop/main/network/opdsPkce";
+import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, delay, join, put, race, spawn } from "redux-saga/effects";
 import { call as callTyped, fork as forkTyped, take as takeTyped } from "typed-redux-saga/macro";
-import { URL } from "node:url";
 
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
-import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, TregisterHttpProtocolHandler} from "./getEventChannel";
-import { initClientSecretToken } from "./apiapp";
-import { digestAuthentication } from "readium-desktop/utils/digest";
 import isURL from "readium-desktop/common/utils/isURL";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { digestAuthentication } from "readium-desktop/utils/digest";
+import { initClientSecretToken } from "./apiapp";
+import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, TregisterHttpProtocolHandler } from "./getEventChannel";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -80,8 +81,8 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 import { SESSION_PARTITION_AUTH } from "readium-desktop/common/sessions";
 
 // https://github.com/cure53/DOMPurify?tab=readme-ov-file#running-dompurify-on-the-server
-import { JSDOM } from "jsdom";
 import DOMPurify_ from "dompurify";
+import { JSDOM } from "jsdom";
 const DOMPurify = DOMPurify_(new JSDOM("").window);
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
@@ -945,7 +946,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
 
     let urlExternal: string | undefined;
     let title: string | undefined;
-    if (/^data:text\/html/.test(urlStr)) {
+    if (urlStr.startsWith("data:text/html")) {
         // passthrough
     } else if (/^https?:\/\//.test(urlStr)) {
         if (!retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser) {
@@ -1145,13 +1146,170 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     //     });
     // });
 
-    debug("OPDS AUTH win LOAD 1", urlStr.substring(0, 500));
+    let _proxyWasBypassed = false;
+
+    let _proxyWasUsernamePassword = false;
+    let _proxy_username: string | undefined;
+    let _proxy_password: string | undefined;
+    let _proxy_url: string | undefined;
+
+    const appOnLogin = (
+        event: Event,
+        _webContents: WebContents | null,
+        _authenticationResponseDetails: AuthenticationResponseDetails,
+        authInfo: AuthInfo,
+        callback: (username?: string, password?: string) => void) => {
+
+        debug("Electron app.onLogin...");
+        if (_proxyWasUsernamePassword && authInfo.isProxy && _proxy_username && _proxy_password) {
+            debug("Electron app.onLogin PROXY");
+            event.preventDefault();
+            callback(_proxy_username, _proxy_password);
+
+            // try just once (could try several time, but watch out for "Error: ERR_TOO_MANY_RETRIES (-375) loading")
+            _proxyWasUsernamePassword = false;
+            _proxy_username = undefined;
+            _proxy_password = undefined;
+            _proxy_url = undefined;
+            app.off("login", appOnLogin);
+        }
+    };
+
+    win.on("close", () => {
+        debug("OPDS AUTH win close", urlStr.substring(0, 500));
+
+        if (_proxyWasUsernamePassword) {
+            debug("OPDS AUTH win close _proxyWasUsernamePassword");
+            app.off("login", appOnLogin);
+        }
+        _proxyWasUsernamePassword = false;
+
+        if (_proxyWasBypassed) {
+            debug("OPDS AUTH win close _proxyWasBypassed");
+            const authSession = session.fromPartition(SESSION_PARTITION_AUTH, { cache: false });
+            authSession.setProxy({ mode: "system" }).then(() => { debug("setProxy ok (system)"); }).catch((eee) => { debug("setProxy nok (system)"); debug(eee); });
+        }
+        _proxyWasBypassed = false;
+    });
 
     // win.webContents.loadURL
-    // await DO NOT AWAIT!! (race condition when urlStr is a HTTP link that immediately redirects to OPDS://AUTHORIZE)
-    win.loadURL(urlStr).then(() => { debug("loadURL() ok " + urlStr); }).catch((err) => { debug("loadURL() nok " + urlStr); debug(err); });
+    // DO NOT AWAIT!! (race condition when urlStr is a HTTP link that immediately redirects to OPDS://AUTHORIZE)
 
-    debug("OPDS AUTH win LOAD 2", urlStr.substring(0, 500));
+    debug("OPDS AUTH win LOAD before 1", urlStr.substring(0, 500));
+    win.loadURL(urlStr).then(() => {
+        debug("loadURL() 1 ok " + urlStr);
+    }).catch((err) => {
+        debug("loadURL() 1 nok " + urlStr);
+        debug(err);
+        if (err && String(err).includes("(-111)")) {
+            // Error:  (-111) loading
+            // Chromium
+            // net::ERR_TUNNEL_CONNECTION_FAILED
+
+            function tryProxy(proxyU: string) {
+                try {
+                    const parsed = new URL(proxyU);
+                    if (parsed.username || parsed.password) {
+                        _proxy_username = decodeURIComponent(parsed.username);
+                        _proxy_password = decodeURIComponent(parsed.password);
+                        _proxy_url = `${parsed.protocol}//${parsed.host}`;
+
+                        _proxyWasUsernamePassword = true;
+
+                        debug("_proxy_username: ", _proxy_username);
+                        debug("_proxy_password: ", _proxy_password);
+                        debug("_proxy_url: ", _proxy_url);
+
+                        session.defaultSession.setProxy({
+                            mode: "fixed_servers",
+                            proxyRules: _proxy_url,
+                        }).then(() => { debug("setProxy ok (fixed_servers)"); }).catch((eee) => { debug("setProxy nok (fixed_servers)"); debug(eee); });
+                    }
+                } catch (err) {
+                    debug("Proxy URL?", err);
+                }
+            }
+
+            let proxyUrl = process.env.HTTPS_PROXY;
+            if (proxyUrl) {
+                debug("HTTPS_PROXY ...", proxyUrl);
+                tryProxy(proxyUrl);
+            }
+            if (!_proxyWasUsernamePassword) {
+                proxyUrl = process.env.HTTP_PROXY;
+                if (proxyUrl) {
+                    debug("HTTP_PROXY ...", proxyUrl);
+                    tryProxy(proxyUrl);
+                }
+            }
+            if (_proxyWasUsernamePassword) {
+                app.on("login", appOnLogin);
+            }
+
+            debug("OPDS AUTH win LOAD before 2", urlStr.substring(0, 500));
+            win.loadURL(urlStr).then(() => {
+                debug("loadURL() 2 ok " + urlStr);
+                // authSession.setProxy({ mode: "system" }).then(() => { debug("setProxy ok (system)"); }).catch((eee) => { debug("setProxy nok (system)"); debug(eee); });
+            }).catch((err) => {
+                debug("loadURL() 2 nok " + urlStr);
+                debug(err);
+
+                if (_proxyWasUsernamePassword) {
+                    app.off("login", appOnLogin);
+                }
+                _proxyWasUsernamePassword = false;
+                _proxy_username = undefined;
+                _proxy_password = undefined;
+                _proxy_url = undefined;
+
+                if (err && (String(err).includes("(-111)") || String(err).includes("(-375)"))) {
+                    // Error:  (-111) loading
+                    // Chromium
+                    // net::ERR_TUNNEL_CONNECTION_FAILED
+                    //
+                    // Error: ERR_TOO_MANY_RETRIES (-375) loading
+
+                    _proxyWasBypassed = true;
+
+                    const authSession = session.fromPartition(SESSION_PARTITION_AUTH, { cache: false });
+                    authSession.setProxy({ mode: "direct" }).then(() => { debug("setProxy ok (direct)"); }).catch((eee) => { debug("setProxy nok (direct)"); debug(eee); });
+
+                    debug("OPDS AUTH win LOAD before 3", urlStr.substring(0, 500));
+                    win.loadURL(urlStr).then(() => {
+                        debug("loadURL() 3 ok " + urlStr);
+                        // authSession.setProxy({ mode: "system" }).then(() => { debug("setProxy ok (system)"); }).catch((eee) => { debug("setProxy nok (system)"); debug(eee); });
+                    }).catch((err) => {
+                        debug("loadURL() 3 nok " + urlStr);
+                        debug(err);
+
+                        _proxyWasBypassed = false;
+
+                        authSession.setProxy({ mode: "system" }).then(() => { debug("setProxy ok (system)"); }).catch((eee) => { debug("setProxy nok (system)"); debug(eee); });
+                        try {
+                            win.close();
+                        } catch (e) {
+                            debug(e);
+                        }
+                    });
+                    debug("OPDS AUTH win LOAD after 3", urlStr.substring(0, 500));
+                } else {
+                    try {
+                        win.close();
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+            });
+            debug("OPDS AUTH win LOAD after 2", urlStr.substring(0, 500));
+        } else {
+            try {
+                win.close();
+            } catch (e) {
+                debug(e);
+            }
+        }
+    });
+    debug("OPDS AUTH win LOAD after 1", urlStr.substring(0, 500));
 
     if (urlExternal) {
         setTimeout(() => {
@@ -1321,8 +1479,6 @@ const LoginIcon = `<svg width="9" height="9" viewBox="0 0 9 9" fill="currentColo
 <path d="M5.64414 5.04819L4.08164 6.61069C3.99358 6.69875 3.87415 6.74823 3.74961 6.74823C3.62507 6.74823 3.50564 6.69875 3.41758 6.61069C3.32952 6.52263 3.28005 6.4032 3.28005 6.27866C3.28005 6.15413 3.32952 6.03469 3.41758 5.94663L4.17969 5.1853H0.9375C0.81318 5.1853 0.693951 5.13592 0.606044 5.04801C0.518136 4.9601 0.46875 4.84087 0.46875 4.71655C0.46875 4.59223 0.518136 4.473 0.606044 4.3851C0.693951 4.29719 0.81318 4.2478 0.9375 4.2478H4.17969L3.41836 3.48569C3.37476 3.44209 3.34017 3.39033 3.31657 3.33336C3.29297 3.27639 3.28083 3.21533 3.28083 3.15366C3.28083 3.02913 3.3303 2.90969 3.41836 2.82163C3.50642 2.73357 3.62585 2.6841 3.75039 2.6841C3.87493 2.6841 3.99436 2.73357 4.08242 2.82163L5.64492 4.38413C5.68857 4.42773 5.72318 4.47952 5.74678 4.53652C5.77037 4.59353 5.78247 4.65463 5.7824 4.71632C5.78233 4.77802 5.77008 4.83909 5.74635 4.89604C5.72263 4.95299 5.68789 5.0047 5.64414 5.04819ZM7.5 0.810303H5.3125C5.18818 0.810303 5.06895 0.859689 4.98104 0.947596C4.89314 1.0355 4.84375 1.15473 4.84375 1.27905C4.84375 1.40337 4.89314 1.5226 4.98104 1.61051C5.06895 1.69842 5.18818 1.7478 5.3125 1.7478H7.34375V7.6853H5.3125C5.18818 7.6853 5.06895 7.73469 4.98104 7.8226C4.89314 7.9105 4.84375 8.02973 4.84375 8.15405C4.84375 8.27837 4.89314 8.3976 4.98104 8.48551C5.06895 8.57342 5.18818 8.6228 5.3125 8.6228H7.5C7.7072 8.6228 7.90591 8.54049 8.05243 8.39398C8.19894 8.24747 8.28125 8.04875 8.28125 7.84155V1.59155C8.28125 1.38435 8.19894 1.18564 8.05243 1.03913C7.90591 0.892613 7.7072 0.810303 7.5 0.810303Z" fill="currenColor"/>
 </svg>`;
 
-const escapeKeyScript = "";  // `<script type="text/javascript">window.document.body.addEventListener("keyup", (ev) => { if (ev.key === "Escape") { ev.preventDefault(); ev.stopPropagation(); window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/'; } }, true)</script>`; // window.close();
-
 const htmlLoginTemplate = (
     urlToSubmit = "",
     loginLabel = getTranslator().translate("catalog.opds.auth.username"),
@@ -1340,16 +1496,29 @@ const htmlLoginTemplate = (
         title = getTranslator().translate("catalog.opds.auth.login");
     }
 
-    return `
+    const ID_headTitle = "head-title";
+    const ID_h1Title = "h1-title";
+    const ID_imgLoginLogo = "img-login-logo";
+    const ID_aHelp = "a-help-";
+    const ID_aRegisterUrl = "a-register-url";
+    const ID_formAction = "form-action";
+    const ID_labelForLogin = "label-for-login";
+    const ID_labelForPassword = "label-for-password";
+    const ID_inputNonce = "inputNonce";
+    const ID_inputQop = "inputQop";
+    const ID_inputAlgorithm = "inputAlgorithm";
+    const ID_inputRealm = "inputRealm";
+
+    const rawHtmlTemplate = `
     <html lang="en">
 
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
 
-        <title>${DOMPurify.sanitize(title)}</title>
+        <title id="${ID_headTitle}"></title>
 
         <!-- Custom styles for this template -->
         <style>
@@ -1697,47 +1866,45 @@ const htmlLoginTemplate = (
             <div class="login">
                 <div class="container">
                     <div class="presentation">
-                        <h1>${DOMPurify.sanitize(title)}</h1>
+                        <h1 id="${ID_h1Title}"></h1>
                     </div>
                     <div class="content_wrapper">
-                    ${(logoUrl || help.length > 0) ?
+                    ${(logoUrl || help?.length > 0) ?
                         `<div class="content_informations">
-                            ${logoUrl ? `<img class="logo" src="${DOMPurify.sanitize(logoUrl)}" alt="login logo">` : ""}
+                            ${logoUrl ? `<img class="logo" id="${ID_imgLoginLogo}" alt="login logo" />` : ""}
                             <div class="help_links">
-                                ${help ? `${help.map((v) => { const vv = DOMPurify.sanitize(v); return `<a href=${vv}>${vv}</a>`; }).join("")}` : ""}
+                                ${help ? `${help.map((_v, i) => { return `<a id="${ID_aHelp}${i}"></a>`; }).join("")}` : ""}
                             </div>
                         </div>`
                         : ""}
-                        <form method="post" action="${DOMPurify.sanitize(urlToSubmit)}" style="align-items: ${!(logoUrl || help.length > 0) ? "center" : "end"}">
+                        <form method="post" id="${ID_formAction}" style="align-items: ${!(logoUrl || help?.length > 0) ? "center" : "end"}">
                             <p>
-                                <input type="text" name="login" value="" required>
-                                    ${AvatarIcon}
-                                </input>
-                                <label for="login">${DOMPurify.sanitize(loginLabel)}</label>
+                                ${AvatarIcon}
+                                <input type="text" name="login" value="" required="required" />
+                                <label for="login" id="${ID_labelForLogin}"></label>
                             </p>
                             <p>
-                                <input type="password" name="password" value="" required>
-                                    ${PasswordIcon}
-                                </input>
-                                <label for="password">${DOMPurify.sanitize(passLabel)}</label>
+                                ${PasswordIcon}
+                                <input type="password" name="password" value="" required="required" />
+                                <label for="password" id="${ID_labelForPassword}"></label>
                             </p>
-                            ${registerUrl ? `<a href="${DOMPurify.sanitize(registerUrl)}" target="_blank" class="register_button">
+                            ${registerUrl ? `<a id="${ID_aRegisterUrl}" target="_blank" class="register_button">
                                 ${AddIcon}
                                 ${getTranslator().translate("catalog.opds.auth.register")}
                             </a>` : ""}
-                            <p><input hidden type="text" name="nonce" value="${DOMPurify.sanitize(nonce)}"></p>
-                            <p><input hidden type="text" name="qop" value="${DOMPurify.sanitize(qop)}"></p>
-                            <p><input hidden type="text" name="algorithm" value="${DOMPurify.sanitize(algorithm)}"></p>
-                            <p><input hidden type="text" name="realm" value="${DOMPurify.sanitize(realm)}"></p>
+                            <p><input hidden="hidden" type="text" name="nonce" id="${ID_inputNonce}" /></p>
+                            <p><input hidden="hidden" type="text" name="qop" id="${ID_inputQop}" /></p>
+                            <p><input hidden="hidden" type="text" name="algorithm" id="${ID_inputAlgorithm}" /></p>
+                            <p><input hidden="hidden" type="text" name="realm" id="${ID_inputRealm}" /></p>
                             <div class="submit">
                                 <input
                                     type="button"
                                     name="cancel"
                                     value="${getTranslator().translate("catalog.opds.auth.cancel")}"
-                                    onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/';">
+                                    onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/';" />
                                 <!-- window.close(); -->
                                 <div class="submit_button">
-                                    <input type="submit" name="commit" value="${getTranslator().translate("catalog.opds.auth.login")}">
+                                    <input type="submit" name="commit" value="${getTranslator().translate("catalog.opds.auth.login")}" />
                                     <label for="commit">${LoginIcon}</label>
                                 </div>
                             </div>
@@ -1745,23 +1912,96 @@ const htmlLoginTemplate = (
                     </div>
                 </div>
             </div>
-            ${escapeKeyScript}
         </body>
 
     </html>`;
+
+    // const sanitizedHtml = DOMPurify.sanitize(rawHtmlTemplate, {
+    //     FORCE_BODY: true,
+    //     FORBID_ATTR: ["srcdoc"], // additive, keeps DOMPurify's default deny-list (unlike ALLOWED_ATTR allow-list wholesale replacement)
+    //     FORBID_TAGS: ["base", "embed", "iframe", "link", "object", "script"], // additive, keeps DOMPurify's default deny-list (unlike ALLOWED_TAGS allow-list wholesale replacement)
+    // });
+    let parsedDocument: Document | undefined;
+    try {
+        parsedDocument = new DOMParser().parseFromString(rawHtmlTemplate, "text/html");
+    } catch (err) {
+        debug(rawHtmlTemplate);
+        debug(err);
+        return "<body>DOM TEMPLATE PARSE ERROR!?</body>";
+    }
+
+    try {
+        const imgLoginLogo = parsedDocument!.getElementById(ID_imgLoginLogo);
+        if (imgLoginLogo && logoUrl) imgLoginLogo.setAttribute("src", DOMPurify.sanitize(logoUrl));
+
+        const aRegisterUrl = parsedDocument!.getElementById(ID_aRegisterUrl);
+        if (aRegisterUrl && registerUrl) aRegisterUrl.setAttribute("href", DOMPurify.sanitize(registerUrl));
+
+        const labelForPassword = parsedDocument!.getElementById(ID_labelForPassword);
+        if (labelForPassword && passLabel) labelForPassword.textContent = DOMPurify.sanitize(passLabel);
+
+        const labelForLogin = parsedDocument!.getElementById(ID_labelForLogin);
+        if (labelForLogin && loginLabel) labelForLogin.textContent = DOMPurify.sanitize(loginLabel);
+
+        const h1Title = parsedDocument!.getElementById(ID_h1Title);
+        if (h1Title && title) h1Title.textContent = DOMPurify.sanitize(title);
+
+        const formAction = parsedDocument!.getElementById(ID_formAction);
+        if (formAction && urlToSubmit) formAction.setAttribute("action", DOMPurify.sanitize(urlToSubmit));
+
+        const headTitle = parsedDocument!.getElementById(ID_headTitle);
+        if (headTitle && title) headTitle.textContent = DOMPurify.sanitize(title);
+
+        const inputNonce = parsedDocument!.getElementById(ID_inputNonce);
+        if (inputNonce && nonce) inputNonce.setAttribute("value", DOMPurify.sanitize(nonce));
+
+        const inputQop = parsedDocument!.getElementById(ID_inputQop);
+        if (inputQop && nonce) inputQop.setAttribute("value", DOMPurify.sanitize(qop));
+
+        const inputAlgorithm = parsedDocument!.getElementById(ID_inputAlgorithm);
+        if (inputAlgorithm && nonce) inputAlgorithm.setAttribute("value", DOMPurify.sanitize(algorithm));
+
+        const inputRealm = parsedDocument!.getElementById(ID_inputRealm);
+        if (inputRealm && nonce) inputRealm.setAttribute("value", DOMPurify.sanitize(realm));
+
+        if (help?.length) {
+            let i = 0;
+            for (const h of help) {
+                const id = `${ID_aHelp}${i}`;
+                const aHelp = parsedDocument!.getElementById(id);
+                if (id && h) {
+                    const link = DOMPurify.sanitize(h);
+                    aHelp.textContent = link;
+                    aHelp.setAttribute("href", link);
+                }
+                i++;
+            }
+        }
+    } catch (err) {
+        debug(err);
+        return "<body>DOM TEMPLATE INJECT ERROR!?</body>";
+    }
+
+    return new XMLSerializer().serializeToString(parsedDocument);
+    // return parsedDocument.outerHTML;
 };
 
 const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExternal: string) => {
-    return `
+    const ID_headTitle = "head-title";
+    const ID_h1Title = "h1-title";
+    const ID_aLink = "a-link";
+    const ID_inputClick = "input-click";
+
+    const rawHtmlTemplate = `
     <html lang="en">
 
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
 
-        <title>${DOMPurify.sanitize(title)}</title>
+        <title id="${ID_headTitle}"></title>
 
         <!-- Custom styles for this template -->
         <style>
@@ -2106,8 +2346,8 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
             <div class="login">
                 <div class="container">
                     <div class="presentation">
-                        <h1>${DOMPurify.sanitize(title)}</h1>
-                        <h2><a href="${urlExternal}">${DOMPurify.sanitize(urlFriendly)} (...)</a></h2>
+                        <h1 id="${ID_h1Title}"></h1>
+                        <h2><a id="${ID_aLink}"></a></h2>
                     </div>
                     <div class="content_wrapper">
                         <b>${getTranslator().translate("catalog.opds.auth.external")}</b>
@@ -2116,7 +2356,7 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
                                 type="button"
                                 name="cancel"
                                 value="${getTranslator().translate("catalog.opds.auth.cancel")}"
-                                onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/';">
+                                onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/';" />
                                 <!-- window.close(); -->
                         </div>
                     </div>
@@ -2125,16 +2365,52 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
                         <i>${getTranslator().translate("catalog.opds.auth.fallback")}</i>
                         <div class="submit">
                             <input
+                                id="${ID_inputClick}"
                                 type="button"
                                 name="retry"
                                 value="${getTranslator().translate("catalog.opds.auth.retry")}"
-                                onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/${URL_OPDS_AUTH_RETRY}/${encodeURIComponent_RFC3986(urlExternal)}'">
+                                />
                         </div>
                     </div>
                 </div>
             </div>
-            ${escapeKeyScript}
         </body>
 
     </html>`;
+
+    // const sanitizedHtml = DOMPurify.sanitize(rawHtmlTemplate, {
+    //     FORCE_BODY: true,
+    //     FORBID_ATTR: ["srcdoc"], // additive, keeps DOMPurify's default deny-list (unlike ALLOWED_ATTR allow-list wholesale replacement)
+    //     FORBID_TAGS: ["base", "embed", "iframe", "link", "object", "script"], // additive, keeps DOMPurify's default deny-list (unlike ALLOWED_TAGS allow-list wholesale replacement)
+    // });
+    let parsedDocument: Document | undefined;
+    try {
+        parsedDocument = new DOMParser().parseFromString(rawHtmlTemplate, "text/html");
+    } catch (err) {
+        debug(rawHtmlTemplate);
+        debug(err);
+        return "<body>DOM TEMPLATE PARSE ERROR!?</body>";
+    }
+
+    try {
+        const headTitle = parsedDocument!.getElementById(ID_headTitle);
+        if (headTitle && title) headTitle.textContent = DOMPurify.sanitize(title);
+
+        const h1Title = parsedDocument!.getElementById(ID_h1Title);
+        if (h1Title && title) h1Title.textContent = DOMPurify.sanitize(title);
+
+        const aLink = parsedDocument!.getElementById(ID_aLink);
+        if (aLink && urlExternal) aLink.setAttribute("href", DOMPurify.sanitize(urlExternal));
+        if (aLink && urlFriendly) aLink.textContent = DOMPurify.sanitize(urlFriendly) + " (...)";
+
+        const inputClick = parsedDocument!.getElementById(ID_inputClick);
+        if (inputClick && urlExternal) inputClick.setAttribute("onClick", `window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/${URL_OPDS_AUTH_RETRY}/${encodeURIComponent_RFC3986(DOMPurify.sanitize(urlExternal))}'`);
+
+    } catch (err) {
+        debug(err);
+        return "<body>DOM TEMPLATE INJECT ERROR!?</body>";
+    }
+
+    return new XMLSerializer().serializeToString(parsedDocument);
+    // return parsedDocument.outerHTML;
 };
