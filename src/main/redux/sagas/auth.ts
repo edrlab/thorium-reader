@@ -6,6 +6,7 @@
 // ==LICENSE-END=
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { DOMParser, XMLSerializer, type Document } from "@xmldom/xmldom";
 import debug_ from "debug";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import { URL_HOST_COMMON, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY, URL_PROTOCOL_OPDS, URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
@@ -1355,10 +1356,10 @@ const htmlLoginTemplate = (
     <html lang="en">
 
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
 
         <title id="${ID_headTitle}"></title>
 
@@ -1713,7 +1714,7 @@ const htmlLoginTemplate = (
                     <div class="content_wrapper">
                     ${(logoUrl || help?.length > 0) ?
                         `<div class="content_informations">
-                            ${logoUrl ? `<img class="logo" id="${ID_imgLoginLogo}" alt="login logo">` : ""}
+                            ${logoUrl ? `<img class="logo" id="${ID_imgLoginLogo}" alt="login logo" />` : ""}
                             <div class="help_links">
                                 ${help ? `${help.map((_v, i) => { return `<a id="${ID_aHelp}${i}"></a>`; }).join("")}` : ""}
                             </div>
@@ -1736,19 +1737,19 @@ const htmlLoginTemplate = (
                                 ${AddIcon}
                                 ${getTranslator().translate("catalog.opds.auth.register")}
                             </a>` : ""}
-                            <p><input hidden type="text" name="nonce" id="${ID_inputNonce}"></p>
-                            <p><input hidden type="text" name="qop" id="${ID_inputQop}"></p>
-                            <p><input hidden type="text" name="algorithm" id="${ID_inputAlgorithm}"></p>
-                            <p><input hidden type="text" name="realm" id="${ID_inputRealm}"></p>
+                            <p><input hidden type="text" name="nonce" id="${ID_inputNonce}" /></p>
+                            <p><input hidden type="text" name="qop" id="${ID_inputQop}" /></p>
+                            <p><input hidden type="text" name="algorithm" id="${ID_inputAlgorithm}" /></p>
+                            <p><input hidden type="text" name="realm" id="${ID_inputRealm}" /></p>
                             <div class="submit">
                                 <input
                                     type="button"
                                     name="cancel"
                                     value="${getTranslator().translate("catalog.opds.auth.cancel")}"
-                                    onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/';">
+                                    onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/';" />
                                 <!-- window.close(); -->
                                 <div class="submit_button">
-                                    <input type="submit" name="commit" value="${getTranslator().translate("catalog.opds.auth.login")}">
+                                    <input type="submit" name="commit" value="${getTranslator().translate("catalog.opds.auth.login")}" />
                                     <label for="commit">${LoginIcon}</label>
                                 </div>
                             </div>
@@ -1825,7 +1826,8 @@ const htmlLoginTemplate = (
         return "<body>DOM TEMPLATE INJECT ERROR!?</body>";
     }
 
-    return parsedDocument.body.outerHTML;
+    return new XMLSerializer().serializeToString(parsedDocument);
+    // return parsedDocument.outerHTML;
 };
 
 const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExternal: string) => {
@@ -1838,10 +1840,10 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
     <html lang="en">
 
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
 
         <title id="${ID_headTitle}"></title>
 
@@ -2198,7 +2200,7 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
                                 type="button"
                                 name="cancel"
                                 value="${getTranslator().translate("catalog.opds.auth.cancel")}"
-                                onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/';">
+                                onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/';" />
                                 <!-- window.close(); -->
                         </div>
                     </div>
@@ -2211,7 +2213,7 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
                                 type="button"
                                 name="retry"
                                 value="${getTranslator().translate("catalog.opds.auth.retry")}"
-                                >
+                                />
                         </div>
                     </div>
                 </div>
@@ -2252,5 +2254,6 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
         return "<body>DOM TEMPLATE INJECT ERROR!?</body>";
     }
 
-    return parsedDocument.body.outerHTML;
+    return new XMLSerializer().serializeToString(parsedDocument);
+    // return parsedDocument.outerHTML;
 };
