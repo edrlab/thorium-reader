@@ -1338,6 +1338,19 @@ const htmlLoginTemplate = (
         title = getTranslator().translate("catalog.opds.auth.login");
     }
 
+    const ID_headTitle = "head-title";
+    const ID_h1Title = "h1-title";
+    const ID_imgLoginLogo = "img-login-logo";
+    const ID_aHelp = "a-help-";
+    const ID_aRegisterUrl = "a-register-url";
+    const ID_formAction = "form-action";
+    const ID_labelForLogin = "label-for-login";
+    const ID_labelForPassword = "label-for-password";
+    const ID_inputNonce = "inputNonce";
+    const ID_inputQop = "inputQop";
+    const ID_inputAlgorithm = "inputAlgorithm";
+    const ID_inputRealm = "inputRealm";
+
     const rawHtmlTemplate = `
     <html lang="en">
 
@@ -1347,7 +1360,7 @@ const htmlLoginTemplate = (
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title id="head-title"></title>
+        <title id="${ID_headTitle}"></title>
 
         <!-- Custom styles for this template -->
         <style>
@@ -1695,38 +1708,38 @@ const htmlLoginTemplate = (
             <div class="login">
                 <div class="container">
                     <div class="presentation">
-                        <h1 id="h1-title"></h1>
+                        <h1 id="${ID_h1Title}"></h1>
                     </div>
                     <div class="content_wrapper">
                     ${(logoUrl || help?.length > 0) ?
                         `<div class="content_informations">
-                            ${logoUrl ? `<img class="logo" id="img-login-logo" alt="login logo">` : ""}
+                            ${logoUrl ? `<img class="logo" id="${ID_imgLoginLogo}" alt="login logo">` : ""}
                             <div class="help_links">
-                                ${help ? `${help.map((_v, i) => { return `<a id="aHelp${i}"></a>`; }).join("")}` : ""}
+                                ${help ? `${help.map((_v, i) => { return `<a id="${ID_aHelp}${i}"></a>`; }).join("")}` : ""}
                             </div>
                         </div>`
                         : ""}
-                        <form method="post" id="form-action" style="align-items: ${!(logoUrl || help?.length > 0) ? "center" : "end"}">
+                        <form method="post" id="${ID_formAction}" style="align-items: ${!(logoUrl || help?.length > 0) ? "center" : "end"}">
                             <p>
                                 <input type="text" name="login" value="" required>
                                     ${AvatarIcon}
                                 </input>
-                                <label for="login" id="label-for-login"></label>
+                                <label for="login" id="${ID_labelForLogin}"></label>
                             </p>
                             <p>
                                 <input type="password" name="password" value="" required>
                                     ${PasswordIcon}
                                 </input>
-                                <label for="password" id="label-for-password"></label>
+                                <label for="password" id="${ID_labelForPassword}"></label>
                             </p>
-                            ${registerUrl ? `<a id="a-register-url" target="_blank" class="register_button">
+                            ${registerUrl ? `<a id="${ID_aRegisterUrl}" target="_blank" class="register_button">
                                 ${AddIcon}
                                 ${getTranslator().translate("catalog.opds.auth.register")}
                             </a>` : ""}
-                            <p><input hidden type="text" name="nonce" id="inputNonce"></p>
-                            <p><input hidden type="text" name="qop" id="inputQop"></p>
-                            <p><input hidden type="text" name="algorithm" id="inputAlgorithm"></p>
-                            <p><input hidden type="text" name="realm" id="inputRealm"></p>
+                            <p><input hidden type="text" name="nonce" id="${ID_inputNonce}"></p>
+                            <p><input hidden type="text" name="qop" id="${ID_inputQop}"></p>
+                            <p><input hidden type="text" name="algorithm" id="${ID_inputAlgorithm}"></p>
+                            <p><input hidden type="text" name="realm" id="${ID_inputRealm}"></p>
                             <div class="submit">
                                 <input
                                     type="button"
@@ -1761,43 +1774,43 @@ const htmlLoginTemplate = (
     }
 
     try {
-        const imgLoginLogo = parsedDocument!.getElementById("img-login-logo");
+        const imgLoginLogo = parsedDocument!.getElementById(ID_imgLoginLogo);
         if (imgLoginLogo && logoUrl) imgLoginLogo.setAttribute("src", DOMPurify.sanitize(logoUrl));
 
-        const aRegisterUrl = parsedDocument!.getElementById("a-register-url");
+        const aRegisterUrl = parsedDocument!.getElementById(ID_aRegisterUrl);
         if (aRegisterUrl && registerUrl) aRegisterUrl.setAttribute("href", DOMPurify.sanitize(registerUrl));
 
-        const labelForPassword = parsedDocument!.getElementById("label-for-password");
+        const labelForPassword = parsedDocument!.getElementById(ID_labelForPassword);
         if (labelForPassword && passLabel) labelForPassword.textContent = DOMPurify.sanitize(passLabel);
 
-        const labelForLogin = parsedDocument!.getElementById("label-for-login");
+        const labelForLogin = parsedDocument!.getElementById(ID_labelForLogin);
         if (labelForLogin && loginLabel) labelForLogin.textContent = DOMPurify.sanitize(loginLabel);
 
-        const h1Title = parsedDocument!.getElementById("h1-title");
+        const h1Title = parsedDocument!.getElementById(ID_h1Title);
         if (h1Title && title) h1Title.textContent = DOMPurify.sanitize(title);
 
-        const formAction = parsedDocument!.getElementById("form-action");
+        const formAction = parsedDocument!.getElementById(ID_formAction);
         if (formAction && urlToSubmit) formAction.setAttribute("action", DOMPurify.sanitize(urlToSubmit));
 
-        const headTitle = parsedDocument!.getElementById("head-title");
+        const headTitle = parsedDocument!.getElementById(ID_headTitle);
         if (headTitle && title) headTitle.textContent = DOMPurify.sanitize(title);
 
-        const inputNonce = parsedDocument!.getElementById("inputNonce");
+        const inputNonce = parsedDocument!.getElementById(ID_inputNonce);
         if (inputNonce && nonce) inputNonce.setAttribute("value", DOMPurify.sanitize(nonce));
 
-        const inputQop = parsedDocument!.getElementById("inputQop");
+        const inputQop = parsedDocument!.getElementById(ID_inputQop);
         if (inputQop && nonce) inputQop.setAttribute("value", DOMPurify.sanitize(qop));
 
-        const inputAlgorithm = parsedDocument!.getElementById("inputAlgorithm");
+        const inputAlgorithm = parsedDocument!.getElementById(ID_inputAlgorithm);
         if (inputAlgorithm && nonce) inputAlgorithm.setAttribute("value", DOMPurify.sanitize(algorithm));
 
-        const inputRealm = parsedDocument!.getElementById("inputRealm");
+        const inputRealm = parsedDocument!.getElementById(ID_inputRealm);
         if (inputRealm && nonce) inputRealm.setAttribute("value", DOMPurify.sanitize(realm));
 
         if (help?.length) {
             let i = 0;
             for (const h of help) {
-                const id = `aHelp${i}`;
+                const id = `${ID_aHelp}${i}`;
                 const aHelp = parsedDocument!.getElementById(id);
                 if (id && h) {
                     const link = DOMPurify.sanitize(h);
@@ -1812,10 +1825,15 @@ const htmlLoginTemplate = (
         return "<body>DOM TEMPLATE INJECT ERROR!?</body>";
     }
 
-    return parsedDocument.body.innerHTML;
+    return parsedDocument.body.outerHTML;
 };
 
 const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExternal: string) => {
+    const ID_headTitle = "head-title";
+    const ID_h1Title = "h1-title";
+    const ID_aLink = "a-link";
+    const ID_inputClick = "input-click";
+
     const rawHtmlTemplate = `
     <html lang="en">
 
@@ -1825,7 +1843,7 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>${DOMPurify.sanitize(title)}</title>
+        <title id="${ID_headTitle}"></title>
 
         <!-- Custom styles for this template -->
         <style>
@@ -2170,8 +2188,8 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
             <div class="login">
                 <div class="container">
                     <div class="presentation">
-                        <h1>${DOMPurify.sanitize(title)}</h1>
-                        <h2><a href="${urlExternal}">${DOMPurify.sanitize(urlFriendly)} (...)</a></h2>
+                        <h1 id="${ID_h1Title}"></h1>
+                        <h2><a id="${ID_aLink}"></a></h2>
                     </div>
                     <div class="content_wrapper">
                         <b>${getTranslator().translate("catalog.opds.auth.external")}</b>
@@ -2189,10 +2207,11 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
                         <i>${getTranslator().translate("catalog.opds.auth.fallback")}</i>
                         <div class="submit">
                             <input
+                                id="${ID_inputClick}"
                                 type="button"
                                 name="retry"
                                 value="${getTranslator().translate("catalog.opds.auth.retry")}"
-                                onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/${URL_OPDS_AUTH_RETRY}/${encodeURIComponent_RFC3986(urlExternal)}'">
+                                >
                         </div>
                     </div>
                 </div>
@@ -2206,6 +2225,32 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
     //     FORBID_ATTR: ["srcdoc"], // additive, keeps DOMPurify's default deny-list (unlike ALLOWED_ATTR allow-list wholesale replacement)
     //     FORBID_TAGS: ["base", "embed", "iframe", "link", "object", "script"], // additive, keeps DOMPurify's default deny-list (unlike ALLOWED_TAGS allow-list wholesale replacement)
     // });
-    const parsedDocument = new DOMParser().parseFromString(rawHtmlTemplate, "text/html");
-    return parsedDocument.body.innerHTML;
+    let parsedDocument: Document | undefined;
+    try {
+        parsedDocument = new DOMParser().parseFromString(rawHtmlTemplate, "text/html");
+    } catch (err) {
+        debug(err);
+        return "<body>DOM TEMPLATE PARSE ERROR!?</body>";
+    }
+
+    try {
+        const headTitle = parsedDocument!.getElementById(ID_headTitle);
+        if (headTitle && title) headTitle.textContent = DOMPurify.sanitize(title);
+
+        const h1Title = parsedDocument!.getElementById(ID_h1Title);
+        if (h1Title && title) h1Title.textContent = DOMPurify.sanitize(title);
+
+        const aLink = parsedDocument!.getElementById(ID_aLink);
+        if (aLink && urlExternal) aLink.setAttribute("href", DOMPurify.sanitize(urlExternal));
+        if (aLink && urlFriendly) aLink.textContent = DOMPurify.sanitize(urlFriendly) + " (...)";
+
+        const inputClick = parsedDocument!.getElementById(ID_inputClick);
+        if (inputClick && urlExternal) inputClick.setAttribute("onClick", `window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/${URL_OPDS_AUTH_RETRY}/${encodeURIComponent_RFC3986(DOMPurify.sanitize(urlExternal))}'`);
+
+    } catch (err) {
+        debug(err);
+        return "<body>DOM TEMPLATE INJECT ERROR!?</body>";
+    }
+
+    return parsedDocument.body.outerHTML;
 };
