@@ -1221,7 +1221,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
                         debug("_proxy_url: ", _proxy_url);
 
                         session.defaultSession.setProxy({
-                            mode: 'fixed_servers',
+                            mode: "fixed_servers",
                             proxyRules: _proxy_url,
                         }).then(() => { debug("setProxy ok (fixed_servers)"); }).catch((eee) => { debug("setProxy nok (fixed_servers)"); debug(eee); });
                     }
