@@ -27,7 +27,7 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
     const { currentLocation, previousLocation, rootLocation } = props;
     const dispatch = useDispatch();
     const [__] = useTranslator();
-    const labelStyle: React.CSSProperties = { fontSize: "18px", fontWeight: 400, lineHeight: 1.5, minWidth: 0, overflowWrap: "anywhere", whiteSpace: "normal" };
+    const labelStyle: React.CSSProperties = { fontSize: "18px", fontWeight: 400, lineHeight: 1.5, minWidth: 0 };
     const location = useSelector((state: ILibraryRootState) => state.router.location);
     const savedDisplayType = useSelector((state: ILibraryRootState) => state.settings.libraryView?.displayType);
 
@@ -71,17 +71,22 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
             </Link>
             : <></>
             }
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", minWidth: 0, overflowWrap: "anywhere" }}>
+            <div style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", gap: "8px", minWidth: 0 }}>
                 {rootLocation && rootLocation.path !== currentLocation?.path && <>
-                    <Link style={labelStyle} to={{ pathname: rootLocation.path }}
+                    <Link style={{ ...labelStyle, flexShrink: 0, whiteSpace: "nowrap" }} to={{ pathname: rootLocation.path }}
                         title={rootLocation.name}
                         aria-label={rootLocation.name}
                         state={resolveRouterLocationState(location.state, savedDisplayType)}>
                         {truncateBreadcrumbLabel(rootLocation.name)}
                     </Link>
-                    <span aria-hidden="true">/</span>
+                    <span aria-hidden="true" style={{ flexShrink: 0 }}>/</span>
                 </>}
-                <span style={labelStyle} aria-current="page">{currentLocation?.name}</span>
+                <span
+                    style={{ ...labelStyle, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+                    title={currentLocation?.name}
+                    aria-current="page">
+                    {currentLocation?.name}
+                </span>
             </div>
         </nav>
     );

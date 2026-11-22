@@ -429,6 +429,7 @@ declare const data = {
       "title": ""
     },
     "resumeBrowsing": "",
+    "searchInCatalog": "",
     "shelf": "",
     "updateForm": {
       "name": "",

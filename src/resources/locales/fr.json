@@ -441,6 +441,7 @@
             "title": "Rechercher des catalogues"
         },
         "resumeBrowsing": "Reprendre le parcours",
+        "searchInCatalog": "Rechercher dans ce catalogue",
         "shelf": "Étagère",
         "updateForm": {
             "name": "Nom :",

@@ -1046,6 +1046,7 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "resumeBrowsing": string,
+  readonly "searchInCatalog": string,
   readonly "shelf": string,
   readonly "updateForm": {
     readonly "name": string,
@@ -1149,6 +1150,7 @@ declare namespace typed_i18n {
   (_: "opds.registry.loading", __?: {}): string;
   (_: "opds.registry.title", __?: {}): string;
   (_: "opds.resumeBrowsing", __?: {}): string;
+  (_: "opds.searchInCatalog", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
   (_: "opds.updateForm", __?: {}): {
   readonly "name": string,

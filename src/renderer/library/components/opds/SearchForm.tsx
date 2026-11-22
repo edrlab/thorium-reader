@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
 import debug_ from "debug";
@@ -28,7 +29,6 @@ import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -46,19 +46,36 @@ interface IProps extends IBaseProps,
 // Logger
 const debug = debug_("readium-desktop:renderer:redux:saga:opds");
 
-class SearchForm extends React.Component<IProps, undefined> {
+// Search terms keyed by the results route pathname they produced.
+// The search link state is reset on every OPDS navigation (see browseWatcher
+// in sagas/opds.ts), which unmounts the <input> until the new feed's search
+// link is resolved: the term must therefore outlive the DOM node.
+// Keyed by pathname so history back/forward restores the matching term.
+const searchTermByPathname = new Map<string, string>();
+
+interface IState {
+    // Only meaningful in narrow layouts, where the field is collapsed
+    // behind a toggle button (see .catalog_search_toggle in catalogs.scss).
+    open: boolean;
+}
+
+class SearchForm extends React.Component<IProps, IState> {
     private inputRef: React.RefObject<HTMLInputElement>;
+    private toggleRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
         super(props);
 
+        this.state = { open: false };
         this.onKeyboardFocusSearch = this.onKeyboardFocusSearch.bind(this);
         this.inputRef = React.createRef<HTMLInputElement>();
+        this.toggleRef = React.createRef<HTMLButtonElement>();
     }
 
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
+        this.restoreSearchTerm();
     }
 
     public componentWillUnmount() {
@@ -70,40 +87,110 @@ class SearchForm extends React.Component<IProps, undefined> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
+        // The <input> is (re)created when the search link becomes available,
+        // and the page changes on navigation: sync the field in both cases.
+        if (oldProps.location?.pathname !== this.props.location?.pathname
+            || (!oldProps.search?.url && this.props.search?.url)) {
+            this.restoreSearchTerm();
+        }
+    }
+
+    private restoreSearchTerm() {
+        const input = this.inputRef.current;
+        if (!input) {
+            return;
+        }
+        const term = searchTermByPathname.get(this.props.location?.pathname) || "";
+        input.value = term;
+        if (term && !this.state.open) {
+            // Narrow layouts: show the query the results come from.
+            this.setState({ open: true });
+        }
     }
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
+        const { open } = this.state;
 
+        if (!this.props.search?.url) {
+            return <></>;
+        }
+
+        // Fragment: the toggle and the form are direct flex items of the
+        // catalog header, so the form can wrap onto its own row when narrow.
         return (
-            <form
-                className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}
-                onSubmit={this.submitSearch}
-                role="search"
-            >
-                <label
-                    id="globalSearchLabel"
-                    htmlFor="globalSearchInput">
-                    {`${__("header.searchPlaceholder")}`}
-                </label>
-                <i><SVG ariaHidden svg={SearchIcon} /></i>
-                <input
-                    disabled={!this.props.search?.url}
-                    ref={this.inputRef}
-                    type="search"
-                    id="menu_search"
-                    aria-label={__("header.searchPlaceholder")}
-                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
-                />
-                {/* <button
-                    disabled={!this.props.search?.url}
-                    title={__("header.searchTitle")}
+            <>
+                <button
+                    ref={this.toggleRef}
+                    type="button"
+                    className={stylesCatalogs.catalog_search_toggle}
+                    aria-expanded={open}
+                    aria-controls="opdsSearchForm"
+                    title={__("opds.searchInCatalog")}
+                    onClick={this.onToggle}
                 >
-                    <SVG ariaHidden={true} svg={SearchIcon} />
-                </button> */}
-            </form>
+                    <SVG ariaHidden svg={SearchIcon} />
+                    <span className={stylesCatalogs.catalog_search_srOnly}>{__("opds.searchInCatalog")}</span>
+                </button>
+                <form
+                    id="opdsSearchForm"
+                    className={stylesCatalogs.catalog_search}
+                    data-open={open}
+                    onSubmit={this.submitSearch}
+                    role="search"
+                >
+                    <label
+                        className={stylesCatalogs.catalog_search_srOnly}
+                        htmlFor="opdsSearchInput">
+                        {__("opds.searchInCatalog")}
+                    </label>
+                    <div className={stylesInput.form_group}>
+                        <i><SVG ariaHidden svg={SearchIcon} /></i>
+                        <input
+                            ref={this.inputRef}
+                            type="search"
+                            id="opdsSearchInput"
+                            placeholder={__("opds.searchInCatalog")}
+                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                            onKeyDown={this.onInputKeyDown}
+                        />
+                    </div>
+                </form>
+            </>
         );
     }
+
+    // The toggle is display:none in wide layouts.
+    private isCollapsible = () => !!this.toggleRef.current?.offsetParent;
+
+    private openAndFocus = () => {
+        this.setState({ open: true }, () => {
+            const input = this.inputRef.current;
+            if (!input) {
+                return;
+            }
+            input.focus();
+            input.setSelectionRange(0, input.value.length);
+        });
+    };
+
+    private onToggle = () => {
+        if (this.state.open) {
+            this.setState({ open: false });
+        } else {
+            this.openAndFocus();
+        }
+    };
+
+    private onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // First Escape clears the text (native type="search" behaviour),
+        // a second Escape on the empty field collapses it.
+        if (e.key !== "Escape" || e.currentTarget.value || !this.isCollapsible()) {
+            return;
+        }
+        e.preventDefault();
+        this.setState({ open: false }, () => this.toggleRef.current?.focus());
+    };
 
     private registerAllKeyboardListeners() {
         registerKeyboardListener(
@@ -117,12 +204,8 @@ class SearchForm extends React.Component<IProps, undefined> {
     }
 
     private onKeyboardFocusSearch = () => {
-        if (!this.inputRef?.current) {
-            return;
-        }
-        this.inputRef.current.focus();
-        // this.inputRef.current.select();
-        this.inputRef.current.setSelectionRange(0, this.inputRef.current.value.length);
+        // Also opens the field when it is collapsed behind the toggle.
+        this.openAndFocus();
     };
     private submitSearch = (e: TFormEvent) => {
         e.preventDefault();
@@ -144,9 +227,12 @@ class SearchForm extends React.Component<IProps, undefined> {
                     ).params.level,
                     10);
 
+            const pathname = this.route(searchWords, url, level);
+            searchTermByPathname.set(pathname, searchWords);
+
             this.props.historyPush({
                 ...this.props.location,
-                pathname: this.route(searchWords, url, level),
+                pathname,
             }, this.props.location.state as IRouterLocationState);
         }
     };

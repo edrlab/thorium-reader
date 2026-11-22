@@ -435,6 +435,7 @@
             "title": "Search catalogs"
         },
         "resumeBrowsing": "Resume browsing",
+        "searchInCatalog": "Search this catalog",
         "shelf": "Shelf",
         "updateForm": {
             "name": "Name:",
