@@ -1165,6 +1165,13 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
             debug("Electron app.onLogin PROXY");
             event.preventDefault();
             callback(_proxy_username, _proxy_password);
+
+            // try just once (could try several time, but watch out for "Error: ERR_TOO_MANY_RETRIES (-375) loading")
+            _proxyWasUsernamePassword = false;
+            _proxy_username = undefined;
+            _proxy_password = undefined;
+            _proxy_url = undefined;
+            app.off("login", appOnLogin);
         }
     };
 
@@ -1172,21 +1179,23 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
         debug("OPDS AUTH win close", urlStr.substring(0, 500));
 
         if (_proxyWasUsernamePassword) {
+            debug("OPDS AUTH win close _proxyWasUsernamePassword");
             app.off("login", appOnLogin);
         }
         _proxyWasUsernamePassword = false;
 
         if (_proxyWasBypassed) {
+            debug("OPDS AUTH win close _proxyWasBypassed");
             const authSession = session.fromPartition(SESSION_PARTITION_AUTH, { cache: false });
             authSession.setProxy({ mode: "system" }).then(() => { debug("setProxy ok (system)"); }).catch((eee) => { debug("setProxy nok (system)"); debug(eee); });
         }
         _proxyWasBypassed = false;
     });
 
-    debug("OPDS AUTH win LOAD 1", urlStr.substring(0, 500));
-
     // win.webContents.loadURL
-    // await DO NOT AWAIT!! (race condition when urlStr is a HTTP link that immediately redirects to OPDS://AUTHORIZE)
+    // DO NOT AWAIT!! (race condition when urlStr is a HTTP link that immediately redirects to OPDS://AUTHORIZE)
+
+    debug("OPDS AUTH win LOAD before 1", urlStr.substring(0, 500));
     win.loadURL(urlStr).then(() => {
         debug("loadURL() 1 ok " + urlStr);
     }).catch((err) => {
@@ -1237,8 +1246,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
                 app.on("login", appOnLogin);
             }
 
-            debug("OPDS AUTH win LOAD 2", urlStr.substring(0, 500));
-
+            debug("OPDS AUTH win LOAD before 2", urlStr.substring(0, 500));
             win.loadURL(urlStr).then(() => {
                 debug("loadURL() 2 ok " + urlStr);
                 // authSession.setProxy({ mode: "system" }).then(() => { debug("setProxy ok (system)"); }).catch((eee) => { debug("setProxy nok (system)"); debug(eee); });
@@ -1246,20 +1254,27 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
                 debug("loadURL() 2 nok " + urlStr);
                 debug(err);
 
+                if (_proxyWasUsernamePassword) {
+                    app.off("login", appOnLogin);
+                }
                 _proxyWasUsernamePassword = false;
+                _proxy_username = undefined;
+                _proxy_password = undefined;
+                _proxy_url = undefined;
 
-                if (err && String(err).includes("(-111)")) {
+                if (err && (String(err).includes("(-111)") || String(err).includes("(-375)"))) {
                     // Error:  (-111) loading
                     // Chromium
                     // net::ERR_TUNNEL_CONNECTION_FAILED
+                    //
+                    // Error: ERR_TOO_MANY_RETRIES (-375) loading
 
                     _proxyWasBypassed = true;
 
                     const authSession = session.fromPartition(SESSION_PARTITION_AUTH, { cache: false });
                     authSession.setProxy({ mode: "direct" }).then(() => { debug("setProxy ok (direct)"); }).catch((eee) => { debug("setProxy nok (direct)"); debug(eee); });
 
-                    debug("OPDS AUTH win LOAD 3", urlStr.substring(0, 500));
-
+                    debug("OPDS AUTH win LOAD before 3", urlStr.substring(0, 500));
                     win.loadURL(urlStr).then(() => {
                         debug("loadURL() 3 ok " + urlStr);
                         // authSession.setProxy({ mode: "system" }).then(() => { debug("setProxy ok (system)"); }).catch((eee) => { debug("setProxy nok (system)"); debug(eee); });
@@ -1276,6 +1291,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
                             debug(e);
                         }
                     });
+                    debug("OPDS AUTH win LOAD after 3", urlStr.substring(0, 500));
                 } else {
                     try {
                         win.close();
@@ -1284,6 +1300,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
                     }
                 }
             });
+            debug("OPDS AUTH win LOAD after 2", urlStr.substring(0, 500));
         } else {
             try {
                 win.close();
@@ -1292,8 +1309,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
             }
         }
     });
-
-    debug("OPDS AUTH win LOAD 2", urlStr.substring(0, 500));
+    debug("OPDS AUTH win LOAD after 1", urlStr.substring(0, 500));
 
     if (urlExternal) {
         setTimeout(() => {
