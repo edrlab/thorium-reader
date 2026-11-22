@@ -48,8 +48,8 @@ export function prepareProfileScreenHtml(
     // still enforce the application font and standard text sizes.
     const sanitizedHtml = DOMPurify.sanitize(rawHtmlContent, {
         FORCE_BODY: true,
-        FORBID_ATTR: ["srcdoc"],
-        FORBID_TAGS: ["base", "embed", "iframe", "link", "object", "script"],
+        FORBID_ATTR: ["srcdoc"], // additive, keeps DOMPurify's default deny-list (unlike ALLOWED_ATTR allow-list wholesale replacement)
+        FORBID_TAGS: ["base", "embed", "iframe", "link", "object", "script"], // additive, keeps DOMPurify's default deny-list (unlike ALLOWED_TAGS allow-list wholesale replacement)
     });
     const parsedDocument = new DOMParser().parseFromString(sanitizedHtml, "text/html");
 
@@ -171,6 +171,8 @@ const CustomizationPage = () => {
         return <Navigate to="/home" replace />;
     }
 
+    // DOMPurify.sanitize() already applied in prepareProfileScreenHtml()
+    const dangerousInnerHTML_screenStateHtml = screenState.status === "ready" ? screenState.html : "";
     return (
         <LibraryLayout
             page={title}
@@ -184,7 +186,7 @@ const CustomizationPage = () => {
             >
                 {screenState.status === "loading" ? <div aria-hidden="true" className={styles.loading} /> : <></>}
                 {screenState.status === "error" ? <p role="alert">{__("opds.network.error")}</p> : <></>}
-                {screenState.status === "ready" ? <div dangerouslySetInnerHTML={{ __html: screenState.html }} /> : <></>}
+                {screenState.status === "ready" ? <div dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_screenStateHtml }} /> : <></>}
             </div>
         </LibraryLayout>
     );
