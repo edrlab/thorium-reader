@@ -22,7 +22,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { buildOpdsBrowserRoute, parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { SEARCH_TERM } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { TFormEvent } from "readium-desktop/typings/react";
@@ -45,13 +45,6 @@ interface IProps extends IBaseProps,
 
 // Logger
 const debug = debug_("readium-desktop:renderer:redux:saga:opds");
-
-// Search terms keyed by the results route pathname they produced.
-// The search link state is reset on every OPDS navigation (see browseWatcher
-// in sagas/opds.ts), which unmounts the <input> until the new feed's search
-// link is resolved: the term must therefore outlive the DOM node.
-// Keyed by pathname so history back/forward restores the matching term.
-const searchTermByPathname = new Map<string, string>();
 
 interface IState {
     // Only meaningful in narrow layouts, where the field is collapsed
@@ -87,9 +80,11 @@ class SearchForm extends React.Component<IProps, IState> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
-        // The <input> is (re)created when the search link becomes available,
-        // and the page changes on navigation: sync the field in both cases.
-        if (oldProps.location?.pathname !== this.props.location?.pathname
+        // The search link state is reset on every OPDS navigation (see
+        // browseWatcher in sagas/opds.ts), which unmounts the <input> until the
+        // new feed's search link is resolved: re-sync the field when it is
+        // recreated, and whenever the history entry changes.
+        if (oldProps.location !== this.props.location
             || (!oldProps.search?.url && this.props.search?.url)) {
             this.restoreSearchTerm();
         }
@@ -100,7 +95,13 @@ class SearchForm extends React.Component<IProps, IState> {
         if (!input) {
             return;
         }
-        const term = searchTermByPathname.get(this.props.location?.pathname) || "";
+        // Stored in the history entry by submitSearch(), so back/forward
+        // and results pagination restore the matching term. The state is
+        // forwarded as-is by other navigations: only trust it on a results
+        // page, whose route title is the search term itself (see route()).
+        const storedTerm = (this.props.location?.state as IRouterLocationState | undefined)?.opdsSearchTerm;
+        const routeTitle = parseOpdsBrowserRoute(this.props.location?.pathname || "")?.title;
+        const term = storedTerm && storedTerm === routeTitle ? storedTerm : "";
         input.value = term;
         if (term && !this.state.open) {
             // Narrow layouts: show the query the results come from.
@@ -227,13 +228,13 @@ class SearchForm extends React.Component<IProps, IState> {
                     ).params.level,
                     10);
 
-            const pathname = this.route(searchWords, url, level);
-            searchTermByPathname.set(pathname, searchWords);
-
             this.props.historyPush({
                 ...this.props.location,
-                pathname,
-            }, this.props.location.state as IRouterLocationState);
+                pathname: this.route(searchWords, url, level),
+            }, {
+                ...(this.props.location.state as IRouterLocationState),
+                opdsSearchTerm: searchWords,
+            });
         }
     };
 
