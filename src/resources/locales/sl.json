@@ -311,73 +311,73 @@
             "failed": "Prenos z »{{- hostname}}« ni uspel. Poskusite znova.",
             "integrityFailed": "Prenos z »{{- hostname}}« je nepopoln ali poškodovan. Poskusite znova.",
             "saveFailed": "Prenosa ni bilo mogoče shraniti. Preverite razpoložljiv prostor za shranjevanje in dovoljenja.",
-            "startedWithTitle": ""
+            "startedWithTitle": "Prenos {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} je že uvožen.",
             "errors": {
-                "acquisitionUrlMissing": "",
-                "cbzNoImages": "",
-                "contextMissing": "",
-                "daisyConversionFailed": "",
-                "manifestContext": "",
-                "manifestImportFailed": "",
-                "manifestInvalidJson": "",
-                "manifestMissing": "",
-                "manifestNotFound": "",
-                "manifestParsingFailed": "",
-                "noImportResult": "",
-                "notImported": "",
-                "profileAssetUrl": "",
-                "profileEmpty": "",
-                "profileEntryMissing": "",
-                "profileMissing": "",
-                "profileNotZip": ""
+                "acquisitionUrlMissing": "URL za prenos publikacije manjka ali pa je neveljaven.",
+                "cbzNoImages": "Arhiv CBZ ne vsebuje nobenih podprtih slik.",
+                "contextMissing": "manjka",
+                "daisyConversionFailed": "Publikacije DAISY ni mogoče pretvoriti.",
+                "manifestContext": "Neprepoznan @context v manifestu publikacije na {{- url}}: {{- context}}",
+                "manifestImportFailed": "Uvoz manifesta publikacije ni uspel.",
+                "manifestInvalidJson": "Neveljaven JSON v manifestu publikacije na {{- url}}.",
+                "manifestMissing": "Manjka manifest publikacije.",
+                "manifestNotFound": "Na {{- url}} ni bil najden manifest publikacije.",
+                "manifestParsingFailed": "Manifesta publikacije na {{- url}} ni mogoče razčleniti.",
+                "noImportResult": "Uvoz ni vrnil nobene publikacije.",
+                "notImported": "Publikacije ni bilo mogoče dodati v knjižnico.",
+                "profileAssetUrl": "Neveljaven URL profila publikacije: {{- path}}",
+                "profileEmpty": "Arhiv ZIP s profilom po meri je prazen.",
+                "profileEntryMissing": "Publikacija v profilu po meri ni bila najdena: {{- path}}",
+                "profileMissing": "Profil po meri ni bil najden: {{- id}}",
+                "profileNotZip": "Profil po meri ni arhiv ZIP."
             },
-            "failed": "",
-            "invalidLicense": "",
-            "invalidPublication": "",
-            "lcpLicenseMalformed": "",
+            "failed": "»{{- name}}« ni bilo mogoče uvoziti.",
+            "invalidLicense": "»{{- name}}« ni bilo mogoče uvoziti. Licenca publikacije ni veljavna.",
+            "invalidPublication": "Uvoz »{{- name}}« ni uspel. Manjka manifest publikacije.",
+            "lcpLicenseMalformed": "Nepravilno oblikovana licenca LCP.",
             "success": "Uvoz {{- title}} je končan.",
-            "unsupportedFormat": ""
+            "unsupportedFormat": "Datoteke »{{- name}}« ni bilo mogoče uvoziti. Ta oblika zapisa datoteke ni podprta."
         },
         "notifications": {
-            "annotationImportFailed": "",
-            "annotationPublicationUnavailable": "",
-            "annotationStopPlayback": "",
-            "authenticationFailed": "",
-            "catalogLinkFailed": "",
-            "catalogUpdateFailed": "",
-            "copyLimit": "",
-            "deleteFailed": "",
-            "exportFailed": "",
-            "openFileFailed": "",
-            "openLinkFailed": "",
-            "printLimit": "",
-            "profileActivationFailed": "",
-            "profileBusy": "",
-            "profileProvisionFailed": "",
-            "profileTimeout": "",
-            "publicationUnavailable": "",
-            "readingPositionFailed": "",
-            "recoveryPartialFailure": "",
-            "renewFailed": "",
-            "returnFailed": "",
-            "storageRefreshFailed": "",
-            "tagsFailed": ""
+            "annotationImportFailed": "Pripisov ni mogoče uvoziti. Preverite, ali je datoteka veljaven izvoz pripisov.",
+            "annotationPublicationUnavailable": "Pripisov ni mogoče uvoziti, ker publikacija ni na voljo. Poskusite publikacijo znova uvoziti.",
+            "annotationStopPlayback": "Preden ustvarite pripis, ustavite glasno branje ali predvajanje zvoka.",
+            "authenticationFailed": "V ta katalog se ni mogoče prijaviti. Preverite povezavo in poskusite znova.",
+            "catalogLinkFailed": "Tega kataloga ni mogoče dodati. Preverite povezavo in svojo povezavo.",
+            "catalogUpdateFailed": "Tega kataloga ni mogoče posodobiti. Preverite njegove nastavitve in poskusite znova.",
+            "copyLimit": "Količinska omejitev za kopiranje iz te publikacije je bila izčrpana.",
+            "deleteFailed": "Te objave ni mogoče izbrisati. Poskusite znova.",
+            "exportFailed": "Te publikacije ni mogoče izvoziti. Preverite ciljno mapo in razpoložljiv prostor na disku.",
+            "openFileFailed": "Te datoteke ni mogoče odpreti. Preverite, ali je na voljo in ali uporablja podprt format.",
+            "openLinkFailed": "Povezave do te publikacije ni mogoče odpreti. Preverite povezavo in poskusite znova.",
+            "printLimit": "Količinska omejitev za tisk te publikacije je bila izčrpana.",
+            "profileActivationFailed": "Tega profila ni mogoče aktivirati. Preverite paket profila ali se obrnite na njegovega ponudnika.",
+            "profileBusy": "Poteka druga operacija s profilom. Počakajte, da se zaključi, nato poskusite znova.",
+            "profileProvisionFailed": "Tega profila ni mogoče namestiti. Preverite paket profila ali se obrnite na njegovega ponudnika.",
+            "profileTimeout": "Namestitev profila je potekla. Preverite povezavo in poskusite znova.",
+            "publicationUnavailable": "Ta publikacija ni na voljo. Poskusite jo znova uvoziti.",
+            "readingPositionFailed": "Vašega položaja branja ni mogoče določiti. Poskusite znova.",
+            "recoveryPartialFailure": "Obnovljenih je bilo {{- recovered}} publikacij; {{- failed}} publikacij ni bilo mogoče obnoviti.",
+            "renewFailed": "Te izposoje ni mogoče podaljšati. Poskusite znova ali se obrnite na svojo knjižnico.",
+            "returnFailed": "Tega gradiva ni mogoče vrniti. Poskusite znova ali se obrnite na svojo knjižnico.",
+            "storageRefreshFailed": "Nastavitev shranjevanja je bila shranjena, vendar knjižnice ni bilo mogoče osvežiti. Poskusite osvežiti knjižnico.",
+            "tagsFailed": "Oznak publikacije ni bilo mogoče shraniti. Poskusite znova."
         },
         "open": {
-            "failed": "",
+            "failed": "Te publikacije ni bilo mogoče odpreti.",
             "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba.",
-            "missingLicense": ""
+            "missingLicense": "Te publikacije ni bilo mogoče odpreti. Je šifrirana, vendar zanjo manjka licenca LCP."
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_few": "",
-                "success_one": "",
-                "success_other": "",
-                "success_two": ""
+                "failure": "Obnovitev publikacije ni uspela.",
+                "success_few": "{{- count}} publikacije obnovljene.",
+                "success_one": "{{- count}} publikacija obnovljena.",
+                "success_other": "{{- count}} publikacij obnovljenih.",
+                "success_two": "{{- count}} publikaciji obnovljeni."
             },
             "removed": "Direktorij publikacije je bil odstranjen.",
             "updateFailed": "Direktorij publikacij je bil odstranjen: {{- message}}",
@@ -399,21 +399,21 @@
         "addMenu": "Dodaj vir OPDS",
         "breadcrumbRoot": "Katalogi",
         "browserMenu": {
-            "history": "",
-            "options": "",
-            "profile": "",
-            "wishlist": ""
+            "history": "Zgodovina",
+            "options": "Možnosti kataloga",
+            "profile": "Uporabniški profil",
+            "wishlist": "Seznam želja"
         },
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Modra",
+            "gray": "Siva",
+            "green": "Zelena",
+            "orange": "Oranžna",
+            "pink": "Rožnata",
+            "purple": "Vijolična",
+            "red": "Rdeča",
+            "title": "Barva kataloga",
+            "yellow": "Rumena"
         },
         "documentation": "Uradna spletna stran OPDS",
         "empty": "Ni najdene publikacije",
@@ -423,13 +423,13 @@
         "menu": {
             "aboutBook": "O publikaciji",
             "addExtract": "Uvozi izvleček",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Prekliči zadržanje",
+            "cancelHoldError": "Te rezervacije ni mogoče preklicati. Poskusite znova.",
             "goBuyBook": "Kupi publikacijo",
             "goLoanBook": "Izposodi publikacijo",
             "goRevokeLoanBook": "Preklic izposoje",
             "goSubBook": "Naroči se",
-            "placeHold": ""
+            "placeHold": "Nastavi zadržanje"
         },
         "network": {
             "error": "Napaka pri dostopu do vira",
@@ -441,10 +441,10 @@
         "next": "Naslednja",
         "previous": "Prejšnja",
         "registry": {
-            "empty": "",
-            "error": "",
-            "loading": "",
-            "title": ""
+            "empty": "Katalog ni bil najden.",
+            "error": "Iskanje v registru ni mogoče. Poskusite znova.",
+            "loading": "Iskanje po katalogih …",
+            "title": "Iskanje po katalogih"
         },
         "resumeBrowsing": "Nadaljuj z brskanjem",
         "shelf": "Polica",
@@ -635,10 +635,10 @@
         },
         "legal-considerations": {
             "legal-considerations-exempt": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "V nekaterih jurisdikcijah uveljavlja izjemo glede dostopnosti",
+                "descriptive": "Založnik v nekaterih jurisdikcijah uveljavlja izvzetje iz zahtev glede dostopnosti."
             },
-            "legal-considerations-title": ""
+            "legal-considerations-title": "Pravni vidiki"
         },
         "navigation": {
             "navigation-index": {
@@ -795,7 +795,7 @@
         "certificateSignatureInvalid": "Neveljaven podpis potrdila o licenci LCP.",
         "cover": {
             "img": "naslovnica",
-            "zoom": ""
+            "zoom": "Povečaj sliko naslovnice"
         },
         "day": "dan",
         "days": "dni",
@@ -818,21 +818,21 @@
         "notStarted": "Ni začeto",
         "onGoing": "V teku",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "Na voljo je novejši položaj branja iz naprave {{- device}} pri {{- progression}} %.",
+            "remoteTitle": "Nadaljujte z druge naprave?",
             "title": "Napredek",
-            "useRemote": ""
+            "useRemote": "Pojdi na položaj"
         },
         "read": "Končano",
         "remainingTime": "Izposoja (preostali čas)",
         "remoteProgression": {
-            "checking": "",
-            "disabled": "",
-            "empty": "",
-            "position": "",
-            "ready": "",
-            "title": "",
-            "unavailable": ""
+            "checking": "Omogočeno in preverjanje storitve ...",
+            "disabled": "Za to publikacijo ni omogočeno.",
+            "empty": "Ni shranjenega napredka na oddaljeni lokaciji.",
+            "position": "Napredek na oddaljeni napravi: {{percent}} % ({{device}}).",
+            "ready": "Omogočeno in pripravljeno.",
+            "title": "Sinhronizacija napredka pri branju:",
+            "unavailable": "Omogočeno, vendar storitev ni na voljo."
         },
         "renewButton": "Podaljšaj",
         "returnButton": "Vrni",
@@ -872,7 +872,7 @@
             },
             "hide": "Ne prikaži",
             "highlight": "Poudari",
-            "noSelectionToast": "Brez izbire",
+            "noSelectionToast": "Preden ustvarite pripis, izberite besedilo.",
             "note": "{{- color}} Opomba",
             "quickAnnotations": "Hitro ustvarjanje (preskoči urejevalnik)",
             "saveNote": "Shrani",
@@ -1024,12 +1024,12 @@
                 "two": "2 stolpca"
             },
             "customFontSelected": "Izbrana je pisava po meri",
-            "deactivateTextFormatting": "",
+            "deactivateTextFormatting": "Onemogoči oblikovanje besedila",
             "display": "Zaslon",
             "disposition": {
                 "title": "Postavitev"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Prikaži prelome strani na robu",
             "font": "Pisava",
             "fontSize": "Velikost pisave",
             "increaseFontSize": "Povečaj velikost pisave",
@@ -1072,7 +1072,7 @@
             "reduceMotion": "Zmanjšaj gibanje",
             "scrolled": "Drsno",
             "spacing": "Razmik",
-            "spacingCustomButton": "",
+            "spacingCustomButton": "Možnosti razmika po meri",
             "spreadModeEven": "Razmiki strani »sodi« (privzeto so »lihi«)",
             "text": "Besedilo",
             "theme": {
@@ -1129,7 +1129,7 @@
         "keyboard": {
             "advancedMenu": "Napredni meni bližnjic na tipkovnici",
             "cancel": "Prekliči",
-            "disableTooltips": "",
+            "disableTooltips": "Onemogoči namige za tipkovnične bližnjice",
             "disclaimer": "Privzete nastavitve aplikacije so bile zasnovane na podlagi fizične lokacije tipk na postavitvi QWERTY.",
             "editUserJson": "Uredi datoteko uporabnika ...",
             "exportToHTML": "Izvozi v HTML",
@@ -1461,41 +1461,41 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Preverite, ali so na voljo publikacije, ki jih je mogoče obnoviti",
+                    "checkAgain": "Ponovno preveri",
+                    "recover": "Obnovi publikacije",
+                    "recovering": "Obnavljanje ..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Na disku je bila najdena ena ali več publikacij, ki pa manjkajo v zbirki podatkov. Obnovitev je mogoča.",
+                "checking": "Preverjanje shrambe publikacij ...",
+                "description": "Preverite shrambo publikacij, da poiščete publikacije, ki jih je mogoče varno obnoviti.",
                 "dialog": {
-                    "confirm": "",
-                    "description_few": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "description_two": "",
-                    "title": ""
+                    "confirm": "Obnovi",
+                    "description_few": "Thorium je na disku našel {{- count}} publikacije, ki manjkajo v zbirki podatkov. Ali jih želite uvoziti nazaj v Thorium?",
+                    "description_one": "Thorium je na disku našel {{- count}} publikacijo, ki manjka v zbirki podatkov. Ali jih želite uvoziti nazaj v Thorium?",
+                    "description_other": "Thorium je na disku našel {{- count}} publikacij, ki manjkajo v zbirki podatkov. Ali jih želite uvoziti nazaj v Thorium?",
+                    "description_two": "Thorium je na disku našel {{- count}} publikaciji, ki manjkata v zbirki podatkov. Ali jih želite uvoziti nazaj v Thorium?",
+                    "title": "Obnovi publikacije"
                 },
-                "none": "",
-                "recoverableCount_few": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "recoverableCount_two": "",
-                "title": ""
+                "none": "Ni bilo mogoče najti nobenih publikacij.",
+                "recoverableCount_few": "Z uporabo prvotnega identifikatorja shranjevanja je mogoče obnoviti {{- count}} publikacije.",
+                "recoverableCount_one": "Z uporabo prvotnega identifikatorja shranjevanja je mogoče obnoviti {{- count}} publikacijo.",
+                "recoverableCount_other": "Z uporabo prvotnega identifikatorja shranjevanja je mogoče obnoviti {{- count}} publikacij.",
+                "recoverableCount_two": "Z uporabo prvotnega identifikatorja shranjevanja je mogoče obnoviti {{- count}} publikaciji.",
+                "title": "Obnova"
             }
         },
         "tabs": {
-            "advanced": "",
+            "advanced": "Napredno",
             "general": "Splošno",
             "keyboardShortcuts": "Bližnjice tipkovnice",
             "profiles": "Profili",
             "storage": "Shranjevanje"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Onemogoči telemetrične meritve",
+            "disableTelemetryMeasurementsDescription": "Ko je omogočen, Thorium ne pošilja telemetričnih meritev.",
+            "title": "Telemetrija"
         },
         "theme": {
             "auto": "Samodejno",
