@@ -58,6 +58,7 @@ export const Browser = () => {
     const feedColor = catalog?.data?.result?.color || (location.state as Partial<IRouterLocationState> | undefined)?.feedColor;
     return (
         <LibraryLayout
+            mainClassName={stylesCatalogs.opds_browser}
             page={__("opds.breadcrumbRoot")}
             title={catalogTitle}
             feedColor={feedColor}

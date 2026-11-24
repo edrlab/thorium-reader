@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 
 import debug_ from "debug";
 import * as React from "react";
@@ -28,7 +29,6 @@ import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -77,24 +77,26 @@ class SearchForm extends React.Component<IProps, undefined> {
 
         return (
             <form
-                className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}
+                className={stylesCatalogs.opds_search_form}
                 onSubmit={this.submitSearch}
                 role="search"
             >
                 <label
                     id="globalSearchLabel"
-                    htmlFor="globalSearchInput">
+                    htmlFor="menu_search">
                     {`${__("header.searchPlaceholder")}`}
                 </label>
-                <i><SVG ariaHidden svg={SearchIcon} /></i>
-                <input
-                    disabled={!this.props.search?.url}
-                    ref={this.inputRef}
-                    type="search"
-                    id="menu_search"
-                    aria-label={__("header.searchPlaceholder")}
-                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
-                />
+                <div className={stylesInput.form_group}>
+                    <i><SVG ariaHidden svg={SearchIcon} /></i>
+                    <input
+                        disabled={!this.props.search?.url}
+                        ref={this.inputRef}
+                        type="search"
+                        id="menu_search"
+                        aria-label={__("header.searchPlaceholder")}
+                        className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                    />
+                </div>
                 {/* <button
                     disabled={!this.props.search?.url}
                     title={__("header.searchTitle")}
