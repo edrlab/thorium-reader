@@ -8,3 +8,8 @@
 import { Location } from "history";
 
 export type THistoryState = Location[];
+
+export interface INavigationHistoryState {
+    keys: string[];
+    index: number;
+}

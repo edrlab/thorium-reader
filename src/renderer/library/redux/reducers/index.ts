@@ -12,7 +12,7 @@ import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard"
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 import { loadReducer } from "readium-desktop/renderer/common/redux/reducers/load";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
-import { historyReducer } from "readium-desktop/renderer/library/redux/reducers/history";
+import { historyReducer, navigationHistoryReducer } from "readium-desktop/renderer/library/redux/reducers/history";
 import {
     opdsBreadcrumbReducer, opdsHeaderLinkReducer, opdsSearchLinkReducer,
 } from "readium-desktop/renderer/library/redux/reducers/opds";
@@ -96,6 +96,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
                 },
             ),
         history: historyReducer,
+        navigationHistory: navigationHistoryReducer,
         keyboard: keyboardReducer,
         load: loadReducer,
         publication: combineReducers({
