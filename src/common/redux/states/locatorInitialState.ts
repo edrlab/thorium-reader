@@ -5,7 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import type { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import type { ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
 // import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
 // TODO: any other information in the LocatorExtended data structure that is NOT worth keeping in Thorium's internal state and persistent database?
@@ -92,20 +93,78 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 // }
 export type MiniLocatorExtended = Omit<LocatorExtended, "followingElementIDs">;
 
-export const minimizeLocatorExtended = (locatorExtended: LocatorExtended): MiniLocatorExtended => {
+const MAX_LOCATOR_TEXT_LENGTH = 200;
 
-    if (typeof locatorExtended.followingElementIDs === "undefined") {
+const limitLocatorExcerpt = (text?: string, keepEnd = false): string | undefined => {
+    if (!text || text.length <= MAX_LOCATOR_TEXT_LENGTH) {
+        return text;
+    }
+    return keepEnd ?
+        text.slice(-MAX_LOCATOR_TEXT_LENGTH).replace(/^\p{Surrogate}/u, "") :
+        text.slice(0, MAX_LOCATOR_TEXT_LENGTH).replace(/\p{Surrogate}$/u, "");
+};
+
+const limitSelectionText = (selection?: ISelectionInfo): ISelectionInfo | undefined => {
+    if (!selection) {
+        return undefined;
+    }
+    const { cleanBefore, cleanText, cleanAfter, rawBefore, rawText, rawAfter } = selection;
+    if ([cleanBefore, cleanText, cleanAfter, rawBefore, rawText, rawAfter].every((text) =>
+        !text || text.length <= MAX_LOCATOR_TEXT_LENGTH)) {
+        return selection;
+    }
+    return {
+        ...selection,
+        cleanBefore: limitLocatorExcerpt(cleanBefore, true),
+        cleanText: limitLocatorExcerpt(cleanText),
+        cleanAfter: limitLocatorExcerpt(cleanAfter),
+        rawBefore: limitLocatorExcerpt(rawBefore, true),
+        rawText: limitLocatorExcerpt(rawText),
+        rawAfter: limitLocatorExcerpt(rawAfter),
+    };
+};
+
+export const limitLocatorText = (locator: MiniLocatorExtended["locator"]): MiniLocatorExtended["locator"] => {
+    if (!locator) {
+        return locator;
+    }
+    const caretInfo = locator.locations?.caretInfo;
+    const limitedCaret = limitSelectionText(caretInfo);
+    const text = locator.text;
+    const before = limitLocatorExcerpt(text?.before, true);
+    const highlight = limitLocatorExcerpt(text?.highlight);
+    const after = limitLocatorExcerpt(text?.after);
+    const beforeRaw = limitLocatorExcerpt(text?.beforeRaw, true);
+    const highlightRaw = limitLocatorExcerpt(text?.highlightRaw);
+    const afterRaw = limitLocatorExcerpt(text?.afterRaw);
+    const textChanged = text && (before !== text.before || highlight !== text.highlight || after !== text.after ||
+        beforeRaw !== text.beforeRaw || highlightRaw !== text.highlightRaw || afterRaw !== text.afterRaw);
+
+    if (!textChanged && limitedCaret === caretInfo) {
+        return locator;
+    }
+    return {
+        ...locator,
+        locations: limitedCaret === caretInfo ? locator.locations : { ...locator.locations, caretInfo: limitedCaret },
+        text: textChanged ? { ...text, before, highlight, after, beforeRaw, highlightRaw, afterRaw } : text,
+    };
+};
+
+export const minimizeLocatorExtended = (locatorExtended: LocatorExtended): MiniLocatorExtended => {
+    const { locator, selectionInfo } = locatorExtended;
+    const limitedLocator = limitLocatorText(locator);
+    const limitedSelection = limitSelectionText(selectionInfo);
+
+    if (typeof locatorExtended.followingElementIDs === "undefined" &&
+        limitedSelection === selectionInfo && limitedLocator === locator) {
         return locatorExtended;
     }
-    // locatorExtended = r.clone(locatorExtended);
-    // locatorExtended.followingElementIDs = undefined;
-    // delete locatorExtended.followingElementIDs;
     return {
         locEventID: locatorExtended.locEventID,
         audioPlaybackInfo: locatorExtended.audioPlaybackInfo,
-        locator: locatorExtended.locator,
+        locator: limitedLocator,
         paginationInfo: locatorExtended.paginationInfo,
-        selectionInfo: locatorExtended.selectionInfo,
+        selectionInfo: limitedSelection,
         selectionIsNew: locatorExtended.selectionIsNew,
         docInfo: locatorExtended.docInfo,
         epubPage: locatorExtended.epubPage,
