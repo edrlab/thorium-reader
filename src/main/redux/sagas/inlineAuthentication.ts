@@ -14,6 +14,7 @@ import { randomBytes } from "node:crypto";
 import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
 
 import { browse } from "./api/browser/browse";
+import { initClientSecretToken } from "./apiapp";
 import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 
 export function* submitInlineAuthentication(action: authActions.submit.TAction) {
@@ -72,14 +73,24 @@ export function* submitInlineAuthentication(action: authActions.submit.TAction) 
                 password,
             });
         } else if (authenticationType === "http://opds-spec.org/auth/local"
-            || authenticationType === "http://opds-spec.org/auth/oauth/password") {
+            || authenticationType === "http://opds-spec.org/auth/oauth/password"
+            || authenticationType === "http://opds-spec.org/auth/oauth/password/apiapp") {
             const endpoint = new URL(options.oauthUrl);
             if (endpoint.protocol !== "https:" && endpoint.protocol !== "http:") {
                 throw new Error("Invalid authentication endpoint");
             }
             const body = new URLSearchParams({ username: login, password });
-            if (authenticationType === "http://opds-spec.org/auth/oauth/password") {
+            if (authenticationType !== "http://opds-spec.org/auth/local") {
                 body.set("grant_type", "password");
+            }
+            if (authenticationType === "http://opds-spec.org/auth/oauth/password/apiapp") {
+                const clientId = options.authenticationId;
+                if (!clientId) {
+                    throw new Error("Missing API App client ID");
+                }
+                const clientSecret = yield* callTyped(initClientSecretToken, clientId);
+                body.set("client_id", clientId);
+                body.set("client_secret", clientSecret || "");
             }
             const response = yield* callTyped(() => httpPost<IOpdsAuthenticationToken>(endpoint.toString(), {
                 body: body.toString(), headers: { "Content-Type": "application/x-www-form-urlencoded" },

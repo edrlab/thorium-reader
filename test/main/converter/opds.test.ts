@@ -437,7 +437,11 @@ describe("inline HTTP authentication", () => {
 });
 
 
-it.each(["http://opds-spec.org/auth/local", "http://opds-spec.org/auth/oauth/password"])(
+it.each([
+    "http://opds-spec.org/auth/local",
+    "http://opds-spec.org/auth/oauth/password",
+    "http://opds-spec.org/auth/oauth/password/apiapp",
+])(
     "exposes inline credentials and endpoints for %s", type => {
         const view = createConverter().convertOpdsAuthToView(TaJsonDeserialize({
             id: "provider", title: "Login", authentication: [{ type,

@@ -176,7 +176,7 @@ export const initClientSecretToken = async (idGnl: string) => {
         throw new Error("no id gnl");
     }
 
-    const result = await httpDilicomGet(initClientSecretUrl + idGnl);
+    const result = await httpDilicomGet(initClientSecretUrl + encodeURIComponent(idGnl));
     if (result.isSuccess && parseContentType(result.contentType) === ContentType.Json) {
 
         const json: any = await result.response.json();
