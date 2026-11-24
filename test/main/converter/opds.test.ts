@@ -389,17 +389,18 @@ describe("OPDS hold cancellation properties", () => {
 });
 
 
-describe("inline Basic authentication", () => {
-    it("returns form metadata for an authentication document without opening a window", async () => {
+describe("inline HTTP authentication", () => {
+    it.each(["basic", "digest"])("returns form metadata for a %s authentication document without opening a window", async scheme => {
+        const type = "http://opds-spec.org/auth/" + scheme;
         const doc = {
             id: "https://example.org/auth", title: "Sign in",
-            authentication: [{ type: "http://opds-spec.org/auth/basic", labels: { login: "Card", password: "PIN" } }],
+            authentication: [{ type, labels: { login: "Card", password: "PIN" } }],
             links: [{ rel: "logo", href: "logo.png" }, { rel: "help", href: "/help" }, { rel: "register", href: "/register" }],
         };
         const converter = createConverter();
         const view = converter.convertOpdsAuthToView(TaJsonDeserialize(doc, OPDSAuthenticationDoc), baseUrl);
         expect(view.auth).toMatchObject({
-            credentialsUrl: baseUrl, labelLogin: "Card", labelPassword: "PIN",
+            authenticationType: type, credentialsUrl: baseUrl, labelLogin: "Card", labelPassword: "PIN",
             logoImageUrl: "https://example.org/catalog/logo.png",
             helpUrls: ["https://example.org/help"], registerUrl: "https://example.org/register",
         });
@@ -414,15 +415,16 @@ describe("inline Basic authentication", () => {
         expect(dispatch).not.toHaveBeenCalled();
     });
 
-    it("returns a form for a plain Basic challenge using the effective URL", async () => {
+    it.each(["Basic", "Digest"])("returns a form for a plain %s challenge using the effective URL", async scheme => {
         const service = new OpdsService();
-        const dispatch = jest.spyOn(service as unknown as { sendWwwAuthenticationToAuthenticationProcess: () => void }, "sendWwwAuthenticationToAuthenticationProcess");
+        const dispatch = jest.spyOn(service as unknown as { dispatchAuthenticationProcess: () => void }, "dispatchAuthenticationProcess");
         const result = await service.opdsRequestTransformer({
             url: baseUrl, responseUrl: "https://example.org/protected", isSuccess: false, isFailure: true,
             statusCode: 401, contentType: "text/plain",
-            response: { headers: { get: () => 'Basic realm="Catalog"' } },
+            response: { headers: { get: () => scheme + ' realm="Catalog"' } },
         } as unknown as IHttpGetResult<IOpdsResultView>);
         expect(result.auth.credentialsUrl).toBe("https://example.org/protected");
+        expect(result.auth.authenticationType).toBe(scheme === "Digest" ? "http://opds-spec.org/auth/digest" : undefined);
         expect(dispatch).not.toHaveBeenCalled();
     });
 

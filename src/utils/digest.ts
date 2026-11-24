@@ -19,20 +19,20 @@ function decimalToHex(d: number, padding: number) {
 }
 
 const parseHeaderWWWAuthenticateForDigest = (v: string): { [s: string]: string } => {
-    const a = v.trim().split(",");
-    const b = a.map((q) => q.trim().split("="));
-    const c = b.map((w) => w.length != 2 ? undefined : w.map((e) => e.trim().replace(/(^"|"$)/g, "")));
-    const d = c.filter((r) => !!r);
-    const e = d.reduce((pv, cv) => ({ ...pv, [cv[0]]: cv[1] }), {});
-    return e;
+    const parameters = v.trim().replace(/^Digest\s+/i, "");
+    return Object.fromEntries(
+        Array.from(parameters.matchAll(/(?:^|,)\s*(\w+)\s*=\s*(?:"((?:[^"\\]|\\.)*)"|([^,\s]+))/g),
+            ([, key, quoted, token]) => [key.toLowerCase(), quoted?.replace(/\\(.)/g, "$1") ?? token]),
+    );
 };
 
 export interface IDigestDataParsed {
     username: string,
     realm: string,
     nonce: string,
-    algorithm: "MD5" | "MD5-sess" | undefined,
-    qop: "auth" | "auth-int" | undefined,
+    algorithm: string,
+    qop: string | undefined,
+    opaque?: string,
     cnonce: string
     uri: string,
     nonceCount: string,
@@ -41,15 +41,17 @@ export interface IDigestDataParsed {
 export const parseDigestString = (wwwAuthenticate: string): IDigestDataParsed => {
 
     const data = parseHeaderWWWAuthenticateForDigest(wwwAuthenticate);
+    const qop = data.qop?.split(",").map(value => value.trim().toLowerCase());
     return {
         username: data["username"] || "",
         realm: data["realm"] || "",
         nonce: data["nonce"] || "",
-        algorithm: data["algorithm"] === "MD5" ? "MD5" : data["algorithm"] === "MD5-sess" ? "MD5-sess" : undefined,
-        qop: data["qop"] === "auth" ? "auth" : data["qop"] === "auth-int" ? "auth-int" : undefined,
+        algorithm: data.algorithm?.toUpperCase() === "MD5-SESS" ? "MD5-sess" : data.algorithm?.toUpperCase() || "MD5",
+        qop: qop?.includes("auth") ? "auth" : qop?.[0],
+        opaque: data.opaque,
         cnonce: data["cnonce"],
         uri: data["uri"],
-        nonceCount: data["nonceCount"],
+        nonceCount: data.nc,
     };
 };
 
@@ -60,6 +62,7 @@ export const digestAuthentication = ({
     qop,
     algorithm,
     realm,
+    opaque,
     cnonce,
     uri,
     method,
@@ -71,6 +74,7 @@ export const digestAuthentication = ({
     qop: string,
     algorithm: string,
     realm: string,
+    opaque?: string,
     cnonce: string,
     uri: string,
     method: string,
@@ -85,15 +89,25 @@ export const digestAuthentication = ({
     // Note: qop, algorithm and nc are "unquoted strings", see https://httpwg.org/specs/rfc7616.html#rfc.section.3.4
     //  For historical reasons, a sender MUST only generate the quoted string syntax values for the following parameters: realm, domain, nonce, opaque, and qop.
     //  For historical reasons, a sender MUST NOT generate the quoted string syntax values for the following parameters: stale and algorithm.
-    const accessToken = `username="${username}", realm="${realm}", nonce="${nonce}", qop=${qop}, algorithm=${algorithm}, response="${response}", uri="${uri}", nc=${nonceCount}, cnonce="${cnonce}"`;
-    // TODO: username="" is a quoted string with lexical constraints (forbidden characters that would need to be escaped).
-    // username*="" could be used instead (userhash=true?).
-    // Let's mark this as a known caveat in this implementation, which currently meets the real-world need of Calibre OPDS server (basic and digest auth both supported)
+    const quote = (value: string) => `"${value.replace(/["\\]/g, "\\$&")}"`;
+    const fields = [
+        `username=${quote(username)}`, `realm=${quote(realm)}`, `nonce=${quote(nonce)}`,
+        `algorithm=${algorithm === "MD5-sess" ? "MD5-sess" : "MD5"}`, `response="${response}"`, `uri=${quote(uri)}`,
+    ];
+    if (qop === "auth" || qop === "auth-int") {
+        fields.push(`qop=${qop}`, `nc=${nonceCount}`);
+    }
+    if (qop === "auth" || qop === "auth-int" || algorithm === "MD5-sess") {
+        fields.push(`cnonce=${quote(cnonce)}`);
+    }
+    if (opaque !== undefined) {
+        fields.push(`opaque=${quote(opaque)}`);
+    }
     // General references:
     //  https://httpwg.org/specs/rfc7616.html#rfc.section.3.4
     //  https://httpwg.org/specs/rfc7616.html#rfc.section.3.4.4
     // Calibre specifics:
     //  https://www.rfc-editor.org/rfc/rfc2617
     //  https://github.com/kovidgoyal/calibre/blob/eb78a761a99ac20a6364f85e12059fec6517d890/src/calibre/srv/auth.py
-    return accessToken;
+    return fields.join(", ");
 };

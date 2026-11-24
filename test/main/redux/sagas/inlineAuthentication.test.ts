@@ -1,14 +1,17 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { Headers } from "node-fetch";
 import { runSaga } from "redux-saga";
 
 jest.mock("readium-desktop/main/redux/sagas/api/browser/browse", () => ({ browse: jest.fn() }));
 jest.mock("typed-redux-saga/macro", () => jest.requireActual("typed-redux-saga"));
-jest.mock("readium-desktop/main/network/http", () => ({ httpGet: jest.fn(), httpPost: jest.fn(), httpSetAuthenticationToken: jest.fn() }));
+jest.mock("readium-desktop/main/network/http", () => ({
+    httpGet: jest.fn(), httpGetWithAuth: jest.fn(), httpPost: jest.fn(), httpSetAuthenticationToken: jest.fn(),
+}));
 jest.mock("readium-desktop/common/services/translator", () => ({ getTranslator: () => ({ translate: (key: string) => key }) }));
 
 import { browse } from "readium-desktop/main/redux/sagas/api/browser/browse";
 import { authActions, historyActions } from "readium-desktop/common/redux/actions";
-import { httpGet, httpPost, httpSetAuthenticationToken } from "readium-desktop/main/network/http";
+import { httpGet, httpGetWithAuth, httpPost, httpSetAuthenticationToken } from "readium-desktop/main/network/http";
 import { submitInlineAuthentication } from "readium-desktop/main/redux/sagas/inlineAuthentication";
 
 const url = "https://example.org/catalog";
@@ -56,6 +59,36 @@ describe("inline Basic credential submission", () => {
     });
 });
 
+
+describe("inline Digest authentication", () => {
+    beforeEach(() => jest.resetAllMocks());
+
+    it.each([true, false])("only stores validated credentials when success is %s", async success => {
+        const target = url + "?page=2";
+        const request = jest.mocked(httpGet);
+        jest.mocked(httpGetWithAuth).mockReturnValue(request);
+        request.mockResolvedValueOnce({
+            ...response(false), statusCode: 401,
+            response: { headers: new Headers({
+                "WWW-Authenticate": 'Digest realm="Books, Inc.", nonce="abc=", qop="auth,auth-int", opaque="xyz="',
+            }) },
+        }).mockResolvedValueOnce(response(success));
+        const dispatch = jest.fn();
+        await runSaga({ dispatch }, submitInlineAuthentication, authActions.submit.build(target, "reader", "secret", {
+            authenticationType: "http://opds-spec.org/auth/digest",
+        })).toPromise();
+        expect(httpGetWithAuth).toHaveBeenCalledWith(false);
+        const authorization = new Headers(request.mock.calls[1][1].headers).get("Authorization");
+        expect(authorization).toMatch(/^Digest username="reader", realm="Books, Inc.", nonce="abc="/);
+        expect(authorization).toContain('uri="/catalog?page=2", qop=auth, nc=00000001');
+        expect(authorization).toContain('opaque="xyz="');
+        expect(httpSetAuthenticationToken).toHaveBeenCalledTimes(Number(success));
+        expect(dispatch).toHaveBeenCalledWith(authActions.submitted.build(target, !success));
+        if (success) {
+            expect(dispatch).toHaveBeenLastCalledWith(historyActions.refresh.build());
+        }
+    });
+});
 
 describe("inline Local and OAuth password authentication", () => {
     beforeEach(() => jest.resetAllMocks());

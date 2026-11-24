@@ -8,7 +8,9 @@
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { httpPost, httpSetAuthenticationToken, IOpdsAuthenticationToken } from "readium-desktop/main/network/http";
+import { httpGetWithAuth, httpPost, httpSetAuthenticationToken, IOpdsAuthenticationToken } from "readium-desktop/main/network/http";
+import { digestAuthentication, parseDigestString } from "readium-desktop/utils/digest";
+import { randomBytes } from "node:crypto";
 import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
 
 import { browse } from "./api/browser/browse";
@@ -36,6 +38,39 @@ export function* submitInlineAuthentication(action: authActions.submit.TAction) 
                 throw new Error("Authentication rejected");
             }
             result = response;
+        } else if (authenticationType === "http://opds-spec.org/auth/digest") {
+            const getWithoutAuth = httpGetWithAuth(false);
+            const challenge = yield* callTyped(() => getWithoutAuth(credentialsUrl, { redirect: "manual" }));
+            const header = challenge.response?.headers.get("WWW-Authenticate")?.trim();
+            if (challenge.statusCode !== 401 || !header || !/^Digest\s/i.test(header)) {
+                throw new Error("Missing Digest challenge");
+            }
+            const digest = parseDigestString(header);
+            if (!digest.nonce || (digest.algorithm !== "MD5" && digest.algorithm !== "MD5-sess")
+                || (digest.qop && digest.qop !== "auth")) {
+                throw new Error("Unsupported Digest challenge");
+            }
+            const accessToken = digestAuthentication({
+                ...digest,
+                username: login,
+                password,
+                cnonce: randomBytes(16).toString("hex"),
+                uri: url.pathname + url.search,
+                method: "GET",
+            });
+            const response = yield* callTyped(() => getWithoutAuth(credentialsUrl, {
+                redirect: "manual", headers: { Authorization: `Digest ${accessToken}` },
+            }));
+            if (!response.isSuccess) {
+                throw new Error("Authentication rejected");
+            }
+            yield* callTyped(httpSetAuthenticationToken, {
+                opdsAuthenticationUrl: credentialsUrl,
+                authenticateUrl: credentialsUrl,
+                tokenType: "Digest",
+                accessToken,
+                password,
+            });
         } else if (authenticationType === "http://opds-spec.org/auth/local"
             || authenticationType === "http://opds-spec.org/auth/oauth/password") {
             const endpoint = new URL(options.oauthUrl);
