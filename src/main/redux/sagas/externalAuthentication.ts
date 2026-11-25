@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import { URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH } from "readium-desktop/common/streamerProtocol";
-import type { TOpdsAuthenticationChannel } from "readium-desktop/main/event";
 import type { getFeed } from "./api/opds/feed";
 import type { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import type { BrowserWindow } from "electron";
@@ -25,11 +24,6 @@ export interface IExternalAuthenticationSession {
 
 export interface IExternalAuthenticationDependencies {
     getCatalog?: typeof getFeed;
-    legacy?: {
-        requests: TakeableChannel<TOpdsAuthenticationChannel>;
-        run: (request: TOpdsAuthenticationChannel) => Generator;
-        onError: (error: unknown) => void;
-    };
     prepare: (url: string) => Promise<IExternalAuthenticationSession>;
     openExternal: (url: string) => Promise<void>;
     callbacks: TakeableChannel<TregisterHttpProtocolHandler>;
@@ -89,6 +83,10 @@ export function* runExternalAuthentication(dependencies: IExternalAuthentication
             return;
         }
         yield put(authActions.externalStatus.build(requestId, "complete"));
+        if (action.payload.promptId) {
+            yield put(authActions.promptResult.build(action.payload.promptId, true));
+            return;
+        }
         if (action.payload.catalogIdentifier && dependencies.getCatalog) {
             const feed: IOpdsFeedView = yield call(dependencies.getCatalog, action.payload.catalogIdentifier);
             yield put(historyActions.pushFeed.build(feed));
@@ -114,24 +112,16 @@ export function* watchExternalAuthentication(dependencies: IExternalAuthenticati
     let task: Task | undefined;
     try {
         while (true) {
-            const next: { external?: authActions.externalRequest.TAction; legacy?: TOpdsAuthenticationChannel } = yield race({
-                external: take(authActions.externalRequest.ID),
-                ...(dependencies.legacy ? { legacy: take(dependencies.legacy.requests) } : {}),
-            });
-            if (next.legacy) {
-                if (task?.isRunning()) yield cancel(task);
-                activeId = undefined;
-                task = yield fork(function* () {
-                    try { yield call(dependencies.legacy.run, next.legacy); }
-                    catch (error) { dependencies.legacy.onError(error); }
-                    finally {
-                        const wasCancelled: boolean = yield cancelled();
-                        if (wasCancelled) next.legacy[3]?.();
-                    }
-                });
+            const action: authActions.externalRequest.TAction | authActions.prompt.TAction = yield take([
+                authActions.externalRequest.ID, authActions.prompt.ID,
+            ]);
+            if (action.type === authActions.prompt.ID) {
+                if (action.payload.view || action.payload.requestId === activeId) {
+                    if (task?.isRunning()) yield cancel(task);
+                    activeId = undefined;
+                }
                 continue;
             }
-            const action = next.external;
             if (action.payload.command === "cancel" && action.payload.requestId !== activeId) continue;
             if (task?.isRunning()) yield cancel(task);
             activeId = action.payload.requestId;

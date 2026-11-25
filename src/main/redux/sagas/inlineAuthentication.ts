@@ -34,19 +34,26 @@ export function* submitInlineAuthentication(action: authActions.submit.TAction) 
                 tokenType: "Basic",
                 accessToken: Buffer.from(login + ":" + password).toString("base64"),
             });
-            const response = yield* callTyped(browse, credentialsUrl);
-            if (!response.isSuccess) {
-                throw new Error("Authentication rejected");
+            if (!options?.promptId) {
+                const response = yield* callTyped(browse, credentialsUrl);
+                if (!response.isSuccess) {
+                    throw new Error("Authentication rejected");
+                }
+                result = response;
             }
-            result = response;
         } else if (authenticationType === "http://opds-spec.org/auth/digest") {
             const getWithoutAuth = httpGetWithAuth(false);
-            const challenge = yield* callTyped(() => getWithoutAuth(credentialsUrl, { redirect: "manual" }));
-            const header = challenge.response?.headers.get("WWW-Authenticate")?.trim();
-            if (challenge.statusCode !== 401 || !header || !/^Digest\s/i.test(header)) {
-                throw new Error("Missing Digest challenge");
+            let digest = options?.digest ? parseDigestString("Digest " + Object.entries(options.digest)
+                .filter(([, value]) => value !== undefined)
+                .map(([key, value]) => `${key}=${JSON.stringify(value)}`).join(", ")) : undefined;
+            if (!digest) {
+                const challenge = yield* callTyped(() => getWithoutAuth(credentialsUrl, { redirect: "manual" }));
+                const header = challenge.response?.headers.get("WWW-Authenticate")?.trim();
+                if (challenge.statusCode !== 401 || !header || !/^Digest\s/i.test(header)) {
+                    throw new Error("Missing Digest challenge");
+                }
+                digest = parseDigestString(header);
             }
-            const digest = parseDigestString(header);
             if (!digest.nonce || (digest.algorithm !== "MD5" && digest.algorithm !== "MD5-sess")
                 || (digest.qop && digest.qop !== "auth")) {
                 throw new Error("Unsupported Digest challenge");
@@ -59,11 +66,14 @@ export function* submitInlineAuthentication(action: authActions.submit.TAction) 
                 uri: url.pathname + url.search,
                 method: "GET",
             });
-            const response = yield* callTyped(() => getWithoutAuth(credentialsUrl, {
-                redirect: "manual", headers: { Authorization: `Digest ${accessToken}` },
-            }));
-            if (!response.isSuccess) {
-                throw new Error("Authentication rejected");
+            // A download owns its acquisition response; do not consume it as a catalog here.
+            if (!options?.promptId) {
+                const response = yield* callTyped(() => getWithoutAuth(credentialsUrl, {
+                    redirect: "manual", headers: { Authorization: `Digest ${accessToken}` },
+                }));
+                if (!response.isSuccess) {
+                    throw new Error("Authentication rejected");
+                }
             }
             yield* callTyped(httpSetAuthenticationToken, {
                 opdsAuthenticationUrl: credentialsUrl,
@@ -126,9 +136,10 @@ export function* submitInlineAuthentication(action: authActions.submit.TAction) 
         yield* putTyped(toastActions.openRequest.build(ToastType.Error,
             getTranslator().translate("message.notifications.authenticationFailed")));
     } finally {
-        yield* putTyped(authActions.submitted.build(credentialsUrl, failed, result));
+        yield* putTyped(authActions.submitted.build(credentialsUrl, failed, result, options?.promptId));
     }
-    if (!failed) {
+    if (!failed && !options?.promptId) {
         yield* putTyped(historyActions.refresh.build());
     }
+    return !failed;
 }

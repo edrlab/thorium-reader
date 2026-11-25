@@ -48,6 +48,7 @@ import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common
 import { customizationPackageManifestReducer } from "readium-desktop/common/redux/reducers/customization/manifest";
 import { directoryReducer } from "readium-desktop/common/redux/reducers/directory";
 import { libraryApiReducer } from "./api";
+import { authenticationReducer } from "./authentication";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -62,6 +63,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         screenReader: screenReaderReducer,
         i18n: i18nReducer,
         opds: combineReducers({
+            authentication: authenticationReducer,
             browser: combineReducers({
                 breadcrumb: opdsBreadcrumbReducer,
                 header: opdsHeaderLinkReducer,

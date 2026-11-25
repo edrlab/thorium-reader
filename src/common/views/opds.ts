@@ -131,9 +131,11 @@ export type TInlineOpdsAuthenticationType = "http://opds-spec.org/auth/basic"
     | "http://opds-spec.org/auth/oauth/password/apiapp";
 
 export type TExternalOpdsAuthenticationType = "http://opds-spec.org/auth/oauth/implicit"
+    | "http://librarysimplified.org/authtype/SAML-2.0"
     | "http://opds-spec.org/auth/oauth/authorization-code-pkce";
 
 export interface IOpdsAuthView {
+    digest?: { nonce: string; realm: string; qop?: string; algorithm?: string };
     external?: boolean;
     authenticationType?: TInlineOpdsAuthenticationType | TExternalOpdsAuthenticationType;
     authenticationId?: string;

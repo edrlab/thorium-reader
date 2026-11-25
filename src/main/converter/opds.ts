@@ -566,6 +566,7 @@ export class OpdsFeedViewConverter {
             || a.Type === "http://opds-spec.org/auth/oauth/password"
             || a.Type === "http://opds-spec.org/auth/oauth/password/apiapp"
             || a.Type === "http://opds-spec.org/auth/oauth/implicit"
+            || a.Type === "http://librarysimplified.org/authtype/SAML-2.0"
             || OPDS_AUTHORIZATION_CODE_PKCE_TYPE.some(type => type === a.Type));
         const pkce = OPDS_AUTHORIZATION_CODE_PKCE_TYPE.some(type => type === method?.Type);
         const authenticationType = pkce
@@ -603,9 +604,16 @@ export class OpdsFeedViewConverter {
         const auth: IOpdsAuthView = {
             credentialsUrl: method ? baseUrl : undefined,
             external: authenticationType === "http://opds-spec.org/auth/oauth/implicit"
+                || authenticationType === "http://librarysimplified.org/authtype/SAML-2.0"
                 || pkce,
             authenticationType: authenticationType as IOpdsAuthView["authenticationType"],
             authenticationId: r2OpdsAuth.Id,
+            digest: typeof method?.AdditionalJSON?.nonce === "string" ? {
+                nonce: method.AdditionalJSON.nonce,
+                realm: typeof method.AdditionalJSON.realm === "string" ? method.AdditionalJSON.realm : "",
+                qop: typeof method.AdditionalJSON.qop === "string" ? method.AdditionalJSON.qop : undefined,
+                algorithm: typeof method.AdditionalJSON.algorithm === "string" ? method.AdditionalJSON.algorithm : undefined,
+            } : undefined,
             registerUrl: register ? urlPathResolve(baseUrl, register.Href) : undefined,
             helpUrls: methodLinks.filter(l => l.Rel?.includes("help")).map(l => urlPathResolve(baseUrl, l.Href)),
             logoImageUrl,

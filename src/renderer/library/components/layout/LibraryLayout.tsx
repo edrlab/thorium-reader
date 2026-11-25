@@ -30,6 +30,7 @@ import {
 } from "readium-desktop/renderer/common/keyboard";
 
 import LibraryHeader from "./LibraryHeader";
+import { AuthenticationRequest } from "../opds/AuthenticationRequest";
 
 import { Link, matchPath } from "react-router-dom";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
@@ -173,7 +174,9 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         >
                             {__("accessibility.mainContent")}
                         </a>
-                        { this.props.children }
+                        <AuthenticationRequest request={this.props.authenticationRequest} __={__}>
+                            {this.props.children}
+                        </AuthenticationRequest>
                     </main>
                 </div>
             </div>
@@ -376,6 +379,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
+    authenticationRequest: state.opds.authentication.request,
     // dialogOpen: state.dialog.open, // unused ?
     keyboardShortcuts: state.keyboard.shortcuts,
     location: state.router.location,

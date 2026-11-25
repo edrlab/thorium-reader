@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { RouterState } from "redux-first-history";
-import { downloadActions } from "readium-desktop/common/redux/actions";
+import { authActions, downloadActions } from "readium-desktop/common/redux/actions";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { ILoadState } from "readium-desktop/renderer/common/redux/states/load";
@@ -20,6 +20,7 @@ import { ISettingsState } from "../settings";
 
 export interface ILibraryRootState extends IRendererCommonRootState {
     opds: {
+        authentication: { request?: authActions.prompt.TAction["payload"] };
         browser: {
             breadcrumb: IBreadCrumbItem[];
             header: IOpdsHeaderState;

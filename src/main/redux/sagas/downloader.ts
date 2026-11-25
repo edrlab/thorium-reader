@@ -360,7 +360,7 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
             OPDSAuthenticationDoc,
         );
 
-        const authenticated = yield* callTyped(requestOpdsAuthentication, r2OpdsAuth, linkHref);
+        const authenticated = yield* callTyped(requestOpdsAuthentication, r2OpdsAuth, data.responseUrl || linkHref);
         debug("authentication attempt finished");
 
         if (!authenticated) {

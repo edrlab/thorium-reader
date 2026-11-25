@@ -1,5 +1,4 @@
 import { all, put } from "redux-saga/effects";
-import type { TOpdsAuthenticationChannel } from "readium-desktop/main/event";
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import { channel, runSaga, stdChannel } from "redux-saga";
 import type { BrowserWindow } from "electron";
@@ -31,6 +30,44 @@ const fixture = () => {
 afterEach(() => jest.useRealTimers());
 
 describe("inline external authentication lifecycle", () => {
+    it("resumes only the requesting download without navigating away from its inline prompt", async () => {
+        const f = fixture();
+        const task = runSaga({ dispatch: f.dispatch }, runExternalAuthentication, f.dependencies,
+            authActions.externalRequest.build(url, "download", "start", undefined, "download"));
+        await flush(); f.callbacks.put(f.event()); await task.toPromise();
+        expect(f.dispatch).toHaveBeenCalledWith(authActions.promptResult.build("download", true));
+        expect(f.dispatch).not.toHaveBeenCalledWith(authActions.done.build());
+        expect(f.dispatch).not.toHaveBeenCalledWith(historyActions.refresh.build());
+        expect(f.session.dispose).toHaveBeenCalledTimes(1);
+    });
+
+    it("cancels the retry window when its download prompt is cleared", async () => {
+        const f = fixture(); const input = stdChannel(); const close = jest.fn();
+        jest.mocked(f.session.openFallback).mockResolvedValue({ close, isDestroyed: () => false, once: jest.fn() } as unknown as BrowserWindow);
+        const task = runSaga({ dispatch: f.dispatch, channel: input }, watchExternalAuthentication, f.dependencies);
+        input.put(authActions.externalRequest.build(url, "download", "retry", undefined, "download"));
+        await flush();
+        input.put(authActions.prompt.build("older-download")); await flush();
+        expect(close).not.toHaveBeenCalled();
+        input.put(authActions.prompt.build("download")); await flush();
+        expect(close).toHaveBeenCalledTimes(1);
+        expect(f.session.dispose).toHaveBeenCalledTimes(1);
+        task.cancel(); await task.toPromise();
+    });
+
+    it("completes authentication through the internal provider browser", async () => {
+        const f = fixture(); const close = jest.fn();
+        jest.mocked(f.session.openFallback).mockImplementation(async () => {
+            f.callbacks.put(f.event());
+            return { close, isDestroyed: () => false, once: jest.fn() } as unknown as BrowserWindow;
+        });
+        await runSaga({ dispatch: f.dispatch }, runExternalAuthentication, f.dependencies,
+            authActions.externalRequest.build(url, "view", "retry")).toPromise();
+        expect(f.dispatch).toHaveBeenCalledWith(authActions.externalStatus.build("view", "complete"));
+        expect(f.dispatch).toHaveBeenCalledWith(historyActions.refresh.build());
+        expect(f.dependencies.openExternal).not.toHaveBeenCalled();
+        expect(close).toHaveBeenCalledTimes(1);
+    });
     it("listens before external launch and completes an immediate callback without a message modal", async () => {
         const f = fixture(); const event = f.event();
         f.dependencies.openExternal.mockImplementation(async () => { f.callbacks.put(event); });
@@ -128,20 +165,6 @@ it("returns to the catalog after a standalone auth document instead of reopening
     expect(getCatalog).toHaveBeenCalledWith("catalog");
     expect(f.dispatch).toHaveBeenCalledWith(historyActions.pushFeed.build(feed));
     expect(f.dispatch).not.toHaveBeenCalledWith(historyActions.refresh.build());
-});
-
-
-it("gives legacy authentication sole callback-channel ownership when it replaces an inline session", async () => {
-    const f = fixture(); const input = stdChannel(); const legacyRequests = channel<TOpdsAuthenticationChannel>();
-    const run = jest.fn(function* (_request: TOpdsAuthenticationChannel) { return; });
-    const task = runSaga({ dispatch: f.dispatch, channel: input }, watchExternalAuthentication,
-        { ...f.dependencies, legacy: { requests: legacyRequests, run, onError: jest.fn() } });
-    input.put(authActions.externalRequest.build(url, "view", "start")); await flush();
-    legacyRequests.put([{} as TOpdsAuthenticationChannel[0], url, false]); await flush();
-    expect(f.session.dispose).toHaveBeenCalledTimes(1);
-    expect(run).toHaveBeenCalledTimes(1);
-    input.put(authActions.externalRequest.build(url, "view", "cancel")); await flush();
-    task.cancel(); await task.toPromise();
 });
 
 

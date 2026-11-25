@@ -11,13 +11,9 @@ jest.mock("readium-desktop/main/network/http", () => ({
     httpGet: jest.fn(),
     httpPutWithAuth: jest.fn(),
 }));
-jest.mock("readium-desktop/main/event", () => ({
-    getOpdsAuthenticationChannel: jest.fn(),
-}));
 
 import { OPDS_PROGRESSION_MEDIA_TYPE } from "readium-desktop/common/models/opdsProgression";
 import type { IHttpGetResult } from "readium-desktop/common/utils/http";
-import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
 import { httpGet, httpPutWithAuth } from "readium-desktop/main/network/http";
 import {
     getOpdsProgression,
@@ -28,8 +24,6 @@ import {
 
 const httpGetMock = jest.mocked(httpGet);
 const httpPutWithAuthMock = jest.mocked(httpPutWithAuth);
-const getOpdsAuthenticationChannelMock = jest.mocked(getOpdsAuthenticationChannel);
-const authenticationChannelPutMock = jest.fn();
 const url = "https://example.org/publications/1/progression";
 const validDocument = {
     modified: "2026-09-30T10:00:00Z",
@@ -57,10 +51,6 @@ describe("OPDS progression service", () => {
     beforeEach(() => {
         httpGetMock.mockReset();
         httpPutWithAuthMock.mockReset();
-        authenticationChannelPutMock.mockReset();
-        getOpdsAuthenticationChannelMock.mockReturnValue({
-            put: authenticationChannelPutMock,
-        } as unknown as ReturnType<typeof getOpdsAuthenticationChannel>);
     });
 
     it("requests and returns a valid progression document", async () => {
@@ -265,7 +255,6 @@ describe("OPDS progression service", () => {
                 kind: "unauthorized",
                 statusCode: 401,
             });
-            expect(authenticationChannelPutMock).not.toHaveBeenCalled();
         },
     );
 

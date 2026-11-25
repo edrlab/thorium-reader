@@ -17,7 +17,7 @@ import { IOpdsAuthView } from "readium-desktop/common/views/opds";
 import { TranslatorProps } from "readium-desktop/renderer/common/components/hoc/translator";
 import { subscribeToAction } from "readium-desktop/renderer/common/redux/middleware/actionSubscriber";
 
-export const AuthenticationForm = ({ auth, __ }: { auth: IOpdsAuthView } & TranslatorProps) => {
+export const AuthenticationForm = ({ auth, promptId, __ }: { auth: IOpdsAuthView; promptId?: string } & TranslatorProps) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const [pending, setPending] = React.useState(false);
@@ -27,14 +27,14 @@ export const AuthenticationForm = ({ auth, __ }: { auth: IOpdsAuthView } & Trans
     }, [auth]);
     React.useEffect(() => subscribeToAction(authActions.submitted.ID, action => {
         const { payload } = action as authActions.submitted.TAction;
-        if (payload.credentialsUrl === auth.credentialsUrl) {
+        if (payload.credentialsUrl === auth.credentialsUrl && payload.promptId === promptId) {
             if (payload.result) {
                 handOffBrowseResponse(location.pathname, payload.result);
             }
             setPending(false);
             setFailed(payload.failed);
         }
-    }), [auth.credentialsUrl, location.pathname]);
+    }), [auth.credentialsUrl, location.pathname, promptId]);
     const openExternal = (url: string) => {
         if (/^https?:\/\//i.test(url)) {
             shell.openExternal(url).catch(() => { /* Browser unavailable. */ });
@@ -49,7 +49,7 @@ export const AuthenticationForm = ({ auth, __ }: { auth: IOpdsAuthView } & Trans
         setFailed(false);
         dispatch(authActions.submit.build(auth.credentialsUrl, String(values.get("login")), String(values.get("password")), {
             authenticationType: auth.authenticationType, authenticationId: auth.authenticationId,
-            oauthUrl: auth.oauthUrl, oauthRefreshUrl: auth.oauthRefreshUrl,
+            oauthUrl: auth.oauthUrl, oauthRefreshUrl: auth.oauthRefreshUrl, digest: auth.digest, promptId,
         }));
         form.reset();
     }}>
@@ -66,6 +66,8 @@ export const AuthenticationForm = ({ auth, __ }: { auth: IOpdsAuthView } & Trans
             <input name="password" type="password" autoComplete="current-password" required disabled={pending} />
         </label></p>
         <button className={stylesButtons.button_primary_blue} type="submit" disabled={pending}>{__("catalog.opds.auth.login")}</button>
+        {promptId && <button className={stylesButtons.button_secondary_blue} type="button"
+            onClick={() => dispatch(authActions.promptResult.build(promptId, false))}>{__("catalog.opds.auth.cancel")}</button>}
         {(auth.registerUrl || auth.helpUrls?.length > 0) && <footer className={styles.links}>
             {auth.registerUrl && <button type="button" onClick={() => openExternal(auth.registerUrl)}>{__("catalog.opds.auth.register")}</button>}
             {auth.helpUrls?.map(url => <button key={url} type="button" onClick={() => openExternal(url)}>{url}</button>)}

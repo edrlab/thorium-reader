@@ -15,8 +15,12 @@ import * as submitted from "./submitted";
 
 import * as externalRequest from "./externalRequest";
 import * as externalStatus from "./externalStatus";
+import * as prompt from "./prompt";
+import * as promptResult from "./promptResult";
 
 export {
+    prompt,
+    promptResult,
     externalRequest,
     externalStatus,
     submit,
