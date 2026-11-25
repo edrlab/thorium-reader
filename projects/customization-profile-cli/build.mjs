@@ -1,0 +1,36 @@
+import { build } from "esbuild";
+import { isBuiltin } from "node:module";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const directory = path.dirname(fileURLToPath(import.meta.url));
+const result = await build({
+    absWorkingDir: path.resolve(directory, "../.."),
+    entryPoints: [path.join(directory, "src/cli.ts")],
+    outfile: process.argv[2] ? path.resolve(process.argv[2]) : path.join(directory, "dist/thorium-profile.cjs"),
+    tsconfig: path.join(directory, "tsconfig.json"),
+    bundle: true,
+    platform: "node",
+    target: "node22.2",
+    format: "cjs",
+    metafile: true,
+    write: false,
+});
+for (const output of Object.values(result.metafile.outputs)) {
+    for (const dependency of output.imports) {
+        if (dependency.external && !isBuiltin(dependency.path)) {
+            throw new Error(`Unbundled dependency: ${dependency.path}`);
+        }
+    }
+}
+for (const input of Object.keys(result.metafile.inputs)) {
+    if (input.startsWith("src/") && input !== "src/common/readium/customization/profile.schema.ts") {
+        throw new Error(`Unexpected Thorium runtime dependency: ${input}`);
+    }
+}
+const { mkdir, writeFile } = await import("node:fs/promises");
+for (const output of result.outputFiles) {
+    await mkdir(path.dirname(output.path), { recursive: true });
+    await writeFile(output.path, output.contents);
+    console.log(`Built ${output.path}`);
+}

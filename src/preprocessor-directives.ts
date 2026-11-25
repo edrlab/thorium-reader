@@ -63,9 +63,6 @@ export const _TELEMETRY_SECRETDATA = __TH__TELEMETRY_SECRETDATA__;
 declare const __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: string;
 export const _CUSTOMIZATION_PROFILE_PUB_KEY = __TH__CUSTOMIZATION_PROFILE_PUB_KEY__;
 
-// declare const __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: string;
-// export const _CUSTOMIZATION_PROFILE_PRIVATE_KEY = __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__;
-
 // declare const __NODE_ENV__: string;
 // export const _NODE_ENV = __NODE_ENV__;
 

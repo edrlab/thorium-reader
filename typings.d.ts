@@ -48,7 +48,6 @@ declare const __TH__IS_PACKAGED__: boolean;
 declare const __TH__SKIP_LCP_LSD__: boolean;
 declare const __TH__IS_VSCODE_LAUNCH__: boolean;
 declare const __TH__IS_CI__: boolean;
-declare const __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: string;
 declare const __TH__TELEMETRY_URL__: string;
 declare const __TH__TELEMETRY_SECRET__: string;
 declare const __TH__TELEMETRY_SECRETDATA__: string;
