@@ -1,6 +1,7 @@
 .history
 dist
 customization-dist
+/resources/customization-profile-keys/prod/private.pem
 release
 node_modules
 .DS_Store

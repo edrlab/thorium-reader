@@ -2,4 +2,4 @@
 
 set -eu
 node ./projects/customization-profile-cli/build.mjs
-exec node ./projects/customization-profile-cli/dist/thorium-profile.cjs "$@"
+exec node ./scripts/thorium-profile.cjs "$@"
