@@ -27,6 +27,8 @@ New Thorium-owned code used by more than one runtime should go in one of these c
 - `src/renderer/common/**`: renderer-only shared React, DOM, keyboard, hook, component, and Redux glue code.
 - `src/utils/**`: small generic helpers that stay runtime-safe.
 
+Profile HTML asset URL resolution lives in `src/renderer/common/customization/profileResourceUrl.ts`, shared by Library navigation pages and welcome dialogs in both Library and Reader. Welcome dialog code must not import Library-owned customization helpers.
+
 Existing shared/support areas:
 
 - `src/renderer/reader/pdf/common/**` are PDF-specific shared code used by the reader-side PDF host and the PDF webview.

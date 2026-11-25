@@ -4,7 +4,7 @@ import {
     resolveProfileAssetUrl,
     resolveProfileCssUrls,
     resolveProfileSrcset,
-} from "readium-desktop/renderer/library/customization/profileResourceUrl";
+} from "readium-desktop/renderer/common/customization/profileResourceUrl";
 
 const screen = "screens/help.html";
 const base = "thoriumhttps://host/custom-profile-zip/profile/";

@@ -112,3 +112,25 @@ export function resolveProfileCssUrls(
         },
     );
 }
+
+export function resolveProfileDocumentResources(
+    document: Document,
+    screenHref: string,
+    customizationBaseUrl: string,
+): void {
+    for (const image of Array.from(document.body.querySelectorAll("img[src]"))) {
+        const src = image.getAttribute("src");
+        if (src) {
+            image.setAttribute("src", resolveProfileAssetUrl(src, screenHref, customizationBaseUrl));
+        }
+    }
+    for (const image of Array.from(document.body.querySelectorAll("img[srcset], source[srcset]"))) {
+        image.setAttribute("srcset", resolveProfileSrcset(image.getAttribute("srcset") || "", screenHref, customizationBaseUrl));
+    }
+    for (const style of Array.from(document.querySelectorAll("style"))) {
+        style.textContent = resolveProfileCssUrls(style.textContent || "", screenHref, customizationBaseUrl);
+    }
+    for (const element of Array.from(document.body.querySelectorAll("[style]"))) {
+        element.setAttribute("style", resolveProfileCssUrls(element.getAttribute("style") || "", screenHref, customizationBaseUrl));
+    }
+}
