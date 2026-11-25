@@ -1056,15 +1056,15 @@ const fillTOCFromNavDoc = async (publication: Publication, zip: IZip):
         xhtml: "http://www.w3.org/1999/xhtml",
     });
 
-    const navs = select("/xhtml:html/xhtml:body//xhtml:nav", navXmlDoc) as Element[];
+    const navs = (select("/xhtml:html/xhtml:body//xhtml:nav", navXmlDoc) || []) as Element[];
     if (navs && navs.length) {
 
         navs.forEach((navElement: Element) => {
 
-            const epubType = select("@epub:type", navElement) as Attr[];
+            const epubType = (select("@epub:type", navElement) || []) as Attr[];
             if (epubType && epubType.length) {
 
-                const olElem = select("xhtml:ol", navElement) as Element[];
+                const olElem = (select("xhtml:ol", navElement) || []) as Element[];
 
                 const rolesString = epubType[0].value;
                 const rolesArray = parseSpaceSeparatedString(rolesString);
@@ -1127,17 +1127,17 @@ const fillTOCFromNavDocWithOL = (
 
     olElems.forEach((olElem: Element) => {
 
-        const liElems = select("xhtml:li", olElem) as Element[];
+        const liElems = (select("xhtml:li", olElem) || []) as Element[];
         if (liElems && liElems.length) {
 
             liElems.forEach((liElem) => {
 
                 const link = new Link();
 
-                const aElems = select("xhtml:a", liElem) as Element[];
+                const aElems = (select("xhtml:a", liElem) || []) as Element[];
                 if (aElems && aElems.length > 0) {
 
-                    const epubType = select("@epub:type", aElems[0]) as Attr[];
+                    const epubType = (select("@epub:type", aElems[0]) || []) as Attr[];
                     if (epubType && epubType.length) {
 
                         const rolesString = epubType[0].value;
@@ -1148,7 +1148,7 @@ const fillTOCFromNavDocWithOL = (
                         }
                     }
 
-                    const aHref = select("@href", aElems[0]) as Attr[];
+                    const aHref = (select("@href", aElems[0]) || []) as Attr[];
                     if (aHref && aHref.length) {
                         const val = aHref[0].value;
                         let valDecoded = tryDecodeURI(val);
@@ -1173,7 +1173,7 @@ const fillTOCFromNavDocWithOL = (
                         link.Title = aText;
                     }
                 } else {
-                    const liFirstChild = select("xhtml:*[1]", liElem) as Element[];
+                    const liFirstChild = (select("xhtml:*[1]", liElem) || []) as Element[];
                     if (liFirstChild && liFirstChild.length && liFirstChild[0].textContent) {
                         link.Title = liFirstChild[0].textContent.trim();
                     }
@@ -1183,7 +1183,7 @@ const fillTOCFromNavDocWithOL = (
                     children.push(link);
                 }
 
-                const olElemsNext = select("xhtml:ol", liElem) as Element[];
+                const olElemsNext = (select("xhtml:ol", liElem) || []) as Element[];
                 if (olElemsNext && olElemsNext.length) {
                     if (!link.Children) {
                         link.Children = [];

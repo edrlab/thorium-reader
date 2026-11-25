@@ -788,7 +788,7 @@ export const convertDaisyToReadiumWebPub = async (
 
                     // <?xml-stylesheet type="text/css" href="dtbookbasic.css"?>
                     const stylesheets =
-                        select("/processing-instruction('xml-stylesheet')", dtBookDoc) as ProcessingInstruction[];
+                        (select("/processing-instruction('xml-stylesheet')", dtBookDoc) || []) as ProcessingInstruction[];
                     const cssHrefs: string[] = []; // `<link rel="stylesheet" href="${cssHref}" />`
                     for (const stylesheet of stylesheets) {
                         if (!stylesheet.nodeValue) {
@@ -814,7 +814,7 @@ export const convertDaisyToReadiumWebPub = async (
                         }
                     }
 
-                    const smilRefs = select("//*[@smilref]", dtBookDoc) as Element[];
+                    const smilRefs = (select("//*[@smilref]", dtBookDoc) || []) as Element[];
                     for (const smilRef of smilRefs) {
                         const ref = smilRef.getAttribute("smilref");
                         if (ref) {
@@ -1121,7 +1121,7 @@ ${cssHrefs.reduce((pv, cv) => {
                     return;
                 }
                 if (targetEl.nodeName !== "text") {
-                    // const textElems = select("//text", targetEl, true) as Element;
+                    // const textElems = (select("//text", targetEl, true) || []) as Element;
                     // if (textElems) {
                     //     targetEl = textElems;
                     // }
@@ -1250,7 +1250,7 @@ ${cssHrefs.reduce((pv, cv) => {
                         const targetElOriginal = targetEl;
                         if (targetEl.nodeName !== "audio") {
 
-                            // const textElems = select("//text", targetEl, true) as Element;
+                            // const textElems = (select("//text", targetEl, true) || []) as Element;
                             // if (textElems) {
                             //     targetEl = textElems;
                             // }
