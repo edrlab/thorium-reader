@@ -12,7 +12,7 @@ npm run check:customization-profile-cli
 npm run test:customization-profile-cli
 ```
 
-Commit the regenerated `scripts/thorium-profile.cjs` with source or dependency changes. Tests cover standalone execution, legacy profiles, public-key selection, and exclusion of key files from app assets.
+Commit the regenerated `scripts/thorium-profile.cjs` with source or dependency changes. Tests cover standalone execution and legacy profiles.
 
 ## Constraints
 
