@@ -44,7 +44,7 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
             </button>
             <div style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", gap: "8px", minWidth: 0 }}>
                 {rootLocation && rootLocation.path !== currentLocation?.path && <>
-                    <Link style={{ ...labelStyle, flexShrink: 0, whiteSpace: "nowrap" }} to={{ pathname: rootLocation.path }}
+                    <Link style={{ ...labelStyle, flexShrink: 0, whiteSpace: "nowrap", color: "var(--color-brand-primary)" }} to={{ pathname: rootLocation.path }}
                         title={rootLocation.name}
                         aria-label={rootLocation.name}
                         state={resolveRouterLocationState(location.state, savedDisplayType)}>
