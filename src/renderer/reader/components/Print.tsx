@@ -1,28 +1,27 @@
 import * as React from "react";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesSpinner from "readium-desktop/renderer/assets/styles/components/spinnerContainer.scss";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
-import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/print.scss";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { apiActions, readerActions } from "readium-desktop/common/redux/actions";
-import { getSaga } from "../createStore";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { _APP_NAME } from "readium-desktop/preprocessor-directives";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/print.scss";
+import * as stylesSpinner from "readium-desktop/renderer/assets/styles/components/spinnerContainer.scss";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { getSaga } from "../createStore";
 import { createOrGetPdfEventBus } from "../pdf/driver";
 
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { publicationInfoReaderLibGetPublicationApiCall } from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
-import { PublicationView } from "readium-desktop/common/views/publication";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import classNames from "classnames";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { publicationInfoReaderLibGetPublicationApiCall } from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 
 // const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -193,7 +192,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                             <ul className={stylesPrint.print_lcp_list}>
                                 {/* <li>{_---_("reader.print.descriptionLcpLimit", { lcpLimitPages: publicationViewLcpRightsPrintNumber })}</li> */}
                                 <li><p>{__("reader.print.descriptionLcpCount", { count: lcpCountPages })}</p></li>
-                                <li><p>{__("reader.print.descriptionLcpPrintable", { printable: formatRanges(publicationViewLcpRightsPrintsConsumed), count: publicationViewLcpRightsPrintsConsumed.length.toString() })}</p></li>
+                                <li><p>{__("reader.print.descriptionLcpPrintable", { printable: formatRanges(publicationViewLcpRightsPrintsConsumed), count: publicationViewLcpRightsPrintsConsumed.length })}</p></li>
                             </ul>
                         </div>
                     </div>

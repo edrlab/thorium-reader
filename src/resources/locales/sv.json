@@ -310,7 +310,7 @@
                 "cbzNoImages": "Det här CBZ-arkivet innehåller inga bilder i format som stöds.",
                 "contextMissing": "saknas",
                 "daisyConversionFailed": "Kunde inte konvertera DAISY-boken.",
-                "manifestContext": "Känner inte igen bokens manifest-@context på {{- url}}: {{- context}}",
+                "manifestContext": "Känner inte igen bokens manifest-@context på {{- url}}: {{- ctx}}",
                 "manifestImportFailed": "Kunde inte importera bokens manifest.",
                 "manifestInvalidJson": "Ogiltig JSON i bokens manifest på {{- url}}.",
                 "manifestMissing": "Bokens manifest saknas.",

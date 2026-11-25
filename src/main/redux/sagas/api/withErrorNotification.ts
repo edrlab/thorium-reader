@@ -35,7 +35,7 @@ export function withErrorNotification<Args extends unknown[], Result>(
             if (owner === notifyOperation) {
                 const windowIdentifier = yield* getContextTyped<string | undefined>("toastWindowIdentifier");
                 // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
-                const text = getTranslator().translate(message);
+                const text = getTranslator().translate(message) as string;
                 yield* putTyped(toastActions.openRequest.build(ToastType.Error, text, undefined, windowIdentifier,
                     includeErrorDetails ? formatImportDiagnostics(text, error, diagnosticSource?.(...args)) : undefined));
             }
