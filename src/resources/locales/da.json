@@ -1,28 +1,28 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Overstregnings-note",
         "bookMenu": "Menu",
-        "bookmarkNote": "",
-        "cancelDownload": "",
+        "bookmarkNote": "Bogmærker-note",
+        "cancelDownload": "Annuller download: {{- title}}",
         "closeDialog": "Luk",
-        "closeNotification": "",
-        "copyNotificationInstruction": "",
-        "decreaseSetting": "",
-        "downloadProgress": "",
-        "downloadProgressUnknown": "",
-        "editTag": "",
-        "favoriteCatalog": "",
-        "increaseSetting": "",
+        "closeNotification": "Luk meddelelse",
+        "copyNotificationInstruction": "Kopier meddelelse",
+        "decreaseSetting": "Formindsk {{- setting}}",
+        "downloadProgress": "Download fremgang: {{- title}}",
+        "downloadProgressUnknown": "Downloadens fremgang er ukendt.",
+        "editTag": "Rediger tag: {{- tag}}",
+        "favoriteCatalog": "Favorit katalog: {{- title}}",
+        "increaseSetting": "Forøg {{- setting}}",
         "leftSlideButton": "Flyt listen til venstre",
-        "loading": "",
+        "loading": "Henter…",
         "mainContent": "hovedindhold",
-        "notificationCopied": "",
-        "notificationCopyFailed": "",
-        "printPage": "",
-        "publicationDetails": "",
-        "resetSetting": "",
+        "notificationCopied": "Kopieret til udklipsholderen:",
+        "notificationCopyFailed": "Kunne ikke kopiere meddelelsen",
+        "printPage": "Side {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Nulstil {{- setting}}",
         "rightSlideButton": "Flyt listen til højre",
-        "searching": "",
+        "searching": "Søger…",
         "skipLink": "Spring til indholdet",
         "toolbar": "værktøjslinje"
     },
@@ -120,13 +120,13 @@
         "numberOfPages": "Antal sider",
         "opds": {
             "auth": {
-                "alternativeLogin": "",
+                "alternativeLogin": "Alternativt login",
                 "cancel": "Annullér",
                 "external": "Login-siden åbnes i din webbrowser. Følg venligst instruktionerne. Når du er logget ind, fører webbrowseren dig tilbage til denne applikation.",
-                "externalBrowserInstructions": "",
-                "fallback": "Bemærk: Hvis du oplever problemer med at logge ind med din standard webbrowser, kan du prøve igen med den alternative metode inde i applikationen.",
+                "externalBrowserInstructions": "Hvis din web-browser ikke åbner automatisk, skal du klikke på følgende link.",
+                "fallback": "Hvis du oplever problemer med at logge ind med din standard webbrowser, kan du prøve igen med den alternative metode inde i applikationen.",
                 "login": "Log ind",
-                "openExternalBrowser": "",
+                "openExternalBrowser": "Åben ekstern browser",
                 "password": "Adgangskode",
                 "register": "Registrér",
                 "retry": "Prøv igen",
@@ -164,13 +164,13 @@
         "tags": "Tags",
         "update": "Rediger",
         "userProfile": {
-            "available": "",
-            "edit": "",
-            "holds": "",
-            "loading": "",
-            "loans": "",
-            "title": "",
-            "unavailable": ""
+            "available": "Tilgængelig: {{count}}",
+            "edit": "Rediger profil",
+            "holds": "Reservationer",
+            "loading": "Henter konto…",
+            "loans": "Lån",
+            "title": "Konto",
+            "unavailable": "Profil-information ikke tilgængeligt."
         }
     },
     "dialog": {
@@ -231,7 +231,7 @@
         "importTitle": "Importér en bog",
         "listTitle": "Listevisning",
         "myCatalogs": "Mine kataloger",
-        "refreshTitle": "genindlæs",
+        "refreshTitle": "Genindlæs",
         "searchPlaceholder": "Søg",
         "searchTitle": "Søg",
         "settings": "Indstillinger",
@@ -273,93 +273,93 @@
             "success": "Import færdig."
         },
         "diagnostics": {
-            "category": "",
-            "causedBy": "",
-            "downloadSource": "",
-            "error": "",
-            "httpStatus": "",
-            "invalidUrl": "",
-            "source": "",
-            "url": ""
+            "category": "Kategori: {{- category}}",
+            "causedBy": "Forårsaget af:",
+            "downloadSource": "Download kilde: {{- source}}",
+            "error": "Fejl",
+            "httpStatus": "HTTP statuskode: {{- status}}",
+            "invalidUrl": "[ugyldig URL]",
+            "source": "Kilde: {{- source}}",
+            "url": "URL: {{- url}}"
         },
         "download": {
             "cancelled": "Download annulleret.",
             "errors": {
-                "failed": "",
+                "failed": "Download mislykkedes.",
                 "hashMismatch": "Den downloadede fil kunne ikke valideres: Forventet SHA-256 hash: {{- expected}}, fik i stedet {{- actual}}.",
                 "httpGet": "HTTP download mislykkedes: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Det midlertidige filnavn til downloaden er ugyldigt.",
                 "invalidLink": "Download linket er ugyldigt.",
                 "invalidTempDirectory": "Den midlertidige mappe til downloads er ugyldig.",
                 "lengthMismatch": "Integritetstjek af den downloadede fil fejlede: forventede {{- expected}} bytes, fik {{- actual}} bytes.",
-                "pathMissing": "",
-                "publicationLinkMissing": "",
+                "pathMissing": "Den downloadede fil mangler.",
+                "publicationLinkMissing": "Licensen indeholder ikke en bog med et download link.",
                 "readStreamMissing": "Download var ikke muligt.",
-                "streamClosed": "",
+                "streamClosed": "Download forbindelsen blev lukket før den var færdig.",
                 "tooManyFilenameAttempts": "Var ikke i stand til at lave en unik midlertidig fil til download: {{- path}}"
             },
-            "failed": "",
-            "integrityFailed": "",
-            "saveFailed": "",
-            "startedWithTitle": ""
+            "failed": "Kunne ikke downloade fra \"{{- hostname}}\". Prøv venligst igen.",
+            "integrityFailed": "Downloaden fra \"{{- hostname}}\" er ukomplet eller skadet. Prøv venligst igen.",
+            "saveFailed": "Kunne ikke gemme downloaden. Tjek om der er plads og tilladelse til det.",
+            "startedWithTitle": "Downloader {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} er allerede importeret.",
             "errors": {
-                "acquisitionUrlMissing": "",
-                "cbzNoImages": "",
-                "contextMissing": "",
-                "daisyConversionFailed": "",
-                "manifestContext": "",
-                "manifestImportFailed": "",
-                "manifestInvalidJson": "",
-                "manifestMissing": "",
-                "manifestNotFound": "",
-                "manifestParsingFailed": "",
-                "noImportResult": "",
-                "notImported": "",
-                "profileAssetUrl": "",
-                "profileEmpty": "",
-                "profileEntryMissing": "",
-                "profileMissing": "",
-                "profileNotZip": ""
+                "acquisitionUrlMissing": "Bogens download URL mangler eller er ugyldig.",
+                "cbzNoImages": "CBZ-arkivet indeholder ikke nogen understøttede billeder.",
+                "contextMissing": "mangler",
+                "daisyConversionFailed": "Kunne ikke konvertere DAISY bogen.",
+                "manifestContext": "Ukendt bog-manifest \"@context\" på {{- url}}: {{- context}}",
+                "manifestImportFailed": "Import af bogens manifest mislykkedes.",
+                "manifestInvalidJson": "Ugyldigt JSON i bogens manifest på {{- url}}.",
+                "manifestMissing": "Bogen mangler et manifest.",
+                "manifestNotFound": "Intet bog-manifest fundet på {{- url}}.",
+                "manifestParsingFailed": "Kunne ikke læse bogens manifest på {{- url}}.",
+                "noImportResult": "Importen resulterede ikke i nogen bog.",
+                "notImported": "Bogen kunne ikke tilføjes til biblioteket.",
+                "profileAssetUrl": "Ugyldig profil i bogen på URL: {{- path}}",
+                "profileEmpty": "ZIP-arkivet med en ikke-kendt profil var tomt.",
+                "profileEntryMissing": "Bog med ikke-kendt profil blev ikke fundet på: {{- path}}",
+                "profileMissing": "Den ikke-kendte profil blev ikke fundet: {{- id}}",
+                "profileNotZip": "Den ikke-kendte profil er ikke et ZIP-arkiv."
             },
-            "failed": "",
-            "invalidLicense": "",
-            "invalidPublication": "",
-            "lcpLicenseMalformed": "",
+            "failed": "Kunne ikke importere \"{{- name}}\".",
+            "invalidLicense": "Kunne ikke importere \"{{- name}}\". Bogens licens er ugyldig.",
+            "invalidPublication": "Kunne ikke importere \"{{- name}}\". Bogens manifest mangler.",
+            "lcpLicenseMalformed": "Ugyldig LCP licens.",
             "success": "{{- title}} er nu importeret.",
-            "unsupportedFormat": ""
+            "unsupportedFormat": "Kunne ikke importere \"{{- name}}\". Filens format understøttes ikke."
         },
         "notifications": {
-            "annotationImportFailed": "",
-            "annotationPublicationUnavailable": "",
-            "annotationStopPlayback": "",
-            "authenticationFailed": "",
-            "catalogLinkFailed": "",
-            "catalogUpdateFailed": "",
-            "copyLimit": "",
-            "deleteFailed": "",
-            "exportFailed": "",
-            "openFileFailed": "",
-            "openLinkFailed": "",
-            "printLimit": "",
-            "profileActivationFailed": "",
-            "profileBusy": "",
-            "profileProvisionFailed": "",
-            "profileTimeout": "",
-            "publicationUnavailable": "",
-            "readingPositionFailed": "",
-            "recoveryPartialFailure": "",
-            "renewFailed": "",
-            "returnFailed": "",
-            "storageRefreshFailed": "",
-            "tagsFailed": ""
+            "annotationImportFailed": "Kunne ikke importere noter. Tjek at filen er en gyldig eksport af noter.",
+            "annotationPublicationUnavailable": "Kunne ikke importere noterne, da bogen er utilgængelig. Prøv at gen-importere bogen først.",
+            "annotationStopPlayback": "Stop oplæsning eller lydafspilning før en note oprettes.",
+            "authenticationFailed": "Kunne ikke logge ind i kataloget. Tjek din internetforbindelse og prøv igen.",
+            "catalogLinkFailed": "Kunne ikke tilføje kataloget. Tjek linket og din internetforbindelse.",
+            "catalogUpdateFailed": "Kunne ikke opdatere kataloget. Tjek dets indstillinger og prøv igen.",
+            "copyLimit": "Kopi-tilladelsen for denne bog er udtømt.",
+            "deleteFailed": "Kunne ikke slette bogen. Prøv igen.",
+            "exportFailed": "Kunne ikke eksportere bogen. Tjek destinationens-folderen og den tilgængelige plads.",
+            "openFileFailed": "Kunne ikke åbne filen. Tjek at den findes og bruger et understøttet format.",
+            "openLinkFailed": "Kunne ikke åbne bog-linket. Tjek om linket et rigtigt og prøv igen.",
+            "printLimit": "Print-tilladelsen for denne bog er udtømt.",
+            "profileActivationFailed": "Kunne ikke aktivere profilen. Tjek profil-pakken eller kontakt dens udbyder.",
+            "profileBusy": "En anden profils operation er i gang. Vent til den er færdig og prøv igen.",
+            "profileProvisionFailed": "Kunne ikke installere profilen. Tjek profil-pakken eller kontakt dens udbyder.",
+            "profileTimeout": "Installation af profilen tog for længe. Tjek din internetforbindelse og prøv igen.",
+            "publicationUnavailable": "Denne bog er utilgængelig. Prøv at gen-importere den.",
+            "readingPositionFailed": "Ude af stand til at genkende din læse-position. Prøv igen.",
+            "recoveryPartialFailure": "Genskabte {{- recovered}} bøger; {{- failed}} bøger kunne ikke genskabes.",
+            "renewFailed": "Kunne ikke forny lånet. Prøv igen eller kontakt dit bibliotek.",
+            "returnFailed": "Kunne ikke aflevere lånet tilbage. Prøv igen eller kontakt dit bibliotek.",
+            "storageRefreshFailed": "Lagringsindstillinger blev gemt, men biblioteket kunne ikke opdateres. Prøv at opdatere det manuelt.",
+            "tagsFailed": "Kunne ikke gemme bogens tags. Prøv igen."
         },
         "open": {
-            "failed": "",
+            "failed": "Kunne ikke åbne bogen.",
             "folderNotFound": "Bogmappen kan ikke findes. Importer den igen, eller konfigurer ekstra lagerplads i Indstillinger under Lagerplads.",
-            "missingLicense": ""
+            "missingLicense": "Kunne ikke åbne bogen. Den er krypteret, men mangler en LCP licens."
         },
         "storage": {
             "recovery": {
@@ -387,10 +387,10 @@
         "addMenu": "Tilføj OPDS feed",
         "breadcrumbRoot": "Kataloger",
         "browserMenu": {
-            "history": "",
-            "options": "",
-            "profile": "",
-            "wishlist": ""
+            "history": "Historik",
+            "options": "Katalog-indstillinger",
+            "profile": "Brugerprofil",
+            "wishlist": "Ønskeliste"
         },
         "color": {
             "blue": "Blå",
@@ -411,13 +411,13 @@
         "menu": {
             "aboutBook": "Om denne bog",
             "addExtract": "Importér uddraget",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Annuller reservation",
+            "cancelHoldError": "Kunne ikke annullere reservationen. Prøv venligst igen.",
             "goBuyBook": "Køb denne bog",
             "goLoanBook": "Lån denne bog",
             "goRevokeLoanBook": "Tilbagekald lån",
             "goSubBook": "Abonnér",
-            "placeHold": ""
+            "placeHold": "Placér en reservation"
         },
         "network": {
             "error": "Fejl ved hentning af feed",
@@ -429,10 +429,10 @@
         "next": "Næste",
         "previous": "Forrige",
         "registry": {
-            "empty": "",
-            "error": "",
-            "loading": "",
-            "title": ""
+            "empty": "Intet katalog fundet.",
+            "error": "Kunne ikke søge i registeret. Prøv venligst igen.",
+            "loading": "Søger efter kataloger…",
+            "title": "Søg efter kataloger"
         },
         "resumeBrowsing": "Genoptag browsing",
         "shelf": "Boghylde",
@@ -623,10 +623,10 @@
         },
         "legal-considerations": {
             "legal-considerations-exempt": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Gør krav på en tilgængelighedsundtagelse i nogle jurisdiktioner",
+                "descriptive": "Udgiveren påberåber sig en undtagelse fra tilgængelighedskravene i visse jurisdiktioner."
             },
-            "legal-considerations-title": ""
+            "legal-considerations-title": "Juridiske overvejelser"
         },
         "navigation": {
             "navigation-index": {
@@ -783,7 +783,7 @@
         "certificateSignatureInvalid": "Ugyldig certifikat-signatur på LCP-licensen.",
         "cover": {
             "img": "forsidebillede",
-            "zoom": ""
+            "zoom": "Forstør omslagsbillede"
         },
         "day": "dag",
         "days": "dage",
@@ -806,21 +806,21 @@
         "notStarted": "Ikke læst",
         "onGoing": "I gang",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "En ny læse-position fra {{- device}} er tilgængelig ved {{- progression}}%.",
+            "remoteTitle": "Genoptag fra en anden enhed?",
             "title": "Læst",
-            "useRemote": ""
+            "useRemote": "Gå til position"
         },
         "read": "Læst færdig",
         "remainingTime": "Lån (dage tilbage)",
         "remoteProgression": {
-            "checking": "",
-            "disabled": "",
-            "empty": "",
-            "position": "",
-            "ready": "",
-            "title": "",
-            "unavailable": ""
+            "checking": "Slået til og tjekker servicen...",
+            "disabled": "Ikke slået til for denne bog.",
+            "empty": "Ingen gemt læse-position fra andre enheder.",
+            "position": "Fjernstatus på læsning: {{percent}}% ({{device}}).",
+            "ready": "Slået til og klar.",
+            "title": "Læse-position synkronisering:",
+            "unavailable": "Slået til, men servicen er utilgængelig."
         },
         "renewButton": "Forny",
         "returnButton": "Aflevér",
@@ -860,7 +860,7 @@
             },
             "hide": "Vis ikke",
             "highlight": "Overstregning",
-            "noSelectionToast": "Intet markeret",
+            "noSelectionToast": "Markér tekst, før du opretter en annotering.",
             "note": "{{- color}} Note",
             "quickAnnotations": "Hurtig-oprettelse (spring redigering over)",
             "saveNote": "Gem",
@@ -1010,7 +1010,7 @@
                 "two": "2 kolonner"
             },
             "customFontSelected": "Du har valgt en personlig skrifttype",
-            "deactivateTextFormatting": "",
+            "deactivateTextFormatting": "Deaktiverer tekst-formatering",
             "display": "Visning",
             "disposition": {
                 "title": "Layout"
@@ -1058,7 +1058,7 @@
             "reduceMotion": "Reducér bevægelser",
             "scrolled": "Scrollbart",
             "spacing": "Mellemrum",
-            "spacingCustomButton": "",
+            "spacingCustomButton": "Muligheder for tilpassede afstande",
             "spreadModeEven": "Sideopslag 'lige' (standard er 'ulige')",
             "text": "Tekst",
             "theme": {
@@ -1115,7 +1115,7 @@
         "keyboard": {
             "advancedMenu": "Menu for avancerede tastaturgenveje",
             "cancel": "Annullér",
-            "disableTooltips": "",
+            "disableTooltips": "Deaktiver værktøjstips for tastaturgenveje",
             "disclaimer": "Standard tastaturgenveje er designet ud fra et QWERTY tastaturlayout",
             "editUserJson": "Rediger brugerfilen...",
             "exportToHTML": "Eksporter til HTML",
@@ -1476,7 +1476,7 @@
         },
         "telemetry": {
             "disableTelemetryMeasurements": "Slå statistik-rapportering fra",
-            "disableTelemetryMeasurementsDescription": "Når dette er slået til, vil Thorium IKKE sende statistik-rapportering fra din enhed.",
+            "disableTelemetryMeasurementsDescription": "Når dette er slået til, sender Thorium IKKE statistik-målinger.",
             "title": "Statistik-rapportering"
         },
         "theme": {

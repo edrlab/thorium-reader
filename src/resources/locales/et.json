@@ -1,18 +1,18 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Annotatsiooni märge",
         "bookMenu": "Menüü",
-        "bookmarkNote": "",
+        "bookmarkNote": "Järjehoidja märge",
         "cancelDownload": "Katkesta allalaadimine: {{- title}}",
         "closeDialog": "Sulge",
         "closeNotification": "Sulge teavitus",
         "copyNotificationInstruction": "Kopeeri teavitus",
-        "decreaseSetting": "",
+        "decreaseSetting": "Vähenda {{- setting}}",
         "downloadProgress": "Allalaadimise edenemine: {{- title}}",
         "downloadProgressUnknown": "Allalaadimise edenemine pole teada.",
         "editTag": "Muuda silti: {{- tag}}",
         "favoriteCatalog": "Lemmikkataloog: {{- title}}",
-        "increaseSetting": "",
+        "increaseSetting": "Suurenda {{- setting}}",
         "leftSlideButton": "Viipa vasakule",
         "loading": "Laadin…",
         "mainContent": "põhiline sisu",
@@ -120,13 +120,13 @@
         "numberOfPages": "Lehtede arv",
         "opds": {
             "auth": {
-                "alternativeLogin": "",
+                "alternativeLogin": "Alternatiivne sisselogimine",
                 "cancel": "Katkesta",
                 "external": "Sisselogimisleht avaneb sinu veebibrauseris, palun järgi sealseid juhiseid. Pärast sisselogimist suunab veebibrauser sind tagasi sellesse rakendusse.",
-                "externalBrowserInstructions": "",
+                "externalBrowserInstructions": "Kui veebibrauser automaatselt ei avane, siis klõpsa järgnevat linki.",
                 "fallback": "Kui sisselogimisel tekib probleeme vaikimisi kasutatava veebibrauseri meetodiga, proovi uuesti rakenduse siseselt.",
                 "login": "Logi sisse",
-                "openExternalBrowser": "",
+                "openExternalBrowser": "Ava välises veebibrauseris",
                 "password": "Salasõna",
                 "register": "Registreeru",
                 "retry": "Proovi uuesti",
@@ -164,13 +164,13 @@
         "tags": "Sildid",
         "update": "Muuda",
         "userProfile": {
-            "available": "",
+            "available": "Saadaval: {{count}}",
             "edit": "Muuda profiili",
-            "holds": "",
-            "loading": "",
-            "loans": "",
-            "title": "",
-            "unavailable": ""
+            "holds": "Broneerimised",
+            "loading": "Laadin kasutajakonto teavet…",
+            "loans": "Laenutused",
+            "title": "Kasutajakonto",
+            "unavailable": "Profiiliteave pole saadaval."
         }
     },
     "dialog": {
@@ -273,29 +273,29 @@
             "success": "Importimine õnnestus kenasti."
         },
         "diagnostics": {
-            "category": "",
-            "causedBy": "",
-            "downloadSource": "",
-            "error": "",
-            "httpStatus": "",
-            "invalidUrl": "",
-            "source": "",
-            "url": ""
+            "category": "Kategooria: {{- category}}",
+            "causedBy": "Põhjustaja:",
+            "downloadSource": "Allalaadimise allikas: {{- source}}",
+            "error": "Viga",
+            "httpStatus": "HTTP olekuteade: {{- status}}",
+            "invalidUrl": "[vigane võrguaadress]",
+            "source": "Allikas: {{- source}}",
+            "url": "Võrguaadress: {{- url}}"
         },
         "download": {
             "cancelled": "Allalaadimine on katkestatud.",
             "errors": {
-                "failed": "",
+                "failed": "Allalaadimine ei õnnestunud.",
                 "hashMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: faili eeldatud SHA-256 räsi oleks pidanud olema {{- expected}}, kuid tegelikult oli {{- actual}}.",
                 "httpGet": "Allalaadimine ei õnnestunud: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Allalaadimise ajutine failinimi on vale või vigane.",
                 "invalidLink": "Allalaadimislink pole õige.",
                 "invalidTempDirectory": "Allalaaditava sisu ajutine kaust on vale või vigane.",
                 "lengthMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: andmemaht oleks pidanud olema {{- expected}} baiti, kuid tegelikult oli {{- actual}} baiti.",
-                "pathMissing": "",
-                "publicationLinkMissing": "",
+                "pathMissing": "Allalaadimise sihtkaust on puudu.",
+                "publicationLinkMissing": "Selles litsentsis ei leidu avalikku allalaadimislinki.",
                 "readStreamMissing": "Allalaadimise andmevoog pole saadaval.",
-                "streamClosed": "",
+                "streamClosed": "Allalaadimise sisuvoog katkes enne lõppu.",
                 "tooManyFilenameAttempts": "Ei suuda luua ajutist failinime allalaaditavale sisule: {{- path}}"
             },
             "failed": "",
@@ -411,13 +411,13 @@
         "menu": {
             "aboutBook": "Väljaande teave",
             "addExtract": "Impordi näide",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Katkesta broneering",
+            "cancelHoldError": "Selle broneeringu katkestamine ei õnnestu. Palun proovi uuesti.",
             "goBuyBook": "Osta väljaanne",
             "goLoanBook": "Laenuta väljaanne",
             "goRevokeLoanBook": "Tühista laenutus",
             "goSubBook": "Telli",
-            "placeHold": ""
+            "placeHold": "Tee broneering"
         },
         "network": {
             "error": "Viga ligipääsul andmevoole",
