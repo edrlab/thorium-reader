@@ -1,8 +1,8 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Anteckningsanteckning",
         "bookMenu": "Meny",
-        "bookmarkNote": "",
+        "bookmarkNote": "Bokmärkesanteckning",
         "cancelDownload": "Avbryt nedladdning: {{- title}}",
         "closeDialog": "Stäng",
         "closeNotification": "Stäng notis",
@@ -11,7 +11,7 @@
         "downloadProgress": "Nedladdningsförlopp: {{- title}}",
         "downloadProgressUnknown": "Kan inte avgöra nedladdningsförloppet.",
         "editTag": "Redigera etikett: {{- tag}}",
-        "favoriteCatalog": "",
+        "favoriteCatalog": "Favorit katalog: {{- title}}",
         "increaseSetting": "Öka {{- setting}}",
         "leftSlideButton": "Gå till vänster",
         "loading": "Laddar…",
@@ -623,10 +623,10 @@
         },
         "legal-considerations": {
             "legal-considerations-exempt": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hävdar ett tillgänglighetsundantag i vissa jurisdiktioner",
+                "descriptive": "Utgivaren gör anspråk på undantag från tillgänglighetskraven i vissa jurisdiktioner."
             },
-            "legal-considerations-title": ""
+            "legal-considerations-title": "Juridiska överväganden"
         },
         "navigation": {
             "navigation-index": {
