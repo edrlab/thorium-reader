@@ -2,6 +2,8 @@
 
 The standalone CLI creates signed `.thorium` profiles. It requires Node.js 24 or newer and runs without Thorium, Electron, or additional npm packages. See the [developer guide](../projects/customization-profile-cli/README.md#build-and-check) to build it from source.
 
+To create or edit `manifest.json` before packing, use the [standalone offline profile editor](customization-profile-editor.md).
+
 Both PEM key files must be passed explicitly; the CLI does not select keys automatically.
 
 ## Sign and verify
