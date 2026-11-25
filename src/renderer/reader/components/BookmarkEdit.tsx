@@ -125,12 +125,12 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                                 checked={colorSelected === colorHex}
                                 aria-label={
                                     // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
-                                    __(translatorKey)
+                                    __(translatorKey) as string
                                 }
                             />
                             <label aria-hidden={true} title={
                                 // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
-                                __(translatorKey)
+                                __(translatorKey) as string
                             } htmlFor={`${uuid}_color-${colorHex}`}
                                 style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-gray-900)" : "" }}
                             >

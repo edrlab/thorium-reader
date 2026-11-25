@@ -158,7 +158,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
         } : undefined}
         aria-label={__("reader.annotations.note", {
             // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
-            color: __(Object.entries(noteColorCodeToColorTranslatorKeySet).find(([colorHex]) => colorHex === annotationColor)?.[1]),
+            color: __(Object.entries(noteColorCodeToColorTranslatorKeySet).find(([colorHex]) => colorHex === annotationColor)?.[1]) as string,
         })}
     >
         <div className={stylesAnnotations.annotation_container}>

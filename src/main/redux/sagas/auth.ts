@@ -8,7 +8,7 @@
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { DOMParser, XMLSerializer, type Document } from "@xmldom/xmldom";
 import debug_ from "debug";
-import { app, AuthenticationResponseDetails, AuthInfo, BrowserWindow, Event as ElectronEvent, Event, HandlerDetails, session, shell, WebContents, WebContentsWillNavigateEventParams } from "electron";
+import { app, AuthenticationResponseDetails, AuthInfo, BrowserWindow, Event as ElectronEvent, HandlerDetails, session, shell, WebContents, WebContentsWillNavigateEventParams } from "electron";
 import { URL_HOST_COMMON, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY, URL_PROTOCOL_OPDS, URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
 import { logoutOpdsCatalog } from "readium-desktop/main/services/opdsLogout";
 import { getFeed } from "./api/opds/feed";
@@ -1154,7 +1154,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     let _proxy_url: string | undefined;
 
     const appOnLogin = (
-        event: Event,
+        event: ElectronEvent,
         _webContents: WebContents | null,
         _authenticationResponseDetails: AuthenticationResponseDetails,
         authInfo: AuthInfo,
@@ -1481,8 +1481,8 @@ const LoginIcon = `<svg width="9" height="9" viewBox="0 0 9 9" fill="currentColo
 
 const htmlLoginTemplate = (
     urlToSubmit = "",
-    loginLabel = getTranslator().translate("catalog.opds.auth.username"),
-    passLabel = getTranslator().translate("catalog.opds.auth.password"),
+    loginLabel: string = getTranslator().translate("catalog.opds.auth.username"),
+    passLabel: string = getTranslator().translate("catalog.opds.auth.password"),
     title: string | undefined,
     logoUrl?: string,
     registerUrl?: string,

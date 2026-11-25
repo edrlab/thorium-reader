@@ -299,6 +299,9 @@ let config = Object.assign(
                     {
                         from: path.join(__dirname, "resources"),
                         to: "assets/icons",
+                        globOptions: {
+                            ignore: ["**/customization-profile-keys/**"],
+                        },
                     },
                 ],
             }),

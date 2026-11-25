@@ -40,9 +40,9 @@ cache-mode: write
 
 jobs:
   build_job:
-    # environment:
-    #   name: "Thorium Desktop Release"
-    #   deployment: false
+    environment:
+      name: "Thorium Desktop CICD"
+      deployment: false
     timeout-minutes: 30
     permissions:
       actions: none
@@ -143,6 +143,11 @@ jobs:
             os: linux
             arch: arm
     env:
+      THORIUM_FIREBASE_MEASUREMENT_ID: ${{ secrets.S20 }}
+      THORIUM_FIREBASE_MEASUREMENT_PROTOCOL_API_SECRET: ${{ secrets.S21 }}
+      THORIUM_FIREBASE_ENABLED: ${{ vars.THORIUM_FIREBASE_ENABLED }}
+      THORIUM_FIREBASE_DEBUG: ${{ vars.THORIUM_FIREBASE_DEBUG }}
+      THORIUM_FIREBASE_MEASUREMENT_PROTOCOL_QUEUE_SQLITE_ENABLED: ${{ vars.THORIUM_FIREBASE_MEASUREMENT_PROTOCOL_QUEUE_SQLITE_ENABLED }}
       RELEASE_TAG_CI_NON_PROD_BUILDS: ${{ matrix.release_tag }} # MUST keep for WebPack config, detection of CI build
     steps:
 ###########################

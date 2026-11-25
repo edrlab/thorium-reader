@@ -1,17 +1,17 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Anteckningsanteckning",
         "bookMenu": "Meny",
-        "bookmarkNote": "",
-        "cancelDownload": "",
+        "bookmarkNote": "Bokmärkesanteckning",
+        "cancelDownload": "Avbryt nedladdning: {{- title}}",
         "closeDialog": "Stäng",
-        "closeNotification": "",
-        "copyNotificationInstruction": "",
+        "closeNotification": "Stäng notis",
+        "copyNotificationInstruction": "Kopiera notis",
         "decreaseSetting": "Minska {{- setting}}",
-        "downloadProgress": "",
-        "downloadProgressUnknown": "",
+        "downloadProgress": "Nedladdningsförlopp: {{- title}}",
+        "downloadProgressUnknown": "Kan inte avgöra nedladdningsförloppet.",
         "editTag": "Redigera etikett: {{- tag}}",
-        "favoriteCatalog": "",
+        "favoriteCatalog": "Favorit katalog: {{- title}}",
         "increaseSetting": "Öka {{- setting}}",
         "leftSlideButton": "Gå till vänster",
         "loading": "Laddar…",
@@ -164,13 +164,13 @@
         "tags": "Etiketter",
         "update": "Redigera",
         "userProfile": {
-            "available": "",
+            "available": "Tillgängligt: {{count}}",
             "edit": "Redigera användarprofil",
             "holds": "Reservationer",
             "loading": "Läser in konto…",
             "loans": "Lån",
             "title": "Konto",
-            "unavailable": ""
+            "unavailable": "Information om profilen är inte tillgänglig."
         }
     },
     "dialog": {
@@ -275,7 +275,7 @@
         "diagnostics": {
             "category": "Kategori: {{- category}}",
             "causedBy": "Orsakad av:",
-            "downloadSource": "",
+            "downloadSource": "Nedladdad från: {{- source}}",
             "error": "Fel",
             "httpStatus": "HTTP-status: {{- status}}",
             "invalidUrl": "[ogiltig URL]",
@@ -310,13 +310,13 @@
                 "cbzNoImages": "Det här CBZ-arkivet innehåller inga bilder i format som stöds.",
                 "contextMissing": "saknas",
                 "daisyConversionFailed": "Kunde inte konvertera DAISY-boken.",
-                "manifestContext": "Känner inte igen bokens manifest-@context på {{- url}}: {{- context}}",
+                "manifestContext": "Känner inte igen bokens manifest-@context på {{- url}}: {{- ctx}}",
                 "manifestImportFailed": "Kunde inte importera bokens manifest.",
                 "manifestInvalidJson": "Ogiltig JSON i bokens manifest på {{- url}}.",
                 "manifestMissing": "Bokens manifest saknas.",
                 "manifestNotFound": "Inget manifest hittades på {{- url}}.",
                 "manifestParsingFailed": "Kunde inte tolka bokens manifest på {{- url}}.",
-                "noImportResult": "",
+                "noImportResult": "Importen resulterade inte i en bok.",
                 "notImported": "Boken kunde inte läggas till i biblioteket.",
                 "profileAssetUrl": "Ogiltig bok-URL för profilen: {{- path}}",
                 "profileEmpty": "Den anpassade profilens ZIP-arkiv är tomt.",
@@ -332,9 +332,9 @@
             "unsupportedFormat": "Kunde inte importera \"{{- name}}\". Det här filformatet stöds inte."
         },
         "notifications": {
-            "annotationImportFailed": "",
+            "annotationImportFailed": "Kunde inte importera anteckningar. Kontrollera att filen är en giltig export av anteckningar.",
             "annotationPublicationUnavailable": "Kunde inte importera anteckningar eftersom boken inte är tillgänglig. Försök att återimportera boken.",
-            "annotationStopPlayback": "",
+            "annotationStopPlayback": "Stoppa uppläsningen eller ljuduppspelning innan du skapar en anteckning.",
             "authenticationFailed": "Kunde inte logga in till den här katalogen. Kontrollera din uppkoppling och försök igen.",
             "catalogLinkFailed": "Kunde inte lägga till den här katalogen. Kontrollera länken och din uppkoppling.",
             "catalogUpdateFailed": "Kunde inte uppdatera den här katalogen. Kontrollera inställningarna för den och försök igen.",
@@ -353,7 +353,7 @@
             "recoveryPartialFailure": "Återskapade {{- recovered}} böcker; {{- failed}} böcker kunde inte återskapas.",
             "renewFailed": "Kunde inte förlänga den här lånet. Försök igen eller kontakta ditt bibliotek.",
             "returnFailed": "Kunde inte återlämna det här lånet. Försök igen eller kontakta ditt bibliotek.",
-            "storageRefreshFailed": "",
+            "storageRefreshFailed": "Inställningen för lagring sparades, men biblioteket kunde inte uppdateras. Försök ladda om biblioteket.",
             "tagsFailed": "Kunde inte spara bokens etiketter. Försök igen."
         },
         "open": {
@@ -388,7 +388,7 @@
         "breadcrumbRoot": "Kataloger",
         "browserMenu": {
             "history": "Historik",
-            "options": "",
+            "options": "Kataloginställningar",
             "profile": "Användarprofil",
             "wishlist": "Önskelista"
         },
@@ -429,10 +429,10 @@
         "next": "Nästa",
         "previous": "Föregående",
         "registry": {
-            "empty": "Hittade inga kataloger.",
-            "error": "",
-            "loading": "",
-            "title": ""
+            "empty": "Hittade ingen katalog.",
+            "error": "Kunde inte söka i registret. Försök igen.",
+            "loading": "Söker i katalogerna…",
+            "title": "Sök i kataloger"
         },
         "resumeBrowsing": "Fortsätt bläddra",
         "shelf": "Hylla",
@@ -623,10 +623,10 @@
         },
         "legal-considerations": {
             "legal-considerations-exempt": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hävdar ett tillgänglighetsundantag i vissa jurisdiktioner",
+                "descriptive": "Utgivaren gör anspråk på undantag från tillgänglighetskraven i vissa jurisdiktioner."
             },
-            "legal-considerations-title": ""
+            "legal-considerations-title": "Juridiska överväganden"
         },
         "navigation": {
             "navigation-index": {
@@ -783,7 +783,7 @@
         "certificateSignatureInvalid": "LCP-certifikatets signatur är ogiltig.",
         "cover": {
             "img": "omslagsbild",
-            "zoom": ""
+            "zoom": "Förstora omslagsbilden"
         },
         "day": "dag",
         "days": "dagar",
@@ -806,21 +806,21 @@
         "notStarted": "Ej påbörjad",
         "onGoing": "Läser just nu",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "En nyare läsposition från {{- device}} är tillgänglig vid {{- progression}}%.",
+            "remoteTitle": "Fortsätt från en annan enhet?",
             "title": "Läsposition",
-            "useRemote": ""
+            "useRemote": "Gå till position"
         },
         "read": "Läst",
         "remainingTime": "Lån (återstående tid)",
         "remoteProgression": {
-            "checking": "",
-            "disabled": "",
-            "empty": "",
-            "position": "",
-            "ready": "",
-            "title": "",
-            "unavailable": ""
+            "checking": "Aktiverad och kontrollerar tjänsten…",
+            "disabled": "Inte aktiverad för den här boken.",
+            "empty": "Ingen läsprogression sparad på någon annan enhet.",
+            "position": "Läsprogression på annan enhet: {{percent}}% ({{device}}).",
+            "ready": "Aktiverad och redo.",
+            "title": "Synkronisering av läsprogression:",
+            "unavailable": "Aktiverad, men tjänsten är inte tillgänglig."
         },
         "renewButton": "Låna om",
         "returnButton": "Lämna tillbaka",
@@ -1010,7 +1010,7 @@
                 "two": "2 kolumner"
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
-            "deactivateTextFormatting": "",
+            "deactivateTextFormatting": "Inaktivera textformatering",
             "display": "Visning",
             "disposition": {
                 "title": "Layout"
@@ -1058,7 +1058,7 @@
             "reduceMotion": "Minska rörelse",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
-            "spacingCustomButton": "",
+            "spacingCustomButton": "Anpassade inställningar för avstånd",
             "spreadModeEven": "Uppslag börjar på jämna sidor (standard är udda)",
             "text": "Text",
             "theme": {
@@ -1115,7 +1115,7 @@
         "keyboard": {
             "advancedMenu": "Avancerade kortkommandon",
             "cancel": "Avbryt",
-            "disableTooltips": "",
+            "disableTooltips": "Inaktivera hjälprutor för tangentbordsgenvägar",
             "disclaimer": "Kortkommandona baseras på den fysiska positionen för knappar på QWERTY-tangentbord",
             "editUserJson": "Redigera användarfil ...",
             "exportToHTML": "Exportera till HTML",
