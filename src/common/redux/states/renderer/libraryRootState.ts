@@ -12,7 +12,7 @@ import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/br
 import { ILoadState } from "readium-desktop/renderer/common/redux/states/load";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
-import { THistoryState } from "./history";
+import { INavigationHistoryState, THistoryState } from "./history";
 import { IOpdsHeaderState, IOpdsSearchState } from "./opds";
 import { CatalogView } from "readium-desktop/common/views/catalog";
 import { IWhatsNewState } from "../whatsNew";
@@ -29,6 +29,7 @@ export interface ILibraryRootState extends IRendererCommonRootState {
     router: RouterState;
     download: TPQueueState<downloadActions.progress.Payload, number>;
     history: THistoryState;
+    navigationHistory: INavigationHistoryState;
     load: ILoadState;
     publication: {
         catalog: CatalogView,

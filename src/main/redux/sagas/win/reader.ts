@@ -305,8 +305,8 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
             typeof latestLocator?.locator?.href === "string" &&
             !sameReadingLocator(localSnapshot.locator, latestLocator.locator);
         // This is a conservative activity heuristic, not proof of user navigation.
-        // JSON normalization ignores undefined properties, but actual metadata changes
-        // (for example, removing a populated caretInfo) still count as locator changes.
+        // Comparison applies the saved excerpt cap and ignores undefined properties.
+        // Removing a populated caretInfo still counts as a locator change.
         // A change uses the latest local timestamp rather than the pre-open timestamp;
         // navigation or metadata rewrites during network latency can therefore suppress
         // an otherwise newer remote position. Reader initialization time alone is not

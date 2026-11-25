@@ -815,8 +815,13 @@ jobs:
     - name: GitHub Tagged Release Create and Upload Build Artefacts
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-# SECURITY NOTE: template expansion with ${{ github.ref_name }} is safe here (potential malicious injection in Bash shell script) because of branch rules for pushing release tags v*
+        GH_REF_NAME: ${{ github.ref_name }}
+# SECURITY NOTE: template expansion with ${{ github.ref_name }} is safe here
+# because of branch protection rules for pushing release tags v*
+# but as a matter of good practice instead an environment variable is used (GH_REF_NAME)
+# to ensure that the shell itself performs variable expansion.
       run: >
         ls -alsR release ;
-        (gh release create ${{ github.ref_name }} --target=develop --latest=false --prerelease --draft --title="Thorium Desktop reader ${{ github.ref_name }}" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" || echo OK || true) ;
-        gh release upload ${{ github.ref_name }} "./release/*.*" --clobber
+        (gh release create "${GH_REF_NAME}" --target=develop --latest=false --prerelease --draft --title="Thorium Desktop reader ${GH_REF_NAME}" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" || echo OK || true) ;
+        gh release upload "${GH_REF_NAME}" "./release/*.*" --clobber
+      shell: bash

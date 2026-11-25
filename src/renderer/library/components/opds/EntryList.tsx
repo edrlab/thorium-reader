@@ -54,7 +54,7 @@ const titleToNumber = (title: string): number => {
 const colorFromTitle = (title: string): (typeof colorsList)[number] =>
     colorsList[titleToNumber(title) - 1];
 
-const EntryList = ({ entries, variant = "facet" }: IProps) => {
+const EntryList = ({ entries, level, variant = "facet" }: IProps) => {
 
     return (
         <section>
@@ -63,7 +63,7 @@ const EntryList = ({ entries, variant = "facet" }: IProps) => {
                     <li key={index} className={variant === "list"
                         ? stylesCatalogs.entryList_item_list
                         : stylesCatalogs.entryList_item} data-color={colorFromTitle(entry.title)}>
-                        <Entry entry={entry} level={1} variant={variant} />
+                        <Entry entry={entry} level={level} variant={variant} />
                     </li>,
                 )}
             </ul>

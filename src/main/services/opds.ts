@@ -25,9 +25,7 @@ import {
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
-import { OPDSAuthentication } from "@r2-opds-js/opds/opds2/opds2-authentication";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
-import { OPDSAuthenticationLabels } from "@r2-opds-js/opds/opds2/opds2-authentication-labels";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 import * as xmldom from "@xmldom/xmldom";
@@ -35,8 +33,6 @@ import * as xmldom from "@xmldom/xmldom";
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { diSymbolTable } from "../diSymbolTable";
 import { getOpdsAuthenticationChannel } from "../event";
-import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
-import { IDigestDataParsed, parseDigestString } from "readium-desktop/utils/digest";
 import isURL from "readium-desktop/common/utils/isURL";
 
 // Logger
@@ -76,14 +72,6 @@ export class OpdsService {
     @inject(diSymbolTable["opds-feed-view-converter"])
     private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
 
-    private parseWwwAuthenticate(wwwAuthenticate: string): IDigestDataParsed & {type: "digest" | "basic" | undefined} {
-        const [type, ...data] = wwwAuthenticate.trim().split(" ");
-        return {
-            type: type === "Digest" ? "digest" : type === "Basic" ? "basic" : undefined,
-            ...parseDigestString(data.join(" ")),
-        };
-    }
-
     public async opdsRequestTransformer(httpGetData: IHttpGetResult<IOpdsResultView>): Promise<IOpdsResultView | undefined> {
         const {
             url: _baseUrl,
@@ -116,34 +104,18 @@ export class OpdsService {
 
         {
             const wwwAuthenticate = httpGetData.response?.headers.get("WWW-Authenticate");
-            if (wwwAuthenticate) {
-                const isValid = this.wwwAuthenticateIsValid(wwwAuthenticate);
-                if (isValid) {
-                    const translator = getTranslator();
-                    const result: IOpdsResultView = {
-                        title: translator.translate("catalog.opds.auth.unauthorized"),
-                        publications: [],
-                    }; // need to refresh the page
-
-                    const data = this.parseWwwAuthenticate(wwwAuthenticate);
-                    if (!data.type) {
-                        result.title = translator.translate("catalog.opds.auth.unauthorizedUnsupportedType", {
-                            type: wwwAuthenticate?.trim().split(" ")[0],
-                        });
-                        return result;
-                    }
-
-                    if (data.type === "basic") {
-                        result.auth = {
-                            credentialsUrl: baseUrl,
-                            logoImageUrl: undefined, labelLogin: undefined, labelPassword: undefined,
-                            oauthUrl: undefined, oauthRefreshUrl: undefined,
-                        };
-                    } else {
-                        this.sendWwwAuthenticationToAuthenticationProcess(data, baseUrl);
-                    }
-                    return result;
-                }
+            const scheme = wwwAuthenticate?.trim().split(/\s+/, 1)[0]?.toLowerCase();
+            if (scheme === "basic" || scheme === "digest") {
+                return {
+                    title: getTranslator().translate("catalog.opds.auth.unauthorized"),
+                    publications: [],
+                    auth: {
+                        credentialsUrl: baseUrl,
+                        authenticationType: scheme === "digest" ? "http://opds-spec.org/auth/digest" : undefined,
+                        logoImageUrl: undefined, labelLogin: undefined, labelPassword: undefined,
+                        oauthUrl: undefined, oauthRefreshUrl: undefined,
+                    },
+                };
             }
         }
 
@@ -198,40 +170,6 @@ export class OpdsService {
             debug("parseOpdsSearchUrl (ERROR): ", ee);
         }
         return (undefined);
-    }
-
-    private sendWwwAuthenticationToAuthenticationProcess(
-        data: IDigestDataParsed & {type: "digest" | "basic"},
-        responseUrl: string,
-    ) {
-
-        const opdsAuthDoc = new OPDSAuthenticationDoc();
-
-        opdsAuthDoc.Id = "";
-        opdsAuthDoc.Title = ""; // realm || "basic authenticate"; NOT HUMAN-READABLE!
-
-        const opdsAuth = new OPDSAuthentication();
-        const translator = getTranslator();
-
-        opdsAuth.Type = "http://opds-spec.org/auth/" + data.type;
-        opdsAuth.AdditionalJSON = {...data};
-        opdsAuth.Labels = new OPDSAuthenticationLabels();
-        opdsAuth.Labels.Login = translator.translate("catalog.opds.auth.login");
-        opdsAuth.Labels.Password = translator.translate("catalog.opds.auth.password");
-
-        const opdsLink = new OPDSLink();
-        opdsLink.Rel = ["authenticate"];
-        opdsLink.Href = responseUrl;
-
-        opdsAuth.Links = [opdsLink];
-
-        opdsAuthDoc.Authentication = [opdsAuth];
-
-        this.dispatchAuthenticationProcess(opdsAuthDoc, responseUrl);
-    }
-
-    private wwwAuthenticateIsValid(wwwAuthenticate: string) {
-        return (wwwAuthenticate.trim().startsWith("Basic") || wwwAuthenticate.trim().startsWith("Digest"));
     }
 
     private dispatchAuthenticationProcess(r2OpdsAuth: OPDSAuthenticationDoc, responseUrl: string) {

@@ -5,7 +5,7 @@ import { opdsBreadcrumbReducer } from "readium-desktop/renderer/library/redux/re
 import { browseRequest, breadcrumbTitleUpdate } from "readium-desktop/renderer/library/redux/actions/opds";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 
-jest.mock("readium-desktop/renderer/library/routing", () => ({ routes: {}, resolveDisplayType: () => "list" }));
+jest.mock("readium-desktop/renderer/library/routing", () => ({ routes: {}, resolveRouterLocationState: () => ({ displayType: "list" }) }));
 jest.mock("readium-desktop/renderer/assets/styles/components/catalogs.scss", () => ({}));
 jest.mock("readium-desktop/renderer/assets/icons/forbidden-icon.svg", () => ({}));
 jest.mock("readium-desktop/renderer/assets/icons/chevron-right.svg", () => ({}));
@@ -18,13 +18,14 @@ const mockCatalogs: Record<string, string> = { a: "My library", b: "Another libr
 let mockPath = "";
 let mockBreadcrumb: ReturnType<typeof opdsBreadcrumbReducer>;
 jest.mock("readium-desktop/renderer/common/hooks/useApi", () => ({
-    useApi: (id: string) => [{ data: { result: { title: mockCatalogs[id.split(":")[1]] } } }, () => {}],
+    useApi: (id: string) => [{ data: { result: { title: mockCatalogs[id.split(":")[1]], url: rootUrl } } }, () => {}],
 }));
 jest.mock("readium-desktop/renderer/common/hooks/useSelector", () => ({ useSelector: (select: (state: unknown) => unknown) =>
-    select({ opds: { browser: { breadcrumb: mockBreadcrumb } }, router: { location: { pathname: mockPath } }, settings: {} }) }));
+    select({ opds: { browser: { breadcrumb: mockBreadcrumb } }, router: { location: { pathname: mockPath } },
+        navigationHistory: { index: 0 }, settings: {} }) }));
 jest.mock("readium-desktop/renderer/common/hooks/useDispatch", () => ({ useDispatch: () => jest.fn() }));
 jest.mock("readium-desktop/renderer/common/hooks/useTranslator", () => ({ useTranslator: () => [(key: string) => key] }));
-jest.mock("react-router-dom", () => ({ useLocation: () => ({ pathname: mockPath }),
+jest.mock("react-router-dom", () => ({ useLocation: () => ({ pathname: mockPath }), useNavigate: () => jest.fn(),
     Link: (props: { to: { pathname: string }; children: React.ReactNode }) => <a href={props.to.pathname}>{props.children}</a> }));
 jest.mock("readium-desktop/renderer/library/components/opds/BrowserOptions", () => ({ BrowserOptions: (): null => null }));
 import { Browser } from "readium-desktop/renderer/library/components/opds/Browser";
