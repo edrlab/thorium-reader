@@ -583,12 +583,11 @@ $entry-card-colors-dark: (
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px 24px;
     background: var(--entry-card-background-start);
     padding: 15px;
     min-height: 40px;
     margin-bottom: 40px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 16px 24px;
     z-index: 1000;
     position: relative;
@@ -596,6 +595,12 @@ $entry-card-colors-dark: (
 
     > nav {
         flex: 1 1 auto;
+    }
+}
+
+@media (width <= 936px) {
+    .catalog_breadcrumbSearch_Wrapper {
+        flex-wrap: wrap;
     }
 }
 
