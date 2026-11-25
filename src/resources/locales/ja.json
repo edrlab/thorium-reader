@@ -131,7 +131,6 @@
                 "register": "登録",
                 "retry": "もう一度やり直してください",
                 "unauthorized": "許可されていません",
-                "unauthorizedUnsupportedType": "",
                 "username": "ユーザー名 / メールアドレス"
             },
             "info": {

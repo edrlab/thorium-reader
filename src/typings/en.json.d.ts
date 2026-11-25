@@ -131,7 +131,6 @@ declare const data = {
         "register": "",
         "retry": "",
         "unauthorized": "",
-        "unauthorizedUnsupportedType": "{{type}}",
         "username": ""
       },
       "info": {

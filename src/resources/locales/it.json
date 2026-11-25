@@ -131,7 +131,6 @@
                 "register": "Registrati",
                 "retry": "Riprovare",
                 "unauthorized": "Non autorizzato",
-                "unauthorizedUnsupportedType": "Non autorizzato (WWWAuthenticate type '{{- type}}' non supportato)",
                 "username": "Nome utente / Indirizzo e-mail"
             },
             "info": {

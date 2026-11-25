@@ -65,7 +65,7 @@ form[role="search"] {
   background-color: var(--color-annotation-bg);
   color: var(--color-text-primary);
   width: 300px !important;
-  height: 30px !important;
+  height: 42px !important;
 
   &:has(input:focus) {    
     outline: var(--color-brand-primary) solid 2px !important;

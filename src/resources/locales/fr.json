@@ -131,7 +131,6 @@
                 "register": "Créer un compte",
                 "retry": "Réessayer",
                 "unauthorized": "Non autorisé",
-                "unauthorizedUnsupportedType": "Non autorisé (type d'authentification non supporté '{{- type}}')",
                 "username": "Nom d'utilisateur / Adresse courriel"
             },
             "info": {

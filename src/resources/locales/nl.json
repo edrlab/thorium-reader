@@ -131,7 +131,6 @@
                 "register": "Registreer",
                 "retry": "Probeer opnieuw",
                 "unauthorized": "Geen toegang",
-                "unauthorizedUnsupportedType": "Geen toegang (niet ondersteund WWWAuthenticate type '{{- type}}')",
                 "username": "Gebruikersnaam / e-mailadres"
             },
             "info": {

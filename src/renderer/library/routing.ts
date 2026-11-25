@@ -41,6 +41,10 @@ export enum DisplayType {
 export interface IRouterLocationState {
     displayType: DisplayType;
     feedColor?: string;
+    // OPDS search terms that produced this results page (shown back in the
+    // search field). May be forwarded to other pages along with the rest of
+    // the state: SearchForm only uses it when it matches the route title.
+    opdsSearchTerm?: string;
 }
 
 export const normalizeDisplayType = (displayType: unknown): DisplayType =>

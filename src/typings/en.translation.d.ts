@@ -221,7 +221,6 @@ declare namespace typed_i18n {
       readonly "register": string,
       readonly "retry": string,
       readonly "unauthorized": string,
-      readonly "unauthorizedUnsupportedType": string,
       readonly "username": string
     },
     readonly "info": {
@@ -335,7 +334,6 @@ declare namespace typed_i18n {
     readonly "register": string,
     readonly "retry": string,
     readonly "unauthorized": string,
-    readonly "unauthorizedUnsupportedType": string,
     readonly "username": string
   },
   readonly "info": {
@@ -369,7 +367,6 @@ declare namespace typed_i18n {
   readonly "register": string,
   readonly "retry": string,
   readonly "unauthorized": string,
-  readonly "unauthorizedUnsupportedType": string,
   readonly "username": string
 };
   (_: "catalog.opds.auth.alternativeLogin", __?: {}): string;
@@ -383,7 +380,6 @@ declare namespace typed_i18n {
   (_: "catalog.opds.auth.register", __?: {}): string;
   (_: "catalog.opds.auth.retry", __?: {}): string;
   (_: "catalog.opds.auth.unauthorized", __?: {}): string;
-  (_: "catalog.opds.auth.unauthorizedUnsupportedType", __?: {}): string;
   (_: "catalog.opds.auth.username", __?: {}): string;
   (_: "catalog.opds.info", __?: {}): {
   readonly "availableSince": string,

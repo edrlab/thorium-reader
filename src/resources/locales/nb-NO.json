@@ -131,7 +131,6 @@
                 "register": "Registrer deg",
                 "retry": "Prøv igjen",
                 "unauthorized": "Ingen tilgang",
-                "unauthorizedUnsupportedType": "Ingen tilgang (WWWAuthenticate-typen «{{- type}}» støttes ikke)",
                 "username": "Brukernavn / e-postadresse"
             },
             "info": {

@@ -131,7 +131,6 @@
                 "register": "Registrera dig",
                 "retry": "Försök igen",
                 "unauthorized": "Obehörig",
-                "unauthorizedUnsupportedType": "Obehörig (stöder inte WWWAuthenticate av typen '{{- type}}')",
                 "username": "Användarnamn/e-postadress"
             },
             "info": {

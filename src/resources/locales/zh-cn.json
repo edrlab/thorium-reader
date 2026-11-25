@@ -131,7 +131,6 @@
                 "register": "注册",
                 "retry": "再试一次",
                 "unauthorized": "未授权",
-                "unauthorizedUnsupportedType": "未授权(不支持的WWW认证类型 '{{- type}}')",
                 "username": "用户名/电子邮件地址"
             },
             "info": {
