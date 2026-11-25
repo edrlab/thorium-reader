@@ -14,6 +14,8 @@ npm run test:customization-profile-editor
 
 Commit the regenerated `scripts/thorium-profile-editor.html` with changes to the editor or shared manifest schema. The build can take an alternative output filename as its first argument.
 
+The test command also rebuilds the CLI used by the packing checks.
+
 Browser tests require Playwright Chromium. To use an already installed Chrome or Edge instead, set `PROFILE_EDITOR_BROWSER_CHANNEL` to `chrome` or `msedge`. Tests copy the generated HTML to a temporary folder, run with networking disabled, check import/export, validation, resource and publication ordering, nested-field preservation, advanced JSON transitions, and directory selection. They also pack and verify an exported manifest with local books, covers, and other resources using the standalone CLI.
 
 ## Runtime boundary

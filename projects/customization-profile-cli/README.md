@@ -1,6 +1,6 @@
 # Standalone customization profile CLI
 
-Standalone profile packer/verifier for Node.js 22.2+. [Bash usage](../../docs/customization-profile-cli.md).
+Standalone profile packer/verifier for Node.js 24+. [Bash usage](../../docs/customization-profile-cli.md).
 
 ## Build and check
 
@@ -12,7 +12,7 @@ npm run check:customization-profile-cli
 npm run test:customization-profile-cli
 ```
 
-Commit the regenerated `scripts/thorium-profile.cjs` with source or dependency changes. Tests cover standalone execution and legacy profiles.
+Build output: `scripts/thorium-profile.cjs` (generated and Git-ignored). Tests cover standalone execution and legacy profiles.
 
 ## Constraints
 

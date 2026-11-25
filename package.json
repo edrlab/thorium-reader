@@ -142,7 +142,7 @@
     "build:customization-profile-cli": "node ./projects/customization-profile-cli/build.mjs",
     "build:customization-profile-editor": "node ./projects/customization-profile-editor/build.mjs",
     "check:customization-profile-editor": "tsc --project ./projects/customization-profile-editor/tsconfig.json",
-    "test:customization-profile-editor": "npm run build:customization-profile-editor && node --test test/customization-profile-editor/editor.test.mjs",
+    "test:customization-profile-editor": "npm run build:customization-profile-cli && npm run build:customization-profile-editor && node --test test/customization-profile-editor/editor.test.mjs",
     "check:customization-profile-cli": "tsc --project ./projects/customization-profile-cli/tsconfig.json",
     "test:customization-profile-cli": "npm run testFile -- test/main/customization",
     "package-customization-profile": "npm run build:customization-profile-cli && node ./scripts/thorium-profile.cjs",
