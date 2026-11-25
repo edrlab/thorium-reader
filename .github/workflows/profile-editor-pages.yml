@@ -1,9 +1,12 @@
-name: Publish profile editor to GitHub Pages
+name: Publish README and profile editor to GitHub Pages
 
 on:
   push:
     branches: [develop]
     paths:
+      - README.md
+      - AGENTS.md
+      - img/**
       - scripts/thorium-profile-editor.html
       - .github/workflows/profile-editor-pages.yml
   workflow_dispatch:
@@ -23,22 +26,38 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout standalone editor
+      - name: Checkout website sources
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          sparse-checkout: scripts/thorium-profile-editor.html
+          sparse-checkout: |
+            README.md
+            AGENTS.md
+            img/
+            scripts/thorium-profile-editor.html
           sparse-checkout-cone-mode: false
 
-      - name: Prepare static site
+      - name: Prepare README site
         shell: bash
         run: |
-          mkdir -p _site
-          cp scripts/thorium-profile-editor.html _site/index.html
-          cp scripts/thorium-profile-editor.html _site/thorium-profile-editor.html
-          touch _site/.nojekyll
+          mkdir -p _pages
+          cp README.md AGENTS.md _pages/
+          cp -R img _pages/img
+          cp scripts/thorium-profile-editor.html _pages/thorium-profile-editor.html
 
-      - name: Upload editor site
+      - name: Build README homepage
+        uses: actions/jekyll-build-pages@44a6e6beabd48582f863aeeb6cb2151cc1716697 # v1.0.13
+        with:
+          source: ./_pages
+          destination: ./_site
+
+      - name: Verify website pages
+        shell: bash
+        run: |
+          test -s _site/index.html
+          cmp scripts/thorium-profile-editor.html _site/thorium-profile-editor.html
+
+      - name: Upload website
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: _site
