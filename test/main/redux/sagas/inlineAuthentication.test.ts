@@ -59,11 +59,37 @@ describe("inline Basic credential submission", () => {
         expect(httpSetAuthenticationToken).not.toHaveBeenCalled();
         expect(dispatch).toHaveBeenLastCalledWith(authActions.submitted.build("file:///catalog", true));
     });
+
+    it("leaves acquisition responses to the downloader instead of browsing them as OPDS", async () => {
+        const dispatch = jest.fn();
+        const success = await runSaga({ dispatch }, submitInlineAuthentication,
+            authActions.submit.build(url, "reader", "secret", { promptId: "download" })).toPromise();
+        expect(success).toBe(true);
+        expect(browse).not.toHaveBeenCalled();
+        expect(dispatch).toHaveBeenCalledWith(authActions.submitted.build(url, false, undefined, "download"));
+        expect(dispatch).not.toHaveBeenCalledWith(historyActions.refresh.build());
+    });
 });
 
 
 describe("inline Digest authentication", () => {
     beforeEach(() => jest.resetAllMocks());
+
+    it("uses the OPDS document's Digest challenge without consuming a download", async () => {
+        const dispatch = jest.fn();
+        const success = await runSaga({ dispatch }, submitInlineAuthentication,
+            authActions.submit.build(url + "?loan=1", "reader", "secret", {
+                authenticationType: "http://opds-spec.org/auth/digest", promptId: "download",
+                digest: { nonce: "abc=", realm: "Books, Inc.", qop: "auth,auth-int", algorithm: "MD5-sess" },
+            })).toPromise();
+        expect(success).toBe(true);
+        expect(httpGet).not.toHaveBeenCalled();
+        expect(httpSetAuthenticationToken).toHaveBeenCalledWith(expect.objectContaining({
+            tokenType: "Digest", password: "secret",
+            accessToken: expect.stringContaining('uri="/catalog?loan=1", qop=auth'),
+        }));
+        expect(dispatch).not.toHaveBeenCalledWith(historyActions.refresh.build());
+    });
 
     it.each([true, false])("only stores validated credentials when success is %s", async success => {
         const target = url + "?page=2";

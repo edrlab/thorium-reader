@@ -9,7 +9,9 @@ import { Action } from "readium-desktop/common/models/redux";
 
 import { IOpdsAuthView } from "readium-desktop/common/views/opds";
 
-type Options = Partial<Pick<IOpdsAuthView, "authenticationType" | "authenticationId" | "oauthUrl" | "oauthRefreshUrl">>;
+type Options = Partial<Pick<IOpdsAuthView, "authenticationType" | "authenticationId" | "oauthUrl" | "oauthRefreshUrl" | "digest">> & {
+    promptId?: string;
+};
 
 export const ID = "AUTH_SUBMIT";
 export function build(credentialsUrl: string, login: string, password: string, options?: Options):

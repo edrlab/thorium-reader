@@ -14,19 +14,18 @@ import debug_ from "debug";
 // Logger
 const debug = debug_("readium-desktop:common:redux:middleware:actionSubscriber");
 
-const __subscribe = new Map<string, (action: UnknownAction) => void>();
+const __subscribe = new Map<string, Set<(action: UnknownAction) => void>>();
 
 export const subscribeToAction = (actionId: string, callback: (action: UnknownAction) => void): Unsubscribe => {
 
-    if (__subscribe.has(actionId)) {
-        debug(`action ID already subscribe (${actionId})`);
-    } else {
-        __subscribe.set(actionId, callback);
-    }
+    const subscribers = __subscribe.get(actionId) || new Set();
+    subscribers.add(callback);
+    __subscribe.set(actionId, subscribers);
 
     return () => {
         debug("un-subscribe to the action ID=", actionId);
-        __subscribe.delete(actionId);
+        subscribers.delete(callback);
+        if (!subscribers.size && __subscribe.get(actionId) === subscribers) __subscribe.delete(actionId);
     };
 };
 
@@ -40,10 +39,8 @@ export const actionSubscriberMiddleware = (_store: MiddlewareAPI<Dispatch<Unknow
         const _action = action as unknown as UnknownAction;
 
         if (typeof _action?.type === "string" && __subscribe.has(_action.type)) {
-            if (typeof __subscribe.get(_action.type) === "function") {
-                debug("subscriber triggered on ", _action.type);
-                __subscribe.get(_action.type)(_action);
-            }
+            debug("subscriber triggered on ", _action.type);
+            for (const subscriber of Array.from(__subscribe.get(_action.type))) subscriber(_action);
         }
 
         return next(action);

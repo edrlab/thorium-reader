@@ -5,25 +5,47 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { channel } from "redux-saga";
+import { randomUUID } from "node:crypto";
 import { authActions } from "readium-desktop/common/redux/actions";
-import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
+import { diMainGet } from "readium-desktop/main/di";
 import type { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
-import { race as raceTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { actionChannel as actionChannelTyped, call as callTyped, delay as delayTyped,
+    put as putTyped, race as raceTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { submitInlineAuthentication } from "./inlineAuthentication";
+
+type TCompletionAction = authActions.promptResult.TAction | authActions.prompt.TAction | authActions.externalRequest.TAction;
 
 export function* requestOpdsAuthentication(doc: OPDSAuthenticationDoc, url: string) {
-    // Buffer the signal: replacement can happen before the caller starts waiting.
-    // Each request owns its channel, even when several downloads share a URL.
-    const interrupted = channel<true>();
+    const view = diMainGet("opds-feed-view-converter").convertOpdsAuthToView(doc, url);
+    if (!view.auth?.credentialsUrl) return false;
+    const requestId = randomUUID();
+    // Subscribe before showing the form, including synchronous replacements or cancellation.
+    const submissions = yield* actionChannelTyped((action: { type: string }): action is authActions.submit.TAction =>
+        action.type === authActions.submit.ID && (action as authActions.submit.TAction).payload.options?.promptId === requestId);
+    const completions = yield* actionChannelTyped((action: { type: string }): action is TCompletionAction => {
+        const event = action as TCompletionAction;
+        return (event.type === authActions.promptResult.ID && event.payload.requestId === requestId)
+            || (event.type === authActions.prompt.ID && !!event.payload.view && event.payload.requestId !== requestId)
+            || (event.type === authActions.externalRequest.ID && event.payload.command !== "cancel"
+                && event.payload.promptId !== requestId);
+    });
     try {
-        getOpdsAuthenticationChannel().put([doc, url, false, () => interrupted.put(true)]);
-        const { done } = yield* raceTyped({
-            cancel: takeTyped(authActions.cancel.build),
-            done: takeTyped(authActions.done.build),
-            interrupted: takeTyped(interrupted),
+        yield* putTyped(authActions.prompt.build(requestId, view));
+        const result = yield* raceTyped({
+            credentials: callTyped(function* () {
+                while (true) {
+                    const submission = yield* takeTyped(submissions);
+                    if (yield* callTyped(submitInlineAuthentication, submission)) return true;
+                }
+            }),
+            completion: takeTyped(completions),
+            expired: delayTyped(240000),
         });
-        return !!done;
+        return !!(result.credentials || (result.completion?.type === authActions.promptResult.ID
+            && result.completion.payload.success));
     } finally {
-        interrupted.close();
+        submissions.close();
+        completions.close();
+        yield* putTyped(authActions.prompt.build(requestId));
     }
 }

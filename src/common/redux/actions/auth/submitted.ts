@@ -10,9 +10,9 @@ import { Action } from "readium-desktop/common/models/redux";
 import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 
 export const ID = "AUTH_SUBMITTED";
-export function build(credentialsUrl: string, failed: boolean, result?: THttpGetBrowserResultView):
-    Action<typeof ID, { credentialsUrl: string; failed: boolean; result?: THttpGetBrowserResultView }> {
-    return { type: ID, payload: { credentialsUrl, failed, result } };
+export function build(credentialsUrl: string, failed: boolean, result?: THttpGetBrowserResultView, promptId?: string):
+    Action<typeof ID, { credentialsUrl: string; failed: boolean; result?: THttpGetBrowserResultView; promptId?: string }> {
+    return { type: ID, payload: { credentialsUrl, failed, result, promptId } };
 }
 build.toString = () => ID;
 export type TAction = ReturnType<typeof build>;

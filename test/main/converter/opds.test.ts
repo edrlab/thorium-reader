@@ -406,18 +406,15 @@ describe("inline HTTP authentication", () => {
         });
         const service = new OpdsService();
         Object.assign(service, { opdsFeedViewConverter: converter });
-        const dispatch = jest.spyOn(service as unknown as { dispatchAuthenticationProcess: () => void }, "dispatchAuthenticationProcess");
         const result = await service.opdsRequestTransformer({
             url: baseUrl, isSuccess: false, isFailure: true, statusCode: 401,
             contentType: authenticationType, response: { json: async () => doc },
         } as unknown as IHttpGetResult<IOpdsResultView>);
         expect(result.auth.credentialsUrl).toBe(baseUrl);
-        expect(dispatch).not.toHaveBeenCalled();
     });
 
     it.each(["Basic", "Digest"])("returns a form for a plain %s challenge using the effective URL", async scheme => {
         const service = new OpdsService();
-        const dispatch = jest.spyOn(service as unknown as { dispatchAuthenticationProcess: () => void }, "dispatchAuthenticationProcess");
         const result = await service.opdsRequestTransformer({
             url: baseUrl, responseUrl: "https://example.org/protected", isSuccess: false, isFailure: true,
             statusCode: 401, contentType: "text/plain",
@@ -425,14 +422,14 @@ describe("inline HTTP authentication", () => {
         } as unknown as IHttpGetResult<IOpdsResultView>);
         expect(result.auth.credentialsUrl).toBe("https://example.org/protected");
         expect(result.auth.authenticationType).toBe(scheme === "Digest" ? "http://opds-spec.org/auth/digest" : undefined);
-        expect(dispatch).not.toHaveBeenCalled();
     });
 
-    it("keeps SAML documents out of the inline flow", () => {
+    it("exposes SAML through the inline external flow", () => {
         const view = createConverter().convertOpdsAuthToView(TaJsonDeserialize({
             id: baseUrl, title: "Browser", authentication: [{ type: "http://librarysimplified.org/authtype/SAML-2.0" }],
         }, OPDSAuthenticationDoc), baseUrl);
-        expect(view.auth.credentialsUrl).toBeUndefined();
+        expect(view.auth).toMatchObject({ credentialsUrl: baseUrl, external: true,
+            authenticationType: "http://librarysimplified.org/authtype/SAML-2.0" });
     });
 });
 
@@ -459,13 +456,13 @@ it.each([
 
 it.each([
     ["http://opds-spec.org/auth/oauth/implicit", "http://opds-spec.org/auth/oauth/implicit"],
+    ["http://librarysimplified.org/authtype/SAML-2.0", "http://librarysimplified.org/authtype/SAML-2.0"],
     ["http://opds-spec.org/auth/oauth/authorization-code-pkce", "http://opds-spec.org/auth/oauth/authorization-code-pkce"],
     ["http://opds-spec.org/auth/oauth/code", "http://opds-spec.org/auth/oauth/authorization-code-pkce"],
 ])(
     "renders %s as an external authentication result without starting a modal", async (type, expectedType) => {
         const service = new OpdsService();
         Object.assign(service, { opdsFeedViewConverter: createConverter() });
-        const modal = jest.spyOn(service as unknown as { dispatchAuthenticationProcess: () => void }, "dispatchAuthenticationProcess");
         const result = await service.opdsRequestTransformer({
             url: baseUrl, responseUrl: baseUrl, isSuccess: false, isFailure: true, statusCode: 401,
             contentType: authenticationType, response: { json: async () => ({
@@ -474,6 +471,5 @@ it.each([
         } as unknown as IHttpGetResult<IOpdsResultView>);
         expect(result.auth).toMatchObject({ external: true, authenticationType: expectedType, credentialsUrl: baseUrl,
             oauthUrl: "https://example.org/authorize" });
-        expect(modal).not.toHaveBeenCalled();
     },
 );

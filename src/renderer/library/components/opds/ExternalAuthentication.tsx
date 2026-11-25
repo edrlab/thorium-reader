@@ -15,9 +15,10 @@ import { IOpdsAuthView } from "readium-desktop/common/views/opds";
 import { TranslatorProps } from "readium-desktop/renderer/common/components/hoc/translator";
 import { subscribeToAction } from "readium-desktop/renderer/common/redux/middleware/actionSubscriber";
 
-export const ExternalAuthentication = ({ auth, catalogIdentifier, __ }: { auth: IOpdsAuthView; catalogIdentifier?: string } & TranslatorProps) => {
+export const ExternalAuthentication = ({ auth, catalogIdentifier, promptId, __ }: { auth: IOpdsAuthView; catalogIdentifier?: string; promptId?: string } & TranslatorProps) => {
     const dispatch = useDispatch();
-    const requestId = React.useId();
+    const viewId = React.useId();
+    const requestId = promptId || viewId;
     const [status, setStatus] = React.useState<authActions.externalStatus.Status>("preparing");
     const [authorizationUrl, setAuthorizationUrl] = React.useState<string>();
     React.useEffect(() => {
@@ -29,12 +30,12 @@ export const ExternalAuthentication = ({ auth, catalogIdentifier, __ }: { auth: 
         });
         setStatus("preparing");
         setAuthorizationUrl(undefined);
-        dispatch(authActions.externalRequest.build(auth.credentialsUrl, requestId, "start", catalogIdentifier));
+        dispatch(authActions.externalRequest.build(auth.credentialsUrl, requestId, "start", catalogIdentifier, promptId));
         return () => {
             unsubscribe();
             dispatch(authActions.externalRequest.build(auth.credentialsUrl, requestId, "cancel"));
         };
-    }, [auth.credentialsUrl, catalogIdentifier, dispatch, requestId]);
+    }, [auth.credentialsUrl, catalogIdentifier, dispatch, requestId, promptId]);
     const openExternal = () => {
         if (authorizationUrl && /^https?:\/\//i.test(authorizationUrl)) {
             shell.openExternal(authorizationUrl).catch(() => setStatus("failed"));
@@ -60,13 +61,13 @@ export const ExternalAuthentication = ({ auth, catalogIdentifier, __ }: { auth: 
         <button className={stylesButtons.button_secondary_blue} type="button"
             disabled={status === "preparing" || status === "complete"} onClick={() => {
                 setStatus("preparing");
-                dispatch(authActions.externalRequest.build(auth.credentialsUrl, requestId, "retry", catalogIdentifier));
+                dispatch(authActions.externalRequest.build(auth.credentialsUrl, requestId, "retry", catalogIdentifier, promptId));
             }}>{__("catalog.opds.auth.alternativeLogin")}</button>
         <hr className={styles.separator} />
         <footer className={styles.links}>
             <button type="button" onClick={() => {
                 dispatch(authActions.externalRequest.build(auth.credentialsUrl, requestId, "cancel"));
-                dispatch(authActions.cancel.build());
+                dispatch(promptId ? authActions.promptResult.build(promptId, false) : authActions.cancel.build());
             }}>{__("catalog.opds.auth.cancel")}</button>
         </footer>
     </section>;

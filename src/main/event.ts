@@ -7,8 +7,6 @@
 
 import { channel } from "redux-saga";
 
-import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
-
 const openFileFromCliChannel = channel<string>();
 
 export const getOpenFileFromCliChannel = () => openFileFromCliChannel;
@@ -24,16 +22,6 @@ export const getOpenUrlWithThoriumSchemeEventChannel = () => openUrlWithThoriumS
 const openUrlWithOpdsSchemeEventChannel = channel<string>();
 
 export const getOpenUrlWithOpdsSchemeEventChannel = () => openUrlWithOpdsSchemeEventChannel;
-
-//
-// OPDS2 authentication
-//
-
-export type TOpdsAuthenticationChannel = [doc: OPDSAuthenticationDoc, baseUrl: string, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser: boolean, onInterrupted?: () => void];
-
-const opdsAuthenticationChannel = channel<TOpdsAuthenticationChannel>();
-
-export const getOpdsAuthenticationChannel = () => opdsAuthenticationChannel;
 
 const opdsNewCatalogsStringUrlChannel = channel<string>();
 

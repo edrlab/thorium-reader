@@ -32,7 +32,6 @@ import * as xmldom from "@xmldom/xmldom";
 
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { diSymbolTable } from "../diSymbolTable";
-import { getOpdsAuthenticationChannel } from "../event";
 import isURL from "readium-desktop/common/utils/isURL";
 
 // Logger
@@ -82,7 +81,6 @@ export class OpdsService {
         const contentType = parseContentType(_contentType);
 
         if (contentTypeisXml(contentType)) {
-
 
             // TODO response.buffer deprecated by node-fetch
             const buffer = await httpGetData.response.buffer();
@@ -172,15 +170,6 @@ export class OpdsService {
         return (undefined);
     }
 
-    private dispatchAuthenticationProcess(r2OpdsAuth: OPDSAuthenticationDoc, responseUrl: string) {
-
-        const opdsAuthChannel = getOpdsAuthenticationChannel();
-
-        debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
-        opdsAuthChannel.put([r2OpdsAuth, responseUrl, false]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
-
-    }
-
     private async opdsRequestJsonTransformer(
         jsonObj: any,
         contentType: ContentType,
@@ -226,12 +215,7 @@ export class OpdsService {
             if (view.auth?.credentialsUrl) {
                 return view;
             }
-            this.dispatchAuthenticationProcess(r2OpdsAuth, responseUrl);
-
-            return {
-                title: getTranslator().translate("catalog.opds.auth.unauthorized"),
-                publications: [],
-            }; // need to refresh the page
+            throw new Error("Unsupported OPDS authentication method");
 
         } else if (isOpdsPub) {
             const r2OpdsPublication = TaJsonDeserialize(

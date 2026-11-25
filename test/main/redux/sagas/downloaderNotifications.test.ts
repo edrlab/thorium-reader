@@ -1,7 +1,6 @@
 import { describe, expect, it, jest } from "@jest/globals";
 jest.mock("typed-redux-saga/macro", () => jest.requireActual("typed-redux-saga"));
 jest.mock("readium-desktop/main/network/http", () => ({ httpGet: jest.fn() }));
-jest.mock("readium-desktop/main/event", () => ({ getOpdsAuthenticationChannel: jest.fn() }));
 jest.mock("readium-desktop/main/fs/path", () => ({ createTempDir: jest.fn() }));
 jest.mock("readium-desktop/common/services/translator", () => ({ getTranslator: () => ({ translate: (key: string, args?: { title: string; err: string }) => args ? args.title + ": " + args.err : key }) }));
 import { downloader } from "readium-desktop/main/redux/sagas/downloader";

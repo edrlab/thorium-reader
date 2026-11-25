@@ -8,7 +8,9 @@ import type { IHttpGetResult } from "readium-desktop/common/utils/http";
 
 jest.mock("typed-redux-saga/macro", () => jest.requireActual("typed-redux-saga"));
 jest.mock("readium-desktop/main/network/http", () => ({ httpGet: jest.fn() }));
-jest.mock("readium-desktop/main/event", () => ({ getOpdsAuthenticationChannel: jest.fn() }));
+jest.mock("readium-desktop/main/redux/sagas/requestOpdsAuthentication", () => ({
+    requestOpdsAuthentication: jest.fn(function* () { return false; }),
+}));
 jest.mock("readium-desktop/main/fs/path", () => ({ createTempDir: jest.fn() }));
 jest.mock("@r2-lcp-js/serializable", () => ({ TaJsonDeserialize: () => ({}) }));
 jest.mock("readium-desktop/common/services/translator", () => ({
@@ -16,12 +18,11 @@ jest.mock("readium-desktop/common/services/translator", () => ({
 }));
 
 import { httpGet } from "readium-desktop/main/network/http";
-import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
 import { createTempDir } from "readium-desktop/main/fs/path";
 import { downloader } from "readium-desktop/main/redux/sagas/downloader";
 import { DownloadCancelled, DownloadFailure, checkDownloadResponse } from "readium-desktop/main/tools/downloadFailure";
 import { importFailureMessage } from "readium-desktop/main/redux/sagas/api/publication/import/importFailure";
-import { authActions, downloadActions } from "readium-desktop/common/redux/actions";
+import { downloadActions } from "readium-desktop/common/redux/actions";
 
 const source = "https://user:secret@example.org:8443/book.epub?token=secret#chapter";
 const response = (body = Readable.from([Buffer.from("book")])) => ({
@@ -166,9 +167,6 @@ describe("download failure routing", () => {
         jest.mocked(httpGet).mockResolvedValue({ ...response(new PassThrough()),
             contentType: "application/opds-authentication+json", response: { json: async () => ({}) },
         } as unknown as IHttpGetResult<undefined>);
-        jest.mocked(getOpdsAuthenticationChannel).mockReturnValue({ put: () => {
-            queueMicrotask(() => input.put(authActions.cancel.build()));
-        } } as never);
         const actions: any[] = [];
         let failure: unknown;
         const task = runSaga({ channel: input, dispatch: a => actions.push(a) }, function* () {

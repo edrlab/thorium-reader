@@ -7,7 +7,6 @@ import { downloadActions } from "readium-desktop/common/redux/actions";
 
 jest.mock("typed-redux-saga/macro", () => jest.requireActual("typed-redux-saga"));
 jest.mock("readium-desktop/main/network/http", () => ({ httpGet: jest.fn() }));
-jest.mock("readium-desktop/main/event", () => ({ getOpdsAuthenticationChannel: jest.fn() }));
 jest.mock("readium-desktop/main/fs/path", () => ({
     createTempDir: () => Promise.resolve("/tmp/download-progress-test"),
 }));
