@@ -1956,20 +1956,20 @@ const htmlLoginTemplate = (
         if (inputNonce && nonce) inputNonce.setAttribute("value", DOMPurify.sanitize(nonce));
 
         const inputQop = parsedDocument!.getElementById(ID_inputQop);
-        if (inputQop && nonce) inputQop.setAttribute("value", DOMPurify.sanitize(qop));
+        if (inputQop && qop) inputQop.setAttribute("value", DOMPurify.sanitize(qop));
 
         const inputAlgorithm = parsedDocument!.getElementById(ID_inputAlgorithm);
-        if (inputAlgorithm && nonce) inputAlgorithm.setAttribute("value", DOMPurify.sanitize(algorithm));
+        if (inputAlgorithm && algorithm) inputAlgorithm.setAttribute("value", DOMPurify.sanitize(algorithm));
 
         const inputRealm = parsedDocument!.getElementById(ID_inputRealm);
-        if (inputRealm && nonce) inputRealm.setAttribute("value", DOMPurify.sanitize(realm));
+        if (inputRealm && realm) inputRealm.setAttribute("value", DOMPurify.sanitize(realm));
 
         if (help?.length) {
             let i = 0;
             for (const h of help) {
                 const id = `${ID_aHelp}${i}`;
                 const aHelp = parsedDocument!.getElementById(id);
-                if (id && h) {
+                if (aHelp && h) {
                     const link = DOMPurify.sanitize(h);
                     aHelp.textContent = link;
                     aHelp.setAttribute("href", link);
