@@ -45,7 +45,7 @@ jobs:
 # https://github.com/zizmorcore/zizmor-action/commits/v0.8.1
 # https://github.com/zizmorcore/zizmor-action/commits/45d7276c9ca790aabd705e31ca99c6185c3e76dd
 # https://github.com/zizmorcore/zizmor-action/compare/v0.8.1...45d7276c9ca790aabd705e31ca99c6185c3e76dd
-        uses: zizmorcore/zizmor-action@45d7276c9ca790aabd705e31ca99c6185c3e76dd
+        uses: zizmorcore/zizmor-action@1b4550e929643b8b26a62303c6bd64814271a4f1
         with:
           advanced-security: true
           token: ${{ github.token }} # default
