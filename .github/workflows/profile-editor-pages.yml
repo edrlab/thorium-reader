@@ -2,7 +2,7 @@ name: Publish profile editor to GitHub Pages
 
 on:
   push:
-    branches: [develop, codex/standalone-manifest-editor]
+    branches: [develop]
     paths:
       - scripts/thorium-profile-editor.html
       - .github/workflows/profile-editor-pages.yml
@@ -16,8 +16,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    if: github.repository == 'edrlab/thorium-reader' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/codex/standalone-manifest-editor')
+  deploy_job:
+    if: github.repository == 'edrlab/thorium-reader' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
