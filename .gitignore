@@ -1,6 +1,8 @@
 .history
 dist
 customization-dist
+/resources/customization-profile-keys/prod/private.pem
+/scripts/thorium-profile.cjs
 release
 node_modules
 .DS_Store

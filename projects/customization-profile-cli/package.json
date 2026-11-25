@@ -1,0 +1,8 @@
+{
+    "name": "@edrlab/thorium-profile-cli",
+    "private": true,
+    "type": "commonjs",
+    "imports": {
+        "#profile-cli/*": "./src/*.ts"
+    }
+}
