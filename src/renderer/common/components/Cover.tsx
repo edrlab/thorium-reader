@@ -29,6 +29,7 @@ import { IRendererCommonRootState } from "readium-desktop/common/redux/states/re
 import { TranslatorProps, withTranslator } from "./hoc/translator";
 import SVG from "./SVG";
 import * as FileBroken from "readium-desktop/renderer/assets/icons/file-broken-icon.svg";
+import brokenOpdsCover from "readium-desktop/renderer/assets/images/opds-cover-broken.png";
 // import * as ValidateIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
 // import SVG from "./SVG";
 
@@ -222,7 +223,14 @@ class Cover extends React.Component<IProps, IState> {
 
     private imageOnError() {
 
-        if (this.state.imgErroredOnce) return;
+        if (this.state.imgUrl === brokenOpdsCover) return;
+
+        if (this.state.imgErroredOnce) {
+            if (this.props.publicationViewMaybeOpds.baseUrl !== undefined) {
+                this.setState({ imgUrl: brokenOpdsCover });
+            }
+            return;
+        }
 
         const b64 = Buffer.from(this.state.imgUrl).toString("base64");
         const imgUrl = URL_PROTOCOL_OPDS_MEDIA + "://" + URL_HOST_COMMON + "/" + encodeURIComponent_RFC3986(b64);

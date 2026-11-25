@@ -199,7 +199,7 @@ export const getAuthenticationToken =
             const data = parseDigestString(auth.accessToken);
             auth.accessToken = digestAuthentication({
                 ...data,
-                uri: new URL(url).pathname,
+                uri: url.pathname + url.search,
                 password: auth.password,
                 method: method.toUpperCase(),
             });

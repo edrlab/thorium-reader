@@ -82,16 +82,6 @@ const isRTLFunction = (r2Publication: R2Publication) => (_link: ILink | undefine
     if (r2Publication?.Metadata?.Direction === "rtl") {
         isRTL = lang.reduce<[rtl: boolean, lang: string]>((pv, cv) => {
             const rtlExcludingJapanese = typeof cv === "string" ?
-                // we test for Arabic and Hebrew and Farsi,
-                // in order to exclude Japanese Vertical Writing Mode which is also RTL!
-                // (
-                //     cv === "ar" || cv.startsWith("ar-") ||
-                //     cv === "he" || cv.startsWith("he-") ||
-                //     cv === "fa" || cv.startsWith("fa-")
-
-                //     // https://github.com/edrlab/thorium-reader/pull/3027
-                //     // cv === "zh-Hant" || cv === "zh-TW"
-                // )
                 [langStringIsRTL(cv), cv] as [rtl: boolean, lang: string] :
                 [false, ""] as [rtl: boolean, lang: string];
             if (pv[0]) {

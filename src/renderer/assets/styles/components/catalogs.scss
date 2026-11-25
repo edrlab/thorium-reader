@@ -589,13 +589,31 @@ $entry-card-colors-dark: (
     min-height: 40px;
     margin-bottom: 40px;
     flex-wrap: wrap;
+    gap: 16px 24px;
     z-index: 1000;
     position: relative;
     border-radius: 5px;
 
-    label {
-        background-color: transparent!important;
-        // top: -18px!important;
+    > nav {
+        flex: 1 1 auto;
+    }
+}
+
+form.opds_search_form[role="search"] {
+    display: flex;
+    flex: 0 1 300px;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    max-width: 100%;
+    height: auto !important;
+    margin-left: auto;
+    background-color: transparent;
+
+    > label {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.5;
     }
 
     > nav {
@@ -604,19 +622,13 @@ $entry-card-colors-dark: (
         min-width: 0;
     }
 
-    // @media screen and (width <= 1024px) {
-    //     flex-direction: column;
-    //     align-items: end;
+    &:has(input:focus) {
+        outline: none !important;
+    }
 
-    //     .breadcrumb {
-    //         width: 100%;
-    //         padding-bottom: 20px;
-    //     }
-
-    //     form[role="search"] {
-    //         width: 290px!important;
-    //     }
-    // }
+    &:has(input:disabled) {
+        display: none;
+    }
 }
 
 // OPDS catalog search (SearchForm.tsx).
@@ -722,23 +734,31 @@ $entry-card-colors-dark: (
     }
 }
 
+main.opds_browser {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+
+    > .opds_header,
+    > .catalog_breadcrumbSearch_Wrapper {
+        flex-shrink: 0;
+    }
+}
+
 .opds_browserResults {
     container-type: inline-size;
     overflow: auto;
-    inset: 160px 20px 30px 30px;
+    flex: 1;
+    min-height: 0;
     padding: 0;
-    position: absolute;
+    position: relative;
     padding-right: 25px;
-    margin: 2px;
-    margin-top: 55px;
+    margin: 2px 2px 20px;
 
     .button_transparency {
         margin: 4px;
     }
-
-    // @media only screen and (width <= 1024px) {
-    //     inset: 330px 20px 30px 30px;
-    // }
 
     @include mx.scrollbar_styling;
 

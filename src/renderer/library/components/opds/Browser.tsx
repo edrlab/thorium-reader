@@ -14,7 +14,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { buildOpdsBrowserRoute, parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { BrowserOptions } from "./BrowserOptions";
@@ -36,21 +36,33 @@ export const Browser = () => {
         if (identifier) getCatalog(identifier);
     }, [identifier, getCatalog]);
     // The catalog card name is independent of the feed and of direct Shelf entry.
-    const catalogTitle = catalog?.data?.result?.title;
-    const current = breadcrumb[breadcrumb.length - 1];
-    const root = breadcrumb[1];
+    const catalogFeed = catalog?.data?.result;
+    const catalogTitle = catalogFeed?.title;
+    const last = breadcrumb[breadcrumb.length - 1];
+    const current = last && parseOpdsBrowserRoute(last.path)?.url === route?.url ? last : undefined;
+    const root = catalogFeed?.url ? breadcrumb.find(item => parseOpdsBrowserRoute(item.path)?.url === catalogFeed.url) : undefined;
+    const rootName = root?.name?.trim();
+    const [loadedRoot, setLoadedRoot] = React.useState<{ identifier: string; url: string; name: string }>();
+    React.useEffect(() => {
+        if (identifier && catalogFeed?.url && rootName) {
+            setLoadedRoot({ identifier, url: catalogFeed.url, name: rootName });
+        }
+    }, [identifier, catalogFeed?.url, rootName]);
     const fallback = route?.title?.trim() || catalogTitle || "-";
     const currentLocation = current ? { ...current, name: current.name?.trim() || fallback } :
         route && { path: location.pathname, name: fallback };
-    const rootLocation = root && { ...root, name: root.name?.trim() || catalogTitle || fallback };
+    const rootLocation = identifier && catalogFeed?.url ? {
+        name: rootName || (loadedRoot?.identifier === identifier && loadedRoot.url === catalogFeed.url ? loadedRoot.name : undefined) || catalogTitle || fallback,
+        path: route.url === catalogFeed.url ? location.pathname : buildOpdsBrowserRoute(identifier, catalogTitle || "", catalogFeed.url),
+    } : undefined;
     const feedColor = catalog?.data?.result?.color || (location.state as Partial<IRouterLocationState> | undefined)?.feedColor;
     return (
         <LibraryLayout
+            mainClassName={stylesCatalogs.opds_browser}
             page={__("opds.breadcrumbRoot")}
             title={catalogTitle}
             feedColor={feedColor}
-            catalogHeader={<CatalogHeader currentLocation={currentLocation} rootLocation={rootLocation}
-                previousLocation={breadcrumb[breadcrumb.length - 2]} />}
+            catalogHeader={<CatalogHeader currentLocation={currentLocation} rootLocation={rootLocation} />}
             catalogOptions={<BrowserOptions />}
             search={search ? <SearchForm /> : undefined}
         >

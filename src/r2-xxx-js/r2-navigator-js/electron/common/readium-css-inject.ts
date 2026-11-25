@@ -115,15 +115,7 @@ export function isDocRTL(documant: Document): boolean {
         if (!langAttr) {
             langAttr = documant.documentElement.getAttributeNS("http://www.w3.org/XML/1998/", "lang");
         }
-        if (langAttr &&
-            langStringIsRTL(langAttr)
-            // (langAttr === "ar" || langAttr.startsWith("ar-") ||
-            // langAttr === "he" || langAttr.startsWith("he-") ||
-            // langAttr === "fa" || langAttr.startsWith("fa-"))
-
-            // // https://github.com/edrlab/thorium-reader/pull/3027
-            // // langAttr === "zh-Hant" || langAttr === "zh-TW"
-            ) {
+        if (langAttr && langStringIsRTL(langAttr)) {
             // foundLang = true;
             rtl = true;
         }

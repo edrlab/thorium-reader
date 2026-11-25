@@ -6,14 +6,15 @@
 // ==LICENSE-END==
 
 import { isDeepStrictEqual } from "node:util";
+import { limitLocatorText } from "readium-desktop/common/redux/states/locatorInitialState";
 import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 type ReadingLocator = MiniLocatorExtended["locator"] | undefined;
 
-// Persisted locators are JSON: absent and explicitly undefined properties
-// represent the same reading location after serialization.
+// Apply the same text cap and JSON representation used when saving a locator.
+// Resaving a legacy locator with longer excerpts does not count as movement.
 const normalizeLocatorForComparison = (locator: ReadingLocator): unknown =>
-    locator ? JSON.parse(JSON.stringify(locator)) : undefined;
+    locator ? JSON.parse(JSON.stringify(limitLocatorText(locator))) : undefined;
 
 export const sameReadingLocator = (baseline: ReadingLocator, current: ReadingLocator): boolean =>
     isDeepStrictEqual(normalizeLocatorForComparison(baseline), normalizeLocatorForComparison(current));

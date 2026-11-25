@@ -562,7 +562,9 @@ export class OpdsFeedViewConverter {
 
         const method = r2OpdsAuth.Authentication?.find(a =>
             a.Type === "http://opds-spec.org/auth/basic" || a.Type === "http://opds-spec.org/auth/local"
+            || a.Type === "http://opds-spec.org/auth/digest"
             || a.Type === "http://opds-spec.org/auth/oauth/password"
+            || a.Type === "http://opds-spec.org/auth/oauth/password/apiapp"
             || a.Type === "http://opds-spec.org/auth/oauth/implicit"
             || OPDS_AUTHORIZATION_CODE_PKCE_TYPE.some(type => type === a.Type));
         const pkce = OPDS_AUTHORIZATION_CODE_PKCE_TYPE.some(type => type === method?.Type);

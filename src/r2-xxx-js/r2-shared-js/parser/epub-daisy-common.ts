@@ -775,15 +775,6 @@ export const setPublicationDirection = (publication: Publication, opf: OPF) => {
     }
 };
 
-// export const langStringIsRTL = (lang: string): boolean => {
-//     return lang === "ar" || lang.startsWith("ar-") ||
-//         lang === "he" || lang.startsWith("he-") ||
-//         lang === "fa" || lang.startsWith("fa-");
-
-//         // https://github.com/edrlab/thorium-reader/pull/3027
-//         // lang === "zh-Hant" || lang === "zh-TW"
-// };
-
 export const getNcx = async (ncxManItem: Manifest, opf: OPF, zip: IZip): Promise<NCX> => {
 
     if (!opf.ZipPath) {

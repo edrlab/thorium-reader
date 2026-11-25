@@ -7,7 +7,6 @@
 
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-
 import debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
