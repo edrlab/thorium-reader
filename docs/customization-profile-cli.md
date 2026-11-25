@@ -1,8 +1,8 @@
 # Create and verify a customization profile
 
-The standalone CLI creates signed `.thorium` profiles. It requires Node.js 22.2 or newer and runs without Thorium, Electron, or additional npm packages. The repository includes the generated CLI at `scripts/thorium-profile.cjs`; copy that single file wherever you need it. See the [developer guide](../projects/customization-profile-cli/README.md#build-and-check) to rebuild it from source.
+The standalone CLI creates signed `.thorium` profiles. It requires Node.js 24 or newer and runs without Thorium, Electron, or additional npm packages. See the [developer guide](../projects/customization-profile-cli/README.md#build-and-check) to build it from source.
 
-The examples use Bash and generic paths. Both PEM key files must be passed explicitly; the CLI does not select keys automatically.
+Both PEM key files must be passed explicitly; the CLI does not select keys automatically.
 
 ## Sign and verify
 

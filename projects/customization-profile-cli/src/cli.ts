@@ -5,7 +5,7 @@ const usage = `Usage:
   node thorium-profile.cjs pack --input <directory> --output <file.thorium> --private-key <private.pem> --public-key <public.pem>
   node thorium-profile.cjs verify --input <file.thorium> --public-key <public.pem>
 
-Requires Node.js 22.2 or newer. Keys must use EC P-521 (secp521r1).
+Requires Node.js 24 or newer. Keys must use EC P-521 (secp521r1).
 Output files are never overwritten. The output directory must already exist.`;
 
 async function main() {
