@@ -1,6 +1,6 @@
 # Create a profile manifest offline
 
-Open [`scripts/thorium-profile-editor.html`](https://edrlab.github.io/thorium-reader/scripts/thorium-profile-editor.html) in your browser. You can copy this single HTML file anywhere and use it offline. It does not upload data or require installation.
+Open [`scripts/thorium-profile-editor.html`](https://edrlab.github.io/thorium-reader/thorium-profile-editor.html) in your browser. You can copy this single HTML file anywhere and use it offline. It does not upload data or require installation.
 
 1. Enter a unique profile identifier URI, such as `thorium-manifest://org.example.my-profile`. Keep the identifier when updating the same profile.
 2. Enter the title and description. Use **Translations** to enter separate values by language, such as `en` and `fr`.
