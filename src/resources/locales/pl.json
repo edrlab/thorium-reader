@@ -131,7 +131,6 @@
                 "register": "Rejestracja",
                 "retry": "Spróbuj ponownie",
                 "unauthorized": "Błąd autoryzacji",
-                "unauthorizedUnsupportedType": "Błąd autoryzacji (brak wsparcia dla WWWAuthenticate typ '{{- type}}')",
                 "username": "Nazwa użytkownika / adres e-mail"
             },
             "info": {
@@ -177,15 +176,18 @@
         "annotations": {
             "descAuthor": "przez '{{- author}}'",
             "descCreator": "stworzony przez",
+            "descList_one": "{{- count}} notatka {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_few": "{{- count}} notatki {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} notatek {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
-            "descList_one": "{{- count}} notatka {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
+            "descList_other": "",
+            "descNewer_one": "Konflikt(y): {{- count}} nowsza notatka",
             "descNewer_few": "Konflikt(y): {{- count}} nowsze notatki",
             "descNewer_many": "Konflikt(y): {{- count}} nowszych notatek",
-            "descNewer_one": "Konflikt(y): {{- count}} nowsza notatka",
+            "descNewer_other": "",
+            "descOlder_one": "Konflikt(y): {{- count}} starsza notatka",
             "descOlder_few": "Konflikt(y): {{- count}} starsze notatki",
             "descOlder_many": "Konflikt(y): {{- count}} starszych notatek",
-            "descOlder_one": "Konflikt(y): {{- count}} starsza notatka",
+            "descOlder_other": "",
             "descTitle": "Tytuł adnotacji: ",
             "importAll": "Importuj wszystkie notatki",
             "importWithoutConflict": "Importuj notatki tylko wolne od konfliktów",
@@ -202,13 +204,15 @@
             }
         },
         "deleteAnnotations": "Usunąć adnotacje?",
+        "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
         "deleteAnnotationsText_few": "Czy na pewno chcesz usunąć {{- count}} notatki?",
         "deleteAnnotationsText_many": "Czy na pewno chcesz usunąć {{- count}} notatek?",
-        "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
+        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Usunąć zakładki?",
+        "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
         "deleteBookmarksText_few": "Czy na pewno chcesz usunąć {{- count}} zakładki?",
         "deleteBookmarksText_many": "Czy na pewno chcesz usunąć {{- count}} zakładek?",
-        "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Usunąć katalog?",
         "deletePublication": "Usunąć publikację?",
         "deletePublicationWithNotes": "Uwaga: ta publikacja zawiera adnotacje i/lub zakładki, one również zostaną usunięte! (jeśli chcesz je zachować, pamiętaj o wyeksportowaniu notatek przed usunięciem publikacji)",
@@ -369,9 +373,10 @@
         "storage": {
             "recovery": {
                 "failure": "Odzyskiwanie publikacji nie powiodło się.",
+                "success_one": "Odzyskane publikacje: {{- count}}.",
                 "success_few": "",
                 "success_many": "",
-                "success_one": "Odzyskane publikacje: {{- count}}."
+                "success_other": ""
             },
             "removed": "Katalog publikacji został usunięty.",
             "updateFailed": "Nie udało się zaktualizować katalogu publikacji: {{- message}}",
@@ -979,9 +984,10 @@
         },
         "picker": {
             "search": {
+                "founds_one": "{{- count}} dopasowanie",
                 "founds_few": "{{- count}} dopasowania",
                 "founds_many": "{{- count}} dopasowań",
-                "founds_one": "{{- count}} dopasowanie",
+                "founds_other": "",
                 "input": "tekst do wyszukania",
                 "next": "Następny",
                 "notFound": "brak dopasowań",
@@ -1464,15 +1470,17 @@
                 "description": "Sprawdź przestrzeń dyskową publikacji, aby znaleźć publikacje, które można bezpiecznie odzyskać.",
                 "dialog": {
                     "confirm": "Odzyskaj",
+                    "description_one": "Thorium znalazł na dysku publikacje ({{- count}}), których brakuje w bazie danych. Czy chcesz zaimportować je z powrotem do programu Thorium?",
                     "description_few": "",
                     "description_many": "",
-                    "description_one": "Thorium znalazł na dysku publikacje ({{- count}}), których brakuje w bazie danych. Czy chcesz zaimportować je z powrotem do programu Thorium?",
+                    "description_other": "",
                     "title": "Odzyskaj publikacje"
                 },
                 "none": "Nie znaleziono publikacji do odzyskania.",
+                "recoverableCount_one": "Publikacje, które można odzyskać z oryginalnym identyfikatorem przestrzeni dyskowej: {{- count}}.",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
-                "recoverableCount_one": "Publikacje, które można odzyskać z oryginalnym identyfikatorem przestrzeni dyskowej: {{- count}}.",
+                "recoverableCount_other": "",
                 "title": "Odzyskiwanie"
             }
         },

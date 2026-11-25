@@ -131,7 +131,6 @@
                 "register": "Užsiregistruoti",
                 "retry": "Bandyti dar kartą",
                 "unauthorized": "Neleistina",
-                "unauthorizedUnsupportedType": "Neleistina (nepalaikomas WWWAuthenticate tipas „{{- type}}“)",
                 "username": "Naudotojo vardas / El. pašto adresas"
             },
             "info": {

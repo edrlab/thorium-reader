@@ -126,11 +126,11 @@ class SearchForm extends React.Component<IProps, IState> {
                     className={stylesCatalogs.catalog_search_toggle}
                     aria-expanded={open}
                     aria-controls="opdsSearchForm"
-                    title={__("opds.searchInCatalog")}
+                    title={__("header.searchPlaceholder")}
                     onClick={this.onToggle}
                 >
                     <SVG ariaHidden svg={SearchIcon} />
-                    <span className={stylesCatalogs.catalog_search_srOnly}>{__("opds.searchInCatalog")}</span>
+                    <span className={stylesCatalogs.catalog_search_srOnly}>{__("header.searchPlaceholder")}</span>
                 </button>
                 <form
                     id="opdsSearchForm"
@@ -142,7 +142,7 @@ class SearchForm extends React.Component<IProps, IState> {
                     <label
                         className={stylesCatalogs.catalog_search_srOnly}
                         htmlFor="opdsSearchInput">
-                        {__("opds.searchInCatalog")}
+                        {__("header.searchPlaceholder")}
                     </label>
                     <div className={stylesInput.form_group}>
                         <i><SVG ariaHidden svg={SearchIcon} /></i>
@@ -150,7 +150,7 @@ class SearchForm extends React.Component<IProps, IState> {
                             ref={this.inputRef}
                             type="search"
                             id="opdsSearchInput"
-                            placeholder={__("opds.searchInCatalog")}
+                            placeholder={__("header.searchPlaceholder")}
                             className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                             onKeyDown={this.onInputKeyDown}
                         />

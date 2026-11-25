@@ -131,7 +131,6 @@
                 "register": "Register",
                 "retry": "Try again",
                 "unauthorized": "Unauthorized",
-                "unauthorizedUnsupportedType": "Unauthorized (unsupported WWWAuthenticate type '{{- type}}')",
                 "username": "Username / Email Address"
             },
             "info": {
@@ -435,7 +434,6 @@
             "title": "Search catalogs"
         },
         "resumeBrowsing": "Resume browsing",
-        "searchInCatalog": "Search this catalog",
         "shelf": "Shelf",
         "updateForm": {
             "name": "Name:",

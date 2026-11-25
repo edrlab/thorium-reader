@@ -131,7 +131,6 @@
                 "register": "註冊",
                 "retry": "在試一次",
                 "unauthorized": "未經授權",
-                "unauthorizedUnsupportedType": "未經授權(不支援WWWAuthenticate 類型'{{- type}}')",
                 "username": "使用者名稱/電子郵件地址"
             },
             "info": {

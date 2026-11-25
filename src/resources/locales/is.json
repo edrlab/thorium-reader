@@ -131,7 +131,6 @@
                 "register": "Nýskrá",
                 "retry": "Reyna aftur",
                 "unauthorized": "Óheimill aðgangur",
-                "unauthorizedUnsupportedType": "Óheimill aðgangur (WWWAuthenticate-gerðin '{{- type}}' er ekki studd)",
                 "username": "Notandanafn / netfang"
             },
             "info": {

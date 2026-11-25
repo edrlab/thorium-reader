@@ -131,7 +131,6 @@ declare const data = {
         "register": "",
         "retry": "",
         "unauthorized": "",
-        "unauthorizedUnsupportedType": "{{type}}",
         "username": ""
       },
       "info": {
@@ -429,7 +428,6 @@ declare const data = {
       "title": ""
     },
     "resumeBrowsing": "",
-    "searchInCatalog": "",
     "shelf": "",
     "updateForm": {
       "name": "",

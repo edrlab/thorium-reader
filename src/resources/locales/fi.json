@@ -131,7 +131,6 @@
                 "register": "Rekisteröidy",
                 "retry": "Yritä uudelleen",
                 "unauthorized": "Luvaton",
-                "unauthorizedUnsupportedType": "Ei sallittu (ei tuettu WWWAuthenticate-tyyppi ‘{{- type}}’)",
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
             "info": {

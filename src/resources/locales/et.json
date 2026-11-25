@@ -131,7 +131,6 @@
                 "register": "Registreeru",
                 "retry": "Proovi uuesti",
                 "unauthorized": "Pole lubatud",
-                "unauthorizedUnsupportedType": "Pole lubatud (mittetoetatud „WWWAuthenticate“ tüüp '{{- type}}')",
                 "username": "Kasutajanimi / e-posti aadress"
             },
             "info": {

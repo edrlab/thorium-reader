@@ -131,7 +131,6 @@
                 "register": "Registrér",
                 "retry": "Prøv igen",
                 "unauthorized": "Uautoriseret",
-                "unauthorizedUnsupportedType": "Uautoriseret (ikke-understøttet type i WWWAuthenticate: '{{- type}}')",
                 "username": "Brugernavn / email-adresse"
             },
             "info": {

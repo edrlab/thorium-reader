@@ -131,7 +131,6 @@
                 "register": "Créer un compte",
                 "retry": "Réessayer",
                 "unauthorized": "Non autorisé",
-                "unauthorizedUnsupportedType": "Non autorisé (type d'authentification non supporté '{{- type}}')",
                 "username": "Nom d'utilisateur / Adresse courriel"
             },
             "info": {
@@ -441,7 +440,6 @@
             "title": "Rechercher des catalogues"
         },
         "resumeBrowsing": "Reprendre le parcours",
-        "searchInCatalog": "Rechercher dans ce catalogue",
         "shelf": "Étagère",
         "updateForm": {
             "name": "Nom :",

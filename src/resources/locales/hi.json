@@ -131,7 +131,6 @@
                 "register": "रजिस्टर",
                 "retry": "फिर कोशिश करें",
                 "unauthorized": "अनधिकृत",
-                "unauthorizedUnsupportedType": "अनधिकृत (असमर्थित WWWAuthenticate प्रकार '{{- type}}')",
                 "username": "उपयोगकर्ता नाम/ईमेल पता"
             },
             "info": {

@@ -131,7 +131,6 @@
                 "register": "Registracija",
                 "retry": "Poskusite ponovno",
                 "unauthorized": "Nepooblaščeno",
-                "unauthorizedUnsupportedType": "Nepooblaščeno (nepodprt tip WWWAuthenticate '{{- type}}')",
                 "username": "Uporabniško ime/E-poštni naslov"
             },
             "info": {
@@ -177,18 +176,18 @@
         "annotations": {
             "descAuthor": "avtor {{- author}}",
             "descCreator": "ustvaril",
-            "descList_few": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} opomba {{- creator}} bo uvožena v '{{- title}}' {{- author}}",
-            "descList_other": "{{- count}} opomb {{- creator}} bo uvoženih v '{{- title}}' {{- author}}",
             "descList_two": "{{- count}} opombi {{- creator}} bosta uvoženi v '{{- title}}' {{- author}}",
-            "descNewer_few": "Konflikti: {{- count}} novejše opombe",
+            "descList_few": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- author}}",
+            "descList_other": "{{- count}} opomb {{- creator}} bo uvoženih v '{{- title}}' {{- author}}",
             "descNewer_one": "Konflikti: {{- count}} novejša opomba",
-            "descNewer_other": "Konflikti: {{- count}} novejših opomb",
             "descNewer_two": "Konflikti: {{- count}} novejši opombi",
-            "descOlder_few": "Konflikti: {{- count}} starejše opombe",
+            "descNewer_few": "Konflikti: {{- count}} novejše opombe",
+            "descNewer_other": "Konflikti: {{- count}} novejših opomb",
             "descOlder_one": "Konflikti: {{- count}} starejša opomba",
-            "descOlder_other": "Konflikti: {{- count}} starejših opomb",
             "descOlder_two": "Konflikti: {{- count}} starejši opombi",
+            "descOlder_few": "Konflikti: {{- count}} starejše opombe",
+            "descOlder_other": "Konflikti: {{- count}} starejših opomb",
             "descTitle": "Naslov pripisa: ",
             "importAll": "Uvozi vse opombe",
             "importWithoutConflict": "Uvozi samo opombe brez konfliktov",
@@ -205,15 +204,15 @@
             }
         },
         "deleteAnnotations": "Izbrišem pripise?",
-        "deleteAnnotationsText_few": "Ali ste prepričani, da želite izbrisati {{- count}} opombe?",
         "deleteAnnotationsText_one": "Ali ste prepričani, da želite izbrisati {{- count}} opombo?",
-        "deleteAnnotationsText_other": "Ali ste prepričani, da želite izbrisati {{- count}} opomb?",
         "deleteAnnotationsText_two": "Ali ste prepričani, da želite izbrisati {{- count}} opombi?",
+        "deleteAnnotationsText_few": "Ali ste prepričani, da želite izbrisati {{- count}} opombe?",
+        "deleteAnnotationsText_other": "Ali ste prepričani, da želite izbrisati {{- count}} opomb?",
         "deleteBookmarks": "Izbrišem zaznamke?",
-        "deleteBookmarksText_few": "Ali ste prepričani, da želite izbrisati {{- count}} zaznamke?",
         "deleteBookmarksText_one": "Ali ste prepričani, da želite izbrisati {{- count}} zaznamek?",
-        "deleteBookmarksText_other": "Ali ste prepričani, da želite izbrisati {{- count}} zaznamkov?",
         "deleteBookmarksText_two": "Ali ste prepričani, da želite izbrisati {{- count}} zaznamka?",
+        "deleteBookmarksText_few": "Ali ste prepričani, da želite izbrisati {{- count}} zaznamke?",
+        "deleteBookmarksText_other": "Ali ste prepričani, da želite izbrisati {{- count}} zaznamkov?",
         "deleteFeed": "Izbrišem katalog?",
         "deletePublication": "Izbrišem publikacijo?",
         "deletePublicationWithNotes": "Opozorilo: ta publikacija ima pripise in/ali zaznamke, tudi ti bodo izbrisani! (Če jih želite obdržati, pred odstranitvijo publikacije izvozite opombe.)",
@@ -374,10 +373,10 @@
         "storage": {
             "recovery": {
                 "failure": "Obnovitev publikacije ni uspela.",
-                "success_few": "{{- count}} publikacije obnovljene.",
                 "success_one": "{{- count}} publikacija obnovljena.",
-                "success_other": "{{- count}} publikacij obnovljenih.",
-                "success_two": "{{- count}} publikaciji obnovljeni."
+                "success_two": "{{- count}} publikaciji obnovljeni.",
+                "success_few": "{{- count}} publikacije obnovljene.",
+                "success_other": "{{- count}} publikacij obnovljenih."
             },
             "removed": "Direktorij publikacije je bil odstranjen.",
             "updateFailed": "Direktorij publikacij je bil odstranjen: {{- message}}",
@@ -985,10 +984,10 @@
         },
         "picker": {
             "search": {
-                "founds_few": "{{- count}} zadetki",
                 "founds_one": "{{- count}} zadetek",
-                "founds_other": "{{- count}} zadetkov",
                 "founds_two": "{{- count}} zadetka",
+                "founds_few": "{{- count}} zadetki",
+                "founds_other": "{{- count}} zadetkov",
                 "input": "besedilo, ki se ujema z",
                 "next": "Naslednji",
                 "notFound": "ni zadetkov",
@@ -1471,17 +1470,17 @@
                 "description": "Preverite shrambo publikacij, da poiščete publikacije, ki jih je mogoče varno obnoviti.",
                 "dialog": {
                     "confirm": "Obnovi",
-                    "description_few": "Thorium je na disku našel {{- count}} publikacije, ki manjkajo v zbirki podatkov. Ali jih želite uvoziti nazaj v Thorium?",
                     "description_one": "Thorium je na disku našel {{- count}} publikacijo, ki manjka v zbirki podatkov. Ali jih želite uvoziti nazaj v Thorium?",
-                    "description_other": "Thorium je na disku našel {{- count}} publikacij, ki manjkajo v zbirki podatkov. Ali jih želite uvoziti nazaj v Thorium?",
                     "description_two": "Thorium je na disku našel {{- count}} publikaciji, ki manjkata v zbirki podatkov. Ali jih želite uvoziti nazaj v Thorium?",
+                    "description_few": "Thorium je na disku našel {{- count}} publikacije, ki manjkajo v zbirki podatkov. Ali jih želite uvoziti nazaj v Thorium?",
+                    "description_other": "Thorium je na disku našel {{- count}} publikacij, ki manjkajo v zbirki podatkov. Ali jih želite uvoziti nazaj v Thorium?",
                     "title": "Obnovi publikacije"
                 },
                 "none": "Ni bilo mogoče najti nobenih publikacij.",
-                "recoverableCount_few": "Z uporabo prvotnega identifikatorja shranjevanja je mogoče obnoviti {{- count}} publikacije.",
                 "recoverableCount_one": "Z uporabo prvotnega identifikatorja shranjevanja je mogoče obnoviti {{- count}} publikacijo.",
-                "recoverableCount_other": "Z uporabo prvotnega identifikatorja shranjevanja je mogoče obnoviti {{- count}} publikacij.",
                 "recoverableCount_two": "Z uporabo prvotnega identifikatorja shranjevanja je mogoče obnoviti {{- count}} publikaciji.",
+                "recoverableCount_few": "Z uporabo prvotnega identifikatorja shranjevanja je mogoče obnoviti {{- count}} publikacije.",
+                "recoverableCount_other": "Z uporabo prvotnega identifikatorja shranjevanja je mogoče obnoviti {{- count}} publikacij.",
                 "title": "Obnova"
             }
         },
