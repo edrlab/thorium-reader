@@ -16,16 +16,6 @@ Commit the regenerated `scripts/thorium-profile-editor.html` with changes to the
 
 Browser tests require Playwright Chromium. To use an already installed Chrome or Edge instead, set `PROFILE_EDITOR_BROWSER_CHANNEL` to `chrome` or `msedge`. Tests copy the generated HTML to a temporary folder, run with networking disabled, check import/export, validation, resource and publication ordering, nested-field preservation, advanced JSON transitions, and directory selection. They also pack and verify an exported manifest with local books, covers, and other resources using the standalone CLI.
 
-## Publish with GitHub Pages
-
-`.github/workflows/profile-editor-pages.yml` publishes the committed `scripts/thorium-profile-editor.html` as `index.html`, with another copy at `thorium-profile-editor.html` for saving offline. Only these HTML files and `.nojekyll` are uploaded; deployment does not install dependencies or build Thorium.
-
-A repository administrator, maintainer, or someone with permission to manage GitHub Pages must first enable **Settings → Pages → Build and deployment → Source → GitHub Actions**. The workflow uses the `github-pages` environment and follows any deployment protection rules configured there.
-
-Pushes changing the generated HTML or workflow on `codex/standalone-manifest-editor` or `develop` trigger publication. Both branches update the same site; the latest successful deployment wins. Once the editor is merged, remove the feature branch from the workflow's trigger and job condition so only `develop` publishes. Manual runs are available once the workflow exists on the default branch. If the first run failed before Pages was enabled, rerun it from the Actions tab after enabling Pages.
-
-The expected project URL is `https://edrlab.github.io/thorium-reader/`, unless a custom domain is configured. Opening the hosted editor downloads the same self-contained HTML; manifest import, editing, export, and folder checks still run locally in the visitor's browser.
-
 ## Runtime boundary
 
 This is a separate browser runtime under `projects/customization-profile-editor`, built with esbuild. It must not import Electron, Thorium runtime code, Node.js modules, or signing keys. The build generates a standalone Ajv validator from `src/common/readium/customization/profile.schema.ts` and embeds it with all JavaScript and CSS in the output HTML. No schema compilation or dynamic evaluation occurs in the browser. The build rejects Thorium runtime imports and external dependencies.
