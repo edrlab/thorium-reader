@@ -44,8 +44,9 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import {
-    createReadiumPositionIndex, getReadiumPositionProgression, isEpubPositionListPublication,
+    createReadiumPositionIndex, isEpubPositionListPublication,
 } from "readium-desktop/common/readium/positions";
+import { getReadingProgression } from "readium-desktop/renderer/common/readingProgression";
 
 import { PublicationInfoA11y2 } from "./PublicationInfoA11y2";
 
@@ -116,10 +117,10 @@ const Progression = (props: {
         r2Publication && isEpubPositionListPublication(r2Publication) ?
             createReadiumPositionIndex(r2Publication) : undefined,
     [r2Publication]);
-    const readiumPositionProgression = locatorExt?.locator ?
-        getReadiumPositionProgression(locatorExt.locator, readiumPositionIndex) : undefined;
+    const readingProgression = locatorExt?.locator && r2Publication ?
+        getReadingProgression(locatorExt.locator, r2Publication, readiumPositionIndex, __) : undefined;
 
-    if (typeof locatorExt?.locator?.locations?.progression === "number" || readiumPositionProgression) {
+    if (typeof locatorExt?.locator?.locations?.progression === "number" || readingProgression) {
 
         // try/catch until the code is cleaned-up!
         // (Audiobooks, PDF, Divina, EPUB FXL and reflow ... page number vs. string types)
@@ -139,10 +140,6 @@ const Progression = (props: {
 
             const isDivina = r2Publication && isDivinaFn(r2Publication);
             const isPdf = r2Publication && isPdfFn(r2Publication);
-
-        // locatorExt.docInfo.isFixedLayout
-        const isFixedLayoutPublication = r2Publication && // && !r2Publication.PageList
-            r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
             let txtProgression: string | undefined;
             let txtPagination: string | undefined;
@@ -226,119 +223,106 @@ const Progression = (props: {
                 txtPagination = __("reader.navigation.currentPage", { current: `${pageNum}` });
             }
 
-        } else if (r2Publication?.Spine && locatorExt.locator?.href) {
+        } else if (readingProgression) {
 
-            const readiumSpineIndex = readiumPositionProgression ?
-                readiumPositionIndex?.resources.findIndex((resource) =>
-                    resource.firstPosition === readiumPositionProgression.firstPosition) : undefined;
-            const spineIndex = typeof readiumSpineIndex === "number" && readiumSpineIndex >= 0 ?
-                readiumSpineIndex : r2Publication.Spine.findIndex((l) => l.Href === locatorExt.locator.href);
-            if (spineIndex >= 0) {
-                const localProgression = typeof locatorExt.locator.locations.progression === "number" &&
-                    Number.isFinite(locatorExt.locator.locations.progression) ?
-                    Math.min(1, Math.max(0, locatorExt.locator.locations.progression)) :
-                    readiumPositionProgression ?
-                        (readiumPositionProgression.position - readiumPositionProgression.firstPosition) /
-                            (readiumPositionProgression.lastPosition - readiumPositionProgression.firstPosition + 1) : 0;
+            const { spineIndex } = readingProgression;
+            txtProgression = readingProgression.global;
 
-                if (isFixedLayoutPublication) {
-                    const pageNum = spineIndex + 1;
-                    const totalPages = r2Publication.Spine.length;
+            if (readingProgression.isFixedLayout) {
+                const pageNum = spineIndex + 1;
+                const totalPages = r2Publication.Spine.length;
 
-                    txtPagination = __("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
-                    txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
+                txtPagination = __("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
 
-                } else {
-                    // reflow: no totalPages, potentially just currentPage which is locatorExt.epubPage
+            } else {
+                // reflow: no totalPages, potentially just currentPage which is locatorExt.epubPage
 
-                    if (locatorExt.epubPage) {
-                        let epubPage = locatorExt.epubPage;
-                        if (epubPage.trim().length === 0 && locatorExt.epubPageID && r2Publication.PageList) {
-                            const p = r2Publication.PageList.find((page) => {
-                                return page.Title && page.Href && page.Href.endsWith(`#${locatorExt.epubPageID}`);
-                            });
-                            if (p) {
-                                epubPage = p.Title;
-                            }
+                if (locatorExt.epubPage) {
+                    let epubPage = locatorExt.epubPage;
+                    if (epubPage.trim().length === 0 && locatorExt.epubPageID && r2Publication.PageList) {
+                        const p = r2Publication.PageList.find((page) => {
+                            return page.Title && page.Href && page.Href.endsWith(`#${locatorExt.epubPageID}`);
+                        });
+                        if (p) {
+                            epubPage = p.Title;
                         }
-                        txtPagination = __("reader.navigation.currentPage", { current: epubPage });
                     }
+                    txtPagination = __("reader.navigation.currentPage", { current: epubPage });
+                }
 
-                    const percent = Math.round(localProgression * 100);
-                    txtProgression = `${spineIndex + 1}/${r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
+                txtProgression += ` -- ${spineIndex + 1}/${r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${readingProgression.local}]`;
 
-                    if (locatorExt.headings && manifestUrlR2Protocol && handleLinkUrl) { // focusWhereAmI
+                if (locatorExt.headings && manifestUrlR2Protocol && handleLinkUrl) { // focusWhereAmI
 
-                        let rank = 999;
-                        const hs = locatorExt.headings.filter((h, _i) => {
-                            if (h.level < rank
-                                // && (h.id || i === locatorExt.headings.length - 1)
-                            ) {
+                    let rank = 999;
+                    const hs = locatorExt.headings.filter((h, _i) => {
+                        if (h.level < rank
+                            // && (h.id || i === locatorExt.headings.length - 1)
+                        ) {
 
-                                rank = h.level;
-                                return true;
-                            }
-                            return false;
-                        }).reverse();
-                        // WARNING: .reverse() is in-place same-array mutation! (not a new array)
-                        // ...but we're chaining with .filter() so that locatorExt.headings is not modified
+                            rank = h.level;
+                            return true;
+                        }
+                        return false;
+                    }).reverse();
+                    // WARNING: .reverse() is in-place same-array mutation! (not a new array)
+                    // ...but we're chaining with .filter() so that locatorExt.headings is not modified
 
-                            const summary = hs.reduce<React.ReactElement[]>((arr, h, i) => {
-                                return arr.concat(
-                                    <div key={`_h${h.level}`} style={{ display: "flex", gap: "5px",overflow: "hidden", textWrap: "nowrap", paddingRight: "2px"}}>
-                                        <span>{i === 0 ? " " : " / "}</span>
-                                        <span style={{ fontWeight: "bold" }}>h{h.level} </span>
-                                        <span style={{overflow: "hidden", textOverflow: "ellipsis"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
-                                    </div>,
-                                );
-                            }, []);
+                        const summary = hs.reduce<React.ReactElement[]>((arr, h, i) => {
+                            return arr.concat(
+                                <div key={`_h${h.level}`} style={{ display: "flex", gap: "5px",overflow: "hidden", textWrap: "nowrap", paddingRight: "2px"}}>
+                                    <span>{i === 0 ? " " : " / "}</span>
+                                    <span style={{ fontWeight: "bold" }}>h{h.level} </span>
+                                    <span style={{overflow: "hidden", textOverflow: "ellipsis"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
+                                </div>,
+                            );
+                        }, []);
 
-                        // WARNING: .reverse() is in-place same-array mutation! (not a new array)
-                        // ...which is why we use .slice() to create an instance copy
-                        // (locatorExt.headings isn't modified)
-                        // Note: instead of .slice(), Array.from() works too
-                        const details = locatorExt.headings.slice().reverse().
-                            // filter((h, i) => {
-                            //     return h.id || i === 0;
-                            // }).
-                            reduce<React.ReactElement[]>((arr, h, i) => {
-                                return arr.concat(
-                                    <li key={`_li${i}`}>
-                                        <span style={{ fontWeight: "bold" }}>h{h.level} </span>
-                                        {(h.id || i === 0) ? (
-                                            <a
-                                                href={(h.id || i === 0) ? "#" : undefined}
+                    // WARNING: .reverse() is in-place same-array mutation! (not a new array)
+                    // ...which is why we use .slice() to create an instance copy
+                    // (locatorExt.headings isn't modified)
+                    // Note: instead of .slice(), Array.from() works too
+                    const details = locatorExt.headings.slice().reverse().
+                        // filter((h, i) => {
+                        //     return h.id || i === 0;
+                        // }).
+                        reduce<React.ReactElement[]>((arr, h, i) => {
+                            return arr.concat(
+                                <li key={`_li${i}`}>
+                                    <span style={{ fontWeight: "bold" }}>h{h.level} </span>
+                                    {(h.id || i === 0) ? (
+                                        <a
+                                            href={(h.id || i === 0) ? "#" : undefined}
 
-                                                data-id={h.id ? h.id : undefined}
-                                                data-index={i}
+                                            data-id={h.id ? h.id : undefined}
+                                            data-index={i}
 
-                                                onClick={
-                                                    (e) => {
-                                                        e.preventDefault();
+                                            onClick={
+                                                (e) => {
+                                                    e.preventDefault();
 
-                                                        const id = e.currentTarget?.getAttribute("data-id");
-                                                        const idx = e.currentTarget?.getAttribute("data-index");
-                                                        const index = idx ? parseInt(idx, 10) : -1;
-                                                        if (id || index === 0) {
-                                                            closeDialogCb();
-                                                            const url = manifestUrlR2Protocol + "/../" + locatorExt.locator.href.replace(/#[^#]*$/, "") + `#${id ? id : ""}`;
-                                                            handleLinkUrl(url);
-                                                        }
+                                                    const id = e.currentTarget?.getAttribute("data-id");
+                                                    const idx = e.currentTarget?.getAttribute("data-index");
+                                                    const index = idx ? parseInt(idx, 10) : -1;
+                                                    if (id || index === 0) {
+                                                        closeDialogCb();
+                                                        const url = manifestUrlR2Protocol + "/../" + locatorExt.locator.href.replace(/#[^#]*$/, "") + `#${id ? id : ""}`;
+                                                        handleLinkUrl(url);
                                                     }
-                                                }>
-                                                <span style={{ padding: "2px" }}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
-                                            </a>
-                                        ) : (
-                                            <span
-                                                data-id={h.id ? h.id : undefined}
-                                                data-index={i}
-                                                style={{ padding: "2px" }}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
-                                        )}
-                                    </li>);
-                            }, []);
+                                                }
+                                            }>
+                                            <span style={{ padding: "2px" }}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
+                                        </a>
+                                    ) : (
+                                        <span
+                                            data-id={h.id ? h.id : undefined}
+                                            data-index={i}
+                                            style={{ padding: "2px" }}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
+                                    )}
+                                </li>);
+                        }, []);
 
-                        txtHeadings = <ProgressionDetails summary={summary} details={details} />;
-                    }
+                    txtHeadings = <ProgressionDetails summary={summary} details={details} />;
                 }
             }
         }

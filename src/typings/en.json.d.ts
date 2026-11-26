@@ -799,6 +799,9 @@ declare const data = {
     "notStarted": "",
     "onGoing": "",
     "progression": {
+      "chapter": "{{percent}}",
+      "overall": "{{percent}}",
+      "position": "{{current}}{{total}}",
       "remoteDescription": "{{device}}{{progression}}",
       "remoteTitle": "",
       "title": "",

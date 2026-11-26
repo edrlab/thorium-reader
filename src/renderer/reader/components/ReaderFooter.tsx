@@ -11,7 +11,6 @@
 // import * as ForwardIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
 
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import classNames from "classnames";
 import debounce from "debounce";
@@ -21,7 +20,6 @@ import { connect } from "react-redux";
 import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import type { IReadiumPositionList } from "readium-desktop/common/readium/positions";
-import { getReadiumPositionProgression } from "readium-desktop/common/readium/positions";
 import { publicationActions } from "readium-desktop/common/redux/actions";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -37,28 +35,11 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TOOLTIP_HOVER_DELAY, ToolTippy } from "readium-desktop/renderer/common/components/Tooltippy";
+import { getReadingProgression } from "readium-desktop/renderer/common/readingProgression";
 import {
     TKeyboardEventOnAnchor, TMouseEventOnAnchor, TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-
-const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
-    if (link && link.Properties) {
-        if (link.Properties.Layout === "fixed") {
-            return true;
-        }
-        if (typeof link.Properties.Layout !== "undefined") {
-            return false;
-        }
-    }
-
-    if (publication &&
-        publication.Metadata &&
-        publication.Metadata.Rendition) {
-        return publication.Metadata.Rendition.Layout === "fixed";
-    }
-    return false;
-};
 
 function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
@@ -614,33 +595,28 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const fallbackGlobalProgression = totalChapters > 0 ?
             ((isPdf ? 1 : localProgression) + Math.max(0, currentChapter)) / totalChapters : 0;
 
-        const readiumPositionProgression = getReadiumPositionProgression(
-            currentLocation.locator,
-            this.props.readiumPositionList,
-            link.Href,
-        );
+        const readingProgression = !isPdf && !isDivina ? getReadingProgression(
+            currentLocation.locator, r2Publication, this.props.readiumPositionList, __,
+        ) : undefined;
 
         const locatorTotalProgression = typeof locations.totalProgression === "number" &&
             Number.isFinite(locations.totalProgression) ?
             Math.min(1, Math.max(0, locations.totalProgression)) : undefined;
 
-        // Prefer Readium position progression, then the locator total progression,
-        // and finally the legacy equal-chapter approximation.
-        const globalProgression = readiumPositionProgression?.totalProgression ??
-            locatorTotalProgression ?? Math.min(1, Math.max(0, fallbackGlobalProgression));
+        const globalProgression = locatorTotalProgression ?? Math.min(1, Math.max(0, fallbackGlobalProgression));
 
-        const globalProgressionLabel = `${__("publication.progression.title")} ${Math.round(globalProgression * 100)}%`;
+        const globalProgressionLabel = readingProgression?.global ??
+            `${__("publication.progression.title")} ${Math.round(globalProgression * 100)}%`;
 
         if (currentLocation.paginationInfo) {
             return [
-                `${__("reader.navigation.currentPageTotal", { current: `${(currentLocation.paginationInfo.currentColumn || 0) + 1}`, total: `${currentLocation.paginationInfo.totalColumns || 0} (${Math.round(100 * localProgression)}%)` })}`,
+                `${__("reader.navigation.currentPageTotal", { current: `${(currentLocation.paginationInfo.currentColumn || 0) + 1}`, total: `${currentLocation.paginationInfo.totalColumns || 0} (${readingProgression?.local ?? `${Math.round(100 * localProgression)}%`})` })}`,
                 globalProgressionLabel,
             ];
         }
 
-        const localProgressionLabel = !isPdf && !isDivina && !isFixedLayout(link, r2Publication) &&
-            typeof locations.progression !== "undefined" ?
-            `${Math.round(localProgression * 100)}% (${__("reader.settings.scrolled")})` : "";
+        const localProgressionLabel = readingProgression && !readingProgression.isFixedLayout ?
+            `${readingProgression.local} (${__("reader.settings.scrolled")})` : "";
 
         return [localProgressionLabel, globalProgressionLabel];
     }

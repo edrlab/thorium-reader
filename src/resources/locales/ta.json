@@ -805,6 +805,9 @@
         "notStarted": "தொடங்கப்படவில்லை",
         "onGoing": "முன்னேற்றத்தில் உள்ளது",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "",
             "remoteTitle": "",
             "title": "முன்னேற்றம்",

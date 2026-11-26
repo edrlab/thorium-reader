@@ -805,6 +805,9 @@
         "notStarted": "Ikke påbegynt",
         "onGoing": "Under lesing",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "En nyere leseposisjon fra {{- device}} er tilgjengelig ved {{- progression}} %.",
             "remoteTitle": "Fortsette fra en annen enhet?",
             "title": "Lest",

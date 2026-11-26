@@ -811,6 +811,9 @@
         "notStarted": "No s'ha iniciat",
         "onGoing": "En curs",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "",
             "remoteTitle": "",
             "title": "Progrés",

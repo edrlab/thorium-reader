@@ -31,6 +31,7 @@ import {
     createReadiumPositionList, IReadiumPositionList, isEpubPositionListPublication,
     mapLocatorToReadiumPosition,
 } from "readium-desktop/common/readium/positions";
+import { getReadingProgression } from "readium-desktop/renderer/common/readingProgression";
 import { dialogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { IReaderPdfConfig, IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { rgbToHex } from "readium-desktop/common/rgb";
@@ -2173,7 +2174,9 @@ class Reader extends React.Component<IProps, IState> {
         // See "Progression" comp inside publicationInfoContent.tsx
         const readerReadingLocation = this.state.currentLocation ? this.state.currentLocation : undefined;
         const locatorExt = readerReadingLocation || this.props.publicationView.lastReadingLocation;
-        if (typeof locatorExt?.locator?.locations?.progression !== "number") {
+        const readingProgression = locatorExt?.locator ?
+            getReadingProgression(locatorExt.locator, this.props.r2Publication, this.readiumPositionList, this.props.__) : undefined;
+        if (typeof locatorExt?.locator?.locations?.progression !== "number" && !readingProgression) {
             return;
         }
         try {
@@ -2184,11 +2187,6 @@ class Reader extends React.Component<IProps, IState> {
 
             const isDivina = this.props.r2Publication && isDivinaFn(this.props.r2Publication);
             const isPdf = this.props.r2Publication && isPdfFn(this.props.r2Publication);
-
-            // this.isFixedLayout() ==> accounts for document spine item, not necessarily equivalent to publication metadata
-            // this.props.publicationView.isFixedLayoutPublication ??
-            const isFixedLayoutPublication = this.props.r2Publication &&
-                this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
             let txtProgression: string | undefined;
             let txtPagination: string | undefined;
@@ -2265,64 +2263,59 @@ class Reader extends React.Component<IProps, IState> {
                     txtPagination = this.props.__("reader.navigation.currentPage", { current: `${pageNum}` });
                 }
 
-            } else if (this.props.r2Publication?.Spine && locatorExt.locator?.href) {
+            } else if (readingProgression) {
 
-                const spineIndex = this.props.r2Publication.Spine.findIndex((l) => {
-                    return l.Href === locatorExt.locator.href;
-                });
-                if (spineIndex >= 0) {
-                    if (isFixedLayoutPublication) {
-                        const pageNum = spineIndex + 1;
-                        const totalPages = this.props.r2Publication.Spine.length;
+                const { spineIndex } = readingProgression;
+                txtProgression = readingProgression.global;
+                if (readingProgression.isFixedLayout) {
+                    const pageNum = spineIndex + 1;
+                    const totalPages = this.props.r2Publication.Spine.length;
 
-                        txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
-                        txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
+                    txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
 
-                    } else {
+                } else {
 
-                        if (locatorExt.epubPage) {
-                            let epubPage = locatorExt.epubPage;
-                            if (epubPage.trim().length === 0 && locatorExt.epubPageID && this.props.r2Publication.PageList) {
-                                const p = this.props.r2Publication.PageList.find((page) => {
-                                    return page.Title && page.Href && page.Href.endsWith(`#${locatorExt.epubPageID}`);
-                                });
-                                if (p) {
-                                    epubPage = p.Title;
-                                }
+                    if (locatorExt.epubPage) {
+                        let epubPage = locatorExt.epubPage;
+                        if (epubPage.trim().length === 0 && locatorExt.epubPageID && this.props.r2Publication.PageList) {
+                            const p = this.props.r2Publication.PageList.find((page) => {
+                                return page.Title && page.Href && page.Href.endsWith(`#${locatorExt.epubPageID}`);
+                            });
+                            if (p) {
+                                epubPage = p.Title;
                             }
-                            txtPagination = this.props.__("reader.navigation.currentPage", { current: epubPage });
                         }
+                        txtPagination = this.props.__("reader.navigation.currentPage", { current: epubPage });
+                    }
 
-                        const percent = Math.round(locatorExt.locator.locations.progression * 100);
-                        txtProgression = `${spineIndex + 1}/${this.props.r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
+                    txtProgression += ` -- ${spineIndex + 1}/${this.props.r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${readingProgression.local}]`;
 
-                        if (locatorExt.headings) {
+                    if (locatorExt.headings) {
 
-                            let rank = 999;
-                            const hs = locatorExt.headings.filter((h, _i) => {
-                                if (h.level < rank) {
+                        let rank = 999;
+                        const hs = locatorExt.headings.filter((h, _i) => {
+                            if (h.level < rank) {
 
-                                    rank = h.level;
-                                    return true;
-                                }
-                                return false;
-                            }).reverse();
-                            const summary = hs.reduce((arr, h, i) => {
-                                return arr.concat(
-                                    i === 0 ? " " : " / ",
-                                    `H${h.level} `,
-                                    h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`,
-                                );
-                            }, []);
+                                rank = h.level;
+                                return true;
+                            }
+                            return false;
+                        }).reverse();
+                        const summary = hs.reduce((arr, h, i) => {
+                            return arr.concat(
+                                i === 0 ? " " : " / ",
+                                `H${h.level} `,
+                                h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`,
+                            );
+                        }, []);
 
-                            // const details = locatorExt.headings.slice().reverse().reduce((arr, h, i) => {
-                            //     return arr.concat(i === 0 ? " " : " / ", `H${h.level} ${h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}`);
-                            // }, []);
+                        // const details = locatorExt.headings.slice().reverse().reduce((arr, h, i) => {
+                        //     return arr.concat(i === 0 ? " " : " / ", `H${h.level} ${h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}`);
+                        // }, []);
 
-                            // txtHeadings = `${summary.join("")} ${details.join("")}`;
+                        // txtHeadings = `${summary.join("")} ${details.join("")}`;
 
-                            txtHeadings = summary.join("");
-                        }
+                        txtHeadings = summary.join("");
                     }
                 }
             }

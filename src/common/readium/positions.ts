@@ -160,7 +160,7 @@ export function getReadiumPositionProgression(
 
 export function mapLocatorToReadiumPosition(
     locator: Locator,
-    positionList: IReadiumPositionList,
+    positionList: IReadiumPositionIndex,
 ): Locator {
     const matchedHref = resolveReadiumAnnotationSourceHref(
         locator.href,

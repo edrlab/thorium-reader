@@ -799,6 +799,9 @@
         "notStarted": "未讀",
         "onGoing": "正在閱讀",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "",
             "remoteTitle": "",
             "title": "進度",

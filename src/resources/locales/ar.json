@@ -829,6 +829,9 @@
         "notStarted": "لم يبدأ",
         "onGoing": "جارٍ التنفيذ",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "",
             "remoteTitle": "",
             "title": "التقدّم في القراءة",

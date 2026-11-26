@@ -805,6 +805,9 @@
         "notStarted": "Ei ole aloitettu",
         "onGoing": "Luettavana",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "Tuoreempi lukukohta laitteesta {{- device}} on saatavilla ja osoittaa {{- progression}} %.",
             "remoteTitle": "Jatketaanko lukukohdasta, joka tallentui toisessa laitteessa?",
             "title": "Eteneminen",

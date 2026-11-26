@@ -805,6 +805,9 @@
         "notStarted": "Not Started",
         "onGoing": "In Progress",
         "progression": {
+            "chapter": "Chapter progression: {{percent}}%",
+            "overall": "Overall progression: {{percent}}%",
+            "position": "Position: {{current}}/{{total}}",
             "remoteDescription": "A newer reading position from {{- device}} is available at {{- progression}}%.",
             "remoteTitle": "Resume from another device?",
             "title": "Progression",

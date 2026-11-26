@@ -817,6 +817,9 @@
         "notStarted": "Не начато",
         "onGoing": "В процессе",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "Новая позиция чтения с {{- device}} доступна по {{- progression}}%.",
             "remoteTitle": "Продолжить с другого устройства?",
             "title": "Прогресс",

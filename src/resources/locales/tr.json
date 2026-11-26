@@ -805,6 +805,9 @@
         "notStarted": "Başlatılmadı",
         "onGoing": "Devam Ediyor",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "",
             "remoteTitle": "",
             "title": "İlerleme",

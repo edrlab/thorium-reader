@@ -811,6 +811,9 @@
         "notStarted": "Non Demarré",
         "onGoing": "En Cours",
         "progression": {
+            "chapter": "Progression dans le chapitre : {{percent}} %",
+            "overall": "Progression dans le livre : {{percent}} %",
+            "position": "Position : {{current}}/{{total}}",
             "remoteDescription": "Une nouvelle position de lecture provenant de {{- device}} est disponible à {{- progression}} %.",
             "remoteTitle": "Reprendre depuis un autre appareil ?",
             "title": "Progression",

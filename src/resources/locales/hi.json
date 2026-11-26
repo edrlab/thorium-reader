@@ -805,6 +805,9 @@
         "notStarted": "प्रारंभ नहीं हुआ",
         "onGoing": "प्रगति में",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "{{- device}} से {{- progression}}% पर एक नई पठन स्थिति उपलब्ध है।",
             "remoteTitle": "किसी अन्य डिवाइस से जारी रखें?",
             "title": "प्रगति",

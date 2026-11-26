@@ -805,6 +805,9 @@
         "notStarted": "Nicht begonnen",
         "onGoing": "Im Gange",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "",
             "remoteTitle": "",
             "title": "Fortschritt",

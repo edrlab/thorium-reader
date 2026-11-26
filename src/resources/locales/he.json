@@ -811,6 +811,9 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "",
             "remoteTitle": "",
             "title": "",

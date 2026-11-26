@@ -805,6 +805,9 @@
         "notStarted": "न आरब्धम्",
         "onGoing": "प्रगतिगतम्",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "{{- device}} इत्यस्मात् नूतनतरं पठनस्थानम् {{- progression}}% इत्यत्र उपलब्धम्।",
             "remoteTitle": "अन्ययन्त्रात् पुनरारम्भः?",
             "title": "प्रगतिः",
