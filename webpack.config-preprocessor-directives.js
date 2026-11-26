@@ -1,4 +1,7 @@
 const webpack = require("webpack");
+const { createPublicKey } = require("node:crypto");
+const { readFileSync } = require("node:fs");
+const path = require("node:path");
 // require("dotenv").config({ quiet: true });
 
 const { version, build, name } = require("./package.json");
@@ -32,16 +35,13 @@ const distRelativeUrl = isPackaged ? "dist" : "../dist";
 const customizationProfileIsProduction =
     !!process.env.THORIUM_TELEMETRY_SECRET && !!process.env.THORIUM_TELEMETRY_SECRET_DATA; // Environment variable set in GitHub Actions CI via Secrets ==> production build
 
-const { privateKey, pubKey: pubKey_ } = require("./customization-profile-public-key-pair");
-const pubKey = customizationProfileIsProduction
-    ? `-----BEGIN PUBLIC KEY-----
-MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBAJsqefp34Eph4jKQivj05YhhTJ1a
-N+oNxGhhxNhrBg52wNbluJCUqz1cPn3tkz+5sZllYW2Eq+uqzbU4DNe1eZIBwlYV
-eJmvw+BkaOWrxOmxT+65ymJTDcrsCGf6eCptEQeO0BUeFn2R3XgkO7A0fszLnZV9
-Dho5CFpdtPPt4smIX2M=
------END PUBLIC KEY-----
-`
-    : pubKey_;
+const pubKey = createPublicKey(readFileSync(path.join(
+    __dirname,
+    "resources",
+    "customization-profile-keys",
+    customizationProfileIsProduction ? "prod" : "dev",
+    "public.pem",
+))).export({ type: "spki", format: "pem" }).toString();
 
 // "http://localhost:8080/";
 // MUST END WITH FORWARD SLASH!
@@ -74,7 +74,6 @@ const isURLRequireTldFalse =
 
 // const USE_HTTP_STREAMER = false;
 
-// !!! do not forget to edit scripts/package-customization-profile.sh !!!
 const data = {
     // used for dead code removal (see typings.d.ts):
     __TH__IS_DEV__: JSON.stringify(isDev),
@@ -111,7 +110,6 @@ const data = {
     __TH__FIREBASE_MEASUREMENT_PROTOCOL_DEBUG_ENDPOINT__: JSON.stringify(firebaseMeasurementProtocolDebugEndpoint),
     __TH__FIREBASE_MEASUREMENT_PROTOCOL_QUEUE_SQLITE_ENABLED__: JSON.stringify(firebaseMeasurementProtocolQueueSqliteEnabled),
     __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: JSON.stringify(pubKey),
-    __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: JSON.stringify(privateKey),
 
     // __PACKAGING__: JSON.stringify(envPackaging),
     // __NODE_ENV__: JSON.stringify(nodeEnv),

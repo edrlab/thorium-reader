@@ -1,28 +1,28 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Notat til merknad",
         "bookMenu": "Meny",
-        "bookmarkNote": "",
-        "cancelDownload": "",
+        "bookmarkNote": "Notat til bokmerke",
+        "cancelDownload": "Avbryt nedlasting av {{- title}}",
         "closeDialog": "Lukk",
-        "closeNotification": "",
-        "copyNotificationInstruction": "",
-        "decreaseSetting": "",
-        "downloadProgress": "",
-        "downloadProgressUnknown": "",
-        "editTag": "",
-        "favoriteCatalog": "",
-        "increaseSetting": "",
+        "closeNotification": "Lukk varselet",
+        "copyNotificationInstruction": "Kopier varselet",
+        "decreaseSetting": "Reduser {{- setting}}",
+        "downloadProgress": "Nedlastingsfremdrift for {{- title}}",
+        "downloadProgressUnknown": "Nedlastingsfremdriften er ukjent.",
+        "editTag": "Rediger taggen {{- tag}}",
+        "favoriteCatalog": "Favorittkatalog: {{- title}}",
+        "increaseSetting": "Øk {{- setting}}",
         "leftSlideButton": "Flytt til venstre",
-        "loading": "",
+        "loading": "Laster inn …",
         "mainContent": "Hovedinnhold",
-        "notificationCopied": "",
-        "notificationCopyFailed": "",
-        "printPage": "",
-        "publicationDetails": "",
-        "resetSetting": "",
+        "notificationCopied": "Kopiert til utklippstavlen:",
+        "notificationCopyFailed": "Kunne ikke kopiere varselet",
+        "printPage": "Side {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Tilbakestill {{- setting}}",
         "rightSlideButton": "Flytt til høyre",
-        "searching": "",
+        "searching": "Søker …",
         "skipLink": "Hopp til hovedinnhold",
         "toolbar": "Verktøylinje"
     },
@@ -61,12 +61,12 @@
         "update": {
             "message": "En ny versjon er tilgjengelig. Klikk for å lese mer.",
             "title": "Programvareoppdatering for {{- appName}}.",
-            "whatsnew": ""
+            "whatsnew": "En ny versjon er installert. Klikk for å lese mer."
         },
         "window": {
             "showLibrary": "Vis bibliotek / bokhylle",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} kjører fortsatt i systemstatusfeltet. Klikk på ikonet for å vise biblioteket.",
+            "trayTooltip": "{{- appName}} – klikk for å vise eller skjule biblioteket"
         }
     },
     "catalog": {
@@ -96,7 +96,7 @@
         "deleteBook": "Slett",
         "deleteTag": "Slett tag",
         "description": "Bokbeskrivelse",
-        "downloaded": "",
+        "downloaded": "Lastet ned",
         "emptyTagList": "Slett alle tagger",
         "entry": {
             "continueReading": "Fortsett å lese",
@@ -109,8 +109,8 @@
         "lang": "Språk",
         "lastRead": "Sist lest",
         "logout": "Logg ut",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "Manglende filer",
+        "missingUnavailableDescription": "Publikasjonen kan ikke åpnes fordi de lagrede filene er utilgjengelige. Importer den på nytt, eller gå til Lagring under Innstillinger for å legge til eller endre den ekstra lagringsplassen.",
         "moreInfo": "Bokinformasjon",
         "myBooks": "Mine bøker",
         "noPublicationHelpL1": "Slipp en bok her",
@@ -120,18 +120,17 @@
         "numberOfPages": "Antall sider",
         "opds": {
             "auth": {
-                "alternativeLogin": "",
+                "alternativeLogin": "Alternativ innlogging",
                 "cancel": "Avbryt",
                 "external": "Innloggingssiden åpnes i nettleseren din. Følg instruksjonene der. Når du er logget inn, går nettleseren tilbake til dette programmet.",
-                "externalBrowserInstructions": "",
+                "externalBrowserInstructions": "Åpne lenken nedenfor hvis nettleseren ikke åpnes automatisk.",
                 "fallback": "Merk: Hvis du får problemer med innlogging via standardmetoden i nettleseren, kan du prøve igjen med den alternative innloggingsmetoden i programmet.",
                 "login": "Logg inn",
-                "openExternalBrowser": "",
+                "openExternalBrowser": "Åpne ekstern nettleser",
                 "password": "Passord",
                 "register": "Registrer deg",
                 "retry": "Prøv igjen",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Ingen tilgang",
                 "username": "Brukernavn / e-postadresse"
             },
             "info": {
@@ -153,24 +152,24 @@
                 "state": "Status"
             }
         },
-        "openFolder": "",
+        "openFolder": "Åpne mappe",
         "publisher": "Utgiver",
         "readBook": "Les",
         "released": "Publisert",
         "removeFromFavorites": "Fjern fra favoritter",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "Velg kolonner som skal vises",
         "sort": "Sorter etter",
         "tag": "Tagg",
         "tags": "Tagger",
         "update": "Rediger",
         "userProfile": {
-            "available": "",
-            "edit": "",
-            "holds": "",
-            "loading": "",
-            "loans": "",
-            "title": "",
-            "unavailable": ""
+            "available": "Tilgjengelig: {{count}}",
+            "edit": "Rediger profil",
+            "holds": "Reservasjoner",
+            "loading": "Laster inn konto …",
+            "loans": "Lån",
+            "title": "Konto",
+            "unavailable": "Profilinformasjonen er utilgjengelig."
         }
     },
     "dialog": {
@@ -192,7 +191,7 @@
         "cancel": "Avbryt",
         "customization": {
             "splashscreen": {
-                "dontShow": "",
+                "dontShow": "Ikke vis igjen",
                 "fallbackWelcomeScreen": "Ingen velkomstskjerm er angitt",
                 "state": "Status: {{- state}}",
                 "title": "Klargjøring og aktivering av tilpasningsprofil"
@@ -235,7 +234,7 @@
         "searchPlaceholder": "Søk",
         "searchTitle": "Start søk",
         "settings": "Innstillinger",
-        "settingsLabel": "",
+        "settingsLabel": "Programinnstillinger",
         "viewMode": "Visningsmodus"
     },
     "library": {
@@ -273,103 +272,103 @@
             "success": "Importen er fullført."
         },
         "diagnostics": {
-            "category": "",
-            "causedBy": "",
-            "downloadSource": "",
-            "error": "",
-            "httpStatus": "",
-            "invalidUrl": "",
-            "source": "",
-            "url": ""
+            "category": "Kategori: {{- category}}",
+            "causedBy": "Årsak:",
+            "downloadSource": "Nedlastingskilde: {{- source}}",
+            "error": "Feil",
+            "httpStatus": "HTTP-status: {{- status}}",
+            "invalidUrl": "[ugyldig nettadresse]",
+            "source": "Kilde: {{- source}}",
+            "url": "Nettadresse: {{- url}}"
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Nedlastingen ble avbrutt.",
             "errors": {
-                "failed": "",
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "pathMissing": "",
-                "publicationLinkMissing": "",
-                "readStreamMissing": "",
-                "streamClosed": "",
-                "tooManyFilenameAttempts": ""
+                "failed": "Nedlastingen mislyktes.",
+                "hashMismatch": "Kontrollen av den nedlastede filen mislyktes. Forventet SHA-256-verdi var {{- expected}}, men filen hadde {{- actual}}.",
+                "httpGet": "HTTP-nedlastingen mislyktes: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Navnet på den midlertidige nedlastingsfilen er ugyldig.",
+                "invalidLink": "Nedlastingslenken er ugyldig.",
+                "invalidTempDirectory": "Den midlertidige nedlastingsmappen er ugyldig.",
+                "lengthMismatch": "Kontrollen av den nedlastede filen mislyktes. Forventet {{- expected}} byte, men mottok {{- actual}} byte.",
+                "pathMissing": "Filbanen til den nedlastede filen mangler.",
+                "publicationLinkMissing": "Lisensen mangler nedlastingslenke til publikasjonen.",
+                "readStreamMissing": "Datastrømmen for nedlastingen er utilgjengelig.",
+                "streamClosed": "Datastrømmen ble lukket før nedlastingen var ferdig.",
+                "tooManyFilenameAttempts": "Kunne ikke opprette et unikt midlertidig filnavn for nedlastingen: {{- path}}"
             },
-            "failed": "",
-            "integrityFailed": "",
-            "saveFailed": "",
-            "startedWithTitle": ""
+            "failed": "Kunne ikke laste ned fra «{{- hostname}}». Prøv igjen.",
+            "integrityFailed": "Nedlastingen fra «{{- hostname}}» er ufullstendig eller skadet. Prøv igjen.",
+            "saveFailed": "Kunne ikke lagre nedlastingen. Kontroller ledig lagringsplass og tilgangsrettigheter.",
+            "startedWithTitle": "Laster ned {{- title}}."
         },
         "import": {
             "alreadyImport": "{{- title}} er allerede importert",
             "errors": {
-                "acquisitionUrlMissing": "",
-                "cbzNoImages": "",
-                "contextMissing": "",
-                "daisyConversionFailed": "",
-                "manifestContext": "",
-                "manifestImportFailed": "",
-                "manifestInvalidJson": "",
-                "manifestMissing": "",
-                "manifestNotFound": "",
-                "manifestParsingFailed": "",
-                "noImportResult": "",
-                "notImported": "",
-                "profileAssetUrl": "",
-                "profileEmpty": "",
-                "profileEntryMissing": "",
-                "profileMissing": "",
-                "profileNotZip": ""
+                "acquisitionUrlMissing": "Nedlastingsadressen til publikasjonen mangler eller er ugyldig.",
+                "cbzNoImages": "CBZ-arkivet inneholder ingen bilder i et format som støttes.",
+                "contextMissing": "mangler",
+                "daisyConversionFailed": "Kunne ikke konvertere DAISY-publikasjonen.",
+                "manifestContext": "Ukjent @context i publikasjonsmanifestet på {{- url}}: {{- context}}",
+                "manifestImportFailed": "Kunne ikke importere publikasjonsmanifestet.",
+                "manifestInvalidJson": "Ugyldig JSON i publikasjonsmanifestet på {{- url}}.",
+                "manifestMissing": "Publikasjonsmanifestet mangler.",
+                "manifestNotFound": "Fant ikke noe publikasjonsmanifest på {{- url}}.",
+                "manifestParsingFailed": "Kunne ikke tolke publikasjonsmanifestet på {{- url}}.",
+                "noImportResult": "Importen ga ingen publikasjon.",
+                "notImported": "Kunne ikke legge publikasjonen til i biblioteket.",
+                "profileAssetUrl": "Ugyldig nettadresse til publikasjon i profilen: {{- path}}",
+                "profileEmpty": "ZIP-arkivet for den tilpassede profilen er tomt.",
+                "profileEntryMissing": "Fant ikke publikasjonen i den tilpassede profilen: {{- path}}",
+                "profileMissing": "Fant ikke den tilpassede profilen: {{- id}}",
+                "profileNotZip": "Den tilpassede profilen er ikke et ZIP-arkiv."
             },
-            "failed": "",
-            "invalidLicense": "",
-            "invalidPublication": "",
-            "lcpLicenseMalformed": "",
+            "failed": "Kunne ikke importere «{{- name}}».",
+            "invalidLicense": "Kunne ikke importere «{{- name}}». Publikasjonen har ugyldig lisens.",
+            "invalidPublication": "Kunne ikke importere «{{- name}}». Publikasjonsmanifestet mangler.",
+            "lcpLicenseMalformed": "LCP-lisensen har ugyldig format.",
             "success": "{{- title}} er nå importert.",
-            "unsupportedFormat": ""
+            "unsupportedFormat": "Kunne ikke importere «{{- name}}». Filformatet støttes ikke."
         },
         "notifications": {
-            "annotationImportFailed": "",
-            "annotationPublicationUnavailable": "",
-            "annotationStopPlayback": "",
-            "authenticationFailed": "",
-            "catalogLinkFailed": "",
-            "catalogUpdateFailed": "",
-            "copyLimit": "",
-            "deleteFailed": "",
-            "exportFailed": "",
-            "openFileFailed": "",
-            "openLinkFailed": "",
-            "printLimit": "",
-            "profileActivationFailed": "",
-            "profileBusy": "",
-            "profileProvisionFailed": "",
-            "profileTimeout": "",
-            "publicationUnavailable": "",
-            "readingPositionFailed": "",
-            "recoveryPartialFailure": "",
-            "renewFailed": "",
-            "returnFailed": "",
-            "storageRefreshFailed": "",
-            "tagsFailed": ""
+            "annotationImportFailed": "Kunne ikke importere merknadene. Kontroller at filen inneholder gyldige eksporterte merknader.",
+            "annotationPublicationUnavailable": "Kunne ikke importere merknadene fordi publikasjonen er utilgjengelig. Prøv å importere publikasjonen på nytt.",
+            "annotationStopPlayback": "Stopp høytlesingen eller lydavspillingen før du oppretter en merknad.",
+            "authenticationFailed": "Kunne ikke logge inn i katalogen. Kontroller tilkoblingen og prøv igjen.",
+            "catalogLinkFailed": "Kunne ikke legge til katalogen. Kontroller lenken og tilkoblingen.",
+            "catalogUpdateFailed": "Kunne ikke oppdatere katalogen. Kontroller kataloginnstillingene og prøv igjen.",
+            "copyLimit": "Kopieringskvoten for publikasjonen er brukt opp.",
+            "deleteFailed": "Kunne ikke slette publikasjonen. Prøv igjen.",
+            "exportFailed": "Kunne ikke eksportere publikasjonen. Kontroller målmappen og ledig diskplass.",
+            "openFileFailed": "Kunne ikke åpne filen. Kontroller at den er tilgjengelig og har et format som støttes.",
+            "openLinkFailed": "Kunne ikke åpne lenken til publikasjonen. Kontroller lenken og prøv igjen.",
+            "printLimit": "Utskriftskvoten for publikasjonen er brukt opp.",
+            "profileActivationFailed": "Kunne ikke aktivere profilen. Kontroller profilpakken eller kontakt leverandøren.",
+            "profileBusy": "En annen profiloperasjon pågår. Vent til den er ferdig, og prøv igjen.",
+            "profileProvisionFailed": "Kunne ikke installere profilen. Kontroller profilpakken eller kontakt leverandøren.",
+            "profileTimeout": "Tidsavbrudd under installasjon av profilen. Kontroller tilkoblingen og prøv igjen.",
+            "publicationUnavailable": "Publikasjonen er utilgjengelig. Prøv å importere den på nytt.",
+            "readingPositionFailed": "Kunne ikke finne leseposisjonen din. Prøv igjen.",
+            "recoveryPartialFailure": "Gjenopprettet {{- recovered}} publikasjoner. Kunne ikke gjenopprette {{- failed}} publikasjoner.",
+            "renewFailed": "Kunne ikke fornye lånet. Prøv igjen eller kontakt biblioteket ditt.",
+            "returnFailed": "Kunne ikke levere tilbake lånet. Prøv igjen eller kontakt biblioteket ditt.",
+            "storageRefreshFailed": "Lagringsinnstillingen ble lagret, men biblioteket kunne ikke oppdateres. Prøv å oppdatere biblioteket.",
+            "tagsFailed": "Kunne ikke lagre taggene for publikasjonen. Prøv igjen."
         },
         "open": {
-            "failed": "",
-            "folderNotFound": "",
-            "missingLicense": ""
+            "failed": "Kunne ikke åpne publikasjonen.",
+            "folderNotFound": "Fant ikke publikasjonsmappen. Importer publikasjonen på nytt, eller velg ekstra lagringsplass under Innstillinger > Lagring.",
+            "missingLicense": "Kunne ikke åpne publikasjonen. Den er kryptert, og LCP-lisensen mangler."
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Kunne ikke gjenopprette publikasjonen.",
+                "success_one": "Gjenopprettet {{- count}} publikasjon.",
+                "success_other": "Gjenopprettet {{- count}} publikasjoner."
             },
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Publikasjonsmappen ble fjernet.",
+            "updateFailed": "Kunne ikke oppdatere publikasjonsmappen: {{- message}}",
+            "updated": "Publikasjonsmappen ble oppdatert."
         },
         "wipeData": "Innloggingsdata ble slettet (tilgangstokener og informasjonskapsler)"
     },
@@ -387,21 +386,21 @@
         "addMenu": "Legg til en OPDS-feed",
         "breadcrumbRoot": "Kataloger",
         "browserMenu": {
-            "history": "",
-            "options": "",
-            "profile": "",
-            "wishlist": ""
+            "history": "Historikk",
+            "options": "Katalogalternativer",
+            "profile": "Brukerprofil",
+            "wishlist": "Ønskeliste"
         },
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Blå",
+            "gray": "Grå",
+            "green": "Grønn",
+            "orange": "Oransje",
+            "pink": "Rosa",
+            "purple": "Lilla",
+            "red": "Rød",
+            "title": "Katalogfarge",
+            "yellow": "Gul"
         },
         "documentation": "Offisielt nettsted for OPDS",
         "empty": "Fant ingen bøker",
@@ -411,13 +410,13 @@
         "menu": {
             "aboutBook": "Om denne boken",
             "addExtract": "Legg til utdrag",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Avbestill reservasjon",
+            "cancelHoldError": "Kunne ikke avbestille reservasjonen. Prøv igjen.",
             "goBuyBook": "Kjøp boken",
             "goLoanBook": "Lån boken",
             "goRevokeLoanBook": "Forny lån",
             "goSubBook": "Abonner",
-            "placeHold": ""
+            "placeHold": "Reserver"
         },
         "network": {
             "error": "Fant ikke OPDS-feed",
@@ -429,10 +428,10 @@
         "next": "Neste",
         "previous": "Forrige",
         "registry": {
-            "empty": "",
-            "error": "",
-            "loading": "",
-            "title": ""
+            "empty": "Fant ingen katalog.",
+            "error": "Kunne ikke søke i registeret. Prøv igjen.",
+            "loading": "Søker i katalogene …",
+            "title": "Søk i kataloger"
         },
         "resumeBrowsing": "Fortsett å bla",
         "shelf": "Bokhylle",
@@ -623,10 +622,10 @@
         },
         "legal-considerations": {
             "legal-considerations-exempt": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Utgiveren påberoper seg unntak fra tilgjengelighetskrav i enkelte jurisdiksjoner",
+                "descriptive": "Utgiveren oppgir at publikasjonen er unntatt fra tilgjengelighetskrav i enkelte jurisdiksjoner."
             },
-            "legal-considerations-title": ""
+            "legal-considerations-title": "Juridiske forhold"
         },
         "navigation": {
             "navigation-index": {
@@ -737,8 +736,8 @@
                 "descriptive": "Ingen informasjon om muligheten for å tilpasse utseendet er tilgjengelig"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Utseendet kan ikke endres",
+                "descriptive": "Teksten og sideoppsettet kan ikke endres fordi visningen gjengir den trykte utgaven. Leseprogrammet kan likevel tilby zoom."
             }
         }
     },
@@ -783,7 +782,7 @@
         "certificateSignatureInvalid": "Sertifikatets signatur er ugyldig",
         "cover": {
             "img": "Omslagsbilde",
-            "zoom": ""
+            "zoom": "Forstørr omslagsbildet"
         },
         "day": "dag",
         "days": "dager",
@@ -793,7 +792,7 @@
         "expired": "Lånet er utløpt",
         "expiredLcp": "Denne boken kan ikke leses, LCP-lisensen er utløpt.",
         "incorrectPassphrase": "Ingen lagret passfrase passer til publikasjonen, eller passfrasen du skrev inn, er feil.",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "ADVARSEL: Dette er en forhåndsversjon av Thorium Desktop. Den støtter ikke LCP-lisenser for produksjonsbruk og kan bare dekryptere med LCP-profilen «basic profile» uten sertifikatvalidering.",
         "lcpRightsCopy": "Kopierte tegn",
         "lcpRightsPrint": "Utskrifter",
         "lcpStart": "Start",
@@ -806,21 +805,21 @@
         "notStarted": "Ikke påbegynt",
         "onGoing": "Under lesing",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "En nyere leseposisjon fra {{- device}} er tilgjengelig ved {{- progression}} %.",
+            "remoteTitle": "Fortsette fra en annen enhet?",
             "title": "Lest",
-            "useRemote": ""
+            "useRemote": "Gå til posisjon"
         },
         "read": "Ferdiglest",
         "remainingTime": "Lån (gjenværende tid)",
         "remoteProgression": {
-            "checking": "",
-            "disabled": "",
-            "empty": "",
-            "position": "",
-            "ready": "",
-            "title": "",
-            "unavailable": ""
+            "checking": "Aktivert. Kontrollerer tjenesten …",
+            "disabled": "Ikke aktivert for denne publikasjonen.",
+            "empty": "Ingen lesefremdrift er lagret eksternt.",
+            "position": "Lesefremdrift på annen enhet: {{percent}} % ({{device}}).",
+            "ready": "Aktivert og klar.",
+            "title": "Synkronisering av lesefremdrift:",
+            "unavailable": "Aktivert, men tjenesten er utilgjengelig."
         },
         "renewButton": "Forny lån",
         "returnButton": "Returner",
@@ -845,7 +844,7 @@
             "date": "Endringsdato",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Kunne ikke lage en PDF-merknad av den markerte teksten."
                 }
             },
             "export": "Lagre notater som ...",
@@ -902,7 +901,7 @@
         },
         "marks": {
             "annotations": "Notater",
-            "annotationsReadium": "",
+            "annotationsReadium": "Readium-merknader",
             "bookmarks": "Bokmerker",
             "delete": "Fjern",
             "edit": "Rediger",
@@ -930,8 +929,8 @@
             "speed": "Avspillingshastighet",
             "stop": "Stopp opplesing",
             "title": "Opplesing",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Tilpasset markering",
+            "useTTSHighlightsForMODescription": "Slå av utgiverens stiler"
         },
         "navigation": {
             "ZenModeExit": "Avslutt zen-modus",
@@ -962,8 +961,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Mørk oransje",
+                "darkyellow": "Mørk gul",
                 "green": "Grønn",
                 "orange": "Oransje",
                 "purple": "Lilla",
@@ -1010,15 +1009,15 @@
                 "two": "2 kolonner"
             },
             "customFontSelected": "Du har valgt en egen skrifttype",
-            "deactivateTextFormatting": "",
+            "deactivateTextFormatting": "Slå av tekstformatering",
             "display": "Visning",
             "disposition": {
                 "title": "Layout"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Vis sideskift i margen",
             "font": "Skrifttype",
             "fontSize": "Skriftstørrelse",
-            "increaseFontSize": "",
+            "increaseFontSize": "Øk skriftstørrelsen",
             "infoCustomFont": "Skriv inn navnet på en skrifttype fra operativsystemet",
             "justification": "Margjustering",
             "justify": "Like marger",
@@ -1054,11 +1053,11 @@
                 "saveDetails": "Lagrer de gjeldende innstillingene som din foretrukne konfigurasjon for visning og tekstformatering. Innstillingene kan deretter brukes på andre publikasjoner ved å velge «Bruk» i andre leservinduer."
             },
             "preview": "Forhåndsvisning",
-            "reduceFontSize": "",
+            "reduceFontSize": "Reduser skriftstørrelsen",
             "reduceMotion": "Reduser bevegelser",
             "scrolled": "Rullbar",
             "spacing": "Avstand",
-            "spacingCustomButton": "",
+            "spacingCustomButton": "Tilpass avstander",
             "spreadModeEven": "Sideoppslag med partallsside først (standard er oddetallsside)",
             "text": "Tekst",
             "theme": {
@@ -1115,7 +1114,7 @@
         "keyboard": {
             "advancedMenu": "Meny",
             "cancel": "Avbryt",
-            "disableTooltips": "",
+            "disableTooltips": "Skjul verktøytips for hurtigtaster",
             "disclaimer": "Programmets standardinnstillinger er utformet med utgangspunkt i den fysiske plasseringen av tastene på et QWERTY-tastatur",
             "editUserJson": "Rediger brukerfil...",
             "exportToHTML": "Eksporter som HTML",
@@ -1158,16 +1157,16 @@
                     "name": "Forrige lydsegment (hopp over)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Senk avspillingshastigheten for synkronisert lyd i EPUB 3 eller talehastigheten ved høytlesing med talesyntese",
+                    "name": "Senk avspillingshastigheten"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Øk avspillingshastigheten for synkronisert lyd i EPUB 3 eller talehastigheten ved høytlesing med talesyntese",
+                    "name": "Øk avspillingshastigheten"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Tilbakestill avspillingshastigheten for synkronisert lyd i EPUB 3 eller talehastigheten ved høytlesing med talesyntese",
+                    "name": "Tilbakestill avspillingshastigheten"
                 },
                 "AudioStop": {
                     "description": "Stopp gjeldende lydavspilling (EPUB 3 Media Overlays, talesyntese eller forhåndsinnspilt lydbok)",
@@ -1354,12 +1353,12 @@
                     "name": "Slå fullskjerm av/på"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "Slå zen-modus av eller på i lesevinduet. Zen-modus forenkler brukergrensesnittet mens du leser.",
+                    "name": "Slå zen-modus av eller på"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "Slå tilpasning for skjermlesere av eller på i bibliotekvinduet",
+                    "name": "Slå skjermlesertilpasning av eller på"
                 }
             },
             "loadUserJson": "Åpne fra brukerfil",
@@ -1392,7 +1391,7 @@
         },
         "screenReaderActivate": {
             "help": "Når programmet oppdager at hjelpemiddelteknologi er i bruk, tilpasses brukergrensesnittet for å fungere bedre med skjermlesere",
-            "invite": "",
+            "invite": "Tilpass for skjermleser",
             "message": "Forbedret støtte for skjermlesere",
             "title": "Forbedre skjermleseropplevelsen"
         },
@@ -1400,84 +1399,84 @@
             "title": "Lagre økt"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Fjern automatisk utløpte publikasjoner og tilhørende brukerdata",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Sletter utløpte lån automatisk, også personlige merknader og bokmerker. Dette er nyttig på delte datamaskiner, for eksempel på bibliotek eller universiteter.",
+            "title": "Modus for delt datamaskin"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Velg ekstra lagringsplass",
+                "changeDirectory": "Endre ekstra lagringsplass",
+                "removeStorageDirectory": "Fjern ekstra lagringsplass"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Funksjonen krever en nyere versjon av Thorium. Bøker i en ekstern mappe vises ikke i Thorium 3.4 eller eldre.",
+                "integrity": "Oppbevar mappen på et trygt og tilgjengelig sted. Unngå å slette den, begrense tilgangen eller bruke treg eller ustabil lagring, for eksempel nettverksstasjoner.",
+                "migration": "Thorium flytter ikke bøkene automatisk. Hvis du endrer den ekstra lagringsplassen, må du selv flytte publikasjonene til den nye plasseringen. Hvis du fjerner den, må du flytte dem tilbake til den opprinnelige lagringsplassen.",
+                "summary": "Les mer om denne funksjonen, som er i betaversjon",
+                "warning": "La filene i mappen ligge urørt. Manuelle endringer kan skape problemer for bøkene eller leseprogrammet. Thorium forvalter mappen som et beskyttet bibliotek."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Velg mappen Thorium skal bruke som ekstra lagringsplass.",
+                "configuredDescription": "Den ekstra lagringsplassen er konfigurert og klar til å ta imot nye publikasjoner.",
+                "notConfiguredDescription": "Publikasjoner du importerer i Thorium Reader, blir lagret i den valgte mappen. Tidligere importerte publikasjoner blir liggende på den opprinnelige lagringsplassen."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Fortsett",
+                    "description": "Funksjonen er i betaversjon. Vil du fortsette og velge en mappe som ekstra lagringsplass?",
+                    "title": "Velg ekstra lagringsplass"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Rediger mappe",
+                    "description": "Vær oppmerksom på at du selv må flytte eksisterende publikasjoner når du endrer den ekstra lagringsplassen. Vil du fortsette?",
+                    "title": "Endre den ekstra lagringsplassen"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Fjern mappe",
+                    "description": "Vær oppmerksom på at du selv må flytte eksisterende publikasjoner når du fjerner den ekstra lagringsplassen. Vil du fortsette?",
+                    "title": "Fjern ekstra lagringsplass"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Som standard lagres publikasjonene som programmet administrerer, her:",
+                "defaultInternal": "Systemlagring",
+                "externalStorage": "Ekstern lagring",
+                "title": "Plasseringer"
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Se etter publikasjoner som kan gjenopprettes",
+                    "checkAgain": "Kontroller på nytt",
+                    "recover": "Gjenopprett publikasjoner",
+                    "recovering": "Gjenoppretter …"
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Fant én eller flere publikasjoner på disken som mangler i databasen. De kan gjenopprettes.",
+                "checking": "Kontrollerer lagringsplassen for publikasjoner …",
+                "description": "Søk gjennom lagringsplassen etter publikasjoner som trygt kan gjenopprettes.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Gjenopprett",
+                    "description_one": "Thorium fant {{- count}} publikasjon på disken som mangler i databasen. Vil du importere den på nytt i Thorium?",
+                    "description_other": "Thorium fant {{- count}} publikasjoner på disken som mangler i databasen. Vil du importere dem på nytt i Thorium?",
+                    "title": "Gjenopprett publikasjoner"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Fant ingen publikasjoner som kan gjenopprettes.",
+                "recoverableCount_one": "{{- count}} publikasjon kan gjenopprettes med den opprinnelige lagringsidentifikatoren.",
+                "recoverableCount_other": "{{- count}} publikasjoner kan gjenopprettes med den opprinnelige lagringsidentifikatoren.",
+                "title": "Gjenoppretting"
             }
         },
         "tabs": {
-            "advanced": "",
+            "advanced": "Avansert",
             "general": "Generelt",
             "keyboardShortcuts": "Hurtigtaster",
             "profiles": "Profiler",
-            "storage": ""
+            "storage": "Lagring"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Slå av telemetri",
+            "disableTelemetryMeasurementsDescription": "Når dette er aktivert, sender ikke Thorium telemetridata.",
+            "title": "Telemetri"
         },
         "theme": {
             "auto": "Automatisk",
@@ -1487,15 +1486,15 @@
             "title": "Programtema"
         },
         "window": {
-            "keepLibraryWindowInBackgroundOnReaderClose": "",
-            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "",
-            "keepLibraryWindowInBackgroundOnReaderOpen": "",
-            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "",
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "oneReaderWindowPerPublication": "",
-            "oneReaderWindowPerPublicationDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Behold biblioteket i bakgrunnen når lesevinduer lukkes",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Når dette er aktivert, forblir bibliotekvinduet i bakgrunnen når du lukker et lesevindu.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimer biblioteket når et lesevindu åpnes",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Når dette er aktivert, minimeres bibliotekvinduet når du åpner et lesevindu.",
+            "minimizeLibraryToTray": "Minimer biblioteket til systemstatusfeltet",
+            "minimizeLibraryToTrayDescription": "Når dette er aktivert, fortsetter Thorium å kjøre i systemstatusfeltet i Windows når bibliotekvinduet minimeres.",
+            "oneReaderWindowPerPublication": "Bruk ett lesevindu per publikasjon",
+            "oneReaderWindowPerPublicationDescription": "Når dette er aktivert og du åpner en publikasjon som allerede er åpen, aktiveres det eksisterende lesevinduet.",
+            "title": "Vindusatferd"
         }
     },
     "tts": {

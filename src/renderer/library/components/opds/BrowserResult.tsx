@@ -5,33 +5,33 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.scss";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
 import * as React from "react";
 import { VisuallyHidden } from "react-aria-components";
 import { connect } from "react-redux";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import { apiState } from "readium-desktop/renderer/common/redux/api/api";
 import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opds/constants";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 // import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
 import PublicationCard from "../publication/PublicationCard";
 // import { ListView } from "../utils/ListView";
+import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import Slider from "../utils/Slider";
+import { AuthenticationForm } from "./AuthenticationForm";
 import Entry from "./Entry";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
-import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ExternalAuthentication } from "./ExternalAuthentication";
-import { AuthenticationForm } from "./AuthenticationForm";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
-import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -48,7 +48,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __, browserData } = this.props;
-        let status = __("accessibility.loading");
+        let status: string = __("accessibility.loading");
         const message = (title: string, detail?: string) => {
             status = [title, detail].filter(Boolean).join(". ");
             return <MessageOpdBrowserResult title={title} message={detail} />;

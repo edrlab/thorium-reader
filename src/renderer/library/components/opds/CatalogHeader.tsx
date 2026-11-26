@@ -20,40 +20,44 @@ const truncateBreadcrumbLabel = (label: string) => {
     return characters.length > 30 ? `${characters.slice(0, 30).join("")}...` : label;
 };
 
-export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: IBreadCrumbItem, rootLocation?: IBreadCrumbItem}>> = (props) => {
+export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: IBreadCrumbItem, rootLocation?: IBreadCrumbItem }>> = (props) => {
 
     const { currentLocation, rootLocation } = props;
     const navigate = useNavigate();
     const [__] = useTranslator();
-    const labelStyle: React.CSSProperties = { fontSize: "18px", fontWeight: 400, lineHeight: 1.5, minWidth: 0, overflowWrap: "anywhere", whiteSpace: "normal" };
+    const labelStyle: React.CSSProperties = { fontSize: "18px", fontWeight: 400, lineHeight: 1.5, minWidth: 0 };
     const location = useSelector((state: ILibraryRootState) => state.router.location);
     const savedDisplayType = useSelector((state: ILibraryRootState) => state.settings.libraryView?.displayType);
     const canGoBack = useSelector((state: ILibraryRootState) => state.navigationHistory.index > 0);
 
     return (
-        <nav aria-label={__("opds.breadcrumbRoot")} style={{display: "flex", alignItems: "center", gap: "20px", minWidth: 0, maxWidth: "100%"}}>
+        <nav aria-label={__("opds.breadcrumbRoot")} style={{ display: "flex", alignItems: "center", gap: "20px", minWidth: 0, maxWidth: "100%" }}>
             <button
                 type="button"
-                style={{width: "20px", height: "20px", flexShrink: 0, transform: "rotate(180deg)"}}
+                style={{ width: "20px", height: "20px", flexShrink: 0, transform: "rotate(180deg)" }}
                 disabled={!canGoBack}
                 onClick={() => navigate(-1)}
                 title={__("opds.previous")}
                 aria-label={__("opds.previous")}
             >
-
                 <SVG ariaHidden svg={ChevronRight} />
             </button>
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", minWidth: 0, overflowWrap: "anywhere" }}>
+            <div style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", gap: "8px", minWidth: 0 }}>
                 {rootLocation && rootLocation.path !== currentLocation?.path && <>
-                    <Link style={labelStyle} to={{ pathname: rootLocation.path }}
+                    <Link style={{ ...labelStyle, flexShrink: 0, whiteSpace: "nowrap", color: "var(--color-brand-primary)" }} to={{ pathname: rootLocation.path }}
                         title={rootLocation.name}
                         aria-label={rootLocation.name}
                         state={resolveRouterLocationState(location.state, savedDisplayType)}>
                         {truncateBreadcrumbLabel(rootLocation.name)}
                     </Link>
-                    <span aria-hidden="true">/</span>
+                    <span aria-hidden="true" style={{ flexShrink: 0 }}>/</span>
                 </>}
-                <span style={labelStyle} aria-current="page">{currentLocation?.name}</span>
+                <span
+                    style={{ ...labelStyle, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+                    title={currentLocation?.name}
+                    aria-current="page">
+                    {currentLocation?.name}
+                </span>
             </div>
         </nav>
     );

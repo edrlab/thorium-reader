@@ -1,0 +1,83 @@
+name: Publish README and profile editor to GitHub Pages
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - README.md
+      - AGENTS.md
+      - img/**
+      - scripts/thorium-profile-editor.html
+      - .github/workflows/profile-editor-pages.yml
+  workflow_dispatch:
+
+permissions: {}
+cache-mode: none
+
+concurrency:
+  group: profile-editor-pages
+  cancel-in-progress: false
+
+jobs:
+  build_job:
+    if: github.repository == 'edrlab/thorium-reader' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout website sources
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            README.md
+            AGENTS.md
+            img/
+            scripts/thorium-profile-editor.html
+          sparse-checkout-cone-mode: false
+
+      - name: Prepare README site
+        shell: bash
+        run: |
+          mkdir -p _pages
+          cp README.md AGENTS.md _pages/
+          cp -R img _pages/img
+          cp scripts/thorium-profile-editor.html _pages/thorium-profile-editor.html
+
+      - name: Build README homepage
+        uses: actions/jekyll-build-pages@44a6e6beabd48582f863aeeb6cb2151cc1716697 # v1.0.13
+        with:
+          source: ./_pages
+          destination: ./_site
+
+      - name: Verify website pages
+        shell: bash
+        run: |
+          test -s _site/index.html
+          cmp scripts/thorium-profile-editor.html _site/thorium-profile-editor.html
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+
+  # Separate jobs avoid the artifact lookup race in actions/deploy-pages#451.
+  deploy_job:
+    needs: build_job
+    if: github.repository == 'edrlab/thorium-reader' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

@@ -131,7 +131,6 @@
                 "register": "تسجيل",
                 "retry": "حاول مرة أخرى",
                 "unauthorized": "غير مصرح لك",
-                "unauthorizedUnsupportedType": "غير مصرح لك (نوع الـ WWWAuthenticate غير مدعوم: {{- type}})",
                 "username": "اسم المستخدم / البريد الإلكتروني"
             },
             "info": {

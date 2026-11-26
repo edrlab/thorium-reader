@@ -579,6 +579,7 @@ $entry-card-colors-dark: (
         }
     }
 
+    container-type: inline-size;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -586,7 +587,7 @@ $entry-card-colors-dark: (
     padding: 15px;
     min-height: 40px;
     margin-bottom: 40px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 16px 24px;
     z-index: 1000;
     position: relative;
@@ -594,6 +595,12 @@ $entry-card-colors-dark: (
 
     > nav {
         flex: 1 1 auto;
+    }
+}
+
+@media (width <= 936px) {
+    .catalog_breadcrumbSearch_Wrapper {
+        flex-wrap: wrap;
     }
 }
 
@@ -614,15 +621,10 @@ form.opds_search_form[role="search"] {
         line-height: 1.5;
     }
 
-    > .form_group {
-        box-sizing: border-box;
-        width: 100%;
-        height: 36px;
-        background-color: var(--color-neutral-base);
-
-        > input {
-            min-width: 0;
-        }
+    > nav {
+        // Basis 0: a long title must not push the search field onto a new row.
+        flex: 1 1 0;
+        min-width: 0;
     }
 
     &:has(input:focus) {
@@ -632,6 +634,81 @@ form.opds_search_form[role="search"] {
     &:has(input:disabled) {
         display: none;
     }
+}
+
+// OPDS catalog search (SearchForm.tsx).
+// Wide: the field is always visible on the header row.
+// Narrow (< 640px): it collapses behind a magnifier toggle and, once open,
+// takes a full-width second row under the breadcrumb.
+.catalog_search {
+    flex: 0 1 340px;
+    min-width: 220px;
+    margin-left: auto;
+
+    .form_group {
+        width: 100%;
+        height: 36px;
+        background-color: var(--color-neutral-base);
+    }
+}
+
+.catalog_search_toggle {
+    display: none;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-left: auto;
+    padding: 0;
+    border: 1px solid var(--color-gray-950);
+    border-radius: 6px;
+    background-color: var(--color-neutral-base);
+    color: var(--color-gray-950);
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    &[aria-expanded="true"] {
+        border-color: var(--color-brand-primary);
+        background-color: var(--color-brand-secondary);
+        color: var(--color-brand-primary);
+    }
+
+    &:focus-visible {
+        outline: var(--color-brand-primary) solid 2px;
+        outline-offset: 2px;
+    }
+}
+
+@container (width < 640px) {
+    .catalog_search_toggle {
+        display: flex;
+    }
+
+    .catalog_search {
+        flex-basis: 100%;
+        min-width: 0;
+        margin-left: 0;
+
+        &[data-open="false"] {
+            display: none;
+        }
+    }
+}
+
+.catalog_search_srOnly {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .numberOfItems {

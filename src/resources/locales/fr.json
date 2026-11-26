@@ -131,7 +131,6 @@
                 "register": "Créer un compte",
                 "retry": "Réessayer",
                 "unauthorized": "Non autorisé",
-                "unauthorizedUnsupportedType": "Non autorisé (type d'authentification non supporté '{{- type}}')",
                 "username": "Nom d'utilisateur / Adresse courriel"
             },
             "info": {
@@ -315,7 +314,7 @@
                 "cbzNoImages": "L’archive CBZ ne contient aucune image prise en charge.",
                 "contextMissing": "manquant",
                 "daisyConversionFailed": "Impossible de convertir la publication DAISY.",
-                "manifestContext": "@context du manifeste de publication non reconnu à l’adresse {{- url}} : {{- context}}",
+                "manifestContext": "@context du manifeste de publication non reconnu à l’adresse {{- url}} : {{- ctx}}",
                 "manifestImportFailed": "L’importation du manifeste de la publication a échoué.",
                 "manifestInvalidJson": "JSON invalide dans le manifeste de la publication à l’adresse {{- url}}.",
                 "manifestMissing": "Le manifeste de la publication est manquant.",

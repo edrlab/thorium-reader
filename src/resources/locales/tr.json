@@ -131,7 +131,6 @@
                 "register": "Kaydol",
                 "retry": "Yeniden dene",
                 "unauthorized": "Yetkilendirilmemiş",
-                "unauthorizedUnsupportedType": "Yetkilendirilmemiş (desteklenmeyen WWWAuthenticate türü '{{- type}}')",
                 "username": "Kullanıcı adı / E-posta adresi"
             },
             "info": {

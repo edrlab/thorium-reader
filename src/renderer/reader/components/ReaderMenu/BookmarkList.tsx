@@ -118,7 +118,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
     const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({
         hex: k, name:
             // @ts-expect-error TS 2345 (TRANSLATE DYNAMIC KEY)
-            __(v),
+            __(v) as string,
     })), [__]);
 
     const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);

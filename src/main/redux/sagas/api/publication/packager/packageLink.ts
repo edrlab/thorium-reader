@@ -7,12 +7,12 @@
 
 import { getTranslator } from "readium-desktop/common/services/translator";
 
-import * as crypto from "node:crypto";
 import debug_ from "debug";
-import { DownloadFailure, checkDownloadResponse } from "readium-desktop/main/tools/downloadFailure";
+import * as crypto from "node:crypto";
 import * as path from "node:path";
 import { ok } from "readium-desktop/common/utils/assert";
 import { httpGet } from "readium-desktop/main/network/http";
+import { checkDownloadResponse, DownloadFailure } from "readium-desktop/main/tools/downloadFailure";
 import {
     getUniqueResourcesFromR2Publication, w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/w3c/audiobooks/converter";
@@ -253,7 +253,7 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
         r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
     } else {
         throw new Error(getTranslator().translate("message.import.errors.manifestContext", {
-            url: manifestUrl, context: JSON.stringify(r2PublicationJson?.["@context"])
+            url: manifestUrl, ctx: JSON.stringify(r2PublicationJson?.["@context"])
                 ?? getTranslator().translate("message.import.errors.contextMissing"),
         }));
     }

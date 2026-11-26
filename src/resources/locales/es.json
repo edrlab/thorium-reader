@@ -131,7 +131,6 @@
                 "register": "Registrar",
                 "retry": "Inténtalo de nuevo",
                 "unauthorized": "Sin autorización",
-                "unauthorizedUnsupportedType": "Sin autorización (tipo WWWAuthenticate '{{- type}}' no admitido)",
                 "username": "Nombre de usuario/dirección de correo electrónico"
             },
             "info": {

@@ -131,7 +131,6 @@
                 "register": "Registrieren",
                 "retry": "Erneut versuchen",
                 "unauthorized": "Unbefugt",
-                "unauthorizedUnsupportedType": "Unbefugt (Nicht unterstützter WWWAuthenticate-Typ '{{- type}}')",
                 "username": "Benutzername / E-Mail-Adresse"
             },
             "info": {

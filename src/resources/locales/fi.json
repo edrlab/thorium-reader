@@ -131,7 +131,6 @@
                 "register": "Rekisteröidy",
                 "retry": "Yritä uudelleen",
                 "unauthorized": "Luvaton",
-                "unauthorizedUnsupportedType": "Ei sallittu (ei tuettu WWWAuthenticate-tyyppi ‘{{- type}}’)",
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
             "info": {
@@ -310,7 +309,7 @@
                 "cbzNoImages": "CBZ-arkisto ei sisällä tuettuja kuvia.",
                 "contextMissing": "puuttuva",
                 "daisyConversionFailed": "DAISY-julkaisua ei voitu muuntaa.",
-                "manifestContext": "Tuntematon julkaisuluettelo @context osoitteessa {{- url}}: {{- context}}",
+                "manifestContext": "Tuntematon julkaisuluettelo @context osoitteessa {{- url}}: {{- ctx}}",
                 "manifestImportFailed": "Julkaisuluettelon tuonti epäonnistui.",
                 "manifestInvalidJson": "Julkaisuluettelon JSON-tiedosto on virheellinen osoitteessa {{- url}}.",
                 "manifestMissing": "Julkaisuluettelo puuttuu.",

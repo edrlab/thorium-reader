@@ -131,7 +131,6 @@ declare const data = {
         "register": "",
         "retry": "",
         "unauthorized": "",
-        "unauthorizedUnsupportedType": "{{type}}",
         "username": ""
       },
       "info": {
@@ -305,7 +304,7 @@ declare const data = {
         "cbzNoImages": "",
         "contextMissing": "",
         "daisyConversionFailed": "",
-        "manifestContext": "{{url}}{{context}}",
+        "manifestContext": "{{url}}{{ctx}}",
         "manifestImportFailed": "",
         "manifestInvalidJson": "{{url}}",
         "manifestMissing": "",

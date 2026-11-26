@@ -131,7 +131,6 @@
                 "register": "Регистрация",
                 "retry": "Попробовать ещё раз",
                 "unauthorized": "Не авторизовано",
-                "unauthorizedUnsupportedType": "Не авторизовано (неподдерживаемый тип WWWAuthenticate '{{- type}}')",
                 "username": "Имя пользователя / Адрес электронной почты"
             },
             "info": {
@@ -320,7 +319,7 @@
                 "cbzNoImages": "Архив CBZ не содержит поддерживаемых изображений.",
                 "contextMissing": "отсутствует",
                 "daisyConversionFailed": "Не удалось преобразовать публикацию DAISY.",
-                "manifestContext": "Неопознанный манифест публикации @context по адресу {{-url}}: {{-context}}",
+                "manifestContext": "Неопознанный манифест публикации @context по адресу {{-url}}: {{-ctx}}",
                 "manifestImportFailed": "Импорт манифеста публикации завершился неудачей.",
                 "manifestInvalidJson": "Недопустимый JSON в манифесте публикации по {{-url}}.",
                 "manifestMissing": "Манифест публикации отсутствует.",
@@ -402,7 +401,7 @@
             "history": "История",
             "options": "Параметры каталога",
             "profile": "Профиль пользователя",
-            "wishlist": ""
+            "wishlist": "Список желаемого"
         },
         "color": {
             "blue": "Синий",

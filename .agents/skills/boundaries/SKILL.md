@@ -19,6 +19,12 @@ Type-only imports count as imports for this rule: if two runtimes need the same 
 | PDF webview renderer | `src/renderer/reader/pdf/webview/index_pdf.ts`, `src/renderer/reader/pdf/webview/index_pdf_extract.ts` | `src/renderer/reader/pdf/webview/**` | `webpack.config.renderer-pdf.js`, `webpack.config.renderer-pdf-extract.js` | `dist/index_pdf.js`, `dist/index_pdf_extract.js` |
 | Webview preload | `src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/preload.ts` | The preload entrypoint only; other `src/r2-xxx-js/**` files are vendored/shared dependency code | `webpack.config.preload.js` | `dist/preload.js` |
 
+## Standalone Tooling
+
+`projects/customization-profile-cli/src/cli.ts` is a separate Node.js CLI runtime, built with `projects/customization-profile-cli/build.mjs`. It must not import Electron runtimes, Thorium build-time constants, or development signing keys. Its bundle includes the shared manifest schema from `src/common/readium/customization/profile.schema.ts`; other Thorium runtime imports and unbundled npm dependencies are rejected by the build. Signing keys are supplied explicitly as PEM files at runtime.
+
+`projects/customization-profile-editor/src/editor.ts` is a separate offline browser runtime, built with `projects/customization-profile-editor/build.mjs` into `scripts/thorium-profile-editor.html`. Its build embeds a validator generated from the shared manifest schema; the browser bundle must not import Thorium runtimes, Node.js modules, or signing keys. All JavaScript and CSS must be embedded, with no external dependencies or network requests.
+
 ## Common And Shared Code
 
 New Thorium-owned code used by more than one runtime should go in one of these common areas:
