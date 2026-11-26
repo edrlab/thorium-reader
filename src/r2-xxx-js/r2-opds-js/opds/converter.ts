@@ -25,6 +25,8 @@ import { OPDSPrice } from "./opds2/opds2-price";
 import { OPDSProperties } from "./opds2/opds2-properties";
 import { OPDSPublication } from "./opds2/opds2-publication";
 
+import { DOMParser } from "@xmldom/xmldom";
+
 // import { OPDSCollection } from "./opds2/opds2-collection";
 // import { OPDSContributor } from "./opds2/opds2-contributor";
 // import { OPDSPublicationMetadata } from "./opds2/opds2-publicationMetadata";
@@ -65,6 +67,16 @@ const processTypedString = (str: string, type: string | undefined) => {
     if (type === "text/html" || type === "html") {
         // ALREADY UNESCAPED BY THE XPATH text() selector
         // e.g. @XmlXPathSelector("atom:content/text()")
+        try {
+            let toParse = str.trim();
+            if (!str.startsWith("<") || !str.endsWith(">")) {
+                toParse = `<div>${toParse}</div>`
+            }
+            const document = new DOMParser().parseFromString(toParse, "text/html");
+            return document.textContent;
+        } catch (ex) {
+            console.log(ex);
+        }
         return str;
         // return unescapeHtmlEntities(str);
     } else if (type === "xhtml" || type && type.indexOf("xhtml") >= 0) {
@@ -72,7 +84,18 @@ const processTypedString = (str: string, type: string | undefined) => {
         // e.g. @XmlXPathSelector("atom:content/text()")
         // ... BUT ONLY "ESSENTIAL" ESCAPED (&amp; and &lt;)
         // PS: we patch the erroneous Atom namespace for badly-authored OPDS feeds
-        return str.replace(/http:\/\/www\.w3\.org\/2005\/Atom/g, "http://www.w3.org/1999/xhtml");
+        str = str.replace(/http:\/\/www\.w3\.org\/2005\/Atom/g, "http://www.w3.org/1999/xhtml");
+        try {
+            let toParse = str.trim();
+            if (!str.startsWith("<") || !str.endsWith(">")) {
+                toParse = `<div xmlns="http://www.w3.org/1999/xhtml">${toParse}</div>`
+            }
+            const document = new DOMParser().parseFromString(toParse, "application/xml");
+            return document.textContent;
+        } catch (ex) {
+            console.log(ex);
+        }
+        return str;
     }
     return str;
 };

@@ -45,6 +45,7 @@ import { availableLanguages } from "readium-desktop/common/services/translator";
 // see translateContentFieldHelper()
 export function convertMultiLangStringToString(stringOrObject: string | IStringMap | undefined, locale: keyof typeof availableLanguages): string | undefined {
     if (typeof stringOrObject === "object") {
+        stringOrObject = stringOrObject || {}; // edge-case "null"! (TypeScript strictNullCheck, some OPDS feeds with null values)
         const objectLangKeys = Object.keys(stringOrObject);
 
         const localeLow = locale.toLowerCase();
@@ -106,6 +107,7 @@ export function convertMultiLangStringToString(stringOrObject: string | IStringM
 // see translateContentFieldHelper()
 export function convertMultiLangStringToLangString(stringOrObject: string | IStringMap | undefined, locale: keyof typeof availableLanguages): [lang: string, str: string | undefined] {
     if (typeof stringOrObject === "object") {
+        stringOrObject = stringOrObject || {}; // edge-case "null"! (TypeScript strictNullCheck, some OPDS feeds with null values)
         const objectLangKeys = Object.keys(stringOrObject);
 
         const localeLow = locale.toLowerCase();
