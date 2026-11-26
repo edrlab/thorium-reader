@@ -41,12 +41,14 @@ export function getReadingProgression(
     const localProgression = hasLocalProgression ? Math.min(1, Math.max(0, locations.progression)) :
         position ? (position.position - position.firstPosition) / (position.lastPosition - position.firstPosition + 1) : 0;
     const isFixedLayout = (spine[spineIndex].Properties?.Layout || publication.Metadata?.Rendition?.Layout) === "fixed";
+    const isFixedLayoutPublication = spine.every((link) =>
+        (link.Properties?.Layout || publication.Metadata?.Rendition?.Layout) === "fixed");
     const locatorTotalProgression = typeof locations.totalProgression === "number" && Number.isFinite(locations.totalProgression) ?
         Math.min(1, Math.max(0, locations.totalProgression)) : undefined;
     if (!hasLocalProgression && !position && typeof locatorTotalProgression === "undefined" && !isFixedLayout) {
         return undefined;
     }
-    const totalProgression = isFixedLayout ? (spineIndex + 1) / spine.length :
+    const totalProgression = isFixedLayoutPublication ? (spineIndex + 1) / spine.length :
         locatorTotalProgression ?? position?.totalProgression ?? (spineIndex + localProgression) / spine.length;
 
     const overall = __("publication.progression.overall", { percent: Math.round(totalProgression * 100) });

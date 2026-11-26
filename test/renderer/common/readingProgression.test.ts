@@ -4,7 +4,7 @@ import { Metadata } from "@r2-shared-js/models/metadata";
 import { ArchiveProperties, LayoutEnum, Properties } from "@r2-shared-js/models/metadata-properties";
 import { Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
-import { createReadiumPositionIndex, ReadiumEpubProfile } from "readium-desktop/common/readium/positions";
+import { createReadiumPositionIndex, mapLocatorToReadiumPosition, ReadiumEpubProfile } from "readium-desktop/common/readium/positions";
 import { setLocale, translate } from "readium-desktop/common/services/translator";
 import { getReadingProgression } from "readium-desktop/renderer/common/readingProgression";
 
@@ -78,13 +78,46 @@ test("uses page-based percentages and respects resource layout overrides", () =>
     fixed.Metadata.Rendition = new Properties();
     fixed.Metadata.Rendition.Layout = LayoutEnum.Fixed;
     fixed.Spine = publication.Spine.map((link) => Object.assign(new Link(), link));
+    expect(getReadingProgression({ href: fixed.Spine[0].Href, locations: { progression: 0, totalProgression: 0 } },
+        fixed, createReadiumPositionIndex(fixed), translate)).toMatchObject({ isFixedLayout: true, global: "Overall progression: 33%" });
     fixed.Spine[1].Properties = new Properties();
     fixed.Spine[1].Properties.Layout = LayoutEnum.Reflowable;
     const fixedIndex = createReadiumPositionIndex(fixed);
     expect(getReadingProgression({ href: fixed.Spine[0].Href, locations: { progression: 0, totalProgression: 0 } },
-        fixed, fixedIndex, translate)).toMatchObject({ isFixedLayout: true, global: "Overall progression: 33%" });
+        fixed, fixedIndex, translate)).toMatchObject({ isFixedLayout: true, global: "Overall progression: 0%" });
     expect(getReadingProgression({ href: fixed.Spine[1].Href, locations: { progression: 0.5 } },
         fixed, fixedIndex, translate)).toMatchObject({ isFixedLayout: false, local: "Chapter progression: 50%" });
+});
+
+test.each([undefined, LayoutEnum.Fixed])("keeps mixed-layout resource boundaries continuous with publication layout %p", (layout) => {
+    const mixed = new Publication();
+    mixed.Metadata = new Metadata();
+    mixed.Metadata.Rendition = new Properties();
+    mixed.Metadata.Rendition.Layout = layout;
+    mixed.Spine = [7, 1, 2].map((count, index) => {
+        const link = new Link();
+        link.Href = `mixed-${index}.xhtml`;
+        link.Properties = new Properties();
+        link.Properties.Layout = index === 1 ? LayoutEnum.Fixed : LayoutEnum.Reflowable;
+        link.Properties.Archive = new ArchiveProperties();
+        link.Properties.Archive.EntryLength = count * 1024;
+        return link;
+    });
+    const mixedIndex = createReadiumPositionIndex(mixed);
+    for (const [href, progression, percent] of [
+        ["mixed-0.xhtml", 1, 70],
+        ["mixed-1.xhtml", 0, 70],
+        ["mixed-1.xhtml", 1, 80],
+        ["mixed-2.xhtml", 0, 80],
+    ] as const) {
+        const locator = mapLocatorToReadiumPosition({ href, locations: { progression } }, mixedIndex);
+        expect(getReadingProgression(locator, mixed, mixedIndex, translate)?.global).toContain(`${percent}%`);
+        // Legacy locators have no publication-wide percentage, so the position index supplies it.
+        expect(getReadingProgression({ href, locations: { progression } }, mixed, mixedIndex, translate)?.global)
+            .toContain(`${percent}%`);
+    }
+    expect(getReadingProgression({ href: "mixed-1.xhtml", locations: { progression: 0 } }, mixed, undefined, translate)?.global)
+        .toBe("Overall progression: 33%");
 });
 
 test.each([
