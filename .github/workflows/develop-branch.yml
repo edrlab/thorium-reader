@@ -410,7 +410,7 @@ jobs:
       if: ${{ matrix.osarch == 'macos-intel' }}
       run: >
         PKG=$(grep -m1 '"@oxlint/binding-darwin-x64":' package-lock.json | sed -E 's/.*"@oxlint\/binding-darwin-x64": *"([^"]+)".*/@oxlint\/binding-darwin-x64@\1/')
-        npm install --ignore-scripts --foreground-scripts --allow-git=root --cpu=x64 "$PKG"
+        npm install --ignore-scripts --foreground-scripts --allow-git=root --cpu=x64 --save-dev "$PKG"
       shell: bash
 ###########################
 #    - run: npm cache verify
