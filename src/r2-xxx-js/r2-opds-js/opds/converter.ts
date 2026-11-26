@@ -70,7 +70,7 @@ const processTypedString = (str: string, type: string | undefined) => {
         try {
             let toParse = str.trim();
             if (!str.startsWith("<") || !str.endsWith(">")) {
-                toParse = `<div>${toParse}</div>`
+                toParse = `<div>${toParse}</div>`;
             }
             const document = new DOMParser().parseFromString(toParse, "text/html");
             return document.textContent;
@@ -88,7 +88,7 @@ const processTypedString = (str: string, type: string | undefined) => {
         try {
             let toParse = str.trim();
             if (!str.startsWith("<") || !str.endsWith(">")) {
-                toParse = `<div xmlns="http://www.w3.org/1999/xhtml">${toParse}</div>`
+                toParse = `<div xmlns="http://www.w3.org/1999/xhtml">${toParse}</div>`;
             }
             const document = new DOMParser().parseFromString(toParse, "application/xml");
             return document.textContent;
