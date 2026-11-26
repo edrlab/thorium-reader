@@ -406,12 +406,12 @@ jobs:
       shell: bash
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
 ###########################
-    # - name: NPM install missing native optional dependencies (macos-intel) # https://github.com/npm/cli/issues/4828
-    #   if: ${{ matrix.osarch == 'macos-intel' }}
-    #   run: >
-    #     PKG=$(grep -m1 '"@oxlint/binding-darwin-x64":' package-lock.json | sed -E 's/.*"@oxlint\/binding-darwin-x64": *"([^"]+)".*/@oxlint\/binding-darwin-x64@\1/')
-    #     npm install --ignore-scripts --foreground-scripts --allow-git=root --cpu=x64 --save-dev "$PKG"
-    #   shell: bash
+    - name: NPM install missing native optional dependencies (macos-intel) # https://github.com/npm/cli/issues/4828
+      if: ${{ matrix.osarch == 'macos-intel' }}
+      run: >
+        PKG=$(grep -m1 '"@oxlint/binding-darwin-x64":' package-lock.json | sed -E 's/.*"@oxlint\/binding-darwin-x64": *"([^"]+)".*/@oxlint\/binding-darwin-x64@\1/')
+        npm install --ignore-scripts --foreground-scripts --allow-git=root --cpu=x64 --save-dev "$PKG"
+      shell: bash
 ###########################
 #    - run: npm cache verify
 ###########################
@@ -475,7 +475,7 @@ jobs:
         fileStr = fileStr.replace(/--x64/g, "--arm64");
         fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });
         ' &&
-        export npm_config_arch=arm64 && export npm_config_cpu=arm64 && npm run package:${{ matrix.packname }}
+        npm_config_arch=arm64 export npm_config_cpu=arm64 npm run package:${{ matrix.packname }}
 ###########################
     - name: non-PR action (build and package) INTEL
       env:
@@ -491,7 +491,7 @@ jobs:
         fileStr = fileStr.replace(/--arm64/g, "--x64");
         fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });
         ' &&
-        export npm_config_arch=x64 && export npm_config_cpu=x64 && npm run package:${{ matrix.packname }}
+        npm_config_arch=x64 npm_config_cpu=x64 npm run package:${{ matrix.packname }}
 #- run: ls -alsR release
 ###########################
     - name: Upload Artifact (Linux)
