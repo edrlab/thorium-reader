@@ -2288,7 +2288,7 @@ class Reader extends React.Component<IProps, IState> {
                         txtPagination = this.props.__("reader.navigation.currentPage", { current: epubPage });
                     }
 
-                    txtProgression += ` -- ${spineIndex + 1}/${this.props.r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${readingProgression.local}]`;
+                    txtProgression = `${txtProgression ? `${txtProgression} -- ` : ""}${spineIndex + 1}/${this.props.r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${readingProgression.local}]`;
 
                     if (locatorExt.headings) {
 

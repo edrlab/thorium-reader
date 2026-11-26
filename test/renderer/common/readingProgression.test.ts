@@ -55,6 +55,21 @@ test("reconstructs chapter and book progression from a saved discrete position",
     });
 });
 
+test("reports audiobook track progression without treating its fractional position as a Readium position", () => {
+    const audio = new Publication();
+    audio.Metadata = new Metadata();
+    audio.Metadata.RDFType = "https://schema.org/Audiobook";
+    audio.Spine = publication.Spine;
+    expect(getReadingProgression({
+        href: "OPS/chapter-2.xhtml", locations: { progression: 0.5, position: 0.45 },
+    }, audio, positionIndex, translate)).toEqual({
+        spineIndex: 1,
+        isFixedLayout: false,
+        local: "Chapter progression: 50%",
+        global: "",
+    });
+});
+
 test.each([
     [0, "Overall progression: 0% (Position: 1/10)"],
     [1, "Overall progression: 100% (Position: 10/10)"],

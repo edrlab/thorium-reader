@@ -250,7 +250,7 @@ const Progression = (props: {
                     txtPagination = __("reader.navigation.currentPage", { current: epubPage });
                 }
 
-                txtProgression += ` -- ${spineIndex + 1}/${r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${readingProgression.local}]`;
+                txtProgression = `${txtProgression ? `${txtProgression} -- ` : ""}${spineIndex + 1}/${r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${readingProgression.local}]`;
 
                 if (locatorExt.headings && manifestUrlR2Protocol && handleLinkUrl) { // focusWhereAmI
 

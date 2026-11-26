@@ -22,7 +22,7 @@ export function getReadingProgression(
     __: I18nFunction,
 ): { spineIndex: number; isFixedLayout: boolean; local: string; global: string } | undefined {
     const spine = publication?.Spine;
-    if (!locator?.href || !spine?.length || isAudiobookFn(publication) || isDivinaFn(publication) || isPdfFn(publication)) {
+    if (!locator?.href || !spine?.length || isDivinaFn(publication) || isPdfFn(publication)) {
         return undefined;
     }
     const href = resolveReadiumAnnotationSourceHref(locator.href, spine.map((link) => link.Href));
@@ -32,12 +32,16 @@ export function getReadingProgression(
     }
 
     const locations = locator.locations;
+    const isAudiobook = isAudiobookFn(publication);
     const hasLocalProgression = typeof locations.progression === "number" && Number.isFinite(locations.progression);
+    if (isAudiobook && !hasLocalProgression) {
+        return undefined;
+    }
     // Legacy saved locators may only contain a local percentage. Map those using the
     // same resource weights as live locators, without constructing the full position list.
-    const positionLocator = positionIndex && hasLocalProgression ?
+    const positionLocator = !isAudiobook && positionIndex && hasLocalProgression ?
         mapLocatorToReadiumPosition(locator, positionIndex) : locator;
-    const position = getReadiumPositionProgression(positionLocator, positionIndex);
+    const position = !isAudiobook ? getReadiumPositionProgression(positionLocator, positionIndex) : undefined;
     const localProgression = hasLocalProgression ? Math.min(1, Math.max(0, locations.progression)) :
         position ? (position.position - position.firstPosition) / (position.lastPosition - position.firstPosition + 1) : 0;
     const isFixedLayout = (spine[spineIndex].Properties?.Layout || publication.Metadata?.Rendition?.Layout) === "fixed";
@@ -51,7 +55,8 @@ export function getReadingProgression(
     const totalProgression = isFixedLayoutPublication ? (spineIndex + 1) / spine.length :
         locatorTotalProgression ?? position?.totalProgression ?? (spineIndex + localProgression) / spine.length;
 
-    const overall = __("publication.progression.overall", { percent: Math.round(totalProgression * 100) });
+    // Audiobook duration-based reporting is handled by the caller; this fallback only knows track progress.
+    const overall = isAudiobook ? "" : __("publication.progression.overall", { percent: Math.round(totalProgression * 100) });
     const positionLabel = position && !isFixedLayout ? __("publication.progression.position", {
         current: position.position,
         total: position.totalPositions,
