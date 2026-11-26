@@ -2193,7 +2193,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 // },
             ];
         return arr;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line @eslint-react/exhaustive-deps
     }, [__, locale]);
 
     const tableColumnIds = React.useMemo(() => {

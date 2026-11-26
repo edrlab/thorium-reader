@@ -382,6 +382,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                 // console.log("----> skipRender", skipRender);
 
                                                 if (skipRender && !atCurrentLocation) {
+                                                    // eslint-disable-next-line @eslint-react/no-missing-key
                                                     return <></>;
                                                 }
                                             }
@@ -483,6 +484,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                 ` ${link.Title ? `${link.Title}${atCurrentLocation && spineTitle ? ` (${spineTitle})` : ""}` : (atCurrentLocation && spineTitle ? spineTitle : "")}`}</span>
                                                             {atCurrentLocation ?
                                                                 this.getProgression(link, isAudioBook).map((str, i) => {
+                                                                    // eslint-disable-next-line @eslint-react/no-missing-key
                                                                     return !str ? <></> :
                                                                     i === 0 ?
                                                                     <p key={`p${i}`}>{str}</p>

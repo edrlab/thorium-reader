@@ -50,7 +50,7 @@ module.exports = {
                         node,
                         message: MESSAGE,
                         fix(fixer) {
-                            const sourceCode = context.getSourceCode();
+                            const sourceCode = context.sourceCode;
                             const fixed = sourceCode.getText(node).replace('yield', 'yield*');
                             return fixer.replaceText(node, fixed);
                         },

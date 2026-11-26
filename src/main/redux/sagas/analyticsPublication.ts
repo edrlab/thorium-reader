@@ -9,13 +9,13 @@ import { TPublicationUserAnalyticsEventName } from "readium-desktop/common/analy
 import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/analyticsApi.interface";
 import { logPublicationEvent } from "readium-desktop/main/analytics/publication";
 import { SagaGenerator } from "typed-redux-saga";
-import { call as callTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
+import { call as callTyped, spawn as spawnTyped } from "typed-redux-saga/macro"; // triggers linting error: "redux-saga/effects" (see "use-typed-effects.js")
 
 export function* spawnPublicationAnalyticsEvent(
     name: TPublicationUserAnalyticsEventName,
     params?: TAnalyticsEventParams,
 ): SagaGenerator<void> {
     yield* spawnTyped(function*() {
-        yield* callTyped(logPublicationEvent, name, params);
+        yield* callTyped(logPublicationEvent, name, params); // yield without "*" triggers linting error (see "delegate-effects.js")
     });
 }
