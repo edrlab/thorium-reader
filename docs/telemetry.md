@@ -1,6 +1,8 @@
 # Telemetry, analytics
 
-Firebase / GA4 Measurement Protocol support is configured at build time with environment variables consumed by `webpack.config-preprocessor-directives.js`. It is disabled by default, and emitted events still respect the in-app "Disable telemetry measurements" setting.
+For an end-user explanation of collected data, local storage, and the scope of the telemetry setting, see [Telemetry and privacy](../README.md#telemetry-and-privacy).
+
+Firebase / GA4 Measurement Protocol support is configured at build time with environment variables consumed by `webpack.config-preprocessor-directives.js`. It is disabled by default. The in-app "Disable telemetry measurements" setting prevents new usage events from being queued; it does not stop delivery of previously queued events or disable the separate EDRLab startup reports.
 
 Boolean flags are enabled by any value except `0` or `false`.
 
