@@ -12,6 +12,8 @@ Profile screen documents must follow this contract:
 - Inline layout and color styles are allowed. Thorium sanitizes the markup before rendering it.
 - Packaged images may use relative paths in `<img src>`, `<img srcset>`, `<picture><source srcset>`, and CSS `url(...)` in inline styles or `<style>` blocks. Paths resolve against the screen's manifest `href`; leading `/` paths resolve from the package root. External URLs and fragment-only references are preserved.
 
+HTML welcome pages linked with `rel: "welcome-screen"` use the same asset path resolution. For example, `../images/logo.svg` in `welcome-screen/welcome.html` loads `images/logo.svg` from the profile package. The optional `images` entry with `rel: "welcome-screen"` supplies a separate illustration beside the HTML; it is independent of images inside the HTML. Declare local assets in the manifest so the profile CLI includes them when packing.
+
 ## Style selector rules
 
 Thorium checks every selector in every inline stylesheet, including each member of a comma-separated selector list and rules nested in grouping at-rules such as `@media` and `@supports`. If any selector is outside the profile screen, Thorium rejects the document.

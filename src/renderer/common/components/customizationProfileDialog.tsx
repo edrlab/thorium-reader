@@ -24,7 +24,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import DOMPurify from "dompurify";
+import { prepareProfileWelcomeScreenHtml } from "readium-desktop/renderer/common/customization/welcomeScreenHtml";
 import { URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PROTOCOL_THORIUMHTTPS } from "readium-desktop/common/streamerProtocol";
 import Loader from "./Loader";
 
@@ -63,9 +63,11 @@ export const CustomizationProfileDialog: React.FC = () => {
     // console.log("welcomeScreen HTML zipPath: ", welcomeScreenHtmlZipPath);
     // console.log("welcomeScreen HTML URL: ", welcomeScreenHtmlHref);
     React.useEffect(() => {
+        const controller = new AbortController();
+        setDangerousInnerHTML_WelcomeScreenSanitized("");
         if (customizationId && welcomeScreenHtmlHref && open) {
             // URL is thoriumhttps:// "custom-profile-zip" protocol handler, so no use of isURL(url) and /^https?:\/\//.test(url) checks here
-            fetch(welcomeScreenHtmlHref)
+            fetch(welcomeScreenHtmlHref, { signal: controller.signal })
                 .then((response) => {
                     if (response.ok) {
                         return response.text();
@@ -75,24 +77,26 @@ export const CustomizationProfileDialog: React.FC = () => {
                 .then((rawHtmlContent) => {
                     // console.log("RAW HTML", rawHtmlContent);
 
-                    if (!rawHtmlContent) {
+                    if (controller.signal.aborted || !rawHtmlContent) {
                         return;
                     }
 
-                    const htmlSanitized = DOMPurify.sanitize(rawHtmlContent, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
+                    const htmlSanitized = prepareProfileWelcomeScreenHtml(rawHtmlContent, welcomeScreenHtmlZipPath, customizationBaseUrl);
                     // console.log(rawHtmlContent, htmlSanitized);
                     // NOTE that <a href="yyy">xxx</a> is fine, caught by webContents.on("will-navigate", ...) with event.preventDefault() and shell.openExternal(...) on normalized/escaped URL and filtered on HTTP(S)://
                     // NOTE that the attribute target="_blank" (etc) is automatically removed by DOMPurify but would be caught by webContents.setWindowOpenHandler(...) with { action: "deny" }, although no shell.openExternal(...) in this case
                     setDangerousInnerHTML_WelcomeScreenSanitized(htmlSanitized);
                 })
                 .catch((e) => {
+                    if (controller.signal.aborted) {
+                        return;
+                    }
                     console.error("Error fetching data:", e);
                     setDangerousInnerHTML_WelcomeScreenSanitized("");
                 });
-        } else {
-            setDangerousInnerHTML_WelcomeScreenSanitized("");
         }
-    }, [welcomeScreenHtmlHref, customizationId, open, setDangerousInnerHTML_WelcomeScreenSanitized]);
+        return () => controller.abort();
+    }, [welcomeScreenHtmlHref, welcomeScreenHtmlZipPath, customizationBaseUrl, customizationId, open, setDangerousInnerHTML_WelcomeScreenSanitized]);
 
 
     return (
@@ -112,7 +116,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                         </AlertDialog.Action>
                         </AlertDialog.Title>
                     <AlertDialog.Description className={stylesModals.modal_dialog_body} style={{ display: "flex", gap: "20px", flexDirection: "row", justifyContent: "normal"}}>
-                        {customization.welcomeScreen.enable && dangerousInnerHTML_WelcomeScreenSanitized ? <img alt={welcomeScreenImgAlt} style={{ maxWidth: "250px", maxHeight: "500px", objectFit: "contain" }} src={welcomeScreenImgHref} /> : <></>}
+                        {customization.welcomeScreen.enable && dangerousInnerHTML_WelcomeScreenSanitized && welcomeScreenImgHref ? <img alt={welcomeScreenImgAlt} style={{ maxWidth: "250px", maxHeight: "500px", objectFit: "contain" }} src={welcomeScreenImgHref} /> : <></>}
                         <div style={{position: "relative", width: "100%", height: "100%"}}>
                             {
                                 customization.welcomeScreen.enable && dangerousInnerHTML_WelcomeScreenSanitized ?

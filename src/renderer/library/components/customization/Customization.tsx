@@ -21,7 +21,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/components/profi
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { decodeProfileRouteParam, resolveProfileScreenLink } from "../../customization/route";
-import { resolveProfileAssetUrl, resolveProfileCssUrls, resolveProfileSrcset } from "../../customization/profileResourceUrl";
+import { resolveProfileDocumentResources } from "readium-desktop/renderer/common/customization/profileResourceUrl";
 import { restoreProfileStylesToBody } from "../../customization/profileScreenHtml";
 import { profileCssIsSafeAndScoped } from "../../customization/style";
 import PublicationAddButton from "../catalog/PublicationAddButton";
@@ -53,28 +53,13 @@ export function prepareProfileScreenHtml(
     });
     const parsedDocument = new DOMParser().parseFromString(sanitizedHtml, "text/html");
 
-    for (const image of Array.from(parsedDocument.body.querySelectorAll("img[src]"))) {
-        const src = image.getAttribute("src");
-        if (src) {
-            image.setAttribute("src", resolveProfileAssetUrl(src, screenHref, customizationBaseUrl));
-        }
-    }
-
     const profileStyles = Array.from(parsedDocument.querySelectorAll("style"));
     if (profileStyles.some(
         (style) => !profileCssIsSafeAndScoped(style.textContent || ""),
     )) {
         return undefined;
     }
-    for (const style of profileStyles) {
-        style.textContent = resolveProfileCssUrls(style.textContent || "", screenHref, customizationBaseUrl);
-    }
-    for (const element of Array.from(parsedDocument.body.querySelectorAll("[style]"))) {
-        element.setAttribute("style", resolveProfileCssUrls(element.getAttribute("style") || "", screenHref, customizationBaseUrl));
-    }
-    for (const image of Array.from(parsedDocument.body.querySelectorAll("img[srcset], source[srcset]"))) {
-        image.setAttribute("srcset", resolveProfileSrcset(image.getAttribute("srcset") || "", screenHref, customizationBaseUrl));
-    }
+    resolveProfileDocumentResources(parsedDocument, screenHref, customizationBaseUrl);
     restoreProfileStylesToBody(parsedDocument);
 
     // LibraryLayout already owns the page's main landmark.
