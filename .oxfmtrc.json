@@ -1,0 +1,51 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "experimentalTailwindcss": {},
+  "sortImports": {
+    "newlinesBetween": true,
+    "groups": [
+      ["type-builtin", "value-builtin"],
+      ["type-subpath", "value-subpath"],
+      ["type-external", "value-external"],
+      ["type-internal", "value-internal"],
+      ["type-parent", "value-parent"],
+      ["type-sibling", "value-sibling"],
+      ["type-index", "value-index"],
+      "style",
+      "unknown"
+    ]
+    // "groups": [
+    //   "type",
+    //   { "newlinesBetween": true },
+    //   "type-import",
+    //   { "newlinesBetween": true },
+    //   "type-internal",
+    //   { "newlinesBetween": true },
+    //   "type-parent",
+    //   { "newlinesBetween": true },
+    //   "type-sibling",
+    //   { "newlinesBetween": true },
+    //   "type-subpath",
+    //   { "newlinesBetween": true },
+    //   "type-index",
+    //   { "newlinesBetween": true },
+    //   "value-builtin",
+    //   { "newlinesBetween": true },
+    //   "value-external",
+    //   { "newlinesBetween": true },
+    //   "value-internal",
+    //   { "newlinesBetween": true },
+    //   "value-parent",
+    //   { "newlinesBetween": true },
+    //   "value-sibling",
+    //   { "newlinesBetween": true },
+    //   "value-subpath",
+    //   { "newlinesBetween": true },
+    //   "value-index",
+    //   { "newlinesBetween": true },
+    //   "style",
+    //   { "newlinesBetween": true },
+    //   "unknown"
+    // ]
+  }
+}

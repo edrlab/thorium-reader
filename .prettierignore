@@ -22,5 +22,8 @@ package.json
 src/package.json
 package-lock.json
 src/*
+test/*
 native-node-addon-windows-registry/*
 .pi/*
+*.md
+projects
