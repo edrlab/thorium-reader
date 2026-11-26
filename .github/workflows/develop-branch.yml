@@ -406,6 +406,13 @@ jobs:
       shell: bash
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
 ###########################
+    - name: NPM install missing native optional dependencies (macos-intel) # https://github.com/npm/cli/issues/4828
+      if: ${{ matrix.osarch == 'macos-intel' }}
+      run: >
+        PKG=$(grep -m1 '"@oxlint/binding-darwin-x64":' package-lock.json | sed -E 's/.*"@oxlint\/binding-darwin-x64": *"([^"]+)".*/@oxlint\/binding-darwin-x64@\1/') \
+        npm install --ignore-scripts --foreground-scripts --allow-git=root --cpu=x64 "$PKG"
+      shell: bash
+###########################
 #    - run: npm cache verify
 ###########################
     - name: Electron version + arch (Windows)
