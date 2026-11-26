@@ -13,18 +13,18 @@
         "editTag": "Muokkaa tunnistetta: {{- tag}}",
         "favoriteCatalog": "Suosikkiluettelo: {{- title}}",
         "increaseSetting": "Suurenna {{- setting}}",
-        "leftSlideButton": "Siirry listalla vasemmalle",
+        "leftSlideButton": "Siirry vasemmalle",
         "loading": "Ladataan…",
-        "mainContent": "Pääsisältö",
+        "mainContent": "pääsisältö",
         "notificationCopied": "Kopioitu leikepöydälle:",
         "notificationCopyFailed": "Ilmoitusta ei voitu kopioida",
         "printPage": "Sivu {{page}}",
         "publicationDetails": "{{- field}}: {{- title}}",
         "resetSetting": "Nollaa {{- setting}}",
-        "rightSlideButton": "Siirry listalla oikealle",
+        "rightSlideButton": "Siirry oikealle",
         "searching": "Etsitään…",
         "skipLink": "Hyppää sisältöön",
-        "toolbar": "Työkalurivi"
+        "toolbar": "työkalurivi"
     },
     "apiapp": {
         "documentation": "Thoriumin dokumentaatio",
@@ -53,15 +53,15 @@
                         "yes": "Kyllä"
                     },
                     "help": "Valitse tämä, jos haluat, että suljettaessa auki olevat ikkunat avautuvat, kun käynnistät ohjelman seuraavan kerran.",
-                    "message": "Haluatko tallentaa istunnon?",
-                    "title": "Tallenna istunto"
+                    "message": "Istunnon tallentaminen ja uudelleenkäynnistäminen",
+                    "title": "Tallennetaanko istunto?"
                 }
             }
         },
         "update": {
-            "message": "Uusi versio on saatavilla. Napsauta, jos haluat lisätietoja.",
+            "message": "Uusi versio on saatavilla. Klikkaa, jos haluat lisätietoja.",
             "title": "{{- appName}} -ohjelmiston päivitys.",
-            "whatsnew": "Uusi versio asennettiin. Napsauta, jos haluat lisätietoja."
+            "whatsnew": "Uusi versio asennettiin. Klikkaa, jos haluat lisätietoja."
         },
         "window": {
             "showLibrary": "Näytä kirjasto / kirjahylly",
@@ -72,7 +72,7 @@
     "catalog": {
         "AddToFavorites": "Lisää suosikkeihin",
         "about": {
-            "title": "Tietoa ohjelmasta {{- appName}}"
+            "title": "Tietoja {{- appName}}sta (online)"
         },
         "addBookToLib": "Tuo",
         "addTags": "Lisää tunniste",
@@ -112,8 +112,8 @@
         "missing": "Puuttuvat tiedostot",
         "missingUnavailableDescription": "Julkaisua ei voi avata, koska sen tallennettuja tiedostoja ei ole käytettävissä. Tuo julkaisu uudelleen tai siirry kohtaan asetukset, sitten tallennustila, jotta voit lisätä tai muuttaa tallennustilaa.",
         "moreInfo": "Tietoa julkaisusta",
-        "myBooks": "Omat kirjat",
-        "noPublicationHelpL1": "Pudota julkaisu tähän",
+        "myBooks": "Omat kirjani",
+        "noPublicationHelpL1": "Pudota tiedostot tähän",
         "noPublicationHelpL2": "tai käytä \"{{- importTitle }}\"-painiketta yllä.",
         "noPublicationHelpL3": "LCP-suojattuja tiedostoja tuetaan.",
         "noPublicationHelpL4": "Tuetut tiedostot:",
