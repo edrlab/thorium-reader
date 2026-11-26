@@ -43,9 +43,9 @@ import { availableLanguages } from "readium-desktop/common/services/translator";
 // https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/metadata.schema.json#L15-L32
 
 // see translateContentFieldHelper()
-export function convertMultiLangStringToString(stringOrObject: string | IStringMap | undefined, locale: keyof typeof availableLanguages): string | undefined {
-    if (typeof stringOrObject === "object") {
-        stringOrObject = stringOrObject || {} as IStringMap; // edge-case "null"! (TypeScript strictNullCheck, some OPDS feeds with null values)
+export function convertMultiLangStringToString(stringOrObject_: string | IStringMap | undefined | null, locale: keyof typeof availableLanguages): string | undefined {
+    if (typeof stringOrObject_ === "object") {
+        const stringOrObject = stringOrObject_ || {} as IStringMap; // edge-case "null"! (TypeScript strictNullCheck, some OPDS feeds with null values)
         const objectLangKeys = Object.keys(stringOrObject);
 
         const localeLow = locale.toLowerCase();
@@ -77,7 +77,7 @@ export function convertMultiLangStringToString(stringOrObject: string | IStringM
             english ||
             stringOrObject[objectLangKeys[0]];
     }
-    return stringOrObject; // assume typeof stringOrObject === "string"
+    return stringOrObject_; // assume typeof stringOrObject === "string"
 }
 
 // Note that the contributor JSON Schema applies to the serialized format:
@@ -105,9 +105,9 @@ export function convertMultiLangStringToString(stringOrObject: string | IStringM
 // }
 
 // see translateContentFieldHelper()
-export function convertMultiLangStringToLangString(stringOrObject: string | IStringMap | undefined, locale: keyof typeof availableLanguages): [lang: string, str: string | undefined] {
-    if (typeof stringOrObject === "object") {
-        stringOrObject = stringOrObject || {} as IStringMap; // edge-case "null"! (TypeScript strictNullCheck, some OPDS feeds with null values)
+export function convertMultiLangStringToLangString(stringOrObject_: string | IStringMap | undefined | null, locale: keyof typeof availableLanguages): [lang: string, str: string | undefined] {
+    if (typeof stringOrObject_ === "object") {
+        const stringOrObject = stringOrObject_ || {} as IStringMap; // edge-case "null"! (TypeScript strictNullCheck, some OPDS feeds with null values)
         const objectLangKeys = Object.keys(stringOrObject);
 
         const localeLow = locale.toLowerCase();
@@ -154,5 +154,5 @@ export function convertMultiLangStringToLangString(stringOrObject: string | IStr
 
         return [objectLangKeys[0], stringOrObject[objectLangKeys[0]]];
     }
-    return [BCP47_UNKNOWN_LANG, stringOrObject]; // assume typeof stringOrObject === "string"
+    return [BCP47_UNKNOWN_LANG, stringOrObject_]; // assume typeof stringOrObject === "string"
 }
