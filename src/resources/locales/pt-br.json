@@ -811,6 +811,9 @@
         "notStarted": "Não iniciado",
         "onGoing": "Em andamento",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "Uma posição de leitura mais recente em {{- device}} está disponível em {{- progression}}%.",
             "remoteTitle": "Retomar de outro dispositivo?",
             "title": "Andamento",

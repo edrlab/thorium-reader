@@ -805,6 +805,9 @@
         "notStarted": "Δεν έχει αρχίσει",
         "onGoing": "Σε εξέλιξη",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "Υπάρχει νεότερη θέση ανάγνωσης από τη συσκευή {{- device}} στο {{- progression}}%.",
             "remoteTitle": "Συνέχεια από άλλη συσκευή;",
             "title": "Εξέλιξη",

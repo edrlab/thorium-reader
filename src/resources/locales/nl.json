@@ -805,6 +805,9 @@
         "notStarted": "Niet gestart",
         "onGoing": "Bezig",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "Er is een recentere {{- device}} leespositie beschikbaar op {{- progression}}%.",
             "remoteTitle": "Verder gaan vanaf een ander apparaat?",
             "title": "Voortgang",

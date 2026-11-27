@@ -2007,6 +2007,9 @@ declare namespace typed_i18n {
   readonly "notStarted": string,
   readonly "onGoing": string,
   readonly "progression": {
+    readonly "chapter": string,
+    readonly "overall": string,
+    readonly "position": string,
     readonly "remoteDescription": string,
     readonly "remoteTitle": string,
     readonly "title": string,
@@ -2134,11 +2137,17 @@ declare namespace typed_i18n {
   (_: "publication.notStarted", __?: {}): string;
   (_: "publication.onGoing", __?: {}): string;
   (_: "publication.progression", __?: {}): {
+  readonly "chapter": string,
+  readonly "overall": string,
+  readonly "position": string,
   readonly "remoteDescription": string,
   readonly "remoteTitle": string,
   readonly "title": string,
   readonly "useRemote": string
 };
+  (_: "publication.progression.chapter", __?: {}): string;
+  (_: "publication.progression.overall", __?: {}): string;
+  (_: "publication.progression.position", __?: {}): string;
   (_: "publication.progression.remoteDescription", __?: {}): string;
   (_: "publication.progression.remoteTitle", __?: {}): string;
   (_: "publication.progression.title", __?: {}): string;

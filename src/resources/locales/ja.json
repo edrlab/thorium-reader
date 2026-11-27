@@ -799,6 +799,9 @@
         "notStarted": "まだ開いていません",
         "onGoing": "進行中",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "",
             "remoteTitle": "",
             "title": "進行度",

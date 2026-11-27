@@ -805,6 +805,9 @@
         "notStarted": "Ikke læst",
         "onGoing": "I gang",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "En ny læse-position fra {{- device}} er tilgængelig ved {{- progression}}%.",
             "remoteTitle": "Genoptag fra en anden enhed?",
             "title": "Læst",

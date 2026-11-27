@@ -817,6 +817,9 @@
         "notStarted": "Ni začeto",
         "onGoing": "V teku",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "Na voljo je novejši položaj branja iz naprave {{- device}} pri {{- progression}} %.",
             "remoteTitle": "Nadaljujte z druge naprave?",
             "title": "Napredek",

@@ -805,6 +805,9 @@
         "notStarted": "Ej påbörjad",
         "onGoing": "Läser just nu",
         "progression": {
+            "chapter": "",
+            "overall": "",
+            "position": "",
             "remoteDescription": "En nyare läsposition från {{- device}} är tillgänglig vid {{- progression}}%.",
             "remoteTitle": "Fortsätt från en annan enhet?",
             "title": "Läsposition",
