@@ -120,6 +120,7 @@ export function normalizeText(str: string): string {
 }
 
 export interface ITtsQueueItem {
+    pseudoElement?: "::before" | "::after";
     lastUtteranceRange?: Range;
     lastWordRange?: Range;
     dir: string | undefined;
@@ -221,9 +222,32 @@ export function findTtsQueueItemIndex(
     rootElem: Element): number {
 
     let i = 0;
-    for (const ttsQueueItem of ttsQueue) {
+    for (const [itemIndex, ttsQueueItem] of ttsQueue.entries()) {
         if (startTextNode) {
             if (ttsQueueItem.textNodes?.includes(startTextNode)) { // NOTE SECOND PASS!
+                // A reading location can point past indentation or an empty inline
+                // speaker label, to the first visible character of the paragraph.
+                if (ttsQueue[itemIndex - 1]?.pseudoElement && !startTextNode.nodeValue?.slice(0, startTextNodeOffset).trim()) {
+                    const precedingText = element.ownerDocument.createRange();
+                    precedingText.selectNodeContents(ttsQueueItem.parentElement);
+                    precedingText.setEndBefore(startTextNode);
+                    const atParagraphStart = !precedingText.toString().trim();
+                    precedingText.setStartBefore(ttsQueueItem.textNodes[0]);
+                    const atItemStart = !precedingText.toString().trim();
+                    let before = itemIndex;
+                    while (atItemStart && before > 0) {
+                        const cue = ttsQueue[before - 1];
+                        const leadsParagraph = atParagraphStart && ttsQueueItem.parentElement.contains(cue.parentElement);
+                        const leadsText = cue.pseudoElement === "::before" && cue.parentElement.contains(startTextNode);
+                        if (!cue.pseudoElement || !(leadsParagraph || leadsText)) {
+                            break;
+                        }
+                        before--;
+                    }
+                    if (before < itemIndex) {
+                        return i - (itemIndex - before);
+                    }
+                }
                 if (ttsQueueItem.combinedTextSentences &&
                     ttsQueueItem.combinedTextSentencesRangeBegin &&
                     ttsQueueItem.combinedTextSentencesRangeEnd) {
@@ -392,6 +416,46 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
     let ttsQueue: ITtsQueueItem[] = [];
     const elementStack: Element[] = [];
 
+    function addPseudoElement(element: Element, pseudoElement: "::before" | "::after") {
+        const style = win.getComputedStyle(element, pseudoElement);
+        const content = style.content;
+        if (!content || content === "none" || content === "normal" || style.display === "none" ||
+            style.visibility === "hidden" || style.visibility === "collapse" || style.opacity === "0") {
+            return;
+        }
+        const speak = style.getPropertyValue("speak");
+        if (speak === "none" || speak === "never") {
+            return;
+        }
+
+        // CSSOM serializes strings in double quotes. Prefer the spoken alternative
+        // after a slash (which may intentionally be empty). Never speak a URL or
+        // the CSS syntax of an unresolved counter.
+        const strings = content.match(/(?:^|\/\s*)((?:"(?:[^"\\]|\\.)*"\s*)+)$/u);
+        if (!strings) {
+            return;
+        }
+        let text = "";
+        for (const token of strings[1].matchAll(/"((?:[^"\\]|\\.)*)"/gu)) {
+            text += token[1].replace(/\\(?:([0-9a-f]{1,6})[ \t\n\f\r]?|(.))/giu, (_match, hex: string, escaped: string) =>
+                hex ? String.fromCodePoint(parseInt(hex, 16)) : escaped);
+        }
+        text = text.replace(/[\r\n]/g, " ").trim();
+        if (text) {
+            ttsQueue.push({
+                combinedText: text,
+                combinedTextSentences: undefined,
+                combinedTextSentencesRangeBegin: undefined,
+                combinedTextSentencesRangeEnd: undefined,
+                dir: getDirection(element),
+                lang: getLanguage(element),
+                parentElement: element,
+                pseudoElement,
+                textNodes: [],
+            });
+        }
+    }
+
     function processTextNode(textNode: Node) {
 
         if (textNode.nodeType !== Node.TEXT_NODE) {
@@ -475,7 +539,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
         const lang = textNode.parentElement ? getLanguage(textNode.parentElement) : undefined;
         const dir = textNode.parentElement ? getDirection(textNode.parentElement) : undefined;
 
-        if (!current || current.parentElement !== parentElement || current.lang !== lang || current.dir !== dir) {
+        if (!current || current.pseudoElement || current.parentElement !== parentElement || current.lang !== lang || current.dir !== dir) {
 
             // note that isSkippable===true never reaches into a ttsQueueItem because we eject at compilation time instead of runtime / playback:
             if (win.READIUM2.ttsSkippabilityEnabled) {
@@ -640,6 +704,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
             elementStack.push(element);
         }
 
+        addPseudoElement(element, "::before");
         for (const childNode of element.childNodes) {
             switch (childNode.nodeType) {
                 case Node.ELEMENT_NODE:
@@ -1083,6 +1148,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
             }
         }
 
+        addPseudoElement(element, "::after");
         if (putInElementStack) {
             elementStack.pop();
         }
